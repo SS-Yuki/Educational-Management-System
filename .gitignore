@@ -1,0 +1,17 @@
+*.class
+*.yml
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+

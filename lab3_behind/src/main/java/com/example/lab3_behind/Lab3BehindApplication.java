@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Lab3BehindApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(Lab3BehindApplication.class, args);
     }
 

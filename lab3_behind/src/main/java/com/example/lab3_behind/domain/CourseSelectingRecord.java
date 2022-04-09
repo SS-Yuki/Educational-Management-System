@@ -1,4 +1,4 @@
-package com.example.lab3_behind.entity;
+package com.example.lab3_behind.domain;
 
 public class CourseSelectingRecord {
 }

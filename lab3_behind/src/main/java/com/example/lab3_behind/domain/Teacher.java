@@ -1,13 +1,10 @@
-package com.example.lab3_behind.entity;
+package com.example.lab3_behind.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Data
 @AllArgsConstructor

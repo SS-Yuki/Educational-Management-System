@@ -26,4 +26,7 @@ public class Teacher {
     private String phone_num;
     @Column(name = "email", length = 256, nullable = true)
     private String email;
+    @OneToOne
+    @JoinColumn(name = "account")
+    private UserAccount userAccount;
 }

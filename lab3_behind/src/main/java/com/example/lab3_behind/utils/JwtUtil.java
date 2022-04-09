@@ -22,7 +22,7 @@ public class JwtUtil {
     * */
     public static String createToken(JwtUserData jwtUserData){
         JWTCreator.Builder jwtBuilder = JWT.create();
-        jwtBuilder.withClaim("stu_number",jwtUserData.getStu_number());
+        jwtBuilder.withClaim("number",jwtUserData.getNumber());
         jwtBuilder.withClaim("role",jwtUserData.getRole());
 
         Calendar calendarInstance = Calendar.getInstance();
@@ -43,9 +43,9 @@ public class JwtUtil {
             // e.printStackTrace();
             // token 校验失败, 抛出Token验证非法异常
         }
-        JwtUserData userData=new JwtUserData();
-        userData.setStu_number(jwt.getClaims().get("stu_number").toString());
-        userData.setRole(jwt.getClaims().get("role").toString());
+        JwtUserData userData=new JwtUserData(jwt.getClaims().get("number").toString(),
+                jwt.getClaims().get("role").toString());
+
         return userData;
     }
 

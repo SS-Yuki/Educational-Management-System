@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
-    Teacher findByJob_number(String Job_number);
-    Teacher findByID_num(String ID_num);
-    Teacher deleteByJob_number(String Job_number);
+//    Teacher findByJobNumber(String Job_number);
+//    Teacher findByIDNum(String ID_num);
+//    Teacher deleteByJobNumber(String Job_number);
 }

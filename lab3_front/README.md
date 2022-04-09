@@ -1,4 +1,4 @@
-# lab3_front
+# vue_test
 
 ## Project setup
 ```

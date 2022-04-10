@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer course_id;
+    private Integer courseId;
 
     @Column(name = "course_number", length = 36, nullable = true)
     private String courseNumber;

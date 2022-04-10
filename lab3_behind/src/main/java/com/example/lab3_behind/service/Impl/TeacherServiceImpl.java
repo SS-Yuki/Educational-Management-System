@@ -1,7 +1,8 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.domain.Teacher;
-import com.example.lab3_behind.domain.dto.UserMaintenanceData;
+import com.example.lab3_behind.domain.dto.RevisableDataForAdmin;
+import com.example.lab3_behind.domain.dto.RevisableDataForUser;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
 import com.example.lab3_behind.repository.TeacherRepository;
 import com.example.lab3_behind.service.TeacherService;
@@ -29,14 +30,28 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher updateTeacherInfo(UserMaintenanceData userData) throws Exception {
-        Teacher teacher = TeacherRepository.findByJobNumber(userData.getNumber());
+    public Teacher updateTeacherInfo(RevisableDataForAdmin userData, String jobNumber) throws Exception {
+        Teacher teacher = TeacherRepository.findByJobNumber(jobNumber);
         if(teacher == null){
             throw new Exception("该用户不存在");
         }
         teacher.setID_num(userData.getId_num());
         teacher.setEmail(userData.getEmail());
         teacher.setName(userData.getName());
+        teacher.setPhone_num(userData.getPhone_num());
+        teacher.setStatus(userData.getTea_status());
+        teacher.getUserAccount().setPassword(userData.getPassword());
+        TeacherRepository.save(teacher);
+        return teacher;
+    }
+
+    @Override
+    public Teacher maintainTeacherInfo(RevisableDataForUser userData, String jobNumber) throws Exception {
+        Teacher teacher = TeacherRepository.findByJobNumber(jobNumber);
+        if(teacher == null){
+            throw new Exception("该用户不存在");
+        }
+        teacher.setEmail(userData.getEmail());
         teacher.setPhone_num(userData.getPhone_num());
         teacher.getUserAccount().setPassword(userData.getPassword());
         TeacherRepository.save(teacher);

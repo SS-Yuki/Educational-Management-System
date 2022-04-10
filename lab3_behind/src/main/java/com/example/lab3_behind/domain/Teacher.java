@@ -48,6 +48,12 @@ public class Teacher {
     @Column(name = "status")
     private TeacherStatus status;
 
+    @Column(name = "school")
+    private String school;
+
+    @Column(name = "major")
+    private String major;
+
     public Teacher(UserEnteringData user){
         this.job_number = user.getNumber();
         this.name = user.getName();

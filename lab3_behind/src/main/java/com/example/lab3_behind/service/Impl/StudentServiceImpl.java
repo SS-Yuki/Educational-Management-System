@@ -1,7 +1,8 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.domain.Student;
-import com.example.lab3_behind.domain.dto.UserMaintenanceData;
+import com.example.lab3_behind.domain.dto.RevisableDataForAdmin;
+import com.example.lab3_behind.domain.dto.RevisableDataForUser;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
 import com.example.lab3_behind.repository.StudentRepository;
 import com.example.lab3_behind.service.StudentService;
@@ -29,14 +30,28 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student updateStudentInfo(UserMaintenanceData userData) throws Exception {
-        Student student = StudentRepository.findByStuNumber(userData.getNumber());
+    public Student updateStudentInfo(RevisableDataForAdmin userData, String stuNumber) throws Exception {
+        Student student = StudentRepository.findByStuNumber(stuNumber);
         if(student == null){
             throw new Exception("该用户不存在");
         }
         student.setID_num(userData.getId_num());
         student.setEmail(userData.getEmail());
         student.setName(userData.getName());
+        student.setPhone_num(userData.getPhone_num());
+        student.setStatus(userData.getStu_status());
+        student.getUserAccount().setPassword(userData.getPassword());
+        StudentRepository.save(student);
+        return student;
+    }
+
+    @Override
+    public Student maintainStudentInfo(RevisableDataForUser userData, String stuNumber) throws Exception {
+        Student student = StudentRepository.findByStuNumber(stuNumber);
+        if(student == null){
+            throw new Exception("该用户不存在");
+        }
+        student.setEmail(userData.getEmail());
         student.setPhone_num(userData.getPhone_num());
         student.getUserAccount().setPassword(userData.getPassword());
         StudentRepository.save(student);

@@ -50,6 +50,12 @@ public class Student {
     @Column(name = "status")
     private StudentStatus status;
 
+    @Column(name = "school")
+    private String school;
+
+    @Column(name = "major")
+    private String major;
+
     public Student(UserEnteringData user){
         this.stu_number = user.getNumber();
         this.name = user.getName();

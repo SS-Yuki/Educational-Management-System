@@ -62,10 +62,14 @@ public class Student {
         this.ID_num = user.getId_num();
         this.phone_num = user.getPhone_num();
         this.email = user.getEmail();
+        this.major = user.getMajor();
+        this.school = user.getSchool();
+        this.status = StudentStatus.Normal;
         UserAccount account = null;
         account.setAccount(user.getNumber());
         account.setPassword(user.getPassword());
         account.setRole("Student");
+        account.setPermission("true");
         this.userAccount = account;
     }
 }

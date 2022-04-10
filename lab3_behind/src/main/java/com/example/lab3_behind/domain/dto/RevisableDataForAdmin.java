@@ -24,4 +24,8 @@ public class RevisableDataForAdmin {
 
     private TeacherStatus tea_status;
 
+    private String school;
+
+    private String major;
+
 }

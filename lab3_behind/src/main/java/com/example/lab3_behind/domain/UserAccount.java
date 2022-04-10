@@ -24,4 +24,7 @@ public class UserAccount {
 
     @Column(name = "role", length = 256, nullable = false)
     private String role;
+
+    @Column(name = "permission")
+    private String permission;
 }

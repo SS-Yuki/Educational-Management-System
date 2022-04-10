@@ -60,10 +60,14 @@ public class Teacher {
         this.ID_num = user.getId_num();
         this.phone_num = user.getPhone_num();
         this.email = user.getEmail();
+        this.school = user.getSchool();
+        this.major = user.getMajor();
+        this.status = TeacherStatus.Normal;
         UserAccount account = null;
         account.setAccount(user.getNumber());
         account.setPassword(user.getPassword());
         account.setRole("Teacher");
+        account.setPermission("true");
         this.userAccount = account;
     }
 }

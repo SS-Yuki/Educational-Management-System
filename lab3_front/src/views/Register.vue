@@ -71,14 +71,17 @@ export default {
         password: ''
       },
       rules: {
-        role:[{ required: true, message: '请选择身份', trigger: 'blur' }],
-        school_major:[{ required: true, message: '请选择院系和专业', trigger: 'blur' }],
+        role:[{ required: true, message: '请选择身份', trigger: 'change' }],
+        school_major:[{ required: true, message: '请选择院系和专业', trigger: 'change' }],
         number: [{ required: true, message: '请填写学号', trigger: 'blur' }],
-        name: [{ required: true, message: '请填写姓名', trigger: 'blur' }],
-        idNum: [{ required: true, message: '请填写身份证号', trigger: 'blur' }],
-        phoneNum: [],
-        email: [],
-        password: [{ required: true, message: '请填写密码', trigger: 'blur' }]
+        name: [{ required: true, message: '请填写姓名', trigger: 'blur' },
+          { pattern: /^[\u4e00-\u9fa5a-zA-Z]+$/, message: '姓名只能为中文或英文' }],
+        idNum: [{ required: true, message: '请填写身份证号', trigger: 'blur' },
+          { pattern: /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/, message: '身份证号格式错误' }],
+        phoneNum: [{ pattern: /^1\d{10}$/, message: '手机号码格式错误' }],
+        email: [{ pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '电子邮箱格式错误' }],
+        password: [{ required: true, message: '请填写密码', trigger: 'blur' },
+          { pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/, message: '长度6-32,至少包含字母、数字或者特殊字符(-_)中的两种' }]
       }
     }
   },

@@ -1,5 +1,5 @@
 <template>
-  <header msg="复旦大学教师系统"/>
+  <header/>
   <div class="teacher_menu">
     <el-row class="tac">
       <el-col :span="12">

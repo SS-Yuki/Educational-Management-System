@@ -16,6 +16,12 @@ public class JwtInterceptor implements HandlerInterceptor {
     public  boolean preHandle(HttpServletRequest request, HttpServletResponse response,Object handler) throws Exception{
         String token = request.getHeader("token");
         Result result;
+        if(token==null || token.isEmpty()){
+            String json = new ObjectMapper().writeValueAsString(Result.fail(650,"请先登录"));
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().print(json);
+            return false;
+        }
         try{
             JwtUtil.verify(token);
             return true;

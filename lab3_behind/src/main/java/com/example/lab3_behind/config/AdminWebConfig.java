@@ -14,10 +14,9 @@ public class AdminWebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/user/**");
 
-//        registry.addInterceptor(new LoginInterceptor())
-//                .addPathPatterns("/**")
-//                .excludePathPatterns("/login");
-//
+        registry.addInterceptor(new LoginInterceptor())
+                .addPathPatterns("/user/login");
+
         registry.addInterceptor(new AdminInterceptor())
                 .addPathPatterns("/user/admin/**", "/user/admin");
 

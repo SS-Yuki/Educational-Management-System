@@ -1,6 +1,8 @@
 package com.example.lab3_behind.controller;
 
 
+import com.example.lab3_behind.domain.Student;
+import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.UserAccount;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
 import com.example.lab3_behind.service.StudentService;
@@ -53,7 +55,7 @@ public class UserAccountController {
             JwtUtil.verify(token);
             JwtUserData jwtUserData = JwtUtil.getToken(token);
             RedisUtil.delete(token);
-            map.put("number","20302010");
+            map.put("number",jwtUserData.getNumber());
         }catch (Exception e){
             return Result.fail(621,e.getMessage());
         }
@@ -64,11 +66,19 @@ public class UserAccountController {
 
         Map<String,Object> map = new HashMap<>();
         try {
-            UserAccount userAccount = userAccountService.login(user);
-            JwtUserData jwtUserData = JwtUserData.accountToJwt(userAccount);
-            map.put("number",user.getNumber());
-            map.put("token",JwtUtil.createToken(jwtUserData));
-            map.put("initLogin",userAccount.isFirstLogin());
+            if(userEnteringData.getRole().equals("student")){
+                Student student = studentService.insertStudent(userEnteringData);
+                map.put("number",student.getStuNumber());
+                map.put("name",student.getName());
+                map.put("role","student");
+            }
+            else if(userEnteringData.getRole().equals("teacher")){
+                Teacher teacher = teacherService.insertTeacher(userEnteringData);
+                map.put("number",teacher.getJobNumber());
+                map.put("name",teacher.getName());
+                map.put("role","teacher");
+            }
+            else throw new Exception("注册身份错误");
         }catch (Exception e){
             e.printStackTrace();
             return Result.fail(620,e.getMessage());

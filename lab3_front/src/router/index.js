@@ -1,10 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home'
-import Login from '../views/Login'
-import Register from '../views/Register'
-import Admin from '../views/Admin'
-import Teacher from '../views/Teacher'
-import Student from '../views/Student'
+import Home from "@/views/Home";
+import Login from "@/views/Login";
+import Register from "@/views/Register";
+import Admin from "@/views/Admin";
+import Teacher from "@/views/Teacher";
+import Student from "@/views/Student";
+import PersonalInfo from "@/views/PersonalInfo";
+import ViewCourse from "@/views/ViewCourse";
+import CheckCourse from "@/views/CheckCourse";
 
 // const routes = [
 //   {
@@ -47,12 +50,36 @@ const routes = [
   {
     path: '/student',
     name: 'Student',
-    component: Student
+    component: Student,
+    children: [
+      {
+        path: 'personalinfo',
+        name: 'PersonalInfo',
+        component: PersonalInfo
+      },
+      {
+        path: 'viewcourse',
+        name: 'ViewCourse',
+        component: ViewCourse
+      }
+    ]
   },
   {
     path: '/teacher',
     name: 'Teacher',
-    component: Teacher
+    component: Teacher,
+    children: [
+      {
+        path: 'personalinfo',
+        name: 'PersonalInfo',
+        component: PersonalInfo
+      },
+      {
+        path: 'checkcourse',
+        name: 'CheckCourse',
+        component: CheckCourse
+      }
+    ]
   }
 ]
 

@@ -14,15 +14,15 @@ public class RevisableDataForAdmin {
 
     private String password;
 
-    private String id_num;
+    private String idNum;
 
-    private String phone_num;
+    private String phoneNum;
 
     private String email;
 
-    private StudentStatus stu_status;
+    private StudentStatus stuStatus;
 
-    private TeacherStatus tea_status;
+    private TeacherStatus teaStatus;
 
     private String school;
 

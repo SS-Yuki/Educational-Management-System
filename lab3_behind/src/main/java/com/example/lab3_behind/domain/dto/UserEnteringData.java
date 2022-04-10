@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,9 +14,9 @@ public class UserEnteringData {
 
     private String password;
 
-    private String id_num;
+    private String idNum;
 
-    private String phone_num;
+    private String phoneNum;
 
     private String email;
 

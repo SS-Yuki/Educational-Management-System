@@ -59,8 +59,8 @@ public class Student {
     public Student(UserEnteringData user){
         this.stuNumber = user.getNumber();
         this.name = user.getName();
-        this.idNum = user.getId_num();
-        this.phoneNum = user.getPhone_num();
+        this.idNum = user.getIdNum();
+        this.phoneNum = user.getPhoneNum();
         this.email = user.getEmail();
         this.major = user.getMajor();
         this.school = user.getSchool();

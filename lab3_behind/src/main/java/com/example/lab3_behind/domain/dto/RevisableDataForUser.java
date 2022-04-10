@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class RevisableDataForUser {
     private String password;
 
-    private String phone_num;
+    private String phoneNum;
 
     private String email;
 }

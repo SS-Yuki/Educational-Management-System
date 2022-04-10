@@ -17,19 +17,19 @@ public class Course {
     private Integer course_id;
 
     @Column(name = "course_number", length = 36, nullable = true)
-    private String course_number;
+    private String courseNumber;
 
     @Column(name = "course_name", length = 256, nullable = true)
-    private String course_name;
+    private String courseName;
 
     @Column(name = "department ", length = 36, nullable = true)
     private String department ;
 
     @Column(name = "class_period")
-    private String class_period ;
+    private String classPeriod ;
 
     @Column(name = "credit_hours", nullable = true)
-    private Integer credit_hours;
+    private Integer creditHours;
 
     @Column(name = "credits", nullable = true)
     private Integer credits;

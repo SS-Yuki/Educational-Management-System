@@ -5,5 +5,5 @@ import com.example.lab3_behind.domain.dto.LoginUserData;
 
 
 public interface UserAccountService {
-    UserAccount login(LoginUserData user);
+    UserAccount login(LoginUserData user) throws Exception;
 }

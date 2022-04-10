@@ -1,5 +1,6 @@
 package com.example.lab3_behind.domain;
 
+import com.example.lab3_behind.domain.dto.UserEnteringData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,4 +44,17 @@ public class Student {
             inverseJoinColumns = {@JoinColumn(name = "course_id")}
     )
     private List<Course> courses;
+
+    public Student(UserEnteringData user){
+        this.stu_number = user.getNumber();
+        this.name = user.getName();
+        this.ID_num = user.getId_num();
+        this.phone_num = user.getPhone_num();
+        this.email = user.getEmail();
+        UserAccount account = null;
+        account.setAccount(user.getNumber());
+        account.setPassword(user.getPassword());
+        account.setRole("Student");
+        this.userAccount = account;
+    }
 }

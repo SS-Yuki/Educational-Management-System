@@ -1,8 +1,10 @@
 package com.example.lab3_behind.domain;
 
+import com.example.lab3_behind.domain.dto.UserEnteringData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.List;
@@ -39,4 +41,17 @@ public class Teacher {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "course_id")
     private List<Course> courses;
+
+    public Teacher(UserEnteringData user){
+        this.job_number = user.getNumber();
+        this.name = user.getName();
+        this.ID_num = user.getId_num();
+        this.phone_num = user.getPhone_num();
+        this.email = user.getEmail();
+        UserAccount account = null;
+        account.setAccount(user.getNumber());
+        account.setPassword(user.getPassword());
+        account.setRole("Teacher");
+        this.userAccount = account;
+    }
 }

@@ -14,6 +14,7 @@ import javax.persistence.*;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "course_id")
     private Integer courseId;
 
     @Column(name = "course_number", length = 36, nullable = true)
@@ -22,19 +23,22 @@ public class Course {
     @Column(name = "course_name", length = 256, nullable = true)
     private String courseName;
 
-    @Column(name = "department ", length = 36, nullable = true)
+    @Column(name = "department ")
     private String department ;
 
     @Column(name = "class_period")
     private String classPeriod ;
 
-    @Column(name = "credit_hours", nullable = true)
+    @Column(name = "classroom")
+    private String classroom ;
+
+    @Column(name = "credit_hours")
     private Integer creditHours;
 
-    @Column(name = "credits", nullable = true)
+    @Column(name = "credits")
     private Integer credits;
 
-    @Column(name = "capacity", nullable = true)
+    @Column(name = "capacity")
     private Integer capacity;
 
     @Lob

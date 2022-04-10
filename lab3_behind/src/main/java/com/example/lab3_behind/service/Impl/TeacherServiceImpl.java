@@ -1,5 +1,6 @@
-package com.example.lab3_behind.service.Impl;
+package com.example.lab3_behind.service.impl;
 
+import com.example.lab3_behind.common.TeacherStatus;
 import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.dto.RevisableDataForAdmin;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
@@ -40,7 +41,12 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.setName(userData.getName());
         teacher.setPhone_num(userData.getPhone_num());
         teacher.setStatus(userData.getTea_status());
+        teacher.setMajor(userData.getMajor());
+        teacher.setSchool(userData.getSchool());
         teacher.getUserAccount().setPassword(userData.getPassword());
+        if(!userData.getTea_status().equals(TeacherStatus.Normal)){
+            teacher.getUserAccount().setPermission("false");
+        }
         TeacherRepository.save(teacher);
         return teacher;
     }

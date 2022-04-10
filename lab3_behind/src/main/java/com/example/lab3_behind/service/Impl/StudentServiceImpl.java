@@ -1,5 +1,6 @@
-package com.example.lab3_behind.service.Impl;
+package com.example.lab3_behind.service.impl;
 
+import com.example.lab3_behind.common.StudentStatus;
 import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.dto.RevisableDataForAdmin;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
@@ -40,7 +41,12 @@ public class StudentServiceImpl implements StudentService {
         student.setName(userData.getName());
         student.setPhone_num(userData.getPhone_num());
         student.setStatus(userData.getStu_status());
+        student.setMajor(userData.getMajor());
+        student.setSchool(userData.getSchool());
         student.getUserAccount().setPassword(userData.getPassword());
+        if(!userData.getStu_status().equals(StudentStatus.Normal)){
+            student.getUserAccount().setPermission("false");
+        }
         StudentRepository.save(student);
         return student;
     }

@@ -22,6 +22,9 @@ public class UserAccountServiceImpl implements UserAccountService {
         if(userAccount==null){
             throw new Exception("账号不存在");
         }
+        if(userAccount.getPermission().equals("false")){
+            throw new Exception("账号目前无权限登录");
+        }
         return userAccount;
     }
 }

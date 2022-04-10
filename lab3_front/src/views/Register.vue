@@ -5,8 +5,8 @@
       <el-form :model="register_data" label-width="120px" :rules="rules">
         <el-form-item label="身份" prop="role">
           <el-radio-group v-model="register_data.role">
-            <el-radio label="学生" />
-            <el-radio label="教师" />
+            <el-radio label="学生" value="student"/>
+            <el-radio label="教师" value="teacher"/>
           </el-radio-group>
         </el-form-item>
           <el-form-item label="院系/专业" prop="school_major">
@@ -71,13 +71,13 @@ export default {
         password: ''
       },
       rules: {
-        role:[{ required: true, message: '请选择', trigger: 'blur' }],
-        school_major:[{ required: true, message: '请输入医生名称', trigger: 'blur' }],
+        role:[{ required: true, message: '请选择身份', trigger: 'blur' }],
+        school_major:[{ required: true, message: '请选择院系和专业', trigger: 'blur' }],
         number: [{ required: true, message: '请选择职称', trigger: 'blur' }],
         name: [{ required: true, message: '请选择性别', trigger: 'blur' }],
         idNum: [{ required: true, message: '请选择医院', trigger: 'blur' }],
-        phoneNum: [{ required: true, message: '请选择职称', trigger: 'blur' },
-          { pattern: /^(13[0-9]|14[1|4|5|6|7|8|9]|15[0|1|2|3|5|6|7|8|9]|17[2|3|5|6|7|8]|18[0-9]|19[1|8|9])\d{8}$/, message: '手机号格式不正确', trigger: 'blur'}],
+        phoneNum: [{ required: true, message: '请选择职称', trigger: 'blur' }],
+          // { pattern: /^(13[0-9]|14[1|4|5|6|7|8|9]|15[0|1|2|3|5|6|7|8|9]|17[2|3|5|6|7|8]|18[0-9]|19[1|8|9])\d{8}$/, message: '手机号格式不正确', trigger: 'blur'}],
         email: [{ required: true, message: '请选择性别', trigger: 'blur' }],
         password: [{ required: true, message: '请选择医院', trigger: 'blur' }]
       }
@@ -91,8 +91,8 @@ export default {
       })
     },
     school_major_select: function () {
-      this.school = this.school_major[0]
-      this.major = this.school_major[1]
+      this.register_data.school = this.school_major[0]
+      this.register_data.major = this.school_major[1]
     }
   }
 }

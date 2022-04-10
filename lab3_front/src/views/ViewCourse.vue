@@ -1,6 +1,5 @@
 <template>
 <div>
-  ViewCourse
 </div>
 
 </template>

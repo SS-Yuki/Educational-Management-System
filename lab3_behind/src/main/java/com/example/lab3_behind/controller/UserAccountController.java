@@ -2,6 +2,7 @@ package com.example.lab3_behind.controller;
 
 
 import com.example.lab3_behind.domain.UserAccount;
+import com.example.lab3_behind.domain.dto.UserEnteringData;
 import com.example.lab3_behind.service.StudentService;
 import com.example.lab3_behind.service.TeacherService;
 import com.example.lab3_behind.service.UserAccountService;
@@ -55,6 +56,22 @@ public class UserAccountController {
             map.put("number","20302010");
         }catch (Exception e){
             return Result.fail(621,e.getMessage());
+        }
+        return Result.succ(map);
+    }
+    @PostMapping("/register")
+    public Result login(@RequestBody UserEnteringData userEnteringData){
+
+        Map<String,Object> map = new HashMap<>();
+        try {
+            UserAccount userAccount = userAccountService.login(user);
+            JwtUserData jwtUserData = JwtUserData.accountToJwt(userAccount);
+            map.put("number",user.getNumber());
+            map.put("token",JwtUtil.createToken(jwtUserData));
+            map.put("initLogin",userAccount.isFirstLogin());
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.fail(620,e.getMessage());
         }
         return Result.succ(map);
     }

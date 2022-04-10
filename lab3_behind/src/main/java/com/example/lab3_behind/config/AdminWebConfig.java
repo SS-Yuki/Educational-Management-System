@@ -14,18 +14,18 @@ public class AdminWebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/user/**");
 
-        registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/**")
-                .excludePathPatterns("/login");
-
-        registry.addInterceptor(new AdminInterceptor())
-                .addPathPatterns("/user/admin/**", "/user/admin");
-
-        registry.addInterceptor(new StudentInterceptor())
-                .addPathPatterns("/user/student/**", "/user/student");
-
-        registry.addInterceptor(new TeacherInterceptor())
-                .addPathPatterns("/user/teacher/**", "/user/teacher");
+//        registry.addInterceptor(new LoginInterceptor())
+//                .addPathPatterns("/**")
+//                .excludePathPatterns("/login");
+//
+//        registry.addInterceptor(new AdminInterceptor())
+//                .addPathPatterns("/user/admin/**", "/user/admin");
+//
+//        registry.addInterceptor(new StudentInterceptor())
+//                .addPathPatterns("/user/student/**", "/user/student");
+//
+//        registry.addInterceptor(new TeacherInterceptor())
+//                .addPathPatterns("/user/teacher/**", "/user/teacher");
     }
 
 }

@@ -6,18 +6,22 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.lab3_behind.common.JwtUserData;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 public class JwtUtil {
 
 
 
-    private static long passTime = 1000 * 60 * 60;//一小时后过期
+    private static Long passTime = Long.valueOf(1000 * 60 * 60);//一小时后过期
     private static final String signature = "husivhjsdkvnksdjvnsdhvwehe88*&^%";
 
+    @Autowired
+    RedisUtil redisUtil;
     /*
     * 生成token
     * */
@@ -29,7 +33,7 @@ public class JwtUtil {
         Calendar calendarInstance = Calendar.getInstance();
         jwtBuilder.withExpiresAt(new Date(calendarInstance.getTimeInMillis()+passTime));
         String token = jwtBuilder.sign(Algorithm.HMAC256(signature)).toString();
-        //RedisUtil.set(token,jwtUserData.getNumber(),passTime, TimeUnit.SECONDS);
+        RedisUtil.saveValue(token,jwtUserData.getNumber(), Math.toIntExact(passTime), TimeUnit.SECONDS);
         return token;
     }
 

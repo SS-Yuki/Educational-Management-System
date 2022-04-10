@@ -1,42 +1,57 @@
 package com.example.lab3_behind.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 @Component
 public class RedisUtil {
+
     @Autowired
-    private static RedisTemplate<String,String> redisTemplate;
-
-    public static void set(String key,String value){
-        redisTemplate.opsForValue().set(key,value);
-    }
-    public static void set(String key,String value,Long timeout,TimeUnit unit){
-        redisTemplate.opsForValue().set(key,value,timeout,unit);
-    }
-    public static String get(String key){
-        return redisTemplate.opsForValue().get(key);
-    }
-
-    public static void delete(String key){
-        redisTemplate.delete(key);
-    }
-    public static boolean hasKey(String key) {
-        try {
-            redisTemplate.hasKey(key);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+    private RedisTemplate redisTemplate;
 
 
+    private static RedisUtil redisUtils ;
+
+    @PostConstruct
+    public void init(){
+        redisUtils = this ;
+        redisUtils.redisTemplate = this.redisTemplate ;
+    }
+
+    /**
+     * redis存入数据
+     * @param key 键名
+     * @param value  值
+     * @param time 保存时间
+     * @param timeUnit  时间单位
+     * */
+    public static void saveValue(String key, Object value, int time, TimeUnit timeUnit){
+        redisUtils.redisTemplate.opsForValue().set(key,value,time,timeUnit);
+    }
+
+    /**
+     * 获取redis中的值
+     * @param key 键名
+     * */
+    public static <T> T getValue(String key){
+        ValueOperations<String,T> valueOperations = redisUtils.redisTemplate.opsForValue();
+        return valueOperations.get(key);
+    }
+
+    /**
+     * 删除单个对象
+     * @param key 键名
+     * */
+    public static  boolean delete(String key){
+        return  redisUtils.redisTemplate.delete(key);
+    }
+
+    public static Boolean hasKey(String key){
+        return redisUtils.redisTemplate.hasKey(key);
+    }
 }

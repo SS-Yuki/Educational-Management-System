@@ -11,6 +11,7 @@ import com.example.lab3_behind.domain.resp.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +23,9 @@ public class UserAccountController {
 
 
     @PostMapping("/login")
-    public Result login(@RequestBody LoginUserData user){
+    public Result login(@RequestBody LoginUserData user, HttpServletRequest request){
+        //String token = request.getHeader("token");
+
         Map<String,String> map = new HashMap<>();
         try {
             UserAccount userAccount = userAccountService.login(user);
@@ -31,6 +34,7 @@ public class UserAccountController {
             map.put("token",JwtUtil.createToken(jwtUserData));
             map.put("initLogin","false");
         }catch (Exception e){
+            e.printStackTrace();
             return Result.fail(620,e.getMessage());
         }
         return Result.succ(map);

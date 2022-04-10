@@ -5,10 +5,9 @@ import com.example.lab3_behind.domain.UserAccount;
 import com.example.lab3_behind.service.UserAccountService;
 import com.example.lab3_behind.utils.JwtUtil;
 import com.example.lab3_behind.utils.RedisUtil;
-import com.example.lab3_behind.vo.JwtUserData;
-import com.example.lab3_behind.vo.LoginUserData;
-import com.example.lab3_behind.vo.Result;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.lab3_behind.common.JwtUserData;
+import com.example.lab3_behind.domain.dto.LoginUserData;
+import com.example.lab3_behind.domain.resp.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,12 +1,11 @@
 package com.example.lab3_behind.interceptor;
 
 import com.example.lab3_behind.utils.JwtUtil;
-import com.example.lab3_behind.vo.JwtUserData;
+import com.example.lab3_behind.common.JwtUserData;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public class AdminInterceptor implements HandlerInterceptor {
     /**

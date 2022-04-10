@@ -1,4 +1,4 @@
-package com.example.lab3_behind.vo;
+package com.example.lab3_behind.domain.resp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

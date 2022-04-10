@@ -1,4 +1,4 @@
-package com.example.lab3_behind.vo;
+package com.example.lab3_behind.common;
 
 
 import com.example.lab3_behind.domain.UserAccount;

@@ -1,11 +1,10 @@
-package com.example.lab3_behind.service.Impl;
+package com.example.lab3_behind.service.impl;
 
 
 import com.example.lab3_behind.domain.UserAccount;
 import com.example.lab3_behind.repository.UserAccountRepository;
 import com.example.lab3_behind.service.UserAccountService;
-import com.example.lab3_behind.vo.LoginUserData;
-import com.example.lab3_behind.vo.Result;
+import com.example.lab3_behind.domain.dto.LoginUserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -6,15 +6,20 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.lab3_behind.vo.JwtUserData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 public class JwtUtil {
 
-    private static long passTime = 1000*60*60*1;//一小时后过期
+
+
+    private static long passTime = 1000 * 60 * 60;//一小时后过期
     private static final String signature = "husivhjsdkvnksdjvnsdhvwehe88*&^%";
 
     /*
@@ -27,11 +32,17 @@ public class JwtUtil {
 
         Calendar calendarInstance = Calendar.getInstance();
         jwtBuilder.withExpiresAt(new Date(calendarInstance.getTimeInMillis()+passTime));
-        return jwtBuilder.sign(Algorithm.HMAC256(signature)).toString();
+        String token = jwtBuilder.sign(Algorithm.HMAC256(signature)).toString();
+        RedisUtil.set(token,jwtUserData.getNumber(),passTime, TimeUnit.SECONDS);
+        return token;
     }
 
-    public static void verify(String token){
+    public static void verify(String token) throws Exception {
+
         JWT.require(Algorithm.HMAC256(signature)).build().verify(token);
+        if(!RedisUtil.hasKey(token)){
+            throw new Exception("非法的token");
+        }
     }
 
     public static JwtUserData getToken(String token){

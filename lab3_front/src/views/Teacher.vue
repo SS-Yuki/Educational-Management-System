@@ -1,9 +1,11 @@
 <template>
-  <header/>
+  <div class="header">
+    复旦大学教师系统
+  </div>
+  <el-divider />
   <div class="teacher_menu">
-    <el-row class="tac">
+    <el-row class="tac" style="width: 400px">
       <el-col :span="12">
-        <h5 class="mb-2">Default colors</h5>
         <el-menu
             default-active="2"
             class="el-menu-vertical-demo"
@@ -16,35 +18,46 @@
               <span>信息维护</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="1-1">个人信息维护</el-menu-item>
+              <el-menu-item index="1-1">
+                <router-link to="/teacher/personalinfo">个人信息维护</router-link>
+                <router-view></router-view>
+              </el-menu-item>
             </el-menu-item-group>
-            <el-sub-menu index="1-4">
-              <template #title>课程信息维护</template>
-              <el-menu-item index="1-4-1">新增课程</el-menu-item>
-              <el-menu-item index="1-4-1">修改课程信息</el-menu-item>
-            </el-sub-menu>
+            <el-menu-item-group>
+              <el-menu-item index="1-2">
+                <router-link to="/teacher/checkcourse">课程信息维护</router-link>
+              </el-menu-item>
+            </el-menu-item-group>
           </el-sub-menu>
         </el-menu>
       </el-col>
     </el-row>
   </div>
-  <div>
-    <change_info/>
-  </div>
+
 </template>
 
 <script>
-import change_info from "@/components/change_info";
-import header from "@/components/header";
 export default {
   name: "Teacher",
   components:{
-    change_info,
-    header
   }
 }
 </script>
 
 <style scoped>
-
+.teacher_menu{
+  width:400px;
+  display: flex;
+  position:relative;
+  box-sizing: border-box;
+  float: left;
+}
+.header{
+  height:60px;
+  font-size: 50px;
+  color: transparent;
+  background-color : black;
+  text-shadow : rgba(255,255,255,0.5) 0 5px 6px, rgba(255,255,255,0.2) 1px 3px 3px;
+  -webkit-background-clip : text;
+}
 </style>

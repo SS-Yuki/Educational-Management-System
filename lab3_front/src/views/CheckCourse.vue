@@ -1,7 +1,4 @@
 <template>
-<div>
-  CheckCourse
-</div>
 </template>
 
 <script>

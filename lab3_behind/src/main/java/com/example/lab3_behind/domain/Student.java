@@ -20,16 +20,16 @@ public class Student {
     private Integer id;
 
     @Column(name = "stu_number", length = 36, nullable = false, unique = true)
-    private String stu_number;
+    private String stuNumber;
 
     @Column(name = "name", length = 256, nullable = false)
     private String name;
 
-    @Column(name = "ID_num", length = 256, nullable = false, unique = true)
-    private String ID_num;
+    @Column(name = "id_num", length = 256, nullable = false, unique = true)
+    private String idNum;
 
     @Column(name = "phone_num", length = 256, nullable = true)
-    private String phone_num;
+    private String phoneNum;
 
     @Column(name = "email", length = 256, nullable = true)
     private String email;
@@ -57,10 +57,10 @@ public class Student {
     private String major;
 
     public Student(UserEnteringData user){
-        this.stu_number = user.getNumber();
+        this.stuNumber = user.getNumber();
         this.name = user.getName();
-        this.ID_num = user.getId_num();
-        this.phone_num = user.getPhone_num();
+        this.idNum = user.getId_num();
+        this.phoneNum = user.getPhone_num();
         this.email = user.getEmail();
         this.major = user.getMajor();
         this.school = user.getSchool();

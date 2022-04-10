@@ -49,7 +49,7 @@ public class UserAccountController {
         return Result.succ(map);
     }
     @PostMapping("/logout")
-    public Result login(@RequestBody String token){
+    public Result logout(@RequestBody String token){
         Map<String,String> map = new HashMap<>();
         try {
             JwtUtil.verify(token);
@@ -62,7 +62,7 @@ public class UserAccountController {
         return Result.succ(map);
     }
     @PostMapping("/register")
-    public Result login(@RequestBody UserEnteringData userEnteringData){
+    public Result register(@RequestBody UserEnteringData userEnteringData){
 
         Map<String,Object> map = new HashMap<>();
         try {

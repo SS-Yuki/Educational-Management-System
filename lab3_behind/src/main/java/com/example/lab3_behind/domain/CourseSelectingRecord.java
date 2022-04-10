@@ -18,8 +18,8 @@ public class CourseSelectingRecord {
     private Integer id;
 
     @Column(name = "course_id")
-    private String course_id;
+    private String courseId;
 
     @Column(name = "student_num")
-    private String student_num;
+    private String studentNum;
 }

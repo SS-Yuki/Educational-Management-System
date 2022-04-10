@@ -1,4 +1,4 @@
-package com.example.lab3_behind.service.impl;
+package com.example.lab3_behind.service.Impl;
 
 import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.dto.UserMaintenanceData;

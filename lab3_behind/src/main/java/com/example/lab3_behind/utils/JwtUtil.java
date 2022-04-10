@@ -33,7 +33,7 @@ public class JwtUtil {
         Calendar calendarInstance = Calendar.getInstance();
         jwtBuilder.withExpiresAt(new Date(calendarInstance.getTimeInMillis()+passTime));
         String token = jwtBuilder.sign(Algorithm.HMAC256(signature)).toString();
-        RedisUtil.set(token,jwtUserData.getNumber(),passTime, TimeUnit.SECONDS);
+        //RedisUtil.set(token,jwtUserData.getNumber(),passTime, TimeUnit.SECONDS);
         return token;
     }
 

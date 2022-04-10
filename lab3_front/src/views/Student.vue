@@ -38,7 +38,10 @@
 
 <script>
 export default {
-  name: "Student"
+  name: "Student",
+  components:{
+
+  }
 }
 </script>
 

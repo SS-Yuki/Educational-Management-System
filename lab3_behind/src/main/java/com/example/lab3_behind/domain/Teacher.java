@@ -1,5 +1,7 @@
 package com.example.lab3_behind.domain;
 
+import com.example.lab3_behind.common.StudentStatus;
+import com.example.lab3_behind.common.TeacherStatus;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,6 +43,10 @@ public class Teacher {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "course_id")
     private List<Course> courses;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private TeacherStatus status;
 
     public Teacher(UserEnteringData user){
         this.job_number = user.getNumber();

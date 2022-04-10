@@ -1,5 +1,6 @@
 package com.example.lab3_behind.domain;
 
+import com.example.lab3_behind.common.StudentStatus;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,6 +45,10 @@ public class Student {
             inverseJoinColumns = {@JoinColumn(name = "course_id")}
     )
     private List<Course> courses;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StudentStatus status;
 
     public Student(UserEnteringData user){
         this.stu_number = user.getNumber();

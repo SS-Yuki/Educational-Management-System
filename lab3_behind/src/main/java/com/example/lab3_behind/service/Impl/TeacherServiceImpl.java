@@ -1,7 +1,7 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.domain.Teacher;
-import com.example.lab3_behind.domain.dto.RevisableUserData;
+import com.example.lab3_behind.domain.dto.UserMaintenanceData;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
 import com.example.lab3_behind.repository.TeacherRepository;
 import com.example.lab3_behind.service.TeacherService;
@@ -29,8 +29,17 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher updateTeacherInfo(RevisableUserData userData){
-        Integer id = TeacherRepository.findByIDNum(userData.getId_num()).getId();
-        Teacher teacher = new Teacher()
+    public Teacher updateTeacherInfo(UserMaintenanceData userData) throws Exception {
+        Teacher teacher = TeacherRepository.findByJobNumber(userData.getNumber());
+        if(teacher == null){
+            throw new Exception("该用户不存在");
+        }
+        teacher.setID_num(userData.getId_num());
+        teacher.setEmail(userData.getEmail());
+        teacher.setName(userData.getName());
+        teacher.setPhone_num(userData.getPhone_num());
+        teacher.getUserAccount().setPassword(userData.getPassword());
+        TeacherRepository.save(teacher);
+        return teacher;
     }
 }

@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RevisableUserData {
+public class UserMaintenanceData {
+    private String number;
+
     private String name;
 
     private String password;

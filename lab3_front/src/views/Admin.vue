@@ -19,7 +19,7 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="1-1">
-                <router-link to="/student/personalinfo">查看个人信息</router-link>
+                <router-link to="/admin/checkinfo">查看个人信息</router-link>
                 <router-view></router-view>
               </el-menu-item>
             </el-menu-item-group>
@@ -32,7 +32,6 @@
             <el-menu-item-group>
               <el-menu-item index="1-1">
                 <router-link to="/admin/checkinfo">个人信息维护</router-link>
-                <router-view></router-view>
               </el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group>

@@ -68,7 +68,7 @@ public class Student {
         UserAccount account = new UserAccount();
         account.setAccount(user.getNumber());
         account.setPassword(user.getPassword());
-        account.setRole("Student");
+        account.setRole("student");
         account.setPermission("true");
         this.userAccount = account;
     }

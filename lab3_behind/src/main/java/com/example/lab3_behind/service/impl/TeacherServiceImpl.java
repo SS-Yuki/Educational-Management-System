@@ -22,7 +22,7 @@ public class TeacherServiceImpl implements TeacherService {
     public Teacher insertTeacher(UserEnteringData userData) throws Exception {
         if(TeacherRepository.findByJobNumber(userData.getNumber()) != null){
             throw new Exception("工号已注册");
-        }else if(TeacherRepository.findByIdNum(userData.getId_num()) != null){
+        }else if(TeacherRepository.findByIdNum(userData.getIdNum()) != null){
             throw new Exception("身份证号已注册");
         }
         Teacher teacher = new Teacher(userData);
@@ -36,15 +36,15 @@ public class TeacherServiceImpl implements TeacherService {
         if(teacher == null){
             throw new Exception("该用户不存在");
         }
-        teacher.setIdNum(userData.getId_num());
+        teacher.setIdNum(userData.getIdNum());
         teacher.setEmail(userData.getEmail());
         teacher.setName(userData.getName());
-        teacher.setPhoneNum(userData.getPhone_num());
-        teacher.setStatus(userData.getTea_status());
+        teacher.setPhoneNum(userData.getPhoneNum());
+        teacher.setStatus(userData.getTeaStatus());
         teacher.setMajor(userData.getMajor());
         teacher.setSchool(userData.getSchool());
         teacher.getUserAccount().setPassword(userData.getPassword());
-        if(!userData.getTea_status().equals(TeacherStatus.Normal)){
+        if(!userData.getTeaStatus().equals(TeacherStatus.Normal)){
             teacher.getUserAccount().setPermission("false");
         }
         TeacherRepository.save(teacher);
@@ -58,7 +58,7 @@ public class TeacherServiceImpl implements TeacherService {
             throw new Exception("该用户不存在");
         }
         teacher.setEmail(userData.getEmail());
-        teacher.setPhoneNum(userData.getPhone_num());
+        teacher.setPhoneNum(userData.getPhoneNum());
         teacher.getUserAccount().setPassword(userData.getPassword());
         TeacherRepository.save(teacher);
         return teacher;

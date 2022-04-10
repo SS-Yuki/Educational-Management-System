@@ -22,7 +22,7 @@ public class StudentServiceImpl implements StudentService {
     public Student insertStudent(UserEnteringData userData) throws Exception {
         if(StudentRepository.findByStuNumber(userData.getNumber()) != null){
             throw new Exception("工号已注册");
-        }else if(StudentRepository.findByIdNum(userData.getId_num()) != null){
+        }else if(StudentRepository.findByIdNum(userData.getIdNum()) != null){
             throw new Exception("身份证号已注册");
         }
         Student student = new Student(userData);
@@ -36,15 +36,15 @@ public class StudentServiceImpl implements StudentService {
         if(student == null){
             throw new Exception("该用户不存在");
         }
-        student.setIdNum(userData.getId_num());
+        student.setIdNum(userData.getIdNum());
         student.setEmail(userData.getEmail());
         student.setName(userData.getName());
-        student.setPhoneNum(userData.getPhone_num());
-        student.setStatus(userData.getStu_status());
+        student.setPhoneNum(userData.getPhoneNum());
+        student.setStatus(userData.getStuStatus());
         student.setMajor(userData.getMajor());
         student.setSchool(userData.getSchool());
         student.getUserAccount().setPassword(userData.getPassword());
-        if(!userData.getStu_status().equals(StudentStatus.Normal)){
+        if(!userData.getStuStatus().equals(StudentStatus.Normal)){
             student.getUserAccount().setPermission("false");
         }
         StudentRepository.save(student);
@@ -58,7 +58,7 @@ public class StudentServiceImpl implements StudentService {
             throw new Exception("该用户不存在");
         }
         student.setEmail(userData.getEmail());
-        student.setPhoneNum(userData.getPhone_num());
+        student.setPhoneNum(userData.getPhoneNum());
         student.getUserAccount().setPassword(userData.getPassword());
         StudentRepository.save(student);
         return student;

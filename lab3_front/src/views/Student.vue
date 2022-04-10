@@ -1,34 +1,38 @@
 <template>
-<div>Student</div>
-  <router-link to="/student/viewcourse">hhh</router-link>
-  <router-view></router-view>
-<!--  <div>-->
-<!--    <el-form-->
-<!--        ref="formRef"-->
-<!--        :model="numberValidateForm"-->
-<!--        label-width="100px"-->
-<!--        class="demo-ruleForm"-->
-<!--    >-->
-<!--      <el-form-item-->
-<!--          label="age"-->
-<!--          prop="age"-->
-<!--          :rules="[-->
-<!--        { required: true, message: 'age is required' },-->
-<!--        { type: 'number', message: 'age must be a number' },-->
-<!--      ]"-->
-<!--      >-->
-<!--        <el-input-->
-<!--            v-model.number="numberValidateForm.age"-->
-<!--            type="text"-->
-<!--            autocomplete="off"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item>-->
-<!--        <el-button type="primary" @click="submitForm(formRef)">Submit</el-button>-->
-<!--        <el-button @click="resetForm(formRef)">Reset</el-button>-->
-<!--      </el-form-item>-->
-<!--    </el-form>-->
-<!--  </div>-->
+  <div class="header">
+    复旦大学学生系统
+  </div>
+  <el-divider />
+  <div class="student_menu">
+    <el-row class="tac" style="width: 400px">
+      <el-col :span="12">
+        <el-menu
+            default-active="2"
+            class="el-menu-vertical-demo"
+            @open="handleOpen"
+            @close="handleClose"
+        >
+          <el-sub-menu index="1">
+            <template #title>
+              <el-icon><location /></el-icon>
+              <span>信息维护</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="1-1">
+                <router-link to="/student/personalinfo">个人信息维护</router-link>
+                <router-view></router-view>
+              </el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group>
+              <el-menu-item index="1-2">
+                <router-link to="/student/viewcourse">查看课程</router-link>
+              </el-menu-item>
+            </el-menu-item-group>
+          </el-sub-menu>
+        </el-menu>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -38,5 +42,19 @@ export default {
 </script>
 
 <style scoped>
-
+.student_menu{
+  width:400px;
+  display: flex;
+  position:relative;
+  box-sizing: border-box;
+  float: left;
+}
+.header{
+  height:60px;
+  font-size: 50px;
+  color: transparent;
+  background-color : black;
+  text-shadow : rgba(255,255,255,0.5) 0 5px 6px, rgba(255,255,255,0.2) 1px 3px 3px;
+  -webkit-background-clip : text;
+}
 </style>

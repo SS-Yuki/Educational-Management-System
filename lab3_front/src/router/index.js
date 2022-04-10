@@ -8,6 +8,7 @@ import Student from "@/views/Student";
 import PersonalInfo from "@/views/PersonalInfo";
 import ViewCourse from "@/views/ViewCourse";
 import CheckCourse from "@/views/CheckCourse";
+import CheckInfo from "@/views/CheckInfo";
 
 // const routes = [
 //   {
@@ -79,6 +80,18 @@ const routes = [
         name: 'CheckCourse',
         component: CheckCourse
       }
+    ]
+  },
+  {
+    path: '/admin',
+    name: 'Adimin',
+    component: Admin,
+    children: [
+      {
+        path: 'checkinfo',
+        name: 'CheckInfo',
+        component: CheckInfo
+      },
     ]
   }
 ]

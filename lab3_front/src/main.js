@@ -4,8 +4,13 @@ import router from './router'
 import store from './store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import * as ElIconModules from '@element-plus/icons'
 
 import '@/assets/css/global.css'
+import locale from 'element-ui/lib/locale/lang/zh-CN'
 
-
-createApp(App).use(store).use(ElementPlus).use(router).mount('#app')
+const app = createApp(App);
+app.use(store).use(ElementPlus, { locale, size: 'small' }).use(router).mount('#app')
+for(let iconName in ElIconModules){
+    app.component(iconName,ElIconModules[iconName])
+}

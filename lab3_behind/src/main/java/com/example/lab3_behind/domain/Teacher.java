@@ -64,7 +64,7 @@ public class Teacher {
         UserAccount account = null;
         account.setAccount(user.getNumber());
         account.setPassword(user.getPassword());
-        account.setRole("Teacher");
+        account.setRole("teacher");
         account.setPermission("true");
         this.userAccount = account;
     }

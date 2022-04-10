@@ -66,13 +66,15 @@ public class UserAccountController {
 
         Map<String,Object> map = new HashMap<>();
         try {
-            if(userEnteringData.getRole().equals("student")){
+            if(userEnteringData.getRole().equals("学生")){
+                userEnteringData.setRole("student");
                 Student student = studentService.insertStudent(userEnteringData);
                 map.put("number",student.getStuNumber());
                 map.put("name",student.getName());
                 map.put("role","student");
             }
-            else if(userEnteringData.getRole().equals("teacher")){
+            else if(userEnteringData.getRole().equals("教师")){
+                userEnteringData.setRole("teacher");
                 Teacher teacher = teacherService.insertTeacher(userEnteringData);
                 map.put("number",teacher.getJobNumber());
                 map.put("name",teacher.getName());

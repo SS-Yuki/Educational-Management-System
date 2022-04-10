@@ -23,6 +23,9 @@ public class Course {
     @Column(name = "course_name", length = 256, nullable = true)
     private String courseName;
 
+    @Column(name = "teacher", nullable = true)
+    private String teacher;
+
     @Column(name = "department ")
     private String department ;
 
@@ -44,4 +47,6 @@ public class Course {
     @Lob
     @Column(name = "introduction", columnDefinition="TEXT")
     private String introduction;
+
+    private static Boolean alternative;
 }

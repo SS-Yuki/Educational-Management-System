@@ -65,10 +65,10 @@ public class Student {
         this.major = user.getMajor();
         this.school = user.getSchool();
         this.status = StudentStatus.Normal;
-        UserAccount account = null;
+        UserAccount account = new UserAccount();
         account.setAccount(user.getNumber());
         account.setPassword(user.getPassword());
-        account.setRole("Student");
+        account.setRole("student");
         account.setPermission("true");
         this.userAccount = account;
     }

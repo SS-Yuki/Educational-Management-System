@@ -7,7 +7,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LoginInterceptor implements HandlerInterceptor {
+public class StudentInterceptor implements HandlerInterceptor {
     /**
      *
      * @param request
@@ -19,10 +19,17 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
-        if(token.isEmpty()){
+        JwtUserData jwtUserData = JwtUtil.getToken(token);
+        boolean permission = false;
+        if(jwtUserData.getRole().equals("student")){
+            permission = true;
+        } else if(jwtUserData.getRole().equals("admin")){
+            response.sendRedirect("/user/admin");
+        } else if(jwtUserData.getRole().equals("teacher")){
+            response.sendRedirect("/user/teacher");
+        } else {
             response.sendRedirect("/login");
-            return false;
         }
-        return true;
+        return permission;
     }
 }

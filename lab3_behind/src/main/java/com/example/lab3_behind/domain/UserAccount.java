@@ -27,4 +27,9 @@ public class UserAccount {
 
     @Column(name = "permission")
     private String permission;
+
+
+    public Boolean isFirstLogin(){
+        return password.equals("fDu"+account);
+    }
 }

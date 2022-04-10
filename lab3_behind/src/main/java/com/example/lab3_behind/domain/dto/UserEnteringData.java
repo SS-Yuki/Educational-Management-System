@@ -26,4 +26,6 @@ public class UserEnteringData {
 
     private String major;
 
+
+
 }

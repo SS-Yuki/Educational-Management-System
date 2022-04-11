@@ -67,9 +67,9 @@ export default {
       search:'',
       dialogVisible:false,
       pageData:{
-        pageNum: this.currentPage,
-        pageSize:this.pageSize,
-        search:this.search
+        pageNum: 1,
+        pageSize:2,
+        search:''
       },
       addSchool:{
         schoolName:'',

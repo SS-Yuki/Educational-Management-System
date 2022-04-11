@@ -104,11 +104,9 @@ export default {
     load(){
       console.log(this.pageData)
       request.post("/admin/findSchoolPage",{
-
               pageNum: this.currentPage,
               pageSize: this.pageSize,
               search: this.search
-
           }
       ).then(res=>{
         console.log(res)
@@ -149,7 +147,7 @@ export default {
     },
     handleDelete(schoolName) {
       console.log(schoolName)
-      request.post("/admin/deleteSchool",{schoolName:schoolName}).then(res => {
+      request.post("/admin/deleteSchool",schoolName).then(res => {
         this.load()  // 删除之后重新加载表格的数据
       })
     },

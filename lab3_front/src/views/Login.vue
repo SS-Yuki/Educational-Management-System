@@ -23,6 +23,10 @@
 
 <script>
 import request from "@/utils/request";
+import {admin_routes} from "@/router";
+import {student_routes} from "@/router";
+import {teacher_routes} from "@/router";
+import router from "@/router";
 
 
 export default {
@@ -44,9 +48,6 @@ export default {
     }
   },
   methods: {
-    test:function () {
-      alert(sessionStorage.length)
-    },
     login: function (){
       request.post("/user/login", this.login_data).then(res => {
         if (res.code === 200) {
@@ -55,15 +56,9 @@ export default {
             message: "登录成功"
           })
           sessionStorage.setItem("user", JSON.stringify(res.data))
-          if (res.data.role === "student") {
-            this.$router.push('/student')
-          }
-          else if (res.data.role === "teacher") {
-            this.$router.push('/teacher')
-          }
-          else if (res.data.role === "admin") {
-            this.$router.push('/admin')
-          }
+          if (res.data.role === "admin") {router.addRoute(admin_routes)}
+          else if (res.data.role === "student") {router.addRoute(student_routes)}
+          else if (res.data.role === "teacher") {router.addRoute(teacher_routes)}
         }
         else {
           this.$message({
@@ -74,7 +69,18 @@ export default {
 
       })
     }
-  }
+  },
+
+  // mounted() {
+  //   router.addRoute(admin_routes)
+  //   router.addRoute(teacher_routes)
+  //   router.addRoute(student_routes)
+  //   console.log(router.getRoutes())
+  //   // console.log({teacher_routes})
+  //   // console.log({student_routes})
+  //   // console.log({admin_routes})
+  //
+  // }
 }
 
 

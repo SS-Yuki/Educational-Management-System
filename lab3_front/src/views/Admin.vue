@@ -19,10 +19,12 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="1-1">
-                <router-link to="/admin/checkstudentinfo">查看学生信息</router-link>
+                <router-link to="/admin/checkinfo">查看个人信息</router-link>
+<!--                <router-view></router-view>-->
               </el-menu-item>
-              <el-menu-item index="1-1">
-                <router-link to="/admin/checkteacherinfo">查看老师信息</router-link>
+              <el-menu-item index="1-2">
+                <router-link to="/admin/adduser">增加新用户</router-link>
+<!--                <router-view></router-view>-->
               </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
@@ -33,23 +35,24 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="1-1">
-                <router-link to="/admin/checkmajor">专业信息维护</router-link>
+                <router-link to="/admin/checkinfo">个人信息维护</router-link>
               </el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group>
               <el-menu-item index="1-2">
-                <router-link to="/admin/checkschool">学院信息维护</router-link>
+                <router-link to="/student/viewcourse">查看课程</router-link>
               </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
         </el-menu>
       </el-col>
     </el-row>
-
   </div>
-<div>
-  <router-view></router-view>
-</div>
+
+  <div>
+    <router-view></router-view>
+  </div>
+
 </template>
 
 <script>

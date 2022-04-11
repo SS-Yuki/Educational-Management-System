@@ -66,6 +66,11 @@ export default {
       currentPage:1,
       search:'',
       dialogVisible:false,
+      pageData:{
+        pageNum: this.currentPage,
+        pageSize:this.pageSize,
+        search:this.search
+      },
       addSchool:{
         schoolName:'',
         introduction:''
@@ -83,11 +88,7 @@ export default {
   },
   methods:{
     load(){
-      request.get("/admin/findSchoolPage",{
-        pageNum:this.currentPage,
-        pageSize:this.pageSize, //每页的条目数
-        search:this.search
-      }).then(res=>{
+      request.post("/admin/findSchoolPage",this.pageData).then(res=>{
         console.log(res)
         if(res.data.code===200){
           this.tableData=res.data.data.records
@@ -95,8 +96,8 @@ export default {
         }
         else{
           this.$message({
-            type: "success",
-            message: "登录成功"
+            type:"fail",
+            message: "失败"
           })
         }
       })

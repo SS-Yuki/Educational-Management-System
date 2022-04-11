@@ -8,7 +8,7 @@
       </div>
 
       <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column fixed prop="number" label="学工号" width="150" sortable/>
+        <el-table-column fixed prop="number" label="学号" width="150" sortable/>
         <el-table-column prop="name" label="姓名" width="120" />
         <el-table-column prop="phone_num" label="电话" width="120" />
         <el-table-column prop="id_num" label="身份证号" width="120" />
@@ -47,7 +47,7 @@
   <div>
     <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
       <el-form :model="new_people" label-width="120px">
-        <el-form-item label="新学工号">
+        <el-form-item label="新学号">
           <el-input v-model="new_people.new_number" />
         </el-form-item>
         <el-form-item label="新姓名">
@@ -90,7 +90,7 @@
 import request from "@/utils/request";
 
 export default {
-  name: "CheckInfo",
+  name: "CheckStudentInfo",
   data(){
     return{
       total:0,

@@ -23,6 +23,16 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
+    public List<String> getAllSchool(){
+        List<String> results = new ArrayList<>();
+        List<School> schools = schoolRepository.findAll();
+        for(School school : schools){
+            results.add(school.getName());
+        }
+        return results;
+    }
+
+    @Override
     public List<SchoolAndMajorsData> getAllSchoolAndMajors(){
         List<SchoolAndMajorsData> results = new ArrayList<>();
         List<School> schools = schoolRepository.findAll();

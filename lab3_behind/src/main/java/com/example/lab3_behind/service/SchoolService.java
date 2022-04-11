@@ -7,6 +7,7 @@ import com.example.lab3_behind.domain.dto.*;
 import java.util.List;
 
 public interface SchoolService {
+    List<String> getAllSchool();
     List<SchoolAndMajorsData> getAllSchoolAndMajors();
     Major insertMajor(MajorAddingData majorData) throws Exception;
     Major updateMajor(MajorUpdatingData majorData) throws Exception;

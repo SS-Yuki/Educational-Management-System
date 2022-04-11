@@ -21,7 +21,6 @@ public class School {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "school")
-    @JoinColumn(name = "school")
     private List<Major> majors;
 
     @Lob

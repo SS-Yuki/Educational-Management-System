@@ -53,10 +53,7 @@
     </div>
     <div>
       <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
-        <el-form :model="newSchool" label-width="120px">
-          <el-form-item label="原名">
-            <el-input v-model="newSchool.oldName"/>
-          </el-form-item>
+        <el-form  label-width="120px">
           <el-form-item label="新院系">
             <el-input v-model="newSchool.newName" />
           </el-form-item>

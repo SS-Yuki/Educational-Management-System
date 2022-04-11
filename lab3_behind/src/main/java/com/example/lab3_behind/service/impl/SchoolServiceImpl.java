@@ -129,7 +129,7 @@ public class SchoolServiceImpl implements SchoolService {
             throw new Exception("学院不存在");
         }
         school.setName(schoolData.getNewName());
-        school.setIntroduction(school.getIntroduction());
+        school.setIntroduction(schoolData.getIntroduction());
         schoolRepository.save(school);
         return school;
     }

@@ -85,11 +85,11 @@ export default {
     load(){
       console.log(this.pageData)
       request.post("/admin/findSchoolPage",{
-            params: {
+
               pageNum: this.currentPage,
               pageSize: this.pageSize,
               search: this.search
-            }
+
           }
       ).then(res=>{
         console.log(res)

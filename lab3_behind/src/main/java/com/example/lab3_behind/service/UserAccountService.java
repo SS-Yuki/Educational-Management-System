@@ -6,4 +6,5 @@ import com.example.lab3_behind.domain.dto.LoginUserData;
 
 public interface UserAccountService {
     UserAccount login(LoginUserData user) throws Exception;
+    void changePassword(String account, String oldPassword,String Password) throws Exception;
 }

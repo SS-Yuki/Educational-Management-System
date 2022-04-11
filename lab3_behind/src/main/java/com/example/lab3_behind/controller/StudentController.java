@@ -6,7 +6,9 @@ import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.UserAccount;
 import com.example.lab3_behind.domain.dto.LoginUserData;
 import com.example.lab3_behind.domain.resp.Result;
+import com.example.lab3_behind.repository.UserAccountRepository;
 import com.example.lab3_behind.service.StudentService;
+import com.example.lab3_behind.service.UserAccountService;
 import com.example.lab3_behind.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +22,15 @@ import java.util.Map;
 public class StudentController {
     @Autowired
     StudentService studentService;
+    @Autowired
+    UserAccountService userAccountService;
 
     @PostMapping("/information")
-    public Result login(@RequestParam("number") String number,HttpServletRequest request){
+    public Result information(@RequestParam("number") String number,HttpServletRequest request){
         Map<String,Object> map = new HashMap<>();
         try {
             String token = request.getHeader("token");
             JwtUserData jwtUserData = JwtUtil.getToken(token);
-            //这里没有验证token中number和请求中number的一致性
             if(number.equals(jwtUserData.getNumber())){
                 throw new Exception("请求与账号不匹配");
             }
@@ -42,6 +45,27 @@ public class StudentController {
         }catch (Exception e){
             e.printStackTrace();
             return Result.fail(660,e.getMessage());
+        }
+        return Result.succ(map);
+    }
+
+    @PostMapping("/changePassword")
+    public Result changePassword(@RequestParam("number") String number,
+                                 @RequestParam("oldPassword") String oldPassword,
+                                 @RequestParam("newPassword") String newPassword,
+                                 HttpServletRequest request){
+        Map<String,Object> map = new HashMap<>();
+        try {
+            String token = request.getHeader("token");
+            JwtUserData jwtUserData = JwtUtil.getToken(token);
+            if(number.equals(jwtUserData.getNumber())){
+                throw new Exception("请求与账号不匹配");
+            }
+            userAccountService.changePassword();
+            map.put("number",number);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.fail(670,e.getMessage());
         }
         return Result.succ(map);
     }

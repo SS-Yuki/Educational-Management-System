@@ -10,4 +10,5 @@ public interface StudentService {
     Student updateStudentInfo(RevisableDataForAdmin userData, String stuNumber) throws Exception;
     Student maintainStudentInfo(RevisableDataForUser userData, String stuNumber) throws Exception;
     Student getByStuNumber(String stuNumber) throws Exception;
+
 }

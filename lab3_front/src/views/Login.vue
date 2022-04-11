@@ -55,11 +55,14 @@ export default {
             message: "登录成功"
           })
           sessionStorage.setItem("user", JSON.stringify(res.data))
-          if (res.data.number.length === 6) {
+          if (res.data.role === "student") {
             this.$router.push('/student')
           }
-          else {
+          else if (res.data.role === "teacher") {
             this.$router.push('/teacher')
+          }
+          else if (res.data.role === "admin") {
+            this.$router.push('/admin')
           }
         }
         else {

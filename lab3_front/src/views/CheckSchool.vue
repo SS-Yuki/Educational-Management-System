@@ -67,7 +67,7 @@ export default {
       search:'',
       dialogVisible:false,
       pageData:{
-        pageNum: 1,
+        pageNum: currentPage,
         pageSize:10,
         search:''
       },

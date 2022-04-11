@@ -1,6 +1,7 @@
 package com.example.lab3_behind.controller;
 
 
+import com.example.lab3_behind.common.PageSearchData;
 import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
 import com.example.lab3_behind.domain.dto.*;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -127,10 +129,9 @@ public class AdminController {
     }
 
     @RequestMapping("/findSchoolPage")
-    public Result findSchoolPage(@RequestParam("pageNum") Integer pageNum,
-                                 @RequestParam("pageSize") Integer pageSize,
-                                 @RequestParam("search") String search){
-        Page<School> schoolPage = schoolService.findAPageSchool(pageNum,pageSize,search);
+    public Result findSchoolPage(@RequestBody PageSearchData pageSearchData){
+
+        Page<School> schoolPage = schoolService.findAPageSchool(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch());
         return Result.succ(schoolPage);
     }
     @RequestMapping("/deleteSchool")

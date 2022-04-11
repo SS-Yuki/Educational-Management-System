@@ -2,7 +2,7 @@
   <div class="checkschool">
     <div>
       <div class="add" style="margin: 10px 0">
-        <el-button size="large" @click="input" type="primary">新增</el-button>
+        <el-button size="large" @click="add" type="primary">新增</el-button>
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
         <el-table-column prop="school" label="学院" width="120" />
@@ -35,12 +35,12 @@
     </div>
     <div>
       <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
-        <el-form :model="form" label-width="120px">
+        <el-form :model="new_school" label-width="120px">
           <el-form-item label="新院系">
-            <el-input v-model="form.new_school" />
+            <el-input v-model="addSchool.schoolName" />
           </el-form-item>
           <el-form-item label="新介绍">
-            <el-input v-model="form.new_introduction"/>
+            <el-input v-model="addSchool.introduction"/>
           </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -66,12 +66,15 @@ export default {
       currentPage:1,
       search:'',
       dialogVisible:false,
-      new_school:{
-        old_school:'',
-        new_school:'',
-        new_introduction:''
+      addSchool:{
+        schoolName,
+        introduction
       },
-      form:{},
+      new_school:{
+        oldName:'',
+        newName:'',
+        introduction:''
+      },
       tableData:[]
     }
   },
@@ -98,24 +101,16 @@ export default {
         }
       })
     },
-    input:function (){
+    add:function (){
       this.dialogVisible=true
-      this.new_school={}
+      this.addSchool={}
     },
     save:function (){
-      if (this.form.number) {  // 更新
-        request.put("/admin/addSchool", this.form).then(res => {
-          console.log(res)
-          this.load() // 刷新表格的数据
-          this.dialogVisible = false  // 关闭弹窗
-        })
-      }  else {  // 新增
-        request.post("/admin/addSchool", this.form).then(res => {
-          console.log(res)
-          this.load() // 刷新表格的数据
-          this.dialogVisible = false  // 关闭弹窗
-        })
-      }
+      request.post("/admin/addSchool", this.addSchool).then(res => {
+        console.log(res)
+        this.load() // 刷新表格的数据
+        this.dialogVisible = false  // 关闭弹窗
+      })
     },
     handleEdit(){
       this.dialogVisible = true

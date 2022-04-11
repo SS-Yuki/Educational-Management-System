@@ -5,19 +5,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "classrooms")
-public class Classroom {
+@Table(name = "teaching_building")
+public class TeachingBuilding {
     @Id
     @Column(name = "name")
-    private String name;
+    String name;
 
-    @ManyToOne
-    @JoinColumn(name = "teaching_building")
-    private TeachingBuilding teachingBuilding;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "teachingBuilding")
+    List<Classroom> classrooms;
 }

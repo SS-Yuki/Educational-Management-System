@@ -154,6 +154,7 @@ public class SchoolServiceImpl implements SchoolService {
         school.setName(search);
         school.setIntroduction(search);
         ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase(true)
                 .withMatcher("school_name", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withIgnorePaths("id");

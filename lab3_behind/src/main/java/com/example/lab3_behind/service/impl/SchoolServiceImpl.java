@@ -3,6 +3,7 @@ package com.example.lab3_behind.service.impl;
 import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
 import com.example.lab3_behind.domain.dto.MajorAddingData;
+import com.example.lab3_behind.domain.dto.SchoolAddingData;
 import com.example.lab3_behind.domain.dto.SchoolAndMajorsData;
 import com.example.lab3_behind.repository.SchoolRepository;
 import com.example.lab3_behind.service.SchoolService;
@@ -51,5 +52,18 @@ public class SchoolServiceImpl implements SchoolService {
         school.getMajors().add(major);
         schoolRepository.save(school);
         return major;
+    }
+
+    @Override
+    public School insertSchool(SchoolAddingData schoolData) throws Exception {
+        School school = schoolRepository.findByName(schoolData.getSchoolName());
+        if(school != null){
+            throw new Exception("学院已存在");
+        }
+        School newSchool = new School();
+        newSchool.setName(schoolData.getSchoolName());
+        newSchool.setIntroduction(schoolData.getIntroduction());
+        schoolRepository.save(newSchool);
+        return newSchool;
     }
 }

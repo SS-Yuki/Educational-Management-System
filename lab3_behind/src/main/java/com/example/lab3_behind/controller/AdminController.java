@@ -75,7 +75,7 @@ public class AdminController {
         return Result.succ(map);
     }
 
-    @RequestMapping("/updateMajor")
+    @RequestMapping("/updateMajorInfo")
     public Result updateMajor(@RequestBody MajorUpdatingData majorUpdatingData){
         Map<String,Object> map = new HashMap<>();
         try{

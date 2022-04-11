@@ -127,7 +127,7 @@ export default {
     handleSizeChange:function (){
 
     },
-    handleCurrentChange:function (){
+    handleCurrentChange:function (pageNum){
       this.currentPage = pageNum
       this.load()
     }

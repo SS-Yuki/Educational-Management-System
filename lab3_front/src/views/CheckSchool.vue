@@ -5,7 +5,7 @@
         <el-button size="large" @click="add" type="primary">新增</el-button>
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column prop="school" label="学院" width="120" />
+        <el-table-column prop="schoolName" label="学院" width="120" />
         <el-table-column prop="introduction" label="简介" width="600" />
         <el-table-column fixed="right" label="操作" width="120">
           <template #default>
@@ -68,7 +68,7 @@ export default {
       dialogVisible:false,
       pageData:{
         pageNum: 1,
-        pageSize:2,
+        pageSize:10,
         search:''
       },
       addSchool:{

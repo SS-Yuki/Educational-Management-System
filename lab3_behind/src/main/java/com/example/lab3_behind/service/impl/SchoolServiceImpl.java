@@ -2,11 +2,13 @@ package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
+import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.dto.*;
 import com.example.lab3_behind.repository.MajorRepository;
 import com.example.lab3_behind.repository.SchoolRepository;
 import com.example.lab3_behind.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -139,5 +141,22 @@ public class SchoolServiceImpl implements SchoolService {
         }
         schoolRepository.delete(school);
         return school;
+    }
+
+    @Override
+    public Page<School> findAPageSchool(Integer page, Integer size, String search){
+        Pageable pageable =  PageRequest.of(page - 1, size);
+        if(search.isEmpty()){
+            return schoolRepository.findAll(pageable);
+        }
+        School school = new School();
+        school.setName(search);
+        school.setIntroduction(search);
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("school_name", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withIgnorePaths("id");
+        Example<School> example = Example.of(school, matcher);
+        return schoolRepository.findAll(example,pageable);
     }
 }

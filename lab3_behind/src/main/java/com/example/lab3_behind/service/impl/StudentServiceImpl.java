@@ -8,11 +8,9 @@ import com.example.lab3_behind.domain.dto.UserEnteringData;
 import com.example.lab3_behind.repository.StudentRepository;
 import com.example.lab3_behind.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.introspector.GenericProperty;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -23,10 +21,28 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Page<Student> findAPageStudent(Integer page, Integer size){
+    public Page<Student> findAPageStudent(Integer page, Integer size, String search){
         Pageable pageable =  PageRequest.of(page - 1, size);
-        return studentRepository.findAll(pageable);
-
+        if(search.isEmpty()){
+            return studentRepository.findAll(pageable);
+        }
+        Student student = new Student();
+        student.setName(search);
+        student.setEmail(search);
+        student.setPhoneNum(search);
+        student.setMajor(search);
+        student.setSchool(search);
+        student.setStuNumber(search);
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("name", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("stu_num", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("email", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("phone_num", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withIgnorePaths("id", "user_account", "courses", "status");
+        Example<Student> example = Example.of(student, matcher);
+        return studentRepository.findAll(example,pageable);
     }
 
     @Override

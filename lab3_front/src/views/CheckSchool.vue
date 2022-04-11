@@ -66,11 +66,6 @@ export default {
       currentPage:1,
       search:'',
       dialogVisible:false,
-      pageData:{
-        pageNum: currentPage,
-        pageSize:10,
-        search:''
-      },
       addSchool:{
         schoolName:'',
         introduction:''

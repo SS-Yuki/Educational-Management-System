@@ -42,22 +42,7 @@ export default {
   name: "Register",
   data() {
     return {
-      options : [
-        {
-          value: '计院', label: '计院',
-          children: [
-            {value: '计科', label: '计科',},
-            {value: '软工', label: '软工',},
-          ],
-        },
-        {
-          value: '院院', label: '院院',
-          children: [
-            {value: '1专', label: '1专',},
-            {value: '2专', label: '2专',},
-          ],
-        }
-      ],
+      options: [],
       school_major: '',
       register_data: {
         school: '',
@@ -71,17 +56,23 @@ export default {
         password: ''
       },
       rules: {
-        role:[{ required: true, message: '请选择身份', trigger: 'change' }],
-        school_major:[{ required: true, message: '请选择院系和专业', trigger: 'change' }],
-        number: [{ required: true, message: '请填写学号', trigger: 'blur' }],
-        name: [{ required: true, message: '请填写姓名', trigger: 'blur' },
-          { pattern: /^[\u4e00-\u9fa5a-zA-Z]+$/, message: '姓名只能为中文或英文' }],
-        idNum: [{ required: true, message: '请填写身份证号', trigger: 'blur' },
-          { pattern: /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/, message: '身份证号格式错误' }],
-        phoneNum: [{ pattern: /^1\d{10}$/, message: '手机号码格式错误' }],
-        email: [{ pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '电子邮箱格式错误' }],
-        password: [{ required: true, message: '请填写密码', trigger: 'blur' },
-          { pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/, message: '长度6-32,至少包含字母、数字或者特殊字符(-_)中的两种' }]
+        role: [{required: true, message: '请选择身份', trigger: 'change'}],
+        school_major: [{required: true, message: '请选择院系/专业', trigger: 'blur'}],
+        number: [{required: true, message: '请填写学号', trigger: 'blur'}],
+        name: [{required: true, message: '请填写姓名', trigger: 'blur'},
+          {pattern: /^[\u4e00-\u9fa5a-zA-Z]+$/, message: '姓名只能为中文或英文'}],
+        idNum: [{required: true, message: '请填写身份证号', trigger: 'blur'},
+          {
+            pattern: /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/,
+            message: '身份证号格式错误'
+          }],
+        phoneNum: [{pattern: /^1\d{10}$/, message: '手机号码格式错误'}],
+        email: [{pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '电子邮箱格式错误'}],
+        password: [{required: true, message: '请填写密码', trigger: 'blur'},
+          {
+            pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
+            message: '长度6-32,至少包含字母、数字或者特殊字符(-_)中的两种'
+          }]
       }
     }
   },
@@ -95,9 +86,29 @@ export default {
     school_major_select: function () {
       this.register_data.school = this.school_major[0]
       this.register_data.major = this.school_major[1]
+      console.log(this.register_data.major)
+    },
+    getOption: function () {
+      request.post("/admin/allMajors").then(res => {
+        console.log(res)
+        let that = this
+        res.data.forEach (function (item) {
+          console.log(item);
+          let option = {value: item.school, label: item.school, children: []}
+          item.major.forEach (function (item) {
+            let child = {value: item, label: item}
+            option.children.push(child)
+          })
+          that.options.push(option)
+        })
+      })
     }
+  },
+  mounted() {
+    this.getOption()
   }
 }
+
 </script>
 
 <style scoped>
@@ -107,3 +118,4 @@ export default {
   margin: 20px auto;
 }
 </style>
+

@@ -19,8 +19,7 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="1-1">
-                <router-link to="/admin/checkinfo">查看个人信息</router-link>
-                <router-view></router-view>
+                <router-link to="/admin/checkinfo">查看学生信息</router-link>
               </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
@@ -43,8 +42,11 @@
         </el-menu>
       </el-col>
     </el-row>
-  </div>
 
+  </div>
+<div>
+  <router-view></router-view>
+</div>
 </template>
 
 <script>

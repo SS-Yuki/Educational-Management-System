@@ -54,8 +54,8 @@ export default {
       },
       new_info:{
         number:'this.info.number',
-        email:'',
-        phoneNum:''
+        email:'this.info.email',
+        phoneNum:'this.info.phoneNum'
       }
     }
   },
@@ -71,7 +71,7 @@ export default {
       this.new_info={}
     },
     get_info:function (){
-      request.post("student/information").then(res=>{
+      request.post("teacher/information").then(res=>{
         console.log(res)
         this.info.number=res.number
         this.info.name=res.name

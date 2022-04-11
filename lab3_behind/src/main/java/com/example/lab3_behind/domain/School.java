@@ -23,4 +23,8 @@ public class School {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "major_name")
     private List<Major> majors;
+
+    @Lob
+    @Column(name = "introduction", columnDefinition="TEXT")
+    private String introduction;
 }

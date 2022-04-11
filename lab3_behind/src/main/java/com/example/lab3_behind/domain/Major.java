@@ -22,4 +22,8 @@ public class Major {
     @ManyToOne
     @JoinColumn(name = "school_name")
     private School school;
+
+    @Lob
+    @Column(name = "introduction", columnDefinition="TEXT")
+    private String introduction;
 }

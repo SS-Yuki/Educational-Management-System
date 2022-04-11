@@ -12,8 +12,6 @@ public class UserEnteringData {
 
     private String name;
 
-    private String password;
-
     private String idNum;
 
     private String phoneNum;

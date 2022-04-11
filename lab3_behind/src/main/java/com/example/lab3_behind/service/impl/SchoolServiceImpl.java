@@ -2,9 +2,8 @@ package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
-import com.example.lab3_behind.domain.dto.MajorAddingData;
-import com.example.lab3_behind.domain.dto.SchoolAddingData;
-import com.example.lab3_behind.domain.dto.SchoolAndMajorsData;
+import com.example.lab3_behind.domain.dto.*;
+import com.example.lab3_behind.repository.MajorRepository;
 import com.example.lab3_behind.repository.SchoolRepository;
 import com.example.lab3_behind.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,11 @@ import java.util.List;
 @Service
 public class SchoolServiceImpl implements SchoolService {
     SchoolRepository schoolRepository;
+    MajorRepository majorRepository;
     @Autowired
-    public SchoolServiceImpl(SchoolRepository schoolRepository){
+    public SchoolServiceImpl(SchoolRepository schoolRepository, MajorRepository majorRepository){
         this.schoolRepository = schoolRepository;
+        this.majorRepository = majorRepository;
     }
 
     @Override
@@ -65,5 +66,68 @@ public class SchoolServiceImpl implements SchoolService {
         newSchool.setIntroduction(schoolData.getIntroduction());
         schoolRepository.save(newSchool);
         return newSchool;
+    }
+
+    @Override
+    public Major updateMajor(MajorUpdatingData majorData) throws Exception {
+        School oldSchool = schoolRepository.findByName(majorData.getMajorOldSchool());
+        if(oldSchool == null){
+            throw new Exception("专业信息错误，原学院不存在");
+        }
+        Major oldMajor = majorRepository.findByNameAndSchool(majorData.getMajorOldName(), oldSchool);
+        if(oldMajor == null){
+            throw new Exception("该专业不存在");
+        }
+        School newSchool = schoolRepository.findByName(majorData.getMajorNewSchool());
+        if(newSchool == null){
+            throw new Exception("专业信息错误，新学院不存在");
+        }
+        if(oldSchool.equals(newSchool)){
+            int oldIndex = newSchool.getMajors().indexOf(oldMajor);
+            Major thisMajor = newSchool.getMajors().get(oldIndex);
+            thisMajor.setName(majorData.getMajorNewName());
+            thisMajor.setIntroduction((majorData.getIntroduction()));
+            schoolRepository.save(newSchool);
+            return thisMajor;
+        }else{
+            this.deleteMajor(majorData.getMajorOldName(),majorData.getMajorOldSchool());
+            return this.insertMajor(new MajorAddingData(majorData.getMajorOldName(), majorData.getMajorNewSchool(), majorData.getIntroduction()));
+        }
+    }
+
+    @Override
+    public Major deleteMajor(String majorName, String schoolName) throws Exception {
+        School school = schoolRepository.findByName(schoolName);
+        if(school == null){
+            throw new Exception("专业信息有误，学院不存在");
+        }
+        Major major = majorRepository.findByNameAndSchool(majorName, school);
+        Major thisMajor = school.getMajors().get(school.getMajors().indexOf(major));
+        school.getMajors().remove(thisMajor);
+        majorRepository.delete(thisMajor);
+        schoolRepository.save(school);
+        return thisMajor;
+    }
+
+    @Override
+    public School updateSchool(SchoolUpdatingData schoolData) throws Exception {
+        School school = schoolRepository.findByName(schoolData.getOldName());
+        if(school == null){
+            throw new Exception("学院不存在");
+        }
+        school.setName(schoolData.getNewName());
+        school.setIntroduction(school.getIntroduction());
+        schoolRepository.save(school);
+        return school;
+    }
+
+    @Override
+    public School deleteSchool(String schoolName) throws Exception {
+        School school = schoolRepository.findByName(schoolName);
+        if(school == null){
+            throw new Exception("学院不存在");
+        }
+        schoolRepository.delete(school);
+        return school;
     }
 }

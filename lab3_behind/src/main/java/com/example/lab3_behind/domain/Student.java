@@ -67,7 +67,7 @@ public class Student {
         this.status = StudentStatus.Normal;
         UserAccount account = new UserAccount();
         account.setAccount(user.getNumber());
-        account.setPassword(user.getPassword());
+        account.setPassword("fDu" + this.stuNumber);
         account.setRole("student");
         account.setPermission("true");
         this.userAccount = account;

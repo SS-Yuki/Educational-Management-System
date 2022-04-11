@@ -20,8 +20,8 @@ public class School {
     @Column(name = "school_name", unique = true)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "major_name")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "school")
+    @JoinColumn(name = "school")
     private List<Major> majors;
 
     @Lob

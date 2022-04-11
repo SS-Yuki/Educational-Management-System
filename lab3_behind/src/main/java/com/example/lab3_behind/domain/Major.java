@@ -20,7 +20,7 @@ public class Major {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "school_name")
+    @JoinColumn(name = "school")
     private School school;
 
     @Lob

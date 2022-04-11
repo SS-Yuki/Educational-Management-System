@@ -38,7 +38,7 @@ public class Teacher {
     @JoinColumn(name = "account")
     private UserAccount userAccount;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "")
     @JoinColumn(name = "course_id")
     private List<Course> courses;
 
@@ -61,9 +61,9 @@ public class Teacher {
         this.school = user.getSchool();
         this.major = user.getMajor();
         this.status = TeacherStatus.Normal;
-        UserAccount account = null;
+        UserAccount account = new UserAccount();
         account.setAccount(user.getNumber());
-        account.setPassword(user.getPassword());
+        account.setPassword("fDu" + this.jobNumber);
         account.setRole("teacher");
         account.setPermission("true");
         this.userAccount = account;

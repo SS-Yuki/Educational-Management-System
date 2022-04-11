@@ -1,6 +1,7 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.common.TeacherStatus;
+import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.dto.RevisableDataForAdmin;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
@@ -8,6 +9,7 @@ import com.example.lab3_behind.domain.dto.UserEnteringData;
 import com.example.lab3_behind.repository.TeacherRepository;
 import com.example.lab3_behind.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -70,5 +72,31 @@ public class TeacherServiceImpl implements TeacherService {
             throw new Exception("该工号不存在");
         }
         return teacher;
+    }
+
+    @Override
+    public Page<Teacher> findAPageTeacher(Integer page, Integer size, String search){
+        Pageable pageable =  PageRequest.of(page - 1, size);
+        if(search.isEmpty()){
+            return teacherRepository.findAll(pageable);
+        }
+        Teacher teacher = new Teacher();
+        teacher.setName(search);
+        teacher.setEmail(search);
+        teacher.setPhoneNum(search);
+        teacher.setMajor(search);
+        teacher.setSchool(search);
+        teacher.setJobNumber(search);
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("name", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("job_num", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("email", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("phone_num", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("id_num", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withIgnorePaths("id", "user_account", "status");
+        Example<Teacher> example = Example.of(teacher, matcher);
+        return teacherRepository.findAll(example,pageable);
     }
 }

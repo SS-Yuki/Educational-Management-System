@@ -33,6 +33,7 @@ public class StudentServiceImpl implements StudentService {
         student.setMajor(search);
         student.setSchool(search);
         student.setStuNumber(search);
+        student.setIdNum(search);
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("stu_num", ExampleMatcher.GenericPropertyMatcher::contains)
@@ -40,7 +41,8 @@ public class StudentServiceImpl implements StudentService {
                 .withMatcher("phone_num", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("id", "user_account", "courses", "status");
+                .withMatcher("id_num", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withIgnorePaths("id", "user_account", "status");
         Example<Student> example = Example.of(student, matcher);
         return studentRepository.findAll(example,pageable);
     }

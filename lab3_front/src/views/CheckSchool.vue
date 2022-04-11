@@ -9,7 +9,7 @@
         <el-table-column prop="introduction" label="简介" width="600" />
         <el-table-column fixed="right" label="操作" width="120">
           <template #default>
-            <el-button type="text" size="small" @click="handleClick">编辑</el-button>
+            <el-button type="text" size="small" @click="handleEdit">编辑</el-button>
             <el-popconfirm title="确认删除?">
               <template #reference>
                 <el-button type="text">删除</el-button>
@@ -35,16 +35,16 @@
     </div>
     <div>
       <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
-        <el-form :model="new_school" label-width="120px">
+        <el-form :model="form" label-width="120px">
           <el-form-item label="新院系">
-            <el-input v-model="new_school.new_school" />
+            <el-input v-model="form.new_school" />
           </el-form-item>
           <el-form-item label="新介绍">
-            <el-input v-model="new_school.new_introduction"/>
+            <el-input v-model="form.new_introduction"/>
           </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="send_newpeople">确认</el-button>
+        <el-button type="primary" @click="save">确认</el-button>
       </span>
         </el-form>
         <template #footer>
@@ -67,9 +67,11 @@ export default {
       search:'',
       dialogVisible:false,
       new_school:{
+        old_school:'',
         new_school:'',
         new_introduction:''
       },
+      form:{},
       tableData:[]
     }
   },
@@ -78,24 +80,48 @@ export default {
   },
   methods:{
     load(){
-      request.get("/api/checkinfo",{
+      request.get("/admin/findSchoolPage",{
         pageNum:this.currentPage,
         pageSize:this.pageSize, //每页的条目数
         search:this.search
       }).then(res=>{
         console.log(res)
-        this.tableData=res.data.records
-        this.total=res.data.total
+        if(res.data.code===200){
+          this.tableData=res.data.data.records
+          this.total=res.data.data.total
+        }
+        else{
+          this.$message({
+            type: "success",
+            message: "登录成功"
+          })
+        }
       })
     },
     input:function (){
       this.dialogVisible=true
       this.new_school={}
     },
-    send_newpeople:function (){
-      this.dialogVisible=false
-      request.post("/user/checkinfo",this.new_school).then(res=>{
+    save:function (){
+      if (this.form.number) {  // 更新
+        request.put("/admin/addSchool", this.form).then(res => {
+          console.log(res)
+          this.load() // 刷新表格的数据
+          this.dialogVisible = false  // 关闭弹窗
+        })
+      }  else {  // 新增
+        request.post("/admin/addSchool", this.form).then(res => {
+          console.log(res)
+          this.load() // 刷新表格的数据
+          this.dialogVisible = false  // 关闭弹窗
+        })
+      }
+    },
+    handleEdit(){
+      this.dialogVisible = true
+      request.post("/admin/updatesSchool",this.new_school).then(res=>{
         console.log(res)
+        this.dialogVisible=false
       })
     },
     handleClick:function (){

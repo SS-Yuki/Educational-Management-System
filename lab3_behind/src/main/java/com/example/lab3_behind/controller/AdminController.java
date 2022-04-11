@@ -28,14 +28,14 @@ public class AdminController {
     @Autowired
     SchoolService schoolService;
 
-    @PostMapping("/allMajors")
+    @RequestMapping("/allMajors")
     public Result allMajors(){
         Map<String,Object> map = new HashMap<>();
         map.put("schools",schoolService.getAllSchoolAndMajors());
         return Result.succ(map);
     }
 
-    @PostMapping("/addSchool")
+    @RequestMapping("/addSchool")
     public Result addSchool(@RequestBody SchoolAddingData schoolAddingData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -47,7 +47,7 @@ public class AdminController {
         }
         return Result.succ(map);
     }
-    @PostMapping("/updateSchool")
+    @RequestMapping("/updateSchool")
     public Result updateSchool(@RequestBody SchoolUpdatingData schoolUpdatingData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -58,7 +58,7 @@ public class AdminController {
         }
         return Result.succ(map);
     }
-    @PostMapping("/addMajor")
+    @RequestMapping("/addMajor")
     public Result addMajor(@RequestBody MajorAddingData majorAddingData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -71,7 +71,7 @@ public class AdminController {
         return Result.succ(map);
     }
 
-    @PostMapping("/updateMajor")
+    @RequestMapping("/updateMajor")
     public Result updateMajor(@RequestBody MajorUpdatingData majorUpdatingData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -83,7 +83,7 @@ public class AdminController {
         return Result.succ(map);
     }
 
-    @PostMapping("/register")
+    @RequestMapping("/register")
     public Result register(@RequestBody UserEnteringData userEnteringData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -100,7 +100,7 @@ public class AdminController {
         return Result.succ(map);
     }
 
-    @PostMapping("/updateStudentInfo")
+    @RequestMapping("/updateStudentInfo")
     public Result updateStudentInfo(@RequestBody StudentUpdatingData studentUpdatingData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -113,7 +113,7 @@ public class AdminController {
         return Result.succ(map);
     }
 
-    @PostMapping("/updateTeacherInfo")
+    @RequestMapping("/updateTeacherInfo")
     public Result updateTeacherInfo(@RequestBody TeacherUpdatingData teacherUpdatingData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -126,12 +126,23 @@ public class AdminController {
         return Result.succ(map);
     }
 
-    @PostMapping("/findSchoolPage")
+    @RequestMapping("/findSchoolPage")
     public Result findSchoolPage(@RequestParam("pageNum") Integer pageNum,
                                  @RequestParam("pageSize") Integer pageSize,
                                  @RequestParam("search") String search){
         Page<School> schoolPage = schoolService.findAPageSchool(pageNum,pageSize,search);
         return Result.succ(schoolPage);
+    }
+    @RequestMapping("/deleteSchool")
+    public Result deleteSchool(@RequestParam("schoolName") String schoolName){
+        try{
+            School school = schoolService.deleteSchool(schoolName);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return Result.fail(690,e.getMessage());
+        }
+        return Result.succ(null);
     }
 
 

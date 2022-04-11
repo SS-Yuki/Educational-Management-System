@@ -88,6 +88,7 @@ export default {
   },
   methods:{
     load(){
+      console.log(this.pageData)
       request.post("/admin/findSchoolPage",this.pageData).then(res=>{
         console.log(res)
         if(res.data.code===200){

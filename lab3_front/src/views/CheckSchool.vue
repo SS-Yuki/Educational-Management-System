@@ -89,7 +89,14 @@ export default {
   methods:{
     load(){
       console.log(this.pageData)
-      request.post("/admin/findSchoolPage",this.pageData).then(res=>{
+      request.post("/admin/findSchoolPage",{
+            params: {
+              pageNum: this.currentPage,
+              pageSize: this.pageSize,
+              search: this.search
+            }
+          }
+      ).then(res=>{
         console.log(res)
         if(res.data.code===200){
           this.tableData=res.data.data.records

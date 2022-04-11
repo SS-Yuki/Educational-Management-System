@@ -41,6 +41,7 @@ public class UserAccountController {
             map.put("number",user.getNumber());
             map.put("token",JwtUtil.createToken(jwtUserData));
             map.put("initLogin",userAccount.isFirstLogin());
+            map.put("role",userAccount.getRole());
         }catch (Exception e){
             e.printStackTrace();
             return Result.fail(620,e.getMessage());

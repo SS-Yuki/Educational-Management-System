@@ -33,7 +33,24 @@
         />
       </div>
     </div>
-
+    <div>
+      <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
+        <el-form :model="new_school" label-width="120px">
+          <el-form-item label="新院系">
+            <el-input v-model="new_school.new_school" />
+          </el-form-item>
+          <el-form-item label="新介绍">
+            <el-input v-model="new_school.new_introduction"/>
+          </el-form-item>
+          <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="send_newpeople">确认</el-button>
+      </span>
+        </el-form>
+        <template #footer>
+        </template>
+      </el-dialog>
+    </div>
   </div>
 </template>
 

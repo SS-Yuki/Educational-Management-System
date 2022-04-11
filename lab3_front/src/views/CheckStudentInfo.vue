@@ -3,11 +3,11 @@
     <div>
       <div class="add" style="margin: 10px 0">
         <el-button size="large" @click="input" type="primary">新增</el-button>
-        <el-input v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
-        <el-button type="primary" style="margin-left: 5px">搜索</el-button>
+        <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
+        <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
       </div>
 
-      <el-table :data="tableData" style="width: 100%" border stripe>
+      <el-table :data="tableData" style="width: 100%" border stripe v-loading="loading">
         <el-table-column fixed prop="number" label="学号" width="150" sortable/>
         <el-table-column prop="name" label="姓名" width="120" />
         <el-table-column prop="phone_num" label="电话" width="120" />
@@ -18,9 +18,9 @@
         <el-table-column prop="school" label="院系" width="120" />
         <el-table-column prop="major" label="专业" width="120" />
         <el-table-column fixed="right" label="操作" width="120">
-          <template #default>
-            <el-button type="text" size="small" @click="handleClick">编辑</el-button>
-            <el-popconfirm title="确认删除?">
+          <template #default="scope">
+            <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
+            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.number)">
               <template #reference>
                 <el-button type="text">删除</el-button>
               </template>
@@ -46,7 +46,7 @@
   </div>
   <div>
     <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
-      <el-form :model="new_people" label-width="120px">
+      <el-form :model="form" label-width="120px">
         <el-form-item label="新学号">
           <el-input v-model="new_people.new_number" />
         </el-form-item>
@@ -77,7 +77,7 @@
         </el-form-item>
         <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="send_newpeople">确认</el-button>
+        <el-button type="primary" @click="save">确认</el-button>
       </span>
       </el-form>
       <template #footer>
@@ -98,6 +98,7 @@ export default {
       currentPage:1,
       search:'',
       dialogVisible:false,
+      loading:true,
       new_people:{
         new_number:'',
         new_name:'',
@@ -109,6 +110,7 @@ export default {
         new_school:'',
         new_major:''
       },
+      form:{},
       tableData:[]
     }
   },
@@ -117,34 +119,61 @@ export default {
   },
   methods:{
     load(){
+      this.loading=true
       request.get("/api/checkinfo",{
-        pageNum:this.currentPage,
-        pageSize:this.pageSize, //每页的条目数
-        search:this.search
+        params:{
+          pageNum:this.currentPage,
+          pageSize:this.pageSize, //每页的条目数
+          search:this.search
+        }
       }).then(res=>{
         console.log(res)
+        this.loading=false
         this.tableData=res.data.records
         this.total=res.data.total
       })
     },
     input:function (){
       this.dialogVisible=true
-      this.new_people={}
+      this.form={}
     },
-    send_newpeople:function (){
-      this.dialogVisible=false
-      request.post("/user/checkinfo",this.new_people).then(res=>{
-        console.log(res)
+    save:function (){
+      if (this.form.number) {  // 更新
+        request.put("/user/checkinfo", this.form).then(res => {
+          console.log(res)
+          this.load() // 刷新表格的数据
+          this.dialogVisible = false  // 关闭弹窗
+        })
+      }  else {  // 新增
+        request.post("/user/checkinfo", this.form).then(res => {
+          console.log(res)
+          this.load() // 刷新表格的数据
+          this.dialogVisible = false  // 关闭弹窗
+        })
+      }
+    },
+    handleEdit(){
+      this.form = JSON.parse(JSON.stringify(row))
+      this.dialogVisible = true
+      this.$nextTick(() => {
+        if (this.$refs['upload']) {
+          this.$refs['upload'].clearFiles()  // 清除历史文件列表
+        }
       })
     },
-    handleClick:function (){
-
+    handleDelete(number) {
+      console.log(number)
+      request.delete("/user/checkinfo/" + number).then(res => {
+        this.load()  // 删除之后重新加载表格的数据
+      })
     },
     handleSizeChange:function (){
-
+      this.pageSize = pageSize
+      this.load()
     },
     handleCurrentChange:function (){
-
+      this.currentPage = pageNum
+      this.load()
     }
   }
 }

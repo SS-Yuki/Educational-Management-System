@@ -7,14 +7,13 @@ import Student from "@/views/Student";
 import PersonalInfo from "@/views/PersonalInfo";
 import ViewCourse from "@/views/ViewCourse";
 import CheckCourse from "@/views/CheckCourse";
-import AddUser from "@/views/AddUser";
 import CheckStudentInfo from "@/views/CheckStudentInfo";
 import CheckTeacherInfo from "@/views/CheckTeacherInfo";
 import CheckSchool from "@/views/CheckSchool";
 import CheckMajor from "@/views/CheckMajor";
 
 
-const routes = [
+export const routes = [
   {
     path: '/',
     name: 'home',

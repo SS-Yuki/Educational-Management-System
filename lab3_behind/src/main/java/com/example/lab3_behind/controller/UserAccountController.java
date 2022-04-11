@@ -34,8 +34,6 @@ public class UserAccountController {
     @PostMapping("/login")
     public Result login(@RequestBody LoginUserData user, HttpServletRequest request){
 
-
-
         Map<String,Object> map = new HashMap<>();
         try {
             UserAccount userAccount = userAccountService.login(user);

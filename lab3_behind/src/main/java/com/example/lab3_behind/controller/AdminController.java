@@ -11,6 +11,7 @@ import com.example.lab3_behind.service.SchoolService;
 import com.example.lab3_behind.service.StudentService;
 import com.example.lab3_behind.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -57,7 +58,7 @@ public class AdminController {
         }
         return Result.succ(map);
     }
-    @PostMapping("addMajor")
+    @PostMapping("/addMajor")
     public Result addMajor(@RequestBody MajorAddingData majorAddingData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -70,7 +71,7 @@ public class AdminController {
         return Result.succ(map);
     }
 
-    @PostMapping("updateMajor")
+    @PostMapping("/updateMajor")
     public Result updateMajor(@RequestBody MajorUpdatingData majorUpdatingData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -82,7 +83,7 @@ public class AdminController {
         return Result.succ(map);
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public Result register(@RequestBody UserEnteringData userEnteringData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -99,7 +100,7 @@ public class AdminController {
         return Result.succ(map);
     }
 
-    @PostMapping("updateStudentInfo")
+    @PostMapping("/updateStudentInfo")
     public Result updateStudentInfo(@RequestBody StudentUpdatingData studentUpdatingData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -112,7 +113,7 @@ public class AdminController {
         return Result.succ(map);
     }
 
-    @PostMapping("updateTeacherInfo")
+    @PostMapping("/updateTeacherInfo")
     public Result updateTeacherInfo(@RequestBody TeacherUpdatingData teacherUpdatingData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -123,6 +124,14 @@ public class AdminController {
             return Result.fail(684,e.getMessage());
         }
         return Result.succ(map);
+    }
+
+    @PostMapping("/findSchoolPage")
+    public Result findSchoolPage(@RequestParam("pageNum") Integer pageNum,
+                                 @RequestParam("pageSize") Integer pageSize,
+                                 @RequestParam("search") String search){
+        Page<School> schoolPage = schoolService.findAPageSchool(pageNum,pageSize,search);
+        return Result.succ(schoolPage);
     }
 
 

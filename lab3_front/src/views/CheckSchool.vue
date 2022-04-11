@@ -150,8 +150,8 @@ export default {
     },
     handleEdit(schoolName){
       console.log(schoolName)
-      this.newSchool.oldName=schoolName
-      console.log(this.newSchool.oldName)
+      this.oldName=schoolName
+      console.log(this.oldName)
       this.dialogVisible2 = true
       this.newSchool={}
     },

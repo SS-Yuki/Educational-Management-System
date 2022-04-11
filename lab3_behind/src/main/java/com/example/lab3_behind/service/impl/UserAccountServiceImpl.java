@@ -30,4 +30,16 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
         return userAccount;
     }
+
+    @Override
+    public void changePassword(String account, String oldPassword,String Password) throws Exception {
+        UserAccount userAccount = userAccountRepository.findByAccount(account);
+        if(!userAccount.getPassword().equals(oldPassword)){
+            throw new Exception("密码错误");
+        }
+        if(Password.equals(oldPassword)){
+            throw new Exception("新密码与旧密码相同");
+        }
+        userAccount.setPassword(Password);
+    }
 }

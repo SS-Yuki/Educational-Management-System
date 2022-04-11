@@ -1,6 +1,25 @@
 <template>
-  <div class="header">
-    复旦大学教师系统
+  <div>
+    <div class="header">
+      复旦大学教师系统
+      <el-dropdown>
+        <span class="el-dropdown-link">
+          你好,
+          <el-icon class="el-icon--right">
+            <arrow-down/>
+          </el-icon>
+        </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>修改密码</el-dropdown-item>
+                <el-dropdown-item>返回首页</el-dropdown-item>
+                <el-dropdown-item divided>登出</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+      </el-dropdown>
+    </div>
+    <div>
+    </div>
   </div>
   <el-divider />
   <div class="teacher_menu">
@@ -37,6 +56,7 @@
 </template>
 
 <script>
+import { ArrowDown } from '@element-plus/icons-vue'
 export default {
   name: "Teacher",
   components:{

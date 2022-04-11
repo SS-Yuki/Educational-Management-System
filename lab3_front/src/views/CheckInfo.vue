@@ -93,7 +93,7 @@ export default {
   name: "CheckInfo",
   data(){
     return{
-      total:10,
+      total:0,
       pageSize:10,
       currentPage:1,
       search:'',
@@ -109,30 +109,22 @@ export default {
         new_school:'',
         new_major:''
       },
-      tableData:[
-        {
-          date: '2016-05-03',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Home',
-        },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office',
-        }
-      ]
+      tableData:[]
     }
+  },
+  created() {
+    this.load()
   },
   methods:{
     load(){
       request.get("/api/checkinfo",{
-
+        pageNum:this.currentPage,
+        pageSize:this.pageSize, //每页的条目数
+        search:this.search
+      }).then(res=>{
+        console.log(res)
+        this.tableData=res.data.records
+        this.total=res.data.total
       })
     },
     input:function (){
@@ -159,24 +151,6 @@ export default {
 const handleClick = () => {
   console.log('click')
 }
-const tableData = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
-  },
-]
 </script>
 
 <style scoped>

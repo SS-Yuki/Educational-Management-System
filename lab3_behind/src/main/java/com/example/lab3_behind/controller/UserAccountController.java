@@ -83,7 +83,7 @@ public class UserAccountController {
             else throw new Exception("注册身份错误");
         }catch (Exception e){
             e.printStackTrace();
-            return Result.fail(620,e.getMessage());
+            return Result.fail(622,e.getMessage());
         }
         return Result.succ(map);
     }

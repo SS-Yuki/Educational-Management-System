@@ -36,34 +36,15 @@
     </div>
     <div>
       <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
-        <el-form :model="new_people" label-width="120px">
-          <el-form-item label="新学号">
-            <el-input v-model="new_people.new_number" />
-          </el-form-item>
-          <el-form-item label="新姓名">
-            <el-input v-model="new_people.new_name" />
-          </el-form-item>
-          <el-form-item label="新电话">
-            <el-input v-model="new_people.new_phonenum" />
-          </el-form-item>
-          <el-form-item label="新身份证号">
-            <el-input v-model="new_people.new_idnum" />
-          </el-form-item>
-          <el-form-item label="新邮箱">
-            <el-input v-model="new_people.new_email" />
-          </el-form-item>
-          <el-form-item label="新密码">
-            <el-input v-model="new_people.new_password" />
-          </el-form-item>
-          <el-form-item label="新身份">
-            <el-radio v-model="new_people.new_role" label="学生">学生</el-radio>
-            <el-radio v-model="new_people.new_role" label="老师">老师</el-radio>
-          </el-form-item>
+        <el-form :model="form" label-width="120px">
           <el-form-item label="新院系">
-            <el-input v-model="new_people.new_school" />
+            <el-input v-model="new.new_school" />
           </el-form-item>
           <el-form-item label="新专业">
-            <el-input v-model="new_people.new_major"/>
+            <el-input v-model="form.new_major" />
+          </el-form-item>
+          <el-form-item label="新介绍">
+            <el-input v-model="form.new_introduction" />
           </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -94,6 +75,7 @@ export default {
         new_school:'',
         new_introduction:''
       },
+      form:{},
       tableData:[]
     }
   },

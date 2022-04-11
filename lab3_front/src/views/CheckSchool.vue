@@ -8,9 +8,9 @@
         <el-table-column prop="schoolName" label="学院" width="120" />
         <el-table-column prop="introduction" label="简介" width="600" />
         <el-table-column fixed="right" label="操作" width="120">
-          <template #default>
+          <template #default="scope">
             <el-button type="text" size="small" @click="handleEdit">编辑</el-button>
-            <el-popconfirm title="确认删除?">
+            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.schoolName)">
               <template #reference>
                 <el-button type="text">删除</el-button>
               </template>
@@ -121,6 +121,12 @@ export default {
       request.post("/admin/updatesSchool",this.new_school).then(res=>{
         console.log(res)
         this.dialogVisible=false
+      })
+    },
+    handleDelete(schoolName) {
+      console.log(schoolName)
+      request.post("/admin/deleteSchool",schoolName).then(res => {
+        this.load()  // 删除之后重新加载表格的数据
       })
     },
     handleClick:function (){

@@ -8,6 +8,10 @@ import com.example.lab3_behind.domain.dto.UserEnteringData;
 import com.example.lab3_behind.repository.StudentRepository;
 import com.example.lab3_behind.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +20,13 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     public StudentServiceImpl(StudentRepository studentRepository){
         this.studentRepository = studentRepository;
+    }
+
+    @Override
+    public Page<Student> findAPageStudent(Integer page, Integer size){
+        Pageable pageable =  PageRequest.of(page - 1, size);
+        return studentRepository.findAll(pageable);
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.lab3_behind.domain;
 
+import com.example.lab3_behind.common.AuthorityName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,9 @@ public class Authority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "authority_name", unique = true)
-    private String authorityName;
+    private AuthorityName authorityName;
 
     @Column(name = "authority_value")
     private String authorityValue;

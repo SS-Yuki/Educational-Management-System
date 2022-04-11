@@ -1,6 +1,5 @@
 package com.example.lab3_behind.domain;
 
-import com.example.lab3_behind.common.CourseStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +10,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "courses")
-public class Course {
+@Table(name = "courseApplying")
+public class CourseApplying {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
@@ -48,9 +47,5 @@ public class Course {
     @Lob
     @Column(name = "introduction", columnDefinition="TEXT")
     private String introduction;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "course_status")
-    private CourseStatus courseStatus;
 
 }

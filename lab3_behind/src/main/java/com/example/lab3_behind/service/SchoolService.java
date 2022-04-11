@@ -10,6 +10,7 @@ import java.util.List;
 public interface SchoolService {
     List<String> getAllSchool();
     List<SchoolAndMajorsData> getAllSchoolAndMajors();
+    Page<Major> findAPageMajor(Integer page, Integer size, String search);
     Page<School> findAPageSchool(Integer page, Integer size, String search);
     Major insertMajor(MajorAddingData majorData) throws Exception;
     Major updateMajor(MajorUpdatingData majorData) throws Exception;

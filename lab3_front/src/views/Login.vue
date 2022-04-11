@@ -57,7 +57,7 @@ export default {
             type: "success",
             message: "登录成功"
           })
-          sessionStorage.setItem("user", JSON.stringify(res.data))
+          sessionStorage.setItem("user", JSON.stringify(res.data.data))
           if (res.data.data.role === "admin") {
             router.addRoute(admin_routes)
             console.log(router.getRoutes())

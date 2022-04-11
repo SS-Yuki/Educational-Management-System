@@ -2,6 +2,7 @@
   <div class="header">
     复旦大学管理员系统
   </div>
+  <el-button @click="logout">退出</el-button>
   <el-divider />
   <div class="admin_menu">
     <el-row class="tac" style="width: 400px">
@@ -56,10 +57,24 @@
 </template>
 
 <script>
+import {routes} from "@/router";
+import {createRouter, createWebHistory} from "vue-router";
+import router from "@/router";
+
+
 export default {
   name: "Admin",
   components:{
 
+  },
+  methods: {
+    logout: function (){
+      router = createRouter({
+        history: createWebHistory(process.env.BASE_URL),
+        routes
+      })
+      console.log(router)
+    }
   }
 }
 </script>

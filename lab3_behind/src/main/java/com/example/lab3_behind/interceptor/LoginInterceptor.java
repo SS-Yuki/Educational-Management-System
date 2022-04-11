@@ -26,7 +26,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         try{
             if(token==null || token.isEmpty())throw new Exception("无token");
             JwtUtil.verify(token);
-            String json = new ObjectMapper().writeValueAsString(Result.fail(650,"重复登录"));
+            String json = new ObjectMapper().writeValueAsString(Result.fail(660,"重复登录"));
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().print(json);
             return false;

@@ -83,7 +83,7 @@ export default {
       tableData:[]
     }
   },
-  created() {
+  mounted() {
     this.load()
   },
   methods:{

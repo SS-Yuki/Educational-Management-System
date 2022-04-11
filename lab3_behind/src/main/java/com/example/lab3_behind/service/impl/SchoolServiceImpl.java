@@ -152,7 +152,7 @@ public class SchoolServiceImpl implements SchoolService {
         }
         School school = new School();
         school.setName(search);;
-        ExampleMatcher matcher = ExampleMatcher.matching()
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withIgnoreCase(true)
                 .withMatcher("school_name", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withIgnorePaths("id");

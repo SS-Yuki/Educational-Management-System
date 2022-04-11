@@ -9,7 +9,7 @@
         <el-table-column prop="introduction" label="简介" width="600" />
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit">编辑</el-button>
+            <el-button type="text" size="small" @click="handleEdit(scope.row.schoolName)">编辑</el-button>
             <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.schoolName)">
               <template #reference>
                 <el-button type="text">删除</el-button>
@@ -51,6 +51,24 @@
         </template>
       </el-dialog>
     </div>
+    <div>
+      <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
+        <el-form :model="newSchool" label-width="120px">
+          <el-form-item label="新院系">
+            <el-input v-model="newSchool.newName" />
+          </el-form-item>
+          <el-form-item label="新介绍">
+            <el-input v-model="newSchool.introduction"/>
+          </el-form-item>
+          <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="saveEdit">确认</el-button>
+      </span>
+        </el-form>
+        <template #footer>
+        </template>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -66,11 +84,12 @@ export default {
       currentPage:1,
       search:'',
       dialogVisible:false,
+      dialogVisible2:false,
       addSchool:{
         schoolName:'',
         introduction:''
       },
-      new_school:{
+      newSchool:{
         oldName:'',
         newName:'',
         introduction:''
@@ -116,12 +135,17 @@ export default {
         this.dialogVisible = false  // 关闭弹窗
       })
     },
-    handleEdit(){
-      this.dialogVisible = true
-      request.post("/admin/updatesSchool",this.new_school).then(res=>{
+    saveEdit(){
+      request.post("/admin/updateSchoolInfo",this.newSchool).then(res=>{
         console.log(res)
-        this.dialogVisible=false
+        this.load()
+        this.dialogVisible2=false
       })
+    },
+    handleEdit(schoolName){
+      this.newSchool.oldName=schoolName
+      this.dialogVisible2 = true
+      this.newSchool={}
     },
     handleDelete(schoolName) {
       console.log(schoolName)

@@ -59,7 +59,6 @@ public class TeacherServiceImpl implements TeacherService {
         }
         teacher.setEmail(userData.getEmail());
         teacher.setPhoneNum(userData.getPhoneNum());
-        teacher.getUserAccount().setPassword(userData.getPassword());
         TeacherRepository.save(teacher);
         return teacher;
     }

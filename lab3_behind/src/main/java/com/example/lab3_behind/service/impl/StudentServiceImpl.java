@@ -59,7 +59,6 @@ public class StudentServiceImpl implements StudentService {
         }
         student.setEmail(userData.getEmail());
         student.setPhoneNum(userData.getPhoneNum());
-        student.getUserAccount().setPassword(userData.getPassword());
         studentRepository.save(student);
         return student;
     }

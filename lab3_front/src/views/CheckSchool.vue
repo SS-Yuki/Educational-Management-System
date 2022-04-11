@@ -125,7 +125,7 @@ export default {
     },
     handleDelete(schoolName) {
       console.log(schoolName)
-      request.post("/admin/deleteSchool",schoolName).then(res => {
+      request.post("/admin/deleteSchool",{schoolName:schoolName}).then(res => {
         this.load()  // 删除之后重新加载表格的数据
       })
     },

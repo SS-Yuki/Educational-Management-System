@@ -128,7 +128,8 @@ export default {
 
     },
     handleCurrentChange:function (){
-
+      this.currentPage = pageNum
+      this.load()
     }
   }
 }

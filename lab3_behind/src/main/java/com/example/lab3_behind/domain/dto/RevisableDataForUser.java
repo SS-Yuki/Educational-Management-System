@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RevisableDataForUser {
-    private String password;
-
     private String phoneNum;
-
     private String email;
 }

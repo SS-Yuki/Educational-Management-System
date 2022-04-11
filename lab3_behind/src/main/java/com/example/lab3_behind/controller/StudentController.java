@@ -5,6 +5,7 @@ import com.example.lab3_behind.common.JwtUserData;
 import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.UserAccount;
 import com.example.lab3_behind.domain.dto.LoginUserData;
+import com.example.lab3_behind.domain.dto.RevisableDataForUser;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.repository.UserAccountRepository;
 import com.example.lab3_behind.service.StudentService;
@@ -61,11 +62,41 @@ public class StudentController {
             if(number.equals(jwtUserData.getNumber())){
                 throw new Exception("请求与账号不匹配");
             }
-            userAccountService.changePassword();
+            userAccountService.changePassword(number,oldPassword,newPassword);
             map.put("number",number);
         }catch (Exception e){
             e.printStackTrace();
             return Result.fail(670,e.getMessage());
+        }
+        return Result.succ(map);
+    }
+
+    @PostMapping("/maintainInfo")
+    public Result maintainInfo(@RequestParam("number") String number,
+                                 @RequestParam("phoneNum") String phoneNum,
+                                 @RequestParam("email") String email,
+                                 HttpServletRequest request){
+        Map<String,Object> map = new HashMap<>();
+        try {
+            String token = request.getHeader("token");
+            JwtUserData jwtUserData = JwtUtil.getToken(token);
+            if(number.equals(jwtUserData.getNumber())){
+                throw new Exception("请求与账号不匹配");
+            }
+
+            studentService.maintainStudentInfo(new RevisableDataForUser(phoneNum,email),number);
+            Student student = studentService.getByStuNumber(number);
+
+            map.put("number",student.getStuNumber());
+            map.put("name",student.getName());
+            map.put("idNum",student.getIdNum());
+            map.put("phoneNum",student.getPhoneNum());
+            map.put("enail",student.getEmail());
+            map.put("school",student.getSchool());
+            map.put("major",student.getMajor());
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.fail(680,e.getMessage());
         }
         return Result.succ(map);
     }

@@ -54,6 +54,9 @@
     <div>
       <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
         <el-form :model="newSchool" label-width="120px">
+          <el-form-item label="原名">
+            <el-input v-model="newSchool.oldName"/>
+          </el-form-item>
           <el-form-item label="新院系">
             <el-input v-model="newSchool.newName" />
           </el-form-item>
@@ -147,7 +150,6 @@ export default {
       this.newSchool={}
     },
     handleDelete(schoolName) {
-      console.log(schoolName)
       request.post("/admin/deleteSchool",schoolName).then(res => {
         this.load()  // 删除之后重新加载表格的数据
       })

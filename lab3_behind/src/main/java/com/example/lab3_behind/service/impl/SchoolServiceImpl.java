@@ -159,4 +159,21 @@ public class SchoolServiceImpl implements SchoolService {
         Example<School> example = Example.of(school, matcher);
         return schoolRepository.findAll(example,pageable);
     }
+
+    @Override
+    public Page<Major> findAPageMajor(Integer page, Integer size, String search){
+        Pageable pageable =  PageRequest.of(page - 1, size);
+        if(search.isEmpty()){
+            return majorRepository.findAll(pageable);
+        }
+        Major major = new Major();
+        major.setName(search);
+        major.setIntroduction(search);
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("major_name", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withIgnorePaths("id", "school");
+        Example<Major> example = Example.of(major, matcher);
+        return majorRepository.findAll(example,pageable);
+    }
 }

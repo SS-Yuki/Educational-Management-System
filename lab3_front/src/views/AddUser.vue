@@ -39,7 +39,7 @@
 <script>
 import request from "@/utils/request";
 export default {
-  name: "Register",
+  name: "AddUser",
   data() {
     return {
       options: [],
@@ -80,7 +80,7 @@ export default {
     register: function () {
       request.post("/user/register", this.register_data).then(res => {
         console.log(res)
-        this.$router.push('/login')
+        //this.$router.push('/login')
       })
     },
     school_major_select: function () {
@@ -92,9 +92,11 @@ export default {
       request.post("/admin/allMajors").then(res => {
         console.log(res)
         let that = this
+        if (!res.data) return
         res.data.forEach (function (item) {
           console.log(item);
           let option = {value: item.school, label: item.school, children: []}
+          if (!item.major) return
           item.major.forEach (function (item) {
             let child = {value: item, label: item}
             option.children.push(child)

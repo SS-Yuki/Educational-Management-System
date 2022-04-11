@@ -12,27 +12,27 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TeacherServiceImpl implements TeacherService {
-    TeacherRepository TeacherRepository;
+    TeacherRepository teacherRepository;
     @Autowired
     public TeacherServiceImpl(TeacherRepository teacherRepository){
-        this.TeacherRepository = teacherRepository;
+        this.teacherRepository = teacherRepository;
     }
 
     @Override
     public Teacher insertTeacher(UserEnteringData userData) throws Exception {
-        if(TeacherRepository.findByJobNumber(userData.getNumber()) != null){
+        if(teacherRepository.findByJobNumber(userData.getNumber()) != null){
             throw new Exception("工号已注册");
-        }else if(TeacherRepository.findByIdNum(userData.getIdNum()) != null){
+        }else if(teacherRepository.findByIdNum(userData.getIdNum()) != null){
             throw new Exception("身份证号已注册");
         }
         Teacher teacher = new Teacher(userData);
-        TeacherRepository.save(teacher);
+        teacherRepository.save(teacher);
         return teacher;
     }
 
     @Override
     public Teacher updateTeacherInfo(RevisableDataForAdmin userData, String jobNumber) throws Exception {
-        Teacher teacher = TeacherRepository.findByJobNumber(jobNumber);
+        Teacher teacher = teacherRepository.findByJobNumber(jobNumber);
         if(teacher == null){
             throw new Exception("该用户不存在");
         }
@@ -47,19 +47,28 @@ public class TeacherServiceImpl implements TeacherService {
         if(!userData.getTeaStatus().equals(TeacherStatus.Normal)){
             teacher.getUserAccount().setPermission("false");
         }
-        TeacherRepository.save(teacher);
+        teacherRepository.save(teacher);
         return teacher;
     }
 
     @Override
     public Teacher maintainTeacherInfo(RevisableDataForUser userData, String jobNumber) throws Exception {
-        Teacher teacher = TeacherRepository.findByJobNumber(jobNumber);
+        Teacher teacher = teacherRepository.findByJobNumber(jobNumber);
         if(teacher == null){
             throw new Exception("该用户不存在");
         }
         teacher.setEmail(userData.getEmail());
         teacher.setPhoneNum(userData.getPhoneNum());
-        TeacherRepository.save(teacher);
+        teacherRepository.save(teacher);
+        return teacher;
+    }
+
+    @Override
+    public Teacher getByJobNumber(String jobNumber)throws Exception{
+        Teacher teacher = teacherRepository.findByJobNumber(jobNumber);
+        if(teacher==null){
+            throw new Exception("该工号不存在");
+        }
         return teacher;
     }
 }

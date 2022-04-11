@@ -9,4 +9,5 @@ public interface TeacherService {
     Teacher insertTeacher(UserEnteringData userData) throws Exception;
     Teacher updateTeacherInfo(RevisableDataForAdmin userData, String jobNumber) throws Exception;
     Teacher maintainTeacherInfo(RevisableDataForUser userData, String jobNumber) throws Exception;
+    Teacher getByJobNumber(String jobNumber)throws Exception;
 }

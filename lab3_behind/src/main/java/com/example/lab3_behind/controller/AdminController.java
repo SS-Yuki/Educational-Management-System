@@ -2,6 +2,7 @@ package com.example.lab3_behind.controller;
 
 
 import com.example.lab3_behind.common.PageSearchData;
+import com.example.lab3_behind.common.SchoolContents;
 import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
 import com.example.lab3_behind.domain.dto.*;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -49,7 +51,7 @@ public class AdminController {
         }
         return Result.succ(map);
     }
-    @RequestMapping("/updateSchool")
+    @RequestMapping("/updateSchoolInfo")
     public Result updateSchool(@RequestBody SchoolUpdatingData schoolUpdatingData){
         Map<String,Object> map = new HashMap<>();
         try{
@@ -130,12 +132,17 @@ public class AdminController {
 
     @RequestMapping("/findSchoolPage")
     public Result findSchoolPage(@RequestBody PageSearchData pageSearchData){
-
+        Map<String,Object> map = new HashMap<>();
         Page<School> schoolPage = schoolService.findAPageSchool(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch());
-        return Result.succ(schoolPage);
+        List<SchoolContents> schoolContents = SchoolContents.getContents(schoolPage.getContent());
+        map.put("records",schoolContents);
+        map.put("total",schoolPage.getTotalElements());
+        return Result.succ(map);
     }
-    @RequestMapping("/deleteSchool")
-    public Result deleteSchool(@RequestParam("schoolName") String schoolName){
+
+
+    @PostMapping("/deleteSchool")
+    public Result deleteSchool(@RequestBody String schoolName){
         try{
             School school = schoolService.deleteSchool(schoolName);
         }

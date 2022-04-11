@@ -1,8 +1,5 @@
 package com.example.lab3_behind.interceptor;
 
-import com.auth0.jwt.exceptions.AlgorithmMismatchException;
-import com.auth0.jwt.exceptions.SignatureVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.utils.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;

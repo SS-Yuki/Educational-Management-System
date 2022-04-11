@@ -3,11 +3,8 @@ package com.example.lab3_behind.controller;
 
 import com.example.lab3_behind.common.JwtUserData;
 import com.example.lab3_behind.domain.Student;
-import com.example.lab3_behind.domain.UserAccount;
-import com.example.lab3_behind.domain.dto.LoginUserData;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
 import com.example.lab3_behind.domain.resp.Result;
-import com.example.lab3_behind.repository.UserAccountRepository;
 import com.example.lab3_behind.service.StudentService;
 import com.example.lab3_behind.service.UserAccountService;
 import com.example.lab3_behind.utils.JwtUtil;

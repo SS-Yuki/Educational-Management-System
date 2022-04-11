@@ -50,20 +50,35 @@ export default {
   methods: {
     login: function (){
       request.post("/user/login", this.login_data).then(res => {
-        if (res.code === 200) {
+        console.log(res)
+        console.log(res.data.code)
+        if (res.data.code === 200) {
           this.$message({
             type: "success",
             message: "登录成功"
           })
           sessionStorage.setItem("user", JSON.stringify(res.data))
-          if (res.data.role === "admin") {router.addRoute(admin_routes)}
-          else if (res.data.role === "student") {router.addRoute(student_routes)}
-          else if (res.data.role === "teacher") {router.addRoute(teacher_routes)}
+          if (res.data.data.role === "admin") {
+            router.addRoute(admin_routes)
+            console.log(router.getRoutes())
+            this.$router.push('/admin')
+          }
+          else if (res.data.data.role === "student") {
+            router.addRoute(student_routes)
+            this.$router.push('/student')
+          }
+          else if (res.data.data.role === "teacher") {
+            router.addRoute(teacher_routes)
+            this.$router.push('/teacher')
+          }
+          else
+            console.log("hhh")
         }
         else {
+          console.log("hihi")
           this.$message({
             type: "error",
-            message: res.msg
+            message: res.data.msg
           })
         }
 

@@ -134,6 +134,7 @@ export default {
       })
     },
     saveEdit(){
+      console.log(this.newSchool)
       request.post("/admin/updateSchoolInfo",this.newSchool).then(res=>{
         console.log(res)
         this.load()

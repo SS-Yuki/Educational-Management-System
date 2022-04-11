@@ -145,7 +145,9 @@ export default {
       })
     },
     handleEdit(schoolName){
+      console.log(schoolName)
       this.newSchool.oldName=schoolName
+      console.log(newSchool.oldName)
       this.dialogVisible2 = true
       this.newSchool={}
     },

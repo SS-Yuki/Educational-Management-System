@@ -53,12 +53,12 @@
     </div>
     <div>
       <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
-        <el-form  label-width="120px">
+        <el-form :model="newSchool" label-width="120px">
           <el-form-item label="新院系">
-            <el-input v-model="newSchool.newName" />
+            <el-input v-model="newName" />
           </el-form-item>
           <el-form-item label="新介绍">
-            <el-input v-model="newSchool.introduction"/>
+            <el-input v-model="introduction"/>
           </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -85,15 +85,18 @@ export default {
       search:'',
       dialogVisible:false,
       dialogVisible2:false,
+      oldName:'',
+      newName:'',
+      introduction:'',
       addSchool:{
         schoolName:'',
         introduction:''
       },
-      newSchool:{
-        oldName:'',
-        newName:'',
-        introduction:''
-      },
+      // newSchool:{
+      //   oldName:'',
+      //   newName:'',
+      //   introduction:''
+      // },
       tableData:[]
     }
   },
@@ -135,7 +138,11 @@ export default {
     },
     saveEdit(){
       console.log(this.newSchool)
-      request.post("/admin/updateSchoolInfo",this.newSchool).then(res=>{
+      request.post("/admin/updateSchoolInfo", {
+        oldName:this.oldName,
+        newName:this.newName,
+        introduction:this.introduction
+      }).then(res=>{
         console.log(res)
         this.load()
         this.dialogVisible2=false

@@ -64,4 +64,13 @@ public class StudentServiceImpl implements StudentService {
         return student;
     }
 
+    @Override
+    public Student getByStuNumber(String stuNumber) throws Exception {
+        Student student = studentRepository.findByStuNumber(stuNumber);
+        if(student == null){
+            throw new Exception("该用户不存在");
+        }
+        return student;
+    }
+
 }

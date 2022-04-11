@@ -157,7 +157,7 @@ public class SchoolServiceImpl implements SchoolService {
                 .withIgnoreCase(true)
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("id", "introduction");
+                .withIgnorePaths("id");
         Example<School> example = Example.of(school, matcher);
         return schoolRepository.findAll(example,pageable);
     }

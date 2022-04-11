@@ -151,12 +151,10 @@ public class SchoolServiceImpl implements SchoolService {
             return schoolRepository.findAll(pageable);
         }
         School school = new School();
-        school.setName(search);
-        school.setIntroduction(search);
+        school.setName(search);;
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreCase(true)
                 .withMatcher("school_name", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withIgnorePaths("id");
         Example<School> example = Example.of(school, matcher);
         return schoolRepository.findAll(example,pageable);

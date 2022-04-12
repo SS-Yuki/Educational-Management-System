@@ -22,20 +22,20 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin")
 public class AdminBuildingController {
-    @Autowired
-    TeachingAffairsService teachingAffairsService;
-
-    @RequestMapping("addBuilding")
-    public Result addBuilding(@RequestBody String buildingName){
-        Map<String,Object> map = new HashMap<>();
-        try{
-            teachingAffairsService.insertTeachingBuilding(buildingName);
-            map.put("buildingName",buildingName);
-            return Result.succ(map);
-        }catch (Exception e){
-            return Result.fail(700,e.getMessage());
-        }
-    }
+//    @Autowired
+//    TeachingAffairsService teachingAffairsService;
+//
+//    @RequestMapping("addBuilding")
+//    public Result addBuilding(@RequestBody String buildingName){
+//        Map<String,Object> map = new HashMap<>();
+//        try{
+//            teachingAffairsService.insertTeachingBuilding(buildingName);
+//            map.put("buildingName",buildingName);
+//            return Result.succ(map);
+//        }catch (Exception e){
+//            return Result.fail(700,e.getMessage());
+//        }
+//    }
 
 //    @RequestMapping("/updateBuildingInfo")
 //    public Result updateMajor(@RequestBody BuildingUpdatingData buildingUpdatingData){

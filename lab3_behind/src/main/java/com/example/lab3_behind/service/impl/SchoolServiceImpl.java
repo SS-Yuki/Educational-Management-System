@@ -172,10 +172,12 @@ public class SchoolServiceImpl implements SchoolService {
         Major major = new Major();
         major.setName(search);
         major.setIntroduction(search);
+        major.getSchool().setName(search);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("id", "school");
+                .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withIgnorePaths("id");
         Example<Major> example = Example.of(major, matcher);
         return majorRepository.findAll(example,pageable);
     }

@@ -1,6 +1,7 @@
 package com.example.lab3_behind.domain;
 
 import com.example.lab3_behind.common.CourseStatus;
+import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,4 +54,16 @@ public class Course {
     @Column(name = "course_status")
     private CourseStatus courseStatus;
 
+    public Course(CourseApplyingData courseApplyingData){
+        this.capacity = courseApplyingData.getCapacity();
+        this.courseName = courseApplyingData.getCourseName();
+        this.courseNumber = courseApplyingData.getCourseNumber();
+        this.classroom = courseApplyingData.getClassroom();
+        this.creditHours = courseApplyingData.getCreditHours();
+        this.classPeriod = courseApplyingData.getClassPeriod();
+        this.credits = courseApplyingData.getCredits();
+        this.department = courseApplyingData.getDepartment();
+        this.teacher = courseApplyingData.getTeacher();
+        this.introduction = courseApplyingData.getIntroduction();
+    }
 }

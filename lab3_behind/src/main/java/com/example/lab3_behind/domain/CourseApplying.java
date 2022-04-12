@@ -1,5 +1,8 @@
 package com.example.lab3_behind.domain;
 
+import com.example.lab3_behind.common.CourseApplyingType;
+import com.example.lab3_behind.common.StudentStatus;
+import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -51,4 +54,21 @@ public class CourseApplying {
     @Column(name = "applicant")
     private String applicant;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private CourseApplyingType type;
+
+    public CourseApplying(CourseApplyingData courseApplyingData){
+        this.applicant = courseApplyingData.getApplicant();
+        this.capacity = courseApplyingData.getCapacity();
+        this.courseName = courseApplyingData.getCourseName();
+        this.courseNumber = courseApplyingData.getCourseNumber();
+        this.classroom = courseApplyingData.getClassroom();
+        this.creditHours = courseApplyingData.getCreditHours();
+        this.classPeriod = courseApplyingData.getClassPeriod();
+        this.credits = courseApplyingData.getCredits();
+        this.department = courseApplyingData.getDepartment();
+        this.teacher = courseApplyingData.getTeacher();
+        this.introduction = courseApplyingData.getIntroduction();
+    }
 }

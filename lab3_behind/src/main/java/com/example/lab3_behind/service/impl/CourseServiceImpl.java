@@ -1,5 +1,6 @@
 package com.example.lab3_behind.service.impl;
 
+import com.example.lab3_behind.common.CourseApplyingType;
 import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.CourseApplying;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
@@ -25,16 +26,31 @@ public class CourseServiceImpl implements CourseService {
 //
 //    @Override
 //    public Page<CourseApplying> findAPageCourseApplying(Integer page, Integer size, String search){}
-//
-//    @Override
-//    public CourseApplying applyToAddCourse(CourseApplyingData courseData){}
-//
-//    @Override
-//    public CourseApplying applyToUpdateCourse(CourseApplyingData courseData){}
-//
-//    @Override
-//    public CourseApplying applyToDeleteCourse(CourseApplyingData courseData){}
-//
+
+    @Override
+    public CourseApplying applyToAddCourse(CourseApplyingData courseData){
+        CourseApplying courseApplying = new CourseApplying((courseData));
+        courseApplying.setType(CourseApplyingType.Publish);
+        courseApplyingRepository.save(courseApplying);
+        return courseApplying;
+    }
+
+    @Override
+    public CourseApplying applyToUpdateCourse(CourseApplyingData courseData){
+        CourseApplying courseApplying = new CourseApplying((courseData));
+        courseApplying.setType(CourseApplyingType.Change);
+        courseApplyingRepository.save(courseApplying);
+        return courseApplying;
+    }
+
+    @Override
+    public CourseApplying applyToDeleteCourse(CourseApplyingData courseData){
+        CourseApplying courseApplying = new CourseApplying((courseData));
+        courseApplying.setType(CourseApplyingType.Delete);
+        courseApplyingRepository.save(courseApplying);
+        return courseApplying;
+    }
+
 //    @Override
 //    public Course insertCourse(CourseApplyingData courseData){}
 //

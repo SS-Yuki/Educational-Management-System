@@ -145,6 +145,7 @@ export default {
       stuStatus:'',
       major:'',
       school:'',
+      school_major:'',
       addStudent:{
         number:'',
         name:'',
@@ -165,10 +166,30 @@ export default {
   },
   mounted() {
     this.load()
+    this.getOption()
   },
   methods:{
-    school_major_select(){
-
+    getOption: function () {
+      request.post("/admin/allMajors").then(res => {
+        console.log(res)
+        let that = this
+        if (!res.data) return
+        res.data.forEach (function (item) {
+          console.log(item);
+          let option = {value: item.school, label: item.school, children: []}
+          if (!item.major) return
+          item.major.forEach (function (item) {
+            let child = {value: item, label: item}
+            option.children.push(child)
+          })
+          that.options.push(option)
+        })
+      })
+    },
+    school_major_select: function () {
+      this.addStudent.school = this.school_major[0]
+      this.addStudent.major = this.school_major[1]
+      console.log(this.addStudent.major)
     },
     load(){
       console.log(this.pageData)

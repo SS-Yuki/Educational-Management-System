@@ -2,23 +2,41 @@
   <div>
     <div class="header">
       复旦大学教师系统
+    </div>
+    <div class="user">
       <el-dropdown>
         <span class="el-dropdown-link">
-          你好,
+          你好, {{user_name}}
           <el-icon class="el-icon--right">
             <arrow-down/>
           </el-icon>
         </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item>修改密码</el-dropdown-item>
-                <el-dropdown-item>返回首页</el-dropdown-item>
-                <el-dropdown-item divided>登出</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="change_password">修改密码</el-dropdown-item>
+            <el-dropdown-item @click="this.$router.push('/teacher')">返回首页</el-dropdown-item>
+            <el-dropdown-item divided @click="logout">登出</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
       </el-dropdown>
     </div>
     <div>
+      <el-dialog v-model="dialogVisible" title="Tips" width="30%">
+        <el-form :model="new_info" label-width="120px">
+          <el-form-item label="邮箱">
+            <el-input v-model="new_info.email" />
+          </el-form-item>
+          <el-form-item label="电话">
+            <el-input v-model="new_info.phoneNum" />
+          </el-form-item>
+        </el-form>
+        <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="send_newinfo">确认</el-button>
+      </span>
+        <template #footer>
+        </template>
+      </el-dialog>
     </div>
   </div>
   <el-divider />
@@ -56,10 +74,50 @@
 </template>
 
 <script>
-import { ArrowDown } from '@element-plus/icons-vue'
+import request from "@/utils/request";
+import {createRouter, createWebHistory} from "vue-router";
+import router, {routes} from "@/router";
 export default {
   name: "Teacher",
+  data() {
+    return {
+      user_name: '',
+      dialogVisible:false,
+    }
+  },
   components:{
+  },
+  mounted() {
+    this.user_name = JSON.parse(sessionStorage.getItem("user")).number
+
+  },
+  methods: {
+    logout: function () {
+      request.post("/user/logout", JSON.parse(sessionStorage["user"]).token).then(res => {
+        console.log(res)
+        console.log(res.data.code)
+        if (res.data.code === 200) {
+          this.$message({
+            type: "success",
+            message: res.data.msg
+          })
+        }
+        router = createRouter({
+          history: createWebHistory(process.env.BASE_URL),
+          routes
+        })
+        sessionStorage["routes"] = JSON.stringify(router.getRoutes())
+        sessionStorage.removeItem("user")
+        this.$router.push("/login")
+      })
+    },
+    change_password: function () {
+
+    },
+    input_newinfo: function (){
+      this.dialogVisible=true
+      this.new_info={}
+    }
   }
 }
 </script>
@@ -79,5 +137,9 @@ export default {
   background-color : black;
   text-shadow : rgba(255,255,255,0.5) 0 5px 6px, rgba(255,255,255,0.2) 1px 3px 3px;
   -webkit-background-clip : text;
+}
+
+.user {
+  float: right;
 }
 </style>

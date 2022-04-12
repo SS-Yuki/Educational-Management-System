@@ -2,14 +2,10 @@
   <div>
     <div id="personalinfo" class="personalinfo">
       <div class="display">
-        <div>学工号为:{{info.number}}</div>
-        <div>姓名为:{{info.name}}</div>
-        <div>身份为:{{info.role}}</div>
-        <div>身份证号为:{{info.idNum}}</div>
-        <div>电话号为:{{info.phoneNum}}</div>
-        <div>邮箱为:{{info.email}}</div>
-        <div>院系为:{{info.school}}</div>
-        <div>专业为:{{info.major}}</div>
+        <el-table :data="tableData" border :show-header="status" style="width: 100%" size="large">
+          <el-table-column prop="key"  width="180" />
+          <el-table-column prop="value"  width="180" />
+        </el-table>
         <el-button size="small" @click="input_newinfo">
           编辑
         </el-button>
@@ -17,10 +13,10 @@
     </div>
     <el-dialog v-model="dialogVisible" title="Tips" width="30%">
       <el-form :model="new_info" label-width="120px">
-        <el-form-item label="新邮箱">
+        <el-form-item label="邮箱">
           <el-input v-model="new_info.email" />
         </el-form-item>
-        <el-form-item label="新电话">
+        <el-form-item label="电话">
           <el-input v-model="new_info.phoneNum" />
         </el-form-item>
       </el-form>
@@ -53,17 +49,31 @@ export default {
         major:''
       },
       new_info:{
-        number:'this.info.number',
-        email:'this.info.email',
-        phoneNum:'this.info.phoneNum'
-      }
+        number:'',
+        email:'',
+        phoneNum:''
+      },
+      status: false,
+      tableData : [
+        {key: '姓名', value: ''},
+        {key: '学号', value: ''},
+        {key: '身份', value: ''},
+        {key: '院系', value: ''},
+        {key: '专业', value: ''},
+        {key: '身份证号', value: ''},
+        {key: '电话', value: ''},
+        {key: '邮箱', value: ''}
+      ]
     }
   },
   methods:{
     send_newinfo:function (){
       this.dialogVisible=false
-      request.post("/student/maintaininfo",this.new_info).then(res=>{
-        console.log(res)
+      this.new_info.number = JSON.parse(sessionStorage.getItem("user")).number
+      request.post("/student/maintainInfo",this.new_info).then(res=>{
+        console.log(res.data.data)
+        this.tableData[6].value = this.new_info.phoneNum
+        this.tableData[7].value = this.new_info.email
       })
     },
     input_newinfo:function (){
@@ -71,16 +81,18 @@ export default {
       this.new_info={}
     },
     get_info:function (){
-      request.post("teacher/information").then(res=>{
-        console.log(res)
-        this.info.number=res.number
-        this.info.name=res.name
-        this.info.role=res.role
-        this.info.idNum=res.idNum
-        this.info.phoneNum=res.phoneNum
-        this.info.email=res.email
-        this.info.school=res.school
-        this.info.major=res.major
+      let user = JSON.parse(sessionStorage.getItem("user"))
+      request.post("student/information", user.number).then(res=>{
+        console.log(res.data)
+        this.info = res.data.data
+        this.tableData[0].value = this.info.name    //姓名
+        this.tableData[1].value = this.info.idNum   //学号
+        this.tableData[2].value = this.info.role    //身份
+        this.tableData[3].value = this.info.school  //院系
+        this.tableData[4].value = this.info.major   //专业
+        this.tableData[5].value = this.info.idNum   //身份证号
+        this.tableData[6].value = this.info.phoneNum  //电话
+        this.tableData[7].value = this.info.email   //邮箱
       })
     }
   },

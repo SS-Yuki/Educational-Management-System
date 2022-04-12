@@ -112,6 +112,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             throw new Exception("该教学楼不存在");
         }
         teachingBuilding.setName(teachingBuildingNewName);
+        teachingBuildingRepository.save(teachingBuilding);
         return teachingBuilding;
     }
 

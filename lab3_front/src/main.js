@@ -11,7 +11,6 @@ import locale from 'element-ui/lib/locale/lang/zh-CN'
 
 import Papa from 'papaparse';
 
-
 const app = createApp(App);
 {
     if (!sessionStorage.getItem('routes')) {

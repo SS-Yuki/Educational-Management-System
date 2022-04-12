@@ -48,6 +48,8 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.getUserAccount().setPassword(userData.getPassword());
         if(!userData.getTeaStatus().equals(TeacherStatus.Normal)){
             teacher.getUserAccount().setPermission("false");
+        } else {
+            teacher.getUserAccount().setPermission("true");
         }
         teacherRepository.save(teacher);
         return teacher;

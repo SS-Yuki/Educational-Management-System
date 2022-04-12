@@ -3,8 +3,8 @@
     <div id="personalinfo" class="personalinfo">
       <div class="display">
         <el-table :data="tableData" border :show-header="status" style="width: 100%">
-          <el-table-column prop="date"  width="180" />
-          <el-table-column prop="name"  width="180" />
+          <el-table-column prop="key"  width="180" />
+          <el-table-column prop="value"  width="180" />
         </el-table>
         <div>学工号为:{{info.number}}</div>
         <div>姓名为:{{info.name}}</div>
@@ -64,21 +64,37 @@ export default {
       status: false,
       tableData : [
         {
-          date: '2016-05-03',
-          name: 'Tom'
+          key: '姓名',
+          value: ''
         },
         {
-          date: '2016-05-02',
-          name: 'Tom'
+          key: '工号',
+          value: ''
         },
         {
-          date: '2016-05-04',
-          name: 'Tom'
+          key: '身份',
+          value: ''
         },
         {
-          date: '2016-05-01',
-          name: 'Tom'
+          key: '院系',
+          value: ''
         },
+        {
+          key: '专业',
+          value: ''
+        },
+        {
+          key: '身份证号',
+          value: ''
+        },
+        {
+          key: '电话',
+          value: ''
+        },
+        {
+          key: '邮箱',
+          value: ''
+        }
       ]
     }
   },
@@ -98,14 +114,14 @@ export default {
       request.post("teacher/information", user.number).then(res=>{
         console.log(res)
         this.info = res.data.data
-        // this.info.number=res.data.data.number
-        // this.info.name=res.data.data.name
-        // this.info.role=res.data.data.role
-        // this.info.idNum=res.data.data.idNum
-        // this.info.phoneNum=res.data.data.phoneNum
-        // this.info.email=res.data.data.email
-        // this.info.school=res.data.data.school
-        // this.info.major=res.data.data.major
+        this.tableData[0].value = this.info.name
+        this.tableData[1].value = this.info.idNum
+        this.tableData[2].value = this.info.role
+        this.tableData[3].value = this.info.school
+        this.tableData[4].value = this.info.major
+        this.tableData[5].value = this.info.idNum
+        this.tableData[6].value = this.info.phoneNum
+        this.tableData[7].value = this.info.email
       })
     }
   },

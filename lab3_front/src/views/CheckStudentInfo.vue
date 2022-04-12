@@ -3,6 +3,20 @@
     <div>
       <div class="add" style="margin: 10px 0">
         <el-button size="large" @click="add" type="primary">新增</el-button>
+
+        <el-upload
+            class="upload-demo"
+            action=""
+            :on-change="handleChange"
+            :on-exceed="handleExceed"
+            :on-remove="handleRemove"
+            :file-list="fileListUpload"
+            accept=".csv"
+            :auto-upload="false">
+          <el-button size="small" type="primary">导入</el-button>
+        </el-upload>
+
+
         <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
         <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
       </div>
@@ -144,6 +158,10 @@ export default {
   name: "CheckTeacherInfo",
   data(){
     return{
+
+      fileTemp: null,
+      fileListUpload: [],
+
       options:[],
       total:0,
       pageSize:10,
@@ -176,7 +194,7 @@ export default {
       tableData:[],
       add_rules: {
         role: [{required: true, message: '请选择身份', trigger: 'change'}],
-        school_major: [{required: true, message: '请选择院系/专业', trigger: 'blur'}],
+        //school_major: [{required: true, message: '请选择院系/专业', trigger: 'blur'}],
         number: [{required: true, message: '请填写学号', trigger: 'blur'},
           {pattern: /^\d{6}$/, message: '学号格式错误'}],
         name: [{required: true, message: '请填写姓名', trigger: 'blur'},
@@ -203,6 +221,49 @@ export default {
     this.getOption()
   },
   methods:{
+
+    handleChange(file, fileList) {
+      this.fileTemp = file.raw
+      if (this.fileTemp) {
+        if ((this.fileTemp.type == '.csv') || (this.fileTemp.type == 'application/vnd.ms-excel')) {
+          this.importcsv(file.raw)
+        } else {
+          this.$message({
+            type: 'warning',
+            message: '附件格式错误，请删除后重新上传！'
+          })
+        }
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '请上传附件！'
+        })
+      }
+    },
+
+    importcsv (obj) {
+      // let _this = this//如果需要点击事件结束之后对DOM进行操作使用)_this.xx=xx进行操作
+      Papa.parse(obj, {
+        complete (results) {
+          console.log(results)//这个是csv文件的数据
+          let data = []
+          //遍历csv文件中的数据，存放到data中 方法不唯一，可自己更改
+          for (let i = 0; i < results.data.length; i++) {
+            let obj = {}
+            obj.number = results.data[i][0]
+            obj.name = results.data[i][1]
+            obj.nameRemark = results.data[i][2]
+            obj.index = results.data[i][3]
+            data.push(obj)
+          }
+          data.splice(0, 1)//将数组第一位的表格名称去除
+          let num = 0
+          console.log('data', data)
+          // _this.tableData = data//将数据放入要展示的表格中
+        }
+      })
+    },
+
     getOption: function () {
       request.post("/admin/allMajors").then(res => {
         console.log(res)

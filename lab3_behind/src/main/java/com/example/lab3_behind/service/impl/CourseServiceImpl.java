@@ -201,6 +201,7 @@ public class CourseServiceImpl implements CourseService {
         if(teacher == null){
             throw new Exception("该教师不存在");
         }
+
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
         return course;

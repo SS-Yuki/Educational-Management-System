@@ -29,7 +29,7 @@
             </el-menu-item-group>
             <el-menu-item-group>
               <el-menu-item index="1-2">
-                <router-link to="/teacher/checkcourse">课程信息维护</router-link>
+                <router-link to="/teacher/teachercourse">课程信息维护</router-link>
               </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>

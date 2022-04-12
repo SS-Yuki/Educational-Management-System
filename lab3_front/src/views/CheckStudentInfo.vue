@@ -2,23 +2,26 @@
   <div class="checkstudent">
     <div>
       <div class="add" style="margin: 10px 0">
-        <el-button size="large" @click="add" type="primary">新增</el-button>
+        <div>
+          <el-button size="large" @click="add" type="primary">新增</el-button>
 
-        <el-upload
-            class="upload-demo"
-            action=""
-            :on-change="handleChange"
-            :on-exceed="handleExceed"
-            :on-remove="handleRemove"
-            :file-list="fileListUpload"
-            accept=".csv"
-            :auto-upload="false">
-          <el-button size="small" type="primary">导入</el-button>
-        </el-upload>
+          <el-upload
+              class="upload-demo"
+              action=""
+              :on-change="handleChange"
+              :on-exceed="handleExceed"
+              :on-remove="handleRemove"
+              :file-list="fileListUpload"
+              accept=".csv"
+              :auto-upload="false">
+            <el-button size="large" type="primary">导入</el-button>
+          </el-upload>
+        </div>
 
-
-        <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
-        <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
+        <div>
+          <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
+          <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
+        </div>
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
         <el-table-column fixed prop="number" label="学号" width="150" sortable/>
@@ -381,7 +384,7 @@ export default {
 
 <style scoped>
 .checkstudent{
-  margin-left: 100px;
+
   display: flex;
 }
 .add{

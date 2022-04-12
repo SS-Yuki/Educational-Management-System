@@ -32,6 +32,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Page<Course> findAPageCourseForSelecting(Integer page, Integer size, String search, String stuNum) throws Exception {
+
         Student student = studentRepository.findByStuNumber(stuNum);
         if(student == null){
             throw new Exception("学生不存在");
@@ -51,18 +52,20 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<Course> findAPageCourseOfTeacher(Integer page, Integer size, String search, String jobNum) throws Exception {
-        Teacher teacher = teacherRepository.findByJobNumber(jobNum);
-        if(teacher == null) {
-            throw new Exception("教师不存在");
-        }
+    public Page<Course> findAPageCourseOfTeacher(Integer page, Integer size, String search, String jobNumber) throws Exception {
+        Teacher teacher = teacherRepository.findByJobNumber(jobNumber);
+//        if(teacher == null) {
+//            throw new Exception("教师不存在");
+//        }
         Pageable pageable =  PageRequest.of(page - 1, size);
-        if(search.isEmpty()){
-            return courseRepository.findAllByTeacherNum(jobNum, pageable);
-        }
+//        if(search.isEmpty()){
+//            return courseRepository.findAllByTeacherNum(jobNumber, pageable);
+//        }
         Course course = new Course();
         course.setCourseName(search);
+        course.setTeacherNum(jobNumber);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("teacherNum", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withIgnorePaths("applyId", "classPeriod", "creditHours", "credits", "capacity", "type");
         Example<Course> example = Example.of(course, matcher);
@@ -112,7 +115,7 @@ public class CourseServiceImpl implements CourseService {
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withIgnorePaths("applyId", "classPeriod", "creditHours", "credits", "capacity", "type");
         Example<CourseApplying> example = Example.of(courseApplying, matcher);
-        return courseApplyingRepository.findAllByTeacherNum(jobNum, example, pageable);
+        return courseApplyingRepository.findAll( example, pageable);
     }
 
     @Override

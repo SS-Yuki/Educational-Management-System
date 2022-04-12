@@ -75,6 +75,8 @@ public class StudentServiceImpl implements StudentService {
         student.getUserAccount().setPassword(userData.getPassword());
         if(!userData.getStuStatus().equals(StudentStatus.Normal)){
             student.getUserAccount().setPermission("false");
+        } else {
+            student.getUserAccount().setPermission("true");
         }
         studentRepository.save(student);
         return student;

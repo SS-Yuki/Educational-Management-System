@@ -62,7 +62,6 @@ public class Course {
     private CourseStatus courseStatus;
 
     public Course(CourseApplyingData courseApplyingData){
-        this.courseId = null;
         this.teacherName = courseApplyingData.getApplicant();
         this.capacity = courseApplyingData.getCapacity();
         this.courseName = courseApplyingData.getCourseName();

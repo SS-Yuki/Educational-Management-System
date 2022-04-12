@@ -54,31 +54,29 @@
     </div>
     <div>
       <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
-        <el-form :model="addStudent" label-width="120px">
-          <el-form-item label="新工号">
-            <el-input v-model="addTeacher.number" />
+        <el-form :model="addStudent" label-width="120px" :rules="add_rules">
+          <el-form-item label="身份" prop="role">
+            <el-radio v-model="addTeacher.role" label="teacher" checked="true">教师</el-radio>
           </el-form-item>
-          <el-form-item label="新姓名">
+          <el-form-item label="院系/专业" prop="school_major">
+            <el-cascader  v-model="add_school_major" :options="options"/>
+          </el-form-item>
+          <el-form-item label="姓名" prop="name">
             <el-input v-model="addTeacher.name" />
           </el-form-item>
-          <el-form-item label="新电话">
-            <el-input v-model="addTeacher.phoneNum" />
+          <el-form-item label="工号" prop="number">
+            <el-input v-model="addTeacher.number" />
           </el-form-item>
-          <el-form-item label="新身份证号">
+          <el-form-item label="身份证号" prop="idNum">
             <el-input v-model="addTeacher.idNum" />
           </el-form-item>
-          <el-form-item label="新邮箱">
+          <el-form-item label="电话" prop="phoneNum">
+            <el-input v-model="addTeacher.phoneNum" />
+          </el-form-item>
+          <el-form-item label="邮箱" prop="email">
             <el-input v-model="addTeacher.email" />
           </el-form-item>
-          <el-form-item label="新身份">
-            <el-radio v-model="addTeacher.role" label="teacher" checked="true">teacher</el-radio>
-          </el-form-item>
-          <el-form-item label="新院系">
-            <el-input v-model="addTeacher.school" />
-          </el-form-item>
-          <el-form-item label="新专业">
-            <el-input v-model="addTeacher.major"/>
-          </el-form-item>
+
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="save">确认</el-button>
@@ -90,31 +88,28 @@
     </div>
     <div>
       <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
-        <el-form :model="newSchool" label-width="120px">
-          <el-form-item label="新名字">
-            <el-input v-model="name" />
+        <el-form :model="newSchool" label-width="120px" :rules="edit_rules">
+          <el-form-item label="院系/专业" prop="school_major">
+            <el-cascader  v-model="edit_school_major" :options="options"/>
           </el-form-item>
-          <el-form-item label="新密码">
-            <el-input v-model="password" />
-          </el-form-item>
-          <el-form-item label="新身份证号">
-            <el-input v-model="idNum" />
-          </el-form-item>
-          <el-form-item label="新电话号">
-            <el-input v-model="phoneNum" />
-          </el-form-item>
-          <el-form-item label="新邮箱">
-            <el-input v-model="email" />
-          </el-form-item>
-          <el-form-item label="新状态">
+          <el-form-item label="状态">
             <el-radio v-model="teaStatus" label="Dimission" checked="true">Dimisson</el-radio>
             <el-radio v-model="teaStatus" label="Normal" checked="true">Normal</el-radio>
           </el-form-item>
-          <el-form-item label="新专业">
-            <el-input v-model="major" />
+          <el-form-item label="姓名">
+            <el-input v-model="name" />
           </el-form-item>
-          <el-form-item label="新学院">
-            <el-input v-model="school" />
+          <el-form-item label="密码" prop="password">
+            <el-input v-model="password" />
+          </el-form-item>
+          <el-form-item label="身份证号">
+            <el-input v-model="idNum" />
+          </el-form-item>
+          <el-form-item label="电话">
+            <el-input v-model="phoneNum" />
+          </el-form-item>
+          <el-form-item label="邮箱">
+            <el-input v-model="email" />
           </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -162,20 +157,53 @@ export default {
         school:'',
         major:''
       },
-      // newSchool:{
-      //   oldName:'',
-      //   newName:'',
-      //   introduction:''
-      // },
-      tableData:[]
+      tableData:[],
+      edit_school_major: [],
+      add_school_major: [],
+      add_rules: {
+        role: [{required: true, message: '请选择身份', trigger: 'change'}],
+        school_major: [{required: true, message: '请选择院系/专业', trigger: 'blur'}],
+        number: [{required: true, message: '请填写学号', trigger: 'blur'},
+          {pattern: /^\d{8}$/, message: '学号格式错误'}],
+        name: [{required: true, message: '请填写姓名', trigger: 'blur'},
+          {pattern: /^[\u4e00-\u9fa5a-zA-Z]+$/, message: '姓名只能为中文或英文'}],
+        idNum: [{required: true, message: '请填写身份证号', trigger: 'blur'},
+          {
+            pattern: /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/,
+            message: '身份证号格式错误'
+          }],
+        phoneNum: [{pattern: /^1\d{10}$/, message: '手机号码格式错误'}],
+        email: [{pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '电子邮箱格式错误'}],
+      },
+      edit_rules: {
+        password: [{
+            pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
+            message: '长度6-32,至少包含字母、数字或者特殊字符(-_)中的两种'
+          }]
+      }
     }
   },
   mounted() {
     this.load()
+    this.getOption()
   },
   methods:{
-    school_major_select(){
-
+    getOption: function () {
+      request.post("/admin/allMajors").then(res => {
+        console.log(res)
+        let that = this
+        if (!res.data) return
+        res.data.data.schools.forEach (function (item) {
+          console.log(item);
+          let option = {value: item.school, label: item.school, children: []}
+          if (!item.majors) return
+          item.majors.forEach (function (item) {
+            let child = {value: item, label: item}
+            option.children.push(child)
+          })
+          that.options.push(option)
+        })
+      })
     },
     load(){
       console.log(this.pageData)
@@ -203,6 +231,8 @@ export default {
       this.addTeacher={}
     },
     save:function (){
+      this.addTeacher.school = this.add_school_major[0]
+      this.addTeacher.major = this.add_school_major[1]
       request.post("/admin/register", this.addTeacher).then(res => {
         console.log(res)
         this.load() // 刷新表格的数据
@@ -218,8 +248,8 @@ export default {
         phoneNum: this.phoneNum,
         email:this.email,
         teaStatus:this.teaStatus,
-        major:this.major,
-        school:this.school
+        major:this.edit_school_major[1],
+        school:this.edit_school_major[0]
       }).then(res=>{
         console.log(res)
         this.load()

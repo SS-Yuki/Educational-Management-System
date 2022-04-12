@@ -54,18 +54,18 @@
     </div>
     <div>
       <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
-        <el-form :model="addStudent" label-width="120px" :rules="rules">
+        <el-form :model="addStudent" label-width="120px" :rules="add_rules">
           <el-form-item label="身份" prop="role">
             <el-radio v-model="addStudent.role" label="student">学生</el-radio>
           </el-form-item>
           <el-form-item label="院系/专业" prop="school_major">
             <el-cascader  v-model="add_school_major" :options="options"/>
           </el-form-item>
-          <el-form-item label="学号" prop="number">
-            <el-input v-model="addStudent.number" />
-          </el-form-item>
           <el-form-item label="姓名" prop="name">
             <el-input v-model="addStudent.name" />
+          </el-form-item>
+          <el-form-item label="学号" prop="number">
+            <el-input v-model="addStudent.number" />
           </el-form-item>
           <el-form-item label="身份证号" prop="idNum">
             <el-input v-model="addStudent.idNum" />
@@ -88,7 +88,7 @@
     </div>
     <div>
       <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
-        <el-form :model="newSchool" label-width="120px">
+        <el-form :model="newSchool" label-width="120px" :rules="edit_rules">
           <el-form-item label="院系/专业" prop="school_major">
             <el-cascader  v-model="edit_school_major" :options="options"/>
           </el-form-item>
@@ -99,7 +99,7 @@
           <el-form-item label="姓名">
             <el-input v-model="name" />
           </el-form-item>
-          <el-form-item label="密码">
+          <el-form-item label="密码" prop="password">
             <el-input v-model="password" />
           </el-form-item>
           <el-form-item label="身份证号">
@@ -160,7 +160,7 @@ export default {
         major:''
       },
       tableData:[],
-      rules: {
+      add_rules: {
         role: [{required: true, message: '请选择身份', trigger: 'change'}],
         school_major: [{required: true, message: '请选择院系/专业', trigger: 'blur'}],
         number: [{required: true, message: '请填写学号', trigger: 'blur'},
@@ -174,8 +174,9 @@ export default {
           }],
         phoneNum: [{pattern: /^1\d{10}$/, message: '手机号码格式错误'}],
         email: [{pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '电子邮箱格式错误'}],
-        password: [{required: true, message: '请填写密码', trigger: 'blur'},
-          {
+      },
+      edit_rules: {
+        password: [{
             pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
             message: '长度6-32,至少包含字母、数字或者特殊字符(-_)中的两种'
           }]
@@ -203,11 +204,6 @@ export default {
           that.options.push(option)
         })
       })
-    },
-    school_major_select: function () {
-      this.addStudent.school = this.school_major[0]
-      this.addStudent.major = this.school_major[1]
-      console.log(this.addStudent.major)
     },
     load(){
       console.log(this.pageData)
@@ -244,7 +240,6 @@ export default {
       })
     },
     saveEdit(){
-      console.log(this.newSchool)
       request.post("/admin/updateStudentInfo", {
         stuNumber:this.stuNumber,
         name:this.name,
@@ -254,7 +249,7 @@ export default {
         email:this.email,
         stuStatus:this.stuStatus,
         major:this.edit_school_major[1],
-        school:this.school.edit_school_major[0]
+        school:this.edit_school_major[0]
       }).then(res=>{
         console.log(res)
         this.load()

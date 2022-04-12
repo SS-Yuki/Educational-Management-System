@@ -273,7 +273,7 @@ export default {
       this.editCourse.applicant=applicant
     },
     handleDelete(id) {
-      request.post("/admin/deleteCourse",id).then(res => {
+      request.post("/admin/deleteCourse",{id:id}).then(res => {
         this.load()  // 删除之后重新加载表格的数据
       })
     },

@@ -178,6 +178,9 @@ export default {
       search:'',
       dialogVisible:false,
       dialogVisible2:false,
+      id:{
+        id:0
+      },
       addCourse:{
         id:0,
         courseName:'',
@@ -273,7 +276,8 @@ export default {
       this.editCourse.applicant=applicant
     },
     handleDelete(id) {
-      request.post("/admin/deleteCourse",{id:id}).then(res => {
+      this.id.id=id
+      request.post("/admin/deleteCourse",this.id).then(res => {
         this.load()  // 删除之后重新加载表格的数据
       })
     },

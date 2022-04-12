@@ -14,7 +14,7 @@ import CheckMajor from "@/views/CheckMajor";
 import store from '@/store'
 import CheckBuilding from "@/views/CheckBuilding";
 import CheckClassroom from "@/views/CheckClassroom";
-import CheckCourseTime from "@/views/CheckCourseTime";
+import CheckTime from "@/views/CheckTime";
 import CheckApplication from "@/views/CheckApplication";
 
 
@@ -73,9 +73,9 @@ export const admin_routes =
             component: CheckClassroom
         },
         {
-            path: 'checkcoursetime',
-            name: 'CheckCourseTime',
-            component: CheckCourseTime
+            path: 'checktime',
+            name: 'CheckTime',
+            component: CheckTime
         },
         {
             path: 'checkcourse',

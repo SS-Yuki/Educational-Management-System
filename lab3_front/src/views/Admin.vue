@@ -56,7 +56,7 @@
                 <router-link to="/admin/checkclassroom">教室管理</router-link>
               </el-menu-item>
               <el-menu-item index="1-3">
-                <router-link to="/admin/checkcoursetime">上课时间管理</router-link>
+                <router-link to="/admin/checktime">上课时间管理</router-link>
               </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>

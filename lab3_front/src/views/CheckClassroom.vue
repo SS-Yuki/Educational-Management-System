@@ -7,9 +7,9 @@
         <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column prop="classroomName" label="教室" width="120" />
-        <el-table-column prop="buildingName" label="教学楼" width="120" />
-        <el-table-column fixed="right" label="操作" width="120">
+        <el-table-column prop="classroomName" label="教室" width="300" />
+        <el-table-column prop="buildingName" label="教学楼" width="300" />
+        <el-table-column fixed="right" label="操作" width="300">
           <template #default="scope">
             <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.classroomName)">
               <template #reference>
@@ -111,8 +111,8 @@ export default {
         this.dialogVisible = false  // 关闭弹窗
       })
     },
-    handleDelete(buildingName) {
-      request.post("/admin/deleteClassrom",buildingName).then(res => {
+    handleDelete(classroomName) {
+      request.post("/admin/deleteClassrom",classroomName).then(res => {
         this.load()  // 删除之后重新加载表格的数据
       })
     },

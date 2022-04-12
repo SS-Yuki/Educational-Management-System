@@ -37,6 +37,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             throw new Exception("该时间段命名已存在");
         }
         TimeTable newTime = new TimeTable();
+        newTime.setName(classTimeData.getName());
         newTime.setStartTime(classTimeData.getStartTime());
         newTime.setEndTime(classTimeData.getEndTime());
         timeTableRepository.save(newTime);

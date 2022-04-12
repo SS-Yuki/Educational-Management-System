@@ -1,7 +1,9 @@
 package com.example.lab3_behind.controller;
 
 
+import com.example.lab3_behind.common.ChangePasswordData;
 import com.example.lab3_behind.common.JwtUserData;
+import com.example.lab3_behind.common.MaintainInfoData;
 import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
 import com.example.lab3_behind.domain.resp.Result;
@@ -24,7 +26,7 @@ public class StudentController {
     UserAccountService userAccountService;
 
     @PostMapping("/information")
-    public Result information(@RequestParam("number") String number,HttpServletRequest request){
+    public Result information(@RequestBody String number,HttpServletRequest request){
         Map<String,Object> map = new HashMap<>();
         try {
             String token = request.getHeader("token");
@@ -48,11 +50,11 @@ public class StudentController {
     }
 
     @PostMapping("/changePassword")
-    public Result changePassword(@RequestParam("number") String number,
-                                 @RequestParam("oldPassword") String oldPassword,
-                                 @RequestParam("newPassword") String newPassword,
-                                 HttpServletRequest request){
+    public Result changePassword(@RequestBody ChangePasswordData changePasswordData, HttpServletRequest request){
         Map<String,Object> map = new HashMap<>();
+        String number = changePasswordData.getNumber();
+        String oldPassword = changePasswordData.getOldPassword();
+        String newPassword = changePasswordData.getNewPassword();
         try {
             String token = request.getHeader("token");
             JwtUserData jwtUserData = JwtUtil.getToken(token);
@@ -69,11 +71,11 @@ public class StudentController {
     }
 
     @PostMapping("/maintainInfo")
-    public Result maintainInfo(@RequestParam("number") String number,
-                                 @RequestParam("phoneNum") String phoneNum,
-                                 @RequestParam("email") String email,
-                                 HttpServletRequest request){
+    public Result maintainInfo(@RequestBody MaintainInfoData maintainInfoData, HttpServletRequest request){
         Map<String,Object> map = new HashMap<>();
+        String number=maintainInfoData.getNumber();
+        String phoneNum = maintainInfoData.getPhoneNum();
+        String email = maintainInfoData.getEmail();
         try {
             String token = request.getHeader("token");
             JwtUserData jwtUserData = JwtUtil.getToken(token);

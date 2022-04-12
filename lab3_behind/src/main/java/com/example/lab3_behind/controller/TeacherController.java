@@ -12,7 +12,6 @@ import com.example.lab3_behind.service.StudentService;
 import com.example.lab3_behind.service.TeacherService;
 import com.example.lab3_behind.service.UserAccountService;
 import com.example.lab3_behind.utils.JwtUtil;
-import jdk.tools.jmod.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

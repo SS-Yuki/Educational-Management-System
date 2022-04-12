@@ -55,10 +55,9 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public Major insertMajor(MajorAddingData majorData) throws Exception {
         School school = schoolRepository.findByName(majorData.getSchoolName());
-        System.out.println(school.getName());
-//        if(school == null){
-//            throw new Exception("学院信息错误，学院不存在");
-//        }
+        if(school == null){
+            throw new Exception("学院信息错误，学院不存在");
+        }
         Major major = new Major();
         major.setSchool(school);
         major.setName(majorData.getMajorName());

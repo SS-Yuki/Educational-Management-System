@@ -57,7 +57,7 @@ public class AdminBuildingController {
             return Result.fail(702,e.getMessage());
         }
     }
-    @RequestMapping("/findMajorPage")
+    @RequestMapping("/findBuildingPage")
     public Result findBuildingPage(@RequestBody PageSearchData pageSearchData){
         Map<String,Object> map = new HashMap<>();
         Page<TeachingBuilding> teachingBuildingPage = teachingAffairsService.findAPageTeachingBuilding(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch());
@@ -69,9 +69,14 @@ public class AdminBuildingController {
 
 
     @RequestMapping("/allBuildings")
-    public Result allMajors(){
+    public Result allBuildings(){
         Map<String,Object> map = new HashMap<>();
         //map.put("buildings",teachingAffairsService.);
         return Result.succ(map);
     }
+
+//    @RequestMapping("addClassroom")
+//    public Result addClassroom(){
+//
+//    }
 }

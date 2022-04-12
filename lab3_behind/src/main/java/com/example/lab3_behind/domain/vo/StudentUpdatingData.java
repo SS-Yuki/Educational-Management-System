@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class StudentUpdatingData {
-    private String stuNumebr;
+    private String stuNumber;
     private String name;
 
     private String password;

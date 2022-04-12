@@ -54,7 +54,7 @@
     </div>
     <div>
       <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
-        <el-form :model="addStudent" label-width="120px" :rules="add_rules">
+        <el-form :model="addTeacher" ref="add" label-width="120px" :rules="add_rules">
           <el-form-item label="身份" prop="role">
             <el-radio v-model="addTeacher.role" label="teacher" checked="true">教师</el-radio>
           </el-form-item>
@@ -89,7 +89,7 @@
     <div>
       <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
         <el-form :model="newSchool" label-width="120px" :rules="edit_rules">
-          <el-form-item label="院系/专业" prop="school_major">
+          <el-form-item label="院系/专业">
             <el-cascader  v-model="edit_school_major" :options="options"/>
           </el-form-item>
           <el-form-item label="状态">
@@ -177,9 +177,10 @@ export default {
       },
       edit_rules: {
         password: [{
-            pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
-            message: '长度6-32,至少包含字母、数字或者特殊字符(-_)中的两种'
-          }]
+          // required: true,
+          pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
+          message: '密码格式错误'
+        }]
       }
     }
   },
@@ -233,10 +234,21 @@ export default {
     save:function (){
       this.addTeacher.school = this.add_school_major[0]
       this.addTeacher.major = this.add_school_major[1]
-      request.post("/admin/register", this.addTeacher).then(res => {
-        console.log(res)
-        this.load() // 刷新表格的数据
-        this.dialogVisible = false  // 关闭弹窗
+      this.$refs["add"].validate((valid) => {
+        if (valid) {
+          request.post("/admin/register", this.addTeacher).then(res => {
+            console.log(res)
+            this.load() // 刷新表格的数据
+            this.dialogVisible = false  // 关闭弹窗
+          })
+        }
+        else {
+          console.log("hahhaha")
+          this.$message({
+            type: "error",
+            message: "请按格式填写"
+          })
+        }
       })
     },
     saveEdit(){

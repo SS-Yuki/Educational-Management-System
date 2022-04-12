@@ -2,7 +2,7 @@
   <div class="checkschool">
     <div>
       <div class="add" style="margin: 10px 0">
-        <el-button size="large" @click="add" type="primary">新增</el-button>
+        <el-button size="large" @click="add" type="primary">新增申请</el-button>
         <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
         <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
       </div>
@@ -10,36 +10,28 @@
         <el-table-column prop="courseId" label="courseId" width="0" v-if="false" />
         <el-table-column prop="courseName" label="课程名" width="150" />
         <el-table-column prop="courseNumber" label="课程编号" width="150" />
-        <el-table-column prop="teacherNum" label="教师工号" width="150" />
-        <el-table-column prop="major" label="开课专业" width="150" />
-        <el-table-column prop="school" label="开课院系" width="150" />
         <el-table-column prop="classPeriod" label="时间" width="0" v-if="false"  />
         <el-table-column prop="classroom" label="教室" width="0" v-if="false" />
         <el-table-column prop="creditHours" label="学时" width="0" v-if="false" />
         <el-table-column prop="credits" label="学分" width="0" v-if="false" />
         <el-table-column prop="capacity" label="容量" width="0" v-if="false" />
         <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
-        <el-table-column prop="applicant" label="申请人" width="0" v-if="false" />
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
             <el-button type="text" size="small" @click="handleEdit(
                 scope.row.courseId,
                 scope.row.courseName,
                 scope.row.courseNumber,
-                scope.row.teacherNum,
-                scope.row.major,
-                scope.row.school,
                 scope.row.classPeriod,
                 scope.row.classroom,
                 scope.row.creditHours,
                 scope.row.credits,
                 scope.row.capacity,
-                scope.row.introduction,
-                scope.row.applicant
-                )">查看/编辑</el-button>
+                scope.row.introduction
+                )">查看/修改申请</el-button>
             <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.courseId)">
               <template #reference>
-                <el-button type="text">删除</el-button>
+                <el-button type="text">删除申请</el-button>
               </template>
             </el-popconfirm>
           </template>
@@ -72,15 +64,6 @@
           <el-form-item label="新课程编号">
             <el-input v-model="addCourse.courseNumber" />
           </el-form-item>
-          <el-form-item label="新教师工号">
-            <el-input v-model="addCourse.teacherNum" />69+
-          </el-form-item>
-          <el-form-item label="新开课专业">
-            <el-input v-model="addCourse.major" />
-          </el-form-item>
-          <el-form-item label="新开课院系">
-            <el-input v-model="addCourse.school" />
-          </el-form-item>
           <el-form-item label="新上课时间">
             <el-input v-model="addCourse.classPeriod" />
           </el-form-item>
@@ -98,9 +81,6 @@
           </el-form-item>
           <el-form-item label="新介绍">
             <el-input v-model="addCourse.introduction" />
-          </el-form-item>
-          <el-form-item label="新申请人">
-            <el-input v-model="addCourse.applicant" />
           </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -123,15 +103,6 @@
           <el-form-item label="新课程编号">
             <el-input v-model="editCourse.courseNumber" />
           </el-form-item>
-          <el-form-item label="新教师工号">
-            <el-input v-model="editCourse.teacherNum" readonly="readonly"/>
-          </el-form-item>
-          <el-form-item label="新开课专业">
-            <el-input v-model="editCourse.major" readonly="readonly"/>
-          </el-form-item>
-          <el-form-item label="新开课院系">
-            <el-input v-model="editCourse.school" readonly="readonly"/>
-          </el-form-item>
           <el-form-item label="新上课时间">
             <el-input v-model="editCourse.classPeriod" />
           </el-form-item>
@@ -150,9 +121,6 @@
           <el-form-item label="新介绍">
             <el-input v-model="editCourse.introduction" />
           </el-form-item>
-          <el-form-item label="新申请人">
-            <el-input v-model="editCourse.applicant" />
-          </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="saveEdit">确认</el-button>
@@ -169,7 +137,7 @@
 import request from "@/utils/request";
 
 export default {
-  name: "CheckCourse",
+  name: "TeacherCourse",
   data(){
     return{
       total:0,
@@ -185,31 +153,23 @@ export default {
         id:0,
         courseName:'',
         courseNumber:'',
-        teacherNum:'',
-        major:'',
-        school:'',
         classPeriod:'',
         classroom:'',
         creditHours:'',
         credits:'',
         capacity:'',
-        introduction:'',
-        applicant:''
+        introduction:''
       },
       editCourse:{
         id:0,
         courseName:'',
         courseNumber:'',
-        teacherNum:'',
-        major:'',
-        school:'',
         classPeriod:'',
         classroom:'',
         creditHours:0,
         credits:0,
         capacity:0,
-        introduction:'',
-        applicant:''
+        introduction:''
       },
       tableData:[]
     }
@@ -220,7 +180,7 @@ export default {
   methods:{
     load(){
       console.log(this.pageData)
-      request.post("/admin/findCoursePage",{
+      request.post("/teacher/findCoursePage",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search
@@ -244,7 +204,7 @@ export default {
       this.buildingName=''
     },
     save:function (){
-      request.post("/admin/addCourse", this.addCourse).then(res => {
+      request.post("/teacher/addCourse", this.addCourse).then(res => {
         console.log(res)
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
@@ -252,32 +212,28 @@ export default {
     },
     saveEdit(){
       console.log(this.newSchool)
-      request.post("/admin/updateCourseInfo",this.editCourse).then(res=>{
+      request.post("/teacher/updateCourseInfo",this.editCourse).then(res=>{
         console.log(res)
         this.load()
         this.dialogVisible2=false
       })
     },
-    handleEdit(courseId,courseName,courseNumber,teacherNum,major,school,classPeriod,classroom,
-    creditHours,credits,capacity,introduction,applicant){
+    handleEdit(courseId,courseName,courseNumber,classPeriod,classroom,
+               creditHours,credits,capacity,introduction){
       this.dialogVisible2=true
       this.editCourse.id=courseId
       this.editCourse.courseName=courseName
       this.editCourse.courseNumber=courseNumber
-      this.editCourse.teacherNum=teacherNum
-      this.editCourse.major=major
-      this.editCourse.school=school
       this.editCourse.classPeriod=classPeriod
       this.editCourse.classroom=classroom
       this.editCourse.creditHours=creditHours
       this.editCourse.credits=credits
       this.editCourse.capacity=capacity
       this.editCourse.introduction=introduction
-      this.editCourse.applicant=applicant
     },
     handleDelete(courseId) {
       this.id.id=courseId
-      request.post("/admin/deleteCourse",this.id).then(res => {
+      request.post("/teacher/deleteCourse",this.id).then(res => {
         this.load()  // 删除之后重新加载表格的数据
       })
     },

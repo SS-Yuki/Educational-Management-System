@@ -1,38 +1,45 @@
 <template>
   <div class="checkstudent">
-    <div>
-      <div class="add" style="margin: 10px 0">
-        <el-button size="large" @click="add" type="primary">新增</el-button>
+    <div class="add">
+      <div style="margin: 10px 0">
+        <div style="margin-left: 300px">
+          <div style="float: left">
+            <el-button size="large" @click="add" type="primary">新增</el-button>
+          </div>
+          <div>
+            <el-upload
+                class="upload-demo"
+                action=""
+                :on-change="handleChange"
+                :on-exceed="handleExceed"
+                :on-remove="handleRemove"
+                :file-list="fileListUpload"
+                accept=".csv"
+                :auto-upload="false">
+              <el-button size="large" type="primary">导入</el-button>
+            </el-upload>
+          </div>
+        </div>
 
-        <el-upload
-            class="upload-demo"
-            action=""
-            :on-change="handleChange"
-            :on-exceed="handleExceed"
-            :on-remove="handleRemove"
-            :file-list="fileListUpload"
-            accept=".csv"
-            :auto-upload="false">
-          <el-button size="small" type="primary">导入</el-button>
-        </el-upload>
-
-
-        <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
-        <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
+        <div>
+          <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
+          <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
+        </div>
       </div>
-      <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column fixed prop="number" label="学号" width="150" sortable/>
-        <el-table-column prop="name" label="姓名" width="120" />
-        <el-table-column prop="idNum" label="身份证号" width="120" />
-        <el-table-column prop="phoneNum" label="电话" width="120" />
-        <el-table-column prop="email" label="邮箱" width="120" />
-        <el-table-column prop="stuStatus" label="状态" width="120" />
-        <el-table-column prop="school" label="院系" width="120" />
-        <el-table-column prop="major" label="专业" width="120" />
-        <el-table-column prop="password" label="密码" width="120" />
-        <el-table-column fixed="right" label="操作" width="120">
-          <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(
+      <div>
+        <el-table :data="tableData" style="width: 100%" border stripe>
+          <el-table-column fixed prop="number" label="学号" width="150" sortable/>
+          <el-table-column prop="name" label="姓名" width="120" />
+          <el-table-column prop="idNum" label="身份证号" width="120" />
+          <el-table-column prop="phoneNum" label="电话" width="120" />
+          <el-table-column prop="email" label="邮箱" width="120" />
+          <el-table-column prop="stuStatus" label="状态" width="120" />
+          <el-table-column prop="school" label="院系" width="120" />
+          <el-table-column prop="major" label="专业" width="120" />
+          <el-table-column prop="password" label="密码" width="120" />
+          <el-table-column fixed="right" label="操作" width="120">
+            <template #default="scope">
+              <el-button type="text" size="small" @click="handleEdit(
                 scope.row.number,
                 scope.row.name,
                 scope.row.idNum,
@@ -43,14 +50,16 @@
                 scope.row.major,
                 scope.row.password
                 )">编辑</el-button>
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.number)">
-              <template #reference>
-                <el-button type="text">删除</el-button>
-              </template>
-            </el-popconfirm>
-          </template>
-        </el-table-column>
-      </el-table>
+              <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.number)">
+                <template #reference>
+                  <el-button type="text">删除</el-button>
+                </template>
+              </el-popconfirm>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+
       <div style="margin: 10px 0">
         <el-pagination
             v-model:currentPage="currentPage"
@@ -381,10 +390,11 @@ export default {
 
 <style scoped>
 .checkstudent{
-  margin-left: 100px;
   display: flex;
 }
 .add{
+  margin-left: auto;
   text-align: left;
 }
+
 </style>

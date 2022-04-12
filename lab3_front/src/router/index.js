@@ -102,8 +102,8 @@ export const teacher_routes =
         component: TeacherInfo
       },
       {
-        path: 'checkcourse',
-        name: 'CheckCourse',
+        path: 'teachercourse',
+        name: 'TeacherCourse',
         component: CheckCourse
       }
     ]
@@ -121,8 +121,8 @@ export const student_routes =
         component: StudentInfo
       },
       {
-        path: 'viewcourse',
-        name: 'ViewCourse',
+        path: 'studentcourse',
+        name: 'StudentCourse',
         component: ViewCourse
       }
     ]

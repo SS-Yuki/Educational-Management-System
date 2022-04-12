@@ -29,63 +29,10 @@ public class AdminController {
     StudentService studentService;
     @Autowired
     TeacherService teacherService;
-    @Autowired
-    SchoolService schoolService;
 
-    @RequestMapping("/allMajors")
-    public Result allMajors(){
-        Map<String,Object> map = new HashMap<>();
-        map.put("schools",schoolService.getAllSchoolAndMajors());
-        return Result.succ(map);
-    }
 
-    @RequestMapping("/addSchool")
-    public Result addSchool(@RequestBody SchoolAddingData schoolAddingData){
-        Map<String,Object> map = new HashMap<>();
-        try{
-            School school = schoolService.insertSchool(schoolAddingData);
-            map.put("schoolName",school.getName());
-        }catch (Exception e){
-            e.printStackTrace();
-            return Result.fail(680,e.getMessage());
-        }
-        return Result.succ(map);
-    }
-    @RequestMapping("/updateSchoolInfo")
-    public Result updateSchool(@RequestBody SchoolUpdatingData schoolUpdatingData){
-        Map<String,Object> map = new HashMap<>();
-        try{
-            schoolService.updateSchool(schoolUpdatingData);
-        }catch (Exception e){
-            e.printStackTrace();
-            return Result.fail(681,e.getMessage());
-        }
-        return Result.succ(map);
-    }
-    @RequestMapping("/addMajor")
-    public Result addMajor(@RequestBody MajorAddingData majorAddingData){
-        Map<String,Object> map = new HashMap<>();
-        try{
-            Major major = schoolService.insertMajor(majorAddingData);
-            map.put("majorName",major);
-        }catch (Exception e){
-            e.printStackTrace();
-            return Result.fail(682,e.getMessage());
-        }
-        return Result.succ(map);
-    }
 
-    @RequestMapping("/updateMajorInfo")
-    public Result updateMajor(@RequestBody MajorUpdatingData majorUpdatingData){
-        Map<String,Object> map = new HashMap<>();
-        try{
-            schoolService.updateMajor(majorUpdatingData);
-        }catch (Exception e){
-            e.printStackTrace();
-            return Result.fail(683,e.getMessage());
-        }
-        return Result.succ(map);
-    }
+
 
     @RequestMapping("/register")
     public Result register(@RequestBody UserEnteringData userEnteringData){
@@ -130,28 +77,7 @@ public class AdminController {
         return Result.succ(map);
     }
 
-    @RequestMapping("/findSchoolPage")
-    public Result findSchoolPage(@RequestBody PageSearchData pageSearchData){
-        Map<String,Object> map = new HashMap<>();
-        Page<School> schoolPage = schoolService.findAPageSchool(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch());
-        List<SchoolContents> schoolContents = SchoolContents.getContents(schoolPage.getContent());
-        map.put("records",schoolContents);
-        map.put("total",schoolPage.getTotalElements());
-        return Result.succ(map);
-    }
 
-
-    @PostMapping("/deleteSchool")
-    public Result deleteSchool(@RequestBody String schoolName){
-        try{
-            School school = schoolService.deleteSchool(schoolName);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return Result.fail(690,e.getMessage());
-        }
-        return Result.succ(null);
-    }
 
 
 }

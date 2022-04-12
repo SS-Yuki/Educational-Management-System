@@ -16,7 +16,7 @@
         <el-table-column prop="introduction" label="简介" width="600" />
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(scope.row.majorName,scope.row.schoolName)">编辑</el-button>
+            <el-button type="text" size="small" @click="handleEdit(scope.row.majorName,scope.row.schoolName, scope.row.introduction)">编辑</el-button>
             <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.majorName,scope.row.schoolName)">
               <template #reference>
                 <el-button type="text">删除</el-button>
@@ -201,10 +201,13 @@ export default {
         this.dialogVisible2=false
       })
     },
-    handleEdit(majorName,schoolName){
+    handleEdit(majorName,schoolName,introduction){
       this.majorOldName=majorName
       this.majorNewName=majorName
       this.majorOldSchool=schoolName
+      this.majorNewSchool=schoolName
+      this.introduction = introduction
+
       this.dialogVisible2 = true
       this.newMajor={}
     },

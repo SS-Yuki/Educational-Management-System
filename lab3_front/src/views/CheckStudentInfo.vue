@@ -113,7 +113,7 @@
       <el-dialog v-model="dialogVisible2" title="编辑学生信息" width="30%">
         <el-form :model="newSchool" label-width="120px" :rules="edit_rules">
           <el-form-item label="院系/专业">
-            <el-cascader  v-model="edit_school_major" :options="options"/>
+            <el-cascader  v-if="flag" v-model="edit_school_major" :options="options"/>
           </el-form-item>
           <el-form-item label="状态">
             <el-radio v-model="stuStatus" label="Graduated" checked="true">Graduated</el-radio>
@@ -182,6 +182,7 @@ export default {
       //edit
       stuNumber:'',
       name:'',
+      flag:false,
       password:'',
       idNum:'',
       phoneNum:'',
@@ -350,6 +351,7 @@ export default {
         stuStatus:this.stuStatus,
         major:this.edit_school_major[1],
         school:this.edit_school_major[0]
+
       }).then(res=>{
         console.log(res)
         this.load()
@@ -367,7 +369,8 @@ export default {
       this.major = major
       this.password = password
       this.dialogVisible2 = true
-
+      this.flag=true
+      console.log(this.edit_school_major)
     },
     handleDelete(number) {
       request.post("/admin/delete",number).then(res => {
@@ -391,6 +394,7 @@ export default {
 <style scoped>
 .checkstudent{
   display: flex;
+  margin-left: 100px;
 }
 .add{
   margin-left: auto;

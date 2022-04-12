@@ -174,11 +174,11 @@ export default {
         console.log(res)
         let that = this
         if (!res.data) return
-        res.data.forEach (function (item) {
+        res.data.data.forEach (function (item) {
           console.log(item);
           let option = {value: item.school, label: item.school, children: []}
-          if (!item.major) return
-          item.major.forEach (function (item) {
+          if (!item.majors) return
+          item.majors.forEach (function (item) {
             let child = {value: item, label: item}
             option.children.push(child)
           })

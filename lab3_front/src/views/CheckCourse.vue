@@ -7,7 +7,7 @@
         <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column prop="id" label="id" width="0" v-if="false" />
+        <el-table-column prop="courseId" label="courseId" width="0" v-if="false" />
         <el-table-column prop="courseName" label="课程名" width="150" />
         <el-table-column prop="courseNumber" label="课程编号" width="150" />
         <el-table-column prop="teacherNum" label="教师工号" width="150" />
@@ -37,7 +37,7 @@
                 scope.row.introduction,
                 scope.row.applicant
                 )">查看/编辑</el-button>
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.id)">
+            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.courseId)">
               <template #reference>
                 <el-button type="text">删除</el-button>
               </template>
@@ -275,8 +275,8 @@ export default {
       this.editCourse.introduction=introduction
       this.editCourse.applicant=applicant
     },
-    handleDelete(id) {
-      this.id.id=id
+    handleDelete(courseId) {
+      this.id.id=courseId
       request.post("/admin/deleteCourse",this.id).then(res => {
         this.load()  // 删除之后重新加载表格的数据
       })

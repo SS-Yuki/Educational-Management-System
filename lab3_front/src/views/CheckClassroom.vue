@@ -11,7 +11,7 @@
         <el-table-column prop="buildingName" label="教学楼" width="300" />
         <el-table-column fixed="right" label="操作" width="300">
           <template #default="scope">
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.classroomName)">
+            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.buildingName,scope.row.classroomName)">
               <template #reference>
                 <el-button type="text">删除</el-button>
               </template>
@@ -111,8 +111,11 @@ export default {
         this.dialogVisible = false  // 关闭弹窗
       })
     },
-    handleDelete(classroomName) {
-      request.post("/admin/deleteClassrom",classroomName).then(res => {
+    handleDelete(buildingName,classroomName) {
+      request.post("/admin/deleteClassrom", {
+        buildingName:buildingName,
+        classroomName:classroomName
+      }).then(res => {
         this.load()  // 删除之后重新加载表格的数据
       })
     },

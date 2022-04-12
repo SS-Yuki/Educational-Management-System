@@ -169,6 +169,7 @@ export default {
     },
     handleEdit(majorName,schoolName){
       this.majorOldName=majorName
+      this.majorNewName=majorName
       this.majorOldSchool=schoolName
       this.majorNewSchool=schoolName
       this.dialogVisible2 = true

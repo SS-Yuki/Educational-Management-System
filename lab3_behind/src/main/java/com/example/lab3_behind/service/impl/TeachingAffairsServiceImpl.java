@@ -65,7 +65,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     }
 
     @Override
-    public Page<TimeTable> getAPageTimeTable(Integer page, Integer size, String search){
+    public Page<TimeTable> findAPageTimeTable(Integer page, Integer size, String search){
         Pageable pageable =  PageRequest.of(page - 1, size);
         if(search.isEmpty()){
             return timeTableRepository.findAll(pageable);

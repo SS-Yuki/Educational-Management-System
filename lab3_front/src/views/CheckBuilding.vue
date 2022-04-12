@@ -121,7 +121,7 @@ export default {
       this.buildingName=''
     },
     save:function (){
-      request.post("/admin/addBuilding", buildingName).then(res => {
+      request.post("/admin/addBuilding", this.buildingName).then(res => {
         console.log(res)
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗

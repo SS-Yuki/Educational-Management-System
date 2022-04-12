@@ -39,8 +39,18 @@
     <div>
       <el-dialog v-model="dialogVisible" title="添加新专业" width="30%">
         <el-form :model="addSchool" label-width="120px">
+<!--          <el-form-item label="院系" prop="school_major">-->
+<!--            <el-cascader  v-model="addNewSchools" :options="options" @change="school_major_select"/>-->
+<!--          </el-form-item>-->
           <el-form-item label="院系" prop="school_major">
-            <el-cascader  v-model="addMajor.schoolName" :options="options" @change="school_major_select"/>
+            <el-select v-model="addMajor.schoolName" class="m-2" placeholder="请选择" size="small">
+              <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="专业">
             <el-input v-model="addMajor.majorName" />
@@ -60,8 +70,18 @@
     <div>
       <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
         <el-form :model="newSchool" label-width="120px">
+<!--          <el-form-item label="院系" prop="school_major">-->
+<!--            <el-cascader  v-model="newSchools" :options="options"/>-->
+<!--          </el-form-item>-->
           <el-form-item label="院系" prop="school_major">
-            <el-cascader  v-model="addMajor.schoolName" :options="options"/>
+            <el-select v-model="majorNewSchool" class="m-2" placeholder="请选择" size="small">
+              <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="专业">
             <el-input v-model="majorNewName" />
@@ -88,6 +108,7 @@ export default {
   name: "CheckMajor",
   data(){
     return{
+      value:'',
       options:[],
       total:0,
       pageSize:10,
@@ -180,7 +201,6 @@ export default {
       this.majorOldName=majorName
       this.majorNewName=majorName
       this.majorOldSchool=schoolName
-      this.majorNewSchool=schoolName
       this.dialogVisible2 = true
       this.newMajor={}
     },

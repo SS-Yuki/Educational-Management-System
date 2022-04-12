@@ -2,9 +2,13 @@
   <div class="checkschool">
     <div>
       <div class="add" style="margin: 10px 0">
-        <el-button size="large" @click="add" type="primary">新增</el-button>
-        <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
-        <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
+        <div style="float: left">
+          <el-button size="large" @click="add" type="primary">新增</el-button>
+        </div>
+        <div style="float: left">
+          <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
+          <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
+        </div>
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
         <el-table-column prop="timeName" label="事件" width="200" />

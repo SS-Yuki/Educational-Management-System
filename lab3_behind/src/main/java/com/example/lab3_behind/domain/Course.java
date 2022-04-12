@@ -25,8 +25,11 @@ public class Course {
     @Column(name = "course_name", length = 256, nullable = true)
     private String courseName;
 
-    @Column(name = "teacher", nullable = true)
-    private String teacher;
+    @Column(name = "teacher_num", nullable = true)
+    private String teacherNum;
+
+    @Column(name = "teacher_name", nullable = true)
+    private String teacherName;
 
     @Column(name = "department ")
     private String department ;
@@ -63,7 +66,21 @@ public class Course {
         this.classPeriod = courseApplyingData.getClassPeriod();
         this.credits = courseApplyingData.getCredits();
         this.department = courseApplyingData.getDepartment();
-        this.teacher = courseApplyingData.getTeacher();
+        this.teacherNum = courseApplyingData.getTeacherNum();
         this.introduction = courseApplyingData.getIntroduction();
+    }
+
+    public Course(CourseApplying courseApplying){
+        this.capacity = courseApplying.getCapacity();
+        this.courseName = courseApplying.getCourseName();
+        this.courseNumber = courseApplying.getCourseNumber();
+        this.classroom = courseApplying.getClassroom();
+        this.creditHours = courseApplying.getCreditHours();
+        this.classPeriod = courseApplying.getClassPeriod();
+        this.credits = courseApplying.getCredits();
+        this.department = courseApplying.getDepartment();
+        this.teacherNum = courseApplying.getTeacherNum();
+        this.introduction = courseApplying.getIntroduction();
+        this.teacherName = courseApplying.getTeacherName();
     }
 }

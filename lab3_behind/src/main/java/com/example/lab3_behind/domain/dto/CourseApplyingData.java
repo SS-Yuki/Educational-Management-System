@@ -12,7 +12,7 @@ public class CourseApplyingData {
 
     private String courseName;
 
-    private String teacher;
+    private String teacherNum;
 
     private String department ;
 

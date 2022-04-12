@@ -98,7 +98,7 @@ public class AdminBuildingController {
             return Result.fail(722,e.getMessage());
         }
     }
-    @RequestMapping("/findBuildingPage")
+    @RequestMapping("/findClassroomPage")
     public Result findClassroomPage(@RequestBody PageSearchData pageSearchData){
         Map<String,Object> map = new HashMap<>();
         Page<Classroom> classroomPage = teachingAffairsService.findAPageClassroom(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch());

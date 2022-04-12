@@ -1,19 +1,42 @@
 
 <template>
-  <div class="viewCourse">
-    <div>
-      <div class="add" style="margin: 10px 0">
-<!--        <el-button size="large" @click="add" type="primary">新增</el-button>-->
+  <div style="margin: 50px 100px ">
+      <div style="margin-bottom: 20px">
         <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
         <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column prop="majorName" label="课程" width="120" />
-        <el-table-column prop="schoolName" label="授课教师" width="120" />
-        <el-table-column fixed="right" label="操作" width="120">
+        <el-table-column prop="courseId" label="courseId" width="0" v-if="false" />
+        <el-table-column prop="courseName" label="课程名" width="150" />
+        <el-table-column prop="courseNumber" label="课程编号" width="150" />
+        <el-table-column prop="teacherNum" label="教师工号" width="150" v-if="false"/>
+        <el-table-column prop="major" label="开课专业" width="150" />
+        <el-table-column prop="school" label="开课院系" width="150" />
+        <el-table-column prop="classPeriod" label="时间" width="0" v-if="false"  />
+        <el-table-column prop="classroom" label="教室" width="0" v-if="false" />
+        <el-table-column prop="creditHours" label="学时" width="0" v-if="false" />
+        <el-table-column prop="credits" label="学分" width="0" v-if="false" />
+        <el-table-column prop="capacity" label="容量" width="0" v-if="false" />
+        <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
+        <el-table-column prop="applicant" label="申请人" width="0" v-if="false" />
+        <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(scope.row.majorName,scope.row.schoolName)">详情</el-button>
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.majorName,scope.row.schoolName)">
+            <el-button type="text" size="small" @click="handleEdit(
+                scope.row.courseId,
+                scope.row.courseName,
+                scope.row.courseNumber,
+                scope.row.teacherNum,
+                scope.row.major,
+                scope.row.school,
+                scope.row.classPeriod,
+                scope.row.classroom,
+                scope.row.creditHours,
+                scope.row.credits,
+                scope.row.capacity,
+                scope.row.introduction,
+                scope.row.applicant
+                )">查看</el-button>
+            <el-popconfirm title="确认选课?" @confirm="this.load()">
               <template #reference>
                 <el-button type="text">选课</el-button>
               </template>
@@ -37,123 +60,93 @@
       </div>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible" title="添加新专业" width="30%">
-        <el-form :model="addSchool" label-width="120px">
-          <!--          <el-form-item label="院系" prop="school_major">-->
-          <!--            <el-cascader  v-model="addNewSchools" :options="options" @change="school_major_select"/>-->
-          <!--          </el-form-item>-->
-          <el-form-item label="院系" prop="school_major">
-            <el-select v-model="addMajor.schoolName" class="m-2" placeholder="请选择" size="small">
-              <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-              />
-            </el-select>
+      <el-dialog v-model="dialogVisible" title="查看课程信息" width="30%">
+        <el-form :model="editCourse" label-width="120px">
+          <el-form-item label="id">
+            <el-input v-model="editCourse.id" />
           </el-form-item>
-          <el-form-item label="专业">
-            <el-input v-model="addMajor.majorName" />
+          <el-form-item label="课程名">
+            <el-input v-model="editCourse.courseName" />
+          </el-form-item>
+          <el-form-item label="课程编号">
+            <el-input v-model="editCourse.courseNumber" />
+          </el-form-item>
+          <el-form-item label="教师工号">
+            <el-input v-model="editCourse.teacherNum" readonly="readonly"/>
+          </el-form-item>
+          <el-form-item label="开课专业">
+            <el-input v-model="editCourse.major" readonly="readonly"/>
+          </el-form-item>
+          <el-form-item label="开课院系">
+            <el-input v-model="editCourse.school" readonly="readonly"/>
+          </el-form-item>
+          <el-form-item label="上课时间">
+            <el-input v-model="editCourse.classPeriod" />
+          </el-form-item>
+          <el-form-item label="教室">
+            <el-input v-model="editCourse.classroom" />
+          </el-form-item>
+          <el-form-item label="学时">
+            <el-input v-model="editCourse.creditHours" />
+          </el-form-item>
+          <el-form-item label="学分">
+            <el-input v-model="editCourse.credits" />
+          </el-form-item>
+          <el-form-item label="容量">
+            <el-input v-model="editCourse.capacity" />
           </el-form-item>
           <el-form-item label="介绍">
-            <el-input v-model="addMajor.introduction"/>
+            <el-input v-model="editCourse.introduction" />
           </el-form-item>
           <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="save">确认</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确认</el-button>
       </span>
         </el-form>
         <template #footer>
         </template>
       </el-dialog>
     </div>
-<!--    <div>-->
-<!--      <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">-->
-<!--        <el-form :model="newSchool" label-width="120px">-->
-<!--          &lt;!&ndash;          <el-form-item label="院系" prop="school_major">&ndash;&gt;-->
-<!--          &lt;!&ndash;            <el-cascader  v-model="newSchools" :options="options"/>&ndash;&gt;-->
-<!--          &lt;!&ndash;          </el-form-item>&ndash;&gt;-->
-<!--          <el-form-item label="院系" prop="school_major">-->
-<!--            <el-select v-model="majorNewSchool" class="m-2" placeholder="请选择" size="small">-->
-<!--              <el-option-->
-<!--                  v-for="item in options"-->
-<!--                  :key="item.value"-->
-<!--                  :label="item.label"-->
-<!--                  :value="item.value"-->
-<!--              />-->
-<!--            </el-select>-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="专业">-->
-<!--            <el-input v-model="majorNewName" />-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="介绍">-->
-<!--            <el-input v-model="introduction"/>-->
-<!--          </el-form-item>-->
-<!--          <span class="dialog-footer">-->
-<!--        <el-button @click="dialogVisible = false">取消</el-button>-->
-<!--        <el-button type="primary" @click="saveEdit">确认</el-button>-->
-<!--      </span>-->
-<!--        </el-form>-->
-<!--        <template #footer>-->
-<!--        </template>-->
-<!--      </el-dialog>-->
-<!--    </div>-->
-  </div>
+
 </template>
 
 <script>
 import request from "@/utils/request";
 
 export default {
-  name: "ViewCourse",
+  name: "CheckCourse",
   data(){
     return{
-      value:'',
-      options:[],
       total:0,
       pageSize:10,
       currentPage:1,
       search:'',
+
       dialogVisible:false,
-      dialogVisible2:false,
-      majorOldName:'',
-      majorNewName:'',
-      introduction:'',
-      majorOldSchool:'',
-      majorNewSchool:'',
-      addMajor:{
-        majorName:'',
-        schoolName:'',
-        introduction:''
+      editCourse:{
+        id:0,
+        courseName:'',
+        courseNumber:'',
+        teacherNum:'',
+        major:'',
+        school:'',
+        classPeriod:'',
+        classroom:'',
+        creditHours:0,
+        credits:0,
+        capacity:0,
+        introduction:'',
+        applicant:''
       },
-      // newSchool:{
-      //   oldName:'',
-      //   newName:'',
-      //   introduction:''
-      // },
       tableData:[]
     }
   },
   mounted() {
     this.load()
-    this.getOption()
   },
   methods:{
-    getOption: function () {
-      request.post("/admin/allMajors").then(res => {
-        console.log(res)
-        let that = this
-        if (!res.data) return
-        res.data.data.schools.forEach (function (item) {
-          console.log(item);
-          let option = {value: item.school, label: item.school}
-          that.options.push(option)
-        })
-      })
-    },
     load(){
       console.log(this.pageData)
-      request.post("/admin/findMajorPage",{
+      request.post("/student/selectCourse",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search
@@ -172,51 +165,21 @@ export default {
         }
       })
     },
-    add:function (){
+    handleEdit(courseId,courseName,courseNumber,teacherNum,major,school,classPeriod,classroom,
+               creditHours,credits,capacity,introduction,applicant){
       this.dialogVisible=true
-      this.addMajor={}
-    },
-    save:function (){
-      request.post("/admin/addMajor", this.addMajor).then(res => {
-        console.log(res)
-        this.load() // 刷新表格的数据
-        this.dialogVisible = false  // 关闭弹窗
-      })
-    },
-    saveEdit(){
-      console.log(this.newSchool)
-      request.post("/admin/updateMajorInfo", {
-        majorOldName:this.majorOldName,
-        majorNewName:this.majorNewName,
-        introduction:this.introduction,
-        majorOldSchool:this.majorOldSchool,
-        majorNewSchool:this.majorNewSchool
-      }).then(res=>{
-        console.log(res)
-        this.load()
-        this.dialogVisible2=false
-      })
-    },
-    handleEdit(majorName,schoolName){
-      this.majorOldName=majorName
-      this.majorNewName=majorName
-      this.majorOldSchool=schoolName
-      this.dialogVisible2 = true
-      this.newMajor={}
-    },
-    handleDelete(majorName,schoolName) {
-      request.post("/admin/deleteMajor", {
-        majorName:majorName,
-        schoolName:schoolName
-      }).then(res => {
-        this.load()  // 删除之后重新加载表格的数据
-      })
-    },
-    handleClick:function (){
-
-    },
-    handleSizeChange:function (){
-
+      this.editCourse.id=courseId
+      this.editCourse.courseName=courseName
+      this.editCourse.courseNumber=courseNumber
+      this.editCourse.teacherNum=teacherNum
+      this.editCourse.major=major
+      this.editCourse.school=school
+      this.editCourse.classPeriod=classPeriod
+      this.editCourse.classroom=classroom
+      this.editCourse.creditHours=creditHours
+      this.editCourse.credits=credits
+      this.editCourse.capacity=capacity
+      this.editCourse.introduction=introduction
     },
     handleCurrentChange:function (pageNum){
       this.currentPage = pageNum
@@ -227,12 +190,5 @@ export default {
 </script>
 
 <style scoped>
-.viewCourse{
-  margin-left: 150px;
-  margin-top: 150px;
-  display: flex;
-}
-.add{
-  text-align: left;
-}
+
 </style>

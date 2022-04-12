@@ -159,8 +159,8 @@ export default {
         }
         else{
           this.$message({
-            type:"fail",
-            message: "失败"
+            type:"error",
+            message: res.data.msg
           })
         }
       })

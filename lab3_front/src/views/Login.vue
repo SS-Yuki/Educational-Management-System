@@ -3,7 +3,6 @@
     <div>
       <h1>复日大学教务系统</h1>
     </div>
-    <el-button @click="test">h</el-button>
     <div class="login">
       <el-form :model="login_data" size="normal" :rules="rules">
         <el-form-item prop="number">
@@ -98,9 +97,6 @@ export default {
         }
 
       })
-    },
-    test: function () {
-      console.log(sessionStorage.getItem('routes'))
     }
   },
 

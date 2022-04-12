@@ -42,7 +42,7 @@
 <!--          <el-form-item label="院系" prop="school_major">-->
 <!--            <el-cascader  v-model="addNewSchools" :options="options" @change="school_major_select"/>-->
 <!--          </el-form-item>-->
-          <el-form-item label="院系" prop="school_major">
+          <el-form-item label="所属院系" prop="school_major">
             <el-select v-model="addMajor.schoolName" class="m-2" placeholder="请选择" size="small">
               <el-option
                   v-for="item in options"
@@ -52,7 +52,7 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="专业">
+          <el-form-item label="专业名">
             <el-input v-model="addMajor.majorName" />
           </el-form-item>
           <el-form-item label="介绍">
@@ -68,7 +68,7 @@
       </el-dialog>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
+      <el-dialog v-model="dialogVisible2" title="编辑专业信息" width="30%">
         <el-form :model="newSchool" label-width="120px">
 <!--          <el-form-item label="院系" prop="school_major">-->
 <!--            <el-cascader  v-model="newSchools" :options="options"/>-->

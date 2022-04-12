@@ -38,10 +38,10 @@
     <div>
       <el-dialog v-model="dialogVisible" title="添加新院系" width="30%">
         <el-form :model="addSchool" label-width="120px">
-          <el-form-item label="新院系">
+          <el-form-item label="院系名">
             <el-input v-model="addSchool.schoolName" />
           </el-form-item>
-          <el-form-item label="新介绍">
+          <el-form-item label="介绍">
             <el-input v-model="addSchool.introduction"/>
           </el-form-item>
           <span class="dialog-footer">
@@ -54,12 +54,12 @@
       </el-dialog>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
+      <el-dialog v-model="dialogVisible2" title="编辑院系信息" width="30%">
         <el-form :model="newSchool" label-width="120px">
-          <el-form-item label="新院系">
+          <el-form-item label="院系">
             <el-input v-model="newName" />
           </el-form-item>
-          <el-form-item label="新介绍">
+          <el-form-item label="介绍">
             <el-input v-model="introduction"/>
           </el-form-item>
           <span class="dialog-footer">

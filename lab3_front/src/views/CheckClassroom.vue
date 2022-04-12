@@ -35,12 +35,12 @@
       </div>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible" title="添加新教学楼" width="30%">
+      <el-dialog v-model="dialogVisible" title="新教室信息" width="30%">
         <el-form :model="addClassroom" label-width="120px">
-          <el-form-item label="新教室">
+          <el-form-item label="新教室名称">
             <el-input v-model="addClassroom.classroomName" />
           </el-form-item>
-          <el-form-item label="新教学楼">
+          <el-form-item label="所属教学楼">
             <el-input v-model="addClassroom.buildingName" />
           </el-form-item>
           <span class="dialog-footer">

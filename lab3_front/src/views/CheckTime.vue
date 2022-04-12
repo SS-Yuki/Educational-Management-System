@@ -39,13 +39,13 @@
     <div>
       <el-dialog v-model="dialogVisible" title="添加新事件" width="30%">
         <el-form :model="addTime" label-width="120px">
-          <el-form-item label="新事件">
+          <el-form-item label="事件">
             <el-input v-model="addTime.timeName" />
           </el-form-item>
-          <el-form-item label="新起始时间">
+          <el-form-item label="开始时间">
             <el-input v-model="addTime.startTime" />
           </el-form-item>
-          <el-form-item label="新结束时间">
+          <el-form-item label="结束时间">
             <el-input v-model="addTime.endTime" />
           </el-form-item>
           <span class="dialog-footer">
@@ -58,12 +58,12 @@
       </el-dialog>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
+      <el-dialog v-model="dialogVisible2" title="编辑事件信息" width="30%">
         <el-form :model="newSchool" label-width="120px">
-          <el-form-item label="新开始时间">
+          <el-form-item label="开始时间">
             <el-input v-model="startTime" />
           </el-form-item>
-          <el-form-item label="新结束时间">
+          <el-form-item label="结束时间">
             <el-input v-model="endTime" />
           </el-form-item>
           <span class="dialog-footer">

@@ -1,10 +1,11 @@
 package com.example.lab3_behind.controller;
 
 
-import com.example.lab3_behind.common.PageSearchData;
-import com.example.lab3_behind.common.SchoolContents;
+import com.example.lab3_behind.common.*;
 import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
+import com.example.lab3_behind.domain.Student;
+import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.dto.*;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.domain.vo.StudentUpdatingData;
@@ -25,6 +26,7 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+
     @Autowired
     StudentService studentService;
     @Autowired
@@ -69,13 +71,34 @@ public class AdminController {
         Map<String,Object> map = new HashMap<>();
         try{
             String jobNumber = teacherUpdatingData.getJobNumber();
-            studentService.updateStudentInfo(new RevisableDataForAdmin(teacherUpdatingData),jobNumber);
+            teacherService.updateTeacherInfo(new RevisableDataForAdmin(teacherUpdatingData),jobNumber);
         }catch (Exception e){
             e.printStackTrace();
             return Result.fail(684,e.getMessage());
         }
         return Result.succ(map);
     }
+
+    @RequestMapping("/findStudentPage")
+    public Result findStudentPage(@RequestBody PageSearchData pageSearchData){
+        Map<String,Object> map = new HashMap<>();
+        Page<Student> studentPage = studentService.findAPageStudent(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch());
+        map.put("records", StudentContents.getContents(studentPage.getContent()));
+        map.put("total",studentPage.getTotalElements());
+        return Result.succ(map);
+    }
+
+    @RequestMapping("/findTeacherPage")
+    public Result findTeacherPage(@RequestBody PageSearchData pageSearchData){
+        Map<String,Object> map = new HashMap<>();
+        Page<Teacher> teacherPage = teacherService.findAPageTeacher(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch());
+        map.put("records", TeacherContents.getContents(teacherPage.getContent()));
+        map.put("total",teacherPage.getTotalElements());
+        return Result.succ(map);
+    }
+
+
+
 
 
 

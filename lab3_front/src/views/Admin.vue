@@ -21,18 +21,16 @@
             <el-menu-item-group>
               <el-menu-item index="1-1">
                 <router-link to="/admin/checkstudentinfo">查看学生信息</router-link>
-<!--                <router-view></router-view>-->
               </el-menu-item>
               <el-menu-item index="1-2">
                 <router-link to="/admin/checkteacherinfo">查看老师信息</router-link>
-<!--                <router-view></router-view>-->
               </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
           <el-sub-menu index="1">
             <template #title>
               <el-icon><location /></el-icon>
-              <span>课程信息管理</span>
+              <span>院系信息管理</span>
             </template>
             <el-menu-item-group>
               <el-menu-item index="1-1">
@@ -45,6 +43,44 @@
               </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
+          <el-sub-menu index="1">
+            <template #title>
+              <el-icon><location /></el-icon>
+              <span>教务信息管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="1-1">
+                <router-link to="/admin/checkstudentinfo">教学楼管理</router-link>
+              </el-menu-item>
+              <el-menu-item index="1-2">
+                <router-link to="/admin/checkteacherinfo">教室管理</router-link>
+              </el-menu-item>
+              <el-menu-item index="1-3">
+                <router-link to="/admin/checkteacherinfo">上课时间管理</router-link>
+              </el-menu-item>
+            </el-menu-item-group>
+          </el-sub-menu>
+
+          <el-sub-menu index="1">
+            <template #title>
+              <el-icon><location /></el-icon>
+              <span>课程信息管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="1-1">
+                <router-link to="/admin/checkstudentinfo">课程管理</router-link>
+              </el-menu-item>
+              <el-menu-item index="1-2">
+                <router-link to="/admin/checkteacherinfo">教师申请管理</router-link>
+              </el-menu-item>
+              <el-menu-item index="1-3">
+                <router-link to="/admin/checkteacherinfo">
+
+                </router-link>
+              </el-menu-item>
+            </el-menu-item-group>
+          </el-sub-menu>
+
         </el-menu>
       </el-col>
     </el-row>

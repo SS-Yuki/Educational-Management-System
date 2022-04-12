@@ -81,9 +81,11 @@ public class AdminSchoolController {
 
     @PostMapping("/allSchool")
     public Result allSchool(){
+        Map<String,Object> map = new HashMap<>();
         try{
             List<String> schoolNames = schoolService.getAllSchool();
-            return Result.succ(null);
+            map.put("schools",schoolNames);
+            return Result.succ(map);
         }
         catch (Exception e){
             //e.printStackTrace();
@@ -98,9 +100,9 @@ public class AdminSchoolController {
         Map<String,Object> map = new HashMap<>();
         try{
             Major major = schoolService.insertMajor(majorAddingData);
-            map.put("majorName",major);
+            map.put("majorName",major.getName());
         }catch (Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             return Result.fail(682,e.getMessage());
         }
         return Result.succ(map);

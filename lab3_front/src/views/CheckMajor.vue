@@ -39,14 +39,23 @@
     <div>
       <el-dialog v-model="dialogVisible" title="添加新专业" width="30%">
         <el-form :model="addSchool" label-width="120px">
-          <el-form-item label="新专业">
+<!--          <el-form-item label="院系" prop="school_major">-->
+<!--            <el-cascader  v-model="addNewSchools" :options="options" @change="school_major_select"/>-->
+<!--          </el-form-item>-->
+          <el-form-item label="院系" prop="school_major">
+            <el-select v-model="addMajor.schoolName" class="m-2" placeholder="请选择" size="small">
+              <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="专业">
             <el-input v-model="addMajor.majorName" />
           </el-form-item>
-          <el-form-item label="院系">
-            <el-input v-model="addMajor.schoolName" />
-<!--            <el-cascader  v-model="addMajor.schoolName" :options="options" @change="school_major_select"/>-->
-          </el-form-item>
-          <el-form-item label="新介绍">
+          <el-form-item label="介绍">
             <el-input v-model="addMajor.introduction"/>
           </el-form-item>
           <span class="dialog-footer">
@@ -61,13 +70,23 @@
     <div>
       <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
         <el-form :model="newSchool" label-width="120px">
-          <el-form-item label="新专业">
+<!--          <el-form-item label="院系" prop="school_major">-->
+<!--            <el-cascader  v-model="newSchools" :options="options"/>-->
+<!--          </el-form-item>-->
+          <el-form-item label="院系" prop="school_major">
+            <el-select v-model="majorNewSchool" class="m-2" placeholder="请选择" size="small">
+              <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="专业">
             <el-input v-model="majorNewName" />
           </el-form-item>
-          <el-form-item label="院系">
-            <el-input v-model="majorNewSchool" />
-          </el-form-item>
-          <el-form-item label="新介绍">
+          <el-form-item label="介绍">
             <el-input v-model="introduction"/>
           </el-form-item>
           <span class="dialog-footer">
@@ -89,6 +108,7 @@ export default {
   name: "CheckMajor",
   data(){
     return{
+      value:'',
       options:[],
       total:0,
       pageSize:10,
@@ -116,10 +136,20 @@ export default {
   },
   mounted() {
     this.load()
+    this.getOption()
   },
   methods:{
-    school_major_select(){
-
+    getOption: function () {
+      request.post("/admin/allMajors").then(res => {
+        console.log(res)
+        let that = this
+        if (!res.data) return
+        res.data.data.schools.forEach (function (item) {
+          console.log(item);
+          let option = {value: item.school, label: item.school}
+          that.options.push(option)
+        })
+      })
     },
     load(){
       console.log(this.pageData)
@@ -169,8 +199,8 @@ export default {
     },
     handleEdit(majorName,schoolName){
       this.majorOldName=majorName
+      this.majorNewName=majorName
       this.majorOldSchool=schoolName
-      this.majorNewSchool=schoolName
       this.dialogVisible2 = true
       this.newMajor={}
     },

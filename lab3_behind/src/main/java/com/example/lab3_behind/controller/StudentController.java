@@ -4,13 +4,18 @@ package com.example.lab3_behind.controller;
 import com.example.lab3_behind.common.ChangePasswordData;
 import com.example.lab3_behind.common.JwtUserData;
 import com.example.lab3_behind.common.MaintainInfoData;
+import com.example.lab3_behind.common.PageSearchData;
+import com.example.lab3_behind.domain.Course;
+import com.example.lab3_behind.domain.CourseApplying;
 import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
 import com.example.lab3_behind.domain.resp.Result;
+import com.example.lab3_behind.service.CourseService;
 import com.example.lab3_behind.service.StudentService;
 import com.example.lab3_behind.service.UserAccountService;
 import com.example.lab3_behind.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +29,8 @@ public class StudentController {
     StudentService studentService;
     @Autowired
     UserAccountService userAccountService;
+    @Autowired
+    CourseService courseService;
 
     @PostMapping("/information")
     public Result information(@RequestBody String number,HttpServletRequest request){
@@ -99,6 +106,24 @@ public class StudentController {
             return Result.fail(680,e.getMessage());
         }
         return Result.succ(map);
+    }
+    @RequestMapping("/selectCourse")
+    public Result selectCourse(@RequestBody PageSearchData pageSearchData,
+                                 HttpServletRequest request){
+        try{
+            String token = request.getHeader("token");
+            JwtUserData jwtUserData = JwtUtil.getToken(token);
+            String number = jwtUserData.getNumber().replace("\"", "");
+            Map<String,Object> map = new HashMap<>();
+            Page<Course> coursePage = courseService.findAPageCourseForSelecting(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch(),number);
+            map.put("records",coursePage.getContent());
+            map.put("total",coursePage.getTotalElements());
+            return Result.succ(map);
+        }catch (Exception e){
+            //e.printStackTrace();
+            return Result.fail(870,e.getMessage());
+        }
+
     }
 
 }

@@ -12,7 +12,7 @@
         <el-table-column prop="idNum" label="身份证号" width="120" />
         <el-table-column prop="phoneNum" label="电话" width="120" />
         <el-table-column prop="email" label="邮箱" width="120" />
-        <el-table-column prop="stuStatue" label="状态" width="120" />
+        <el-table-column prop="stuStatus" label="状态" width="120" />
         <el-table-column prop="school" label="院系" width="120" />
         <el-table-column prop="major" label="专业" width="120" />
         <el-table-column fixed="right" label="操作" width="120">
@@ -53,16 +53,16 @@
           <el-form-item label="学号">
             <el-input v-model="addStudent.number" />
           </el-form-item>
-          <el-form-item label="姓名">
+          <el-form-item label="新姓名">
             <el-input v-model="addStudent.name" />
           </el-form-item>
-          <el-form-item label="电话">
+          <el-form-item label="新电话">
             <el-input v-model="addStudent.phoneNum" />
           </el-form-item>
-          <el-form-item label="身份证号">
+          <el-form-item label="新身份证号">
             <el-input v-model="addStudent.idNum" />
           </el-form-item>
-          <el-form-item label="邮箱">
+          <el-form-item label="新邮箱">
             <el-input v-model="addStudent.email" />
           </el-form-item>
 
@@ -145,7 +145,6 @@ export default {
       stuStatus:'',
       major:'',
       school:'',
-      school_major:'',
       addStudent:{
         number:'',
         name:'',
@@ -156,6 +155,11 @@ export default {
         school:'',
         major:''
       },
+      // newSchool:{
+      //   oldName:'',
+      //   newName:'',
+      //   introduction:''
+      // },
       tableData:[]
     }
   },
@@ -163,6 +167,9 @@ export default {
     this.load()
   },
   methods:{
+    school_major_select(){
+
+    },
     load(){
       console.log(this.pageData)
       request.post("/admin/findStudentPage",{
@@ -231,28 +238,6 @@ export default {
     handleCurrentChange:function (pageNum){
       this.currentPage = pageNum
       this.load()
-    },
-    getOption: function () {
-      request.post("/admin/allMajors").then(res => {
-        console.log(res)
-        let that = this
-        if (!res.data) return
-        res.data.forEach (function (item) {
-          console.log(item);
-          let option = {value: item.school, label: item.school, children: []}
-          if (!item.major) return
-          item.major.forEach (function (item) {
-            let child = {value: item, label: item}
-            option.children.push(child)
-          })
-          that.options.push(option)
-        })
-      })
-    },
-    school_major_select: function () {
-      this.addStudent.school = this.school_major[0]
-      this.addStudent.major = this.school_major[1]
-      console.log(this.addStudent.major)
     }
   }
 }

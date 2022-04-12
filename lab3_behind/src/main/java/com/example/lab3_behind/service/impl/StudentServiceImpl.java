@@ -34,15 +34,15 @@ public class StudentServiceImpl implements StudentService {
         student.setSchool(search);
         student.setStuNumber(search);
         student.setIdNum(search);
-        ExampleMatcher matcher = ExampleMatcher.matching()
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("stu_num", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("stuNum", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("email", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("phone_num", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("phoneNum", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("id_num", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("id", "user_account", "status");
+                .withMatcher("idNum", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withIgnorePaths("id", "userAccount", "status");
         Example<Student> example = Example.of(student, matcher);
         return studentRepository.findAll(example,pageable);
     }

@@ -16,7 +16,11 @@
         <el-table-column prop="endTime" label="结束时间" width="200" />
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(scope.row.timeName)">编辑</el-button>
+            <el-button type="text" size="small" @click="handleEdit(
+                scope.row.timeName,
+                scope.row.startTime,
+                scope.row.endTime
+                )">编辑</el-button>
             <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.timeName)">
               <template #reference>
                 <el-button type="text">删除</el-button>
@@ -156,8 +160,10 @@ export default {
         this.dialogVisible2=false
       })
     },
-    handleEdit(timeName){
+    handleEdit(timeName,startTime,endTime){
       this.timeName=timeName
+      this.startTime=startTime
+      this.endTime=endTime
       this.dialogVisible2 = true
       this.newBuildingName=''
     },

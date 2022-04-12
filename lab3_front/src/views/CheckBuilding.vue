@@ -146,7 +146,7 @@ export default {
     handleEdit(buildingName){
       this.oldBuildingName=buildingName
       this.dialogVisible2 = true
-      this.newBuildingName=''
+      this.newBuildingName=buildingName
     },
     handleDelete(buildingName) {
       request.post("/admin/deleteBuilding",buildingName).then(res => {

@@ -2,18 +2,18 @@
   <div>
     <div id="personalinfo" class="personalinfo">
       <div class="display">
-        <el-table :data="tableData" border :show-header="status" style="width: 100%">
+        <el-table :data="tableData" border :show-header="status" style="width: 100%" size="large">
           <el-table-column prop="key"  width="180" />
           <el-table-column prop="value"  width="180" />
         </el-table>
-        <div>学工号为:{{info.number}}</div>
-        <div>姓名为:{{info.name}}</div>
-        <div>身份为:{{info.role}}</div>
-        <div>身份证号为:{{info.idNum}}</div>
-        <div>电话号为:{{info.phoneNum}}</div>
-        <div>邮箱为:{{info.email}}</div>
-        <div>院系为:{{info.school}}</div>
-        <div>专业为:{{info.major}}</div>
+<!--        <div>学工号为:{{info.number}}</div>-->
+<!--        <div>姓名为:{{info.name}}</div>-->
+<!--        <div>身份为:{{info.role}}</div>-->
+<!--        <div>身份证号为:{{info.idNum}}</div>-->
+<!--        <div>电话号为:{{info.phoneNum}}</div>-->
+<!--        <div>邮箱为:{{info.email}}</div>-->
+<!--        <div>院系为:{{info.school}}</div>-->
+<!--        <div>专业为:{{info.major}}</div>-->
         <el-button size="small" @click="input_newinfo">
           编辑
         </el-button>
@@ -57,9 +57,9 @@ export default {
         major:''
       },
       new_info:{
-        number:'this.info.number',
-        email:'this.info.email',
-        phoneNum:'this.info.phoneNum'
+        number:'',
+        email:'',
+        phoneNum:''
       },
       status: false,
       tableData : [
@@ -101,8 +101,11 @@ export default {
   methods:{
     send_newinfo:function (){
       this.dialogVisible=false
-      request.post("/teacher/maintaininfo",this.new_info).then(res=>{
-        console.log(res)
+      this.new_info.number = JSON.parse(sessionStorage.getItem("user")).number
+      request.post("/teacher/maintainInfo",this.new_info).then(res=>{
+        console.log(res.data.data)
+        this.tableData[6].value = this.new_info.phoneNum
+        this.tableData[7].value = this.new_info.email
       })
     },
     input_newinfo:function (){
@@ -112,7 +115,7 @@ export default {
     get_info:function (){
       let user = JSON.parse(sessionStorage.getItem("user"))
       request.post("teacher/information", user.number).then(res=>{
-        console.log(res)
+        console.log(res.data)
         this.info = res.data.data
         this.tableData[0].value = this.info.name
         this.tableData[1].value = this.info.idNum

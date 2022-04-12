@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CourseApplyingRepository extends JpaRepository<CourseApplying, Long> {
-    CourseApplying findById(Integer id);
+    CourseApplying findByApplyId(Integer applyId);
     Page<CourseApplying> findAllByTeacherNum(String teacherNum, Pageable pageable);
     Page<CourseApplying> findAllByTeacherNum(String teacherNum, Example example, Pageable pageable);
 }

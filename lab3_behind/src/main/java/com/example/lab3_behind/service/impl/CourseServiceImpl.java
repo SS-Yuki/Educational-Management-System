@@ -66,7 +66,7 @@ public class CourseServiceImpl implements CourseService {
         courseApplying.setCourseName(search);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("id", "classPeriod", "creditHours", "credits", "capacity", "type");
+                .withIgnorePaths("applyId", "classPeriod", "creditHours", "credits", "capacity", "type");
         Example<CourseApplying> example = Example.of(courseApplying, matcher);
         return courseApplyingRepository.findAllByTeacherNum(jobNum, example, pageable);
     }
@@ -93,14 +93,14 @@ public class CourseServiceImpl implements CourseService {
                 .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("applicant", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("id", "classPeriod", "creditHours", "credits", "capacity", "type");
+                .withIgnorePaths("applyId", "classPeriod", "creditHours", "credits", "capacity", "type");
         Example<CourseApplying> example = Example.of(courseApplying, matcher);
         return courseApplyingRepository.findAll(example,pageable);
     }
 
     @Override
     public Course ApproveCourseApplying(Integer courseApplyingId) throws Exception {
-        CourseApplying courseApplying = courseApplyingRepository.findById(courseApplyingId);
+        CourseApplying courseApplying = courseApplyingRepository.findByApplyId(courseApplyingId);
         if(courseApplying == null){
             throw new Exception("该申请不存在");
         }
@@ -138,7 +138,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course updateCourse(CourseApplyingData courseApplyingData) throws Exception {
-        Course course = courseRepository.findById(courseApplyingData.getId());
+        Course course = courseRepository.findByCourseId(courseApplyingData.getId());
         if(course == null){
             throw new Exception("所修改课程不存在，或已被删除");
         }
@@ -163,7 +163,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course deleteCourse(Integer courseId) throws Exception {
-        Course course = courseRepository.findById(courseId);
+        Course course = courseRepository.findByCourseId(courseId);
         if(course == null){
             throw new Exception("所删除课程不存在，或已被删除");
         }

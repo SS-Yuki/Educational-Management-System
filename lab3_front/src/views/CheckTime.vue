@@ -1,5 +1,5 @@
 <template>
-  <div class="checkclassroom">
+  <div class="checkschool">
     <div>
       <div class="add" style="margin: 10px 0">
         <el-button size="large" @click="add" type="primary">新增</el-button>
@@ -7,11 +7,13 @@
         <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column prop="classroomName" label="教室" width="300" />
-        <el-table-column prop="buildingName" label="教学楼" width="300" />
-        <el-table-column fixed="right" label="操作" width="300">
+        <el-table-column prop="timeName" label="事件" width="200" />
+        <el-table-column prop="startTime" label="开始时间" width="200" />
+        <el-table-column prop="endTime" label="结束时间" width="200" />
+        <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.buildingName,scope.row.classroomName)">
+            <el-button type="text" size="small" @click="handleEdit(scope.row.timeName)">编辑</el-button>
+            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.timeName)">
               <template #reference>
                 <el-button type="text">删除</el-button>
               </template>
@@ -35,17 +37,38 @@
       </div>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible" title="添加新教学楼" width="30%">
-        <el-form :model="addClassroom" label-width="120px">
-          <el-form-item label="新教室">
-            <el-input v-model="addClassroom.classroomName" />
+      <el-dialog v-model="dialogVisible" title="添加新事件" width="30%">
+        <el-form :model="addTime" label-width="120px">
+          <el-form-item label="新事件">
+            <el-input v-model="addTime.timeName" />
           </el-form-item>
-          <el-form-item label="新教学楼">
-            <el-input v-model="addClassroom.buildingName" />
+          <el-form-item label="新起始时间">
+            <el-input v-model="addTime.startTime" />
+          </el-form-item>
+          <el-form-item label="新结束时间">
+            <el-input v-model="addTime.endTime" />
           </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="save">确认</el-button>
+      </span>
+        </el-form>
+        <template #footer>
+        </template>
+      </el-dialog>
+    </div>
+    <div>
+      <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
+        <el-form :model="newSchool" label-width="120px">
+          <el-form-item label="新开始时间">
+            <el-input v-model="startTime" />
+          </el-form-item>
+          <el-form-item label="新结束时间">
+            <el-input v-model="endTime" />
+          </el-form-item>
+          <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="saveEdit">确认</el-button>
       </span>
         </el-form>
         <template #footer>
@@ -59,7 +82,7 @@
 import request from "@/utils/request";
 
 export default {
-  name: "CheckClassroom",
+  name: "CheckTime",
   data(){
     return{
       total:0,
@@ -68,9 +91,13 @@ export default {
       search:'',
       dialogVisible:false,
       dialogVisible2:false,
-      addClassroom:{
-        classroomName:'',
-        buildingName:''
+      timeName:'',
+      startTime:'',
+      endTime:'',
+      addTime:{
+        timeName:'',
+        startTime:'',
+        endTime:''
       },
       tableData:[]
     }
@@ -81,7 +108,7 @@ export default {
   methods:{
     load(){
       console.log(this.pageData)
-      request.post("/admin/findClassroomPage",{
+      request.post("/admin/findBuildingPage",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search
@@ -105,17 +132,31 @@ export default {
       this.buildingName=''
     },
     save:function (){
-      request.post("/admin/addClassroom", this.addClassroom).then(res => {
+      request.post("/admin/addTime", this.addTime).then(res => {
         console.log(res)
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })
     },
-    handleDelete(buildingName,classroomName) {
-      request.post("/admin/deleteClassrom", {
-        buildingName:buildingName,
-        classroomName:classroomName
-      }).then(res => {
+    saveEdit(){
+      console.log(this.newSchool)
+      request.post("/admin/updateTimeInfo", {
+        timeName:this.timeName,
+        startTime: this.startTime,
+        endTime: this.endTime
+      }).then(res=>{
+        console.log(res)
+        this.load()
+        this.dialogVisible2=false
+      })
+    },
+    handleEdit(timeName){
+      this.timeName=timeName
+      this.dialogVisible2 = true
+      this.newBuildingName=''
+    },
+    handleDelete(timeName) {
+      request.post("/admin/deleteTime",timeName).then(res => {
         this.load()  // 删除之后重新加载表格的数据
       })
     },
@@ -134,7 +175,7 @@ export default {
 </script>
 
 <style scoped>
-.checkclassroom{
+.checkschool{
   margin-left: 100px;
   display: flex;
 }

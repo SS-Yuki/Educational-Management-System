@@ -14,9 +14,12 @@ import java.util.List;
 @Table(name = "teaching_building")
 public class TeachingBuilding {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @Column(name = "name")
-    String name;
+    private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "teachingBuilding")
-    List<Classroom> classrooms;
+    private List<Classroom> classrooms;
 }

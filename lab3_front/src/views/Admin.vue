@@ -50,13 +50,13 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="1-1">
-                <router-link to="/admin/checkstudentinfo">教学楼管理</router-link>
+                <router-link to="/admin/checkbuilding">教学楼管理</router-link>
               </el-menu-item>
               <el-menu-item index="1-2">
-                <router-link to="/admin/checkteacherinfo">教室管理</router-link>
+                <router-link to="/admin/checkclassroom">教室管理</router-link>
               </el-menu-item>
               <el-menu-item index="1-3">
-                <router-link to="/admin/checkteacherinfo">上课时间管理</router-link>
+                <router-link to="/admin/checktime">上课时间管理</router-link>
               </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
@@ -68,10 +68,10 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="1-1">
-                <router-link to="/admin/checkstudentinfo">课程管理</router-link>
+                <router-link to="/admin/checkcourse">课程管理</router-link>
               </el-menu-item>
               <el-menu-item index="1-2">
-                <router-link to="/admin/checkteacherinfo">教师申请管理</router-link>
+                <router-link to="/admin/checkapplication">教师申请管理</router-link>
               </el-menu-item>
               <el-menu-item index="1-3">
                 <router-link to="/admin/checkteacherinfo">

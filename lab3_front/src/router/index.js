@@ -12,6 +12,10 @@ import CheckTeacherInfo from "@/views/CheckTeacherInfo";
 import CheckSchool from "@/views/CheckSchool";
 import CheckMajor from "@/views/CheckMajor";
 import store from '@/store'
+import CheckBuilding from "@/views/CheckBuilding";
+import CheckClassroom from "@/views/CheckClassroom";
+import CheckTime from "@/views/CheckTime";
+import CheckApplication from "@/views/CheckApplication";
 
 
 export const routes = [
@@ -57,7 +61,32 @@ export const admin_routes =
             path: 'checkmajor',
             name: 'CheckMajor',
             component: CheckMajor
-        }
+        },
+        {
+            path: 'checkbuilding',
+            name: 'CheckBuilding',
+            component: CheckBuilding
+        },
+        {
+            path: 'checkclassroom',
+            name: 'CheckClassroom',
+            component: CheckClassroom
+        },
+        {
+            path: 'checktime',
+            name: 'CheckTime',
+            component: CheckTime
+        },
+        {
+            path: 'checkcourse',
+            name: 'CheckCourse',
+            component: CheckCourse
+        },
+        {
+            path: 'checkapplication',
+            name: 'CheckApplication',
+            component: CheckApplication
+        },
     ]
   }
 

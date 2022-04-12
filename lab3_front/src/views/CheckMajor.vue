@@ -37,7 +37,7 @@
       </div>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
+      <el-dialog v-model="dialogVisible" title="添加新专业" width="30%">
         <el-form :model="addSchool" label-width="120px">
           <el-form-item label="新专业">
             <el-input v-model="addMajor.majorName" />

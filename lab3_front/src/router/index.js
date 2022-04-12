@@ -25,11 +25,11 @@ export const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: "/:catchAll(.*)",
+    redirect: '/login'
   }
-  // {
-  //   path: "/:catchAll(.*)",
-  //   redirect: '/login'
-  // }
   ]
 
 export const admin_routes =

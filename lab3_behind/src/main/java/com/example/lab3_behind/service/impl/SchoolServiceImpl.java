@@ -58,11 +58,13 @@ public class SchoolServiceImpl implements SchoolService {
         if(school == null){
             throw new Exception("学院信息错误，学院不存在");
         }
-        Major major = new Major();
-        major.setSchool(school);
-        major.setName(majorData.getMajorName());
-        major.setIntroduction(majorData.getIntroduction());
+        Major major = new Major(null, majorData.getMajorName(), school, majorData.getIntroduction());
         school.getMajors().add(major);
+//        Major major = new Major();
+//        major.setSchool(school);
+//        major.setName(majorData.getMajorName());
+//        major.setIntroduction(majorData.getIntroduction());
+//        school.getMajors().add(major);
         schoolRepository.save(school);
         return major;
     }

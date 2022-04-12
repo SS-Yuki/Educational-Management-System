@@ -23,4 +23,5 @@ public class Authority {
 
     @Column(name = "authority_value")
     private String authorityValue;
+
 }

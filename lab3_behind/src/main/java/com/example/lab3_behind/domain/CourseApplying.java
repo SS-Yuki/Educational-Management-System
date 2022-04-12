@@ -17,8 +17,11 @@ import javax.persistence.*;
 public class CourseApplying {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "apply_id")
+    private Integer applyId;
+
+    @Column(name = "course_id")
+    private Integer courseId;
 
     @Column(name = "course_number", length = 36, nullable = true)
     private String courseNumber;

@@ -225,7 +225,7 @@ export default {
     handleChange(file, fileList) {
       this.fileTemp = file.raw
       if (this.fileTemp) {
-        if ((this.fileTemp.type == '.csv') || (this.fileTemp.type == 'application/vnd.ms-excel')) {
+        if (this.fileTemp.type==='text/csv') {
           this.importcsv(file.raw)
         } else {
           this.$message({

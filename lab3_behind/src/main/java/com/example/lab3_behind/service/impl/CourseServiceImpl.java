@@ -54,17 +54,18 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Page<Course> findAPageCourseOfTeacher(Integer page, Integer size, String search, String jobNumber) throws Exception {
         Teacher teacher = teacherRepository.findByJobNumber(jobNumber);
-//        if(teacher == null) {
-//            throw new Exception("教师不存在");
-//        }
+        if(teacher == null) {
+            throw new Exception("教师不存在");
+        }
         Pageable pageable =  PageRequest.of(page - 1, size);
-//        if(search.isEmpty()){
-//            return courseRepository.findAllByTeacherNum(jobNumber, pageable);
-//        }
+        if(search.isEmpty()){
+            return courseRepository.findAllByTeacherNum(jobNumber, pageable);
+        }
         Course course = new Course();
         course.setCourseName(search);
         course.setTeacherNum(jobNumber);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withIgnoreCase(true)
                 .withMatcher("teacherNum", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withIgnorePaths("applyId", "classPeriod", "creditHours", "credits", "capacity", "type");
@@ -115,7 +116,7 @@ public class CourseServiceImpl implements CourseService {
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withIgnorePaths("applyId", "classPeriod", "creditHours", "credits", "capacity", "type");
         Example<CourseApplying> example = Example.of(courseApplying, matcher);
-        return courseApplyingRepository.findAll( example, pageable);
+        return courseApplyingRepository.findAllByTeacherNum(jobNum, example, pageable);
     }
 
     @Override

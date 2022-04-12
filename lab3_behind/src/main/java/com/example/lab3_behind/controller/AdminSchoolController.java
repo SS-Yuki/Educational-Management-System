@@ -98,9 +98,9 @@ public class AdminSchoolController {
         Map<String,Object> map = new HashMap<>();
         try{
             Major major = schoolService.insertMajor(majorAddingData);
-            map.put("majorName",major);
+            map.put("majorName",major.getName());
         }catch (Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             return Result.fail(682,e.getMessage());
         }
         return Result.succ(map);

@@ -18,7 +18,17 @@
         <el-table-column prop="password" label="密码" width="120" />
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(scope.row.number)">编辑</el-button>
+            <el-button type="text" size="small" @click="handleEdit(
+                scope.row.number,
+                scope.row.name,
+                scope.row.idNum,
+                scope.row.phoneNum,
+                scope.row.email,
+                scope.row.stuStatus,
+                scope.row.school,
+                scope.row.major,
+                scope.row.password
+                )">编辑</el-button>
             <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.number)">
               <template #reference>
                 <el-button type="text">删除</el-button>
@@ -242,8 +252,16 @@ export default {
         this.dialogVisible2=false
       })
     },
-    handleEdit(number){
+    handleEdit(number,name,idNum,phoneNum,email,stuStatus,school,major,password){
       this.stuNumber=number
+      this.name = name
+      this.idNum = idNum
+      this.phoneNum = phoneNum
+      this.email = email
+      this.stuStatus = stuStatus
+      this.school = school
+      this.major = major
+      this.password = password
       this.dialogVisible2 = true
     },
     handleDelete(number) {

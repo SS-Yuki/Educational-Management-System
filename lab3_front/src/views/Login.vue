@@ -62,19 +62,29 @@ export default {
           console.log(JSON.stringify(res.data.data))
           if (res.data.data.role === "admin") {
             router.addRoute(admin_routes)
-            sessionStorage["routes"] = JSON.stringify(router.getRoutes())
-            //sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()))
+            sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()))
             router.push('/admin')
+            setTimeout(() => {
+              router.go(0)
+            }, 10);
+
           }
           else if (res.data.data.role === "student") {
             router.addRoute(student_routes)
             sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()));
             router.push('/student')
+            setTimeout(() => {
+              router.go(0)
+            }, 10);
+
           }
           else if (res.data.data.role === "teacher") {
             router.addRoute(teacher_routes)
             sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()));
             router.push('/teacher')
+            setTimeout(() => {
+              router.go(0)
+            }, 10);
           }
           else
             console.log("hhh")

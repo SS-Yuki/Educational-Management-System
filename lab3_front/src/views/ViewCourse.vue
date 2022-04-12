@@ -2,20 +2,19 @@
   <div class="viewCourse">
     <div>
       <div class="add" style="margin: 10px 0">
-        <el-button size="large" @click="add" type="primary">新增</el-button>
+<!--        <el-button size="large" @click="add" type="primary">新增</el-button>-->
         <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
         <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column prop="majorName" label="专业" width="120" />
-        <el-table-column prop="schoolName" label="学院" width="120" />
-        <el-table-column prop="introduction" label="简介" width="600" />
+        <el-table-column prop="majorName" label="课程" width="120" />
+        <el-table-column prop="schoolName" label="授课教师" width="120" />
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(scope.row.majorName,scope.row.schoolName)">编辑</el-button>
+            <el-button type="text" size="small" @click="handleEdit(scope.row.majorName,scope.row.schoolName)">详情</el-button>
             <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.majorName,scope.row.schoolName)">
               <template #reference>
-                <el-button type="text">删除</el-button>
+                <el-button type="text">选课</el-button>
               </template>
             </el-popconfirm>
           </template>
@@ -67,37 +66,37 @@
         </template>
       </el-dialog>
     </div>
-    <div>
-      <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
-        <el-form :model="newSchool" label-width="120px">
-          <!--          <el-form-item label="院系" prop="school_major">-->
-          <!--            <el-cascader  v-model="newSchools" :options="options"/>-->
-          <!--          </el-form-item>-->
-          <el-form-item label="院系" prop="school_major">
-            <el-select v-model="majorNewSchool" class="m-2" placeholder="请选择" size="small">
-              <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="专业">
-            <el-input v-model="majorNewName" />
-          </el-form-item>
-          <el-form-item label="介绍">
-            <el-input v-model="introduction"/>
-          </el-form-item>
-          <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="saveEdit">确认</el-button>
-      </span>
-        </el-form>
-        <template #footer>
-        </template>
-      </el-dialog>
-    </div>
+<!--    <div>-->
+<!--      <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">-->
+<!--        <el-form :model="newSchool" label-width="120px">-->
+<!--          &lt;!&ndash;          <el-form-item label="院系" prop="school_major">&ndash;&gt;-->
+<!--          &lt;!&ndash;            <el-cascader  v-model="newSchools" :options="options"/>&ndash;&gt;-->
+<!--          &lt;!&ndash;          </el-form-item>&ndash;&gt;-->
+<!--          <el-form-item label="院系" prop="school_major">-->
+<!--            <el-select v-model="majorNewSchool" class="m-2" placeholder="请选择" size="small">-->
+<!--              <el-option-->
+<!--                  v-for="item in options"-->
+<!--                  :key="item.value"-->
+<!--                  :label="item.label"-->
+<!--                  :value="item.value"-->
+<!--              />-->
+<!--            </el-select>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="专业">-->
+<!--            <el-input v-model="majorNewName" />-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="介绍">-->
+<!--            <el-input v-model="introduction"/>-->
+<!--          </el-form-item>-->
+<!--          <span class="dialog-footer">-->
+<!--        <el-button @click="dialogVisible = false">取消</el-button>-->
+<!--        <el-button type="primary" @click="saveEdit">确认</el-button>-->
+<!--      </span>-->
+<!--        </el-form>-->
+<!--        <template #footer>-->
+<!--        </template>-->
+<!--      </el-dialog>-->
+<!--    </div>-->
   </div>
 </template>
 

@@ -4,18 +4,18 @@ import Login from "@/views/Login";
 import Admin from "@/views/Admin";
 import Teacher from "@/views/Teacher";
 import Student from "@/views/Student";
-import PersonalInfo from "@/views/PersonalInfo";
 import ViewCourse from "@/views/ViewCourse";
 import CheckCourse from "@/views/CheckCourse";
 import CheckStudentInfo from "@/views/CheckStudentInfo";
 import CheckTeacherInfo from "@/views/CheckTeacherInfo";
 import CheckSchool from "@/views/CheckSchool";
 import CheckMajor from "@/views/CheckMajor";
-import store from '@/store'
 import CheckBuilding from "@/views/CheckBuilding";
 import CheckClassroom from "@/views/CheckClassroom";
 import CheckTime from "@/views/CheckTime";
 import CheckApplication from "@/views/CheckApplication";
+import TeacherInfo from "@/views/TeacherInfo";
+import StudentInfo from "@/views/StudentInfo";
 
 
 export const routes = [
@@ -40,7 +40,7 @@ export const admin_routes =
   {
     path: '/admin',
     name: 'Admin',
-    component: require("@/views/Admin.vue").default,
+    component: Admin,
     children: [
         {
             path: 'checkstudentinfo',
@@ -97,9 +97,9 @@ export const teacher_routes =
     component: Teacher,
     children: [
       {
-        path: 'personalinfo',
-        name: 'PersonalInfo',
-        component: PersonalInfo
+        path: 'teacherinfo',
+        name: 'TeacherInfo',
+        component: TeacherInfo
       },
       {
         path: 'checkcourse',
@@ -116,9 +116,9 @@ export const student_routes =
     component: Student,
     children: [
       {
-        path: 'personalinfo',
-        name: 'PersonalInfo',
-        component: PersonalInfo
+        path: 'studentinfo',
+        name: 'StudentInfo',
+        component: StudentInfo
       },
       {
         path: 'viewcourse',

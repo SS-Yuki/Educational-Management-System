@@ -112,7 +112,7 @@ export default {
       })
     },
     handleDelete(buildingName,classroomName) {
-      request.post("/admin/deleteClassrom", {
+      request.post("/admin/deleteClassroom", {
         buildingName:buildingName,
         classroomName:classroomName
       }).then(res => {

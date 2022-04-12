@@ -19,7 +19,7 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="1-1">
-                <router-link to="/student/personalinfo">个人信息维护</router-link>
+                <router-link to="/student/studentinfo">个人信息维护</router-link>
                 <router-view></router-view>
               </el-menu-item>
             </el-menu-item-group>

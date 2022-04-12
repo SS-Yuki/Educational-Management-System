@@ -43,7 +43,7 @@ public class Teacher {
     private List<Course> courses;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "course_applying_id")
+    @JoinColumn(name = "teacher")
     private List<CourseApplying> coursesApplying;
 
     @Enumerated(EnumType.STRING)

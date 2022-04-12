@@ -72,7 +72,7 @@
       </div>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
+      <el-dialog v-model="dialogVisible" title="添加新老师" width="30%">
         <el-form :model="addTeacher" ref="add" label-width="120px" :rules="add_rules">
           <el-form-item label="身份" prop="role">
             <el-radio v-model="addTeacher.role" label="teacher" checked="true">教师</el-radio>
@@ -106,7 +106,7 @@
       </el-dialog>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
+      <el-dialog v-model="dialogVisible2" title="编辑老师信息" width="30%">
         <el-form :model="newSchool" label-width="120px" :rules="edit_rules">
           <el-form-item label="院系/专业">
             <el-cascader  v-model="edit_school_major" :options="options"/>

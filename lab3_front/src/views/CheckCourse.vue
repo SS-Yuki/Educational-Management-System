@@ -84,40 +84,40 @@
           <el-form-item label="课程id">
             <el-input v-model="addCourse.id" readonly="readonly"/>
           </el-form-item>
-          <el-form-item label="新课程名">
+          <el-form-item label="课程名">
             <el-input v-model="addCourse.courseName"/>
           </el-form-item>
-          <el-form-item label="新课程编号">
+          <el-form-item label="课程编号">
             <el-input v-model="addCourse.courseNumber" />
           </el-form-item>
-          <el-form-item label="新教师工号">
-            <el-input v-model="addCourse.teacherNum" />
+          <el-form-item label="教师工号">
+            <el-input v-model="addCourse.teacherNum" />69+
           </el-form-item>
-          <el-form-item label="新开课专业">
+          <el-form-item label="开课专业">
             <el-input v-model="addCourse.major" />
           </el-form-item>
-          <el-form-item label="新开课院系">
+          <el-form-item label="开课院系">
             <el-input v-model="addCourse.school" />
           </el-form-item>
-          <el-form-item label="新上课时间">
+          <el-form-item label="上课时间">
             <el-input v-model="addCourse.classPeriod" />
           </el-form-item>
-          <el-form-item label="新教室">
+          <el-form-item label="教室">
             <el-input v-model="addCourse.classroom" />
           </el-form-item>
-          <el-form-item label="新学时">
+          <el-form-item label="学时">
             <el-input v-model="addCourse.creditHours" />
           </el-form-item>
-          <el-form-item label="新学分">
+          <el-form-item label="学分">
             <el-input v-model="addCourse.credits" />
           </el-form-item>
-          <el-form-item label="新容量">
+          <el-form-item label="容量">
             <el-input v-model="addCourse.capacity" />
           </el-form-item>
-          <el-form-item label="新介绍">
+          <el-form-item label="介绍">
             <el-input v-model="addCourse.introduction" />
           </el-form-item>
-          <el-form-item label="新申请人">
+          <el-form-item label="申请人">
             <el-input v-model="addCourse.applicant" />
           </el-form-item>
           <span class="dialog-footer">
@@ -130,45 +130,45 @@
       </el-dialog>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible2" title="查看编辑信息" width="30%">
+      <el-dialog v-model="dialogVisible2" title="编辑课程信息" width="30%">
         <el-form :model="editCourse" label-width="120px">
-          <el-form-item label="新id">
+          <el-form-item label="id">
             <el-input v-model="editCourse.id" />
           </el-form-item>
-          <el-form-item label="新课程名">
+          <el-form-item label="课程名">
             <el-input v-model="editCourse.courseName" />
           </el-form-item>
-          <el-form-item label="新课程编号">
+          <el-form-item label="课程编号">
             <el-input v-model="editCourse.courseNumber" />
           </el-form-item>
-          <el-form-item label="新教师工号">
+          <el-form-item label="教师工号">
             <el-input v-model="editCourse.teacherNum" readonly="readonly"/>
           </el-form-item>
-          <el-form-item label="新开课专业">
+          <el-form-item label="开课专业">
             <el-input v-model="editCourse.major" readonly="readonly"/>
           </el-form-item>
-          <el-form-item label="新开课院系">
+          <el-form-item label="开课院系">
             <el-input v-model="editCourse.school" readonly="readonly"/>
           </el-form-item>
-          <el-form-item label="新上课时间">
+          <el-form-item label="上课时间">
             <el-input v-model="editCourse.classPeriod" />
           </el-form-item>
-          <el-form-item label="新教室">
+          <el-form-item label="教室">
             <el-input v-model="editCourse.classroom" />
           </el-form-item>
-          <el-form-item label="新学时">
+          <el-form-item label="学时">
             <el-input v-model="editCourse.creditHours" />
           </el-form-item>
-          <el-form-item label="新学分">
+          <el-form-item label="学分">
             <el-input v-model="editCourse.credits" />
           </el-form-item>
-          <el-form-item label="新容量">
+          <el-form-item label="容量">
             <el-input v-model="editCourse.capacity" />
           </el-form-item>
-          <el-form-item label="新介绍">
+          <el-form-item label="介绍">
             <el-input v-model="editCourse.introduction" />
           </el-form-item>
-          <el-form-item label="新申请人">
+          <el-form-item label="申请人">
             <el-input v-model="editCourse.applicant" />
           </el-form-item>
           <span class="dialog-footer">

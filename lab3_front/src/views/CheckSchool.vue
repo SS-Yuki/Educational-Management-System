@@ -36,7 +36,7 @@
       </div>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
+      <el-dialog v-model="dialogVisible" title="添加新院系" width="30%">
         <el-form :model="addSchool" label-width="120px">
           <el-form-item label="新院系">
             <el-input v-model="addSchool.schoolName" />

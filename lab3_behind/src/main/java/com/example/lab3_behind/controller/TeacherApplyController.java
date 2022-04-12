@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 @RestController
 @RequestMapping("/teacher")
 public class TeacherApplyController {
@@ -37,7 +39,8 @@ public class TeacherApplyController {
         try {
             String token = request.getHeader("token");
             JwtUserData jwtUserData = JwtUtil.getToken(token);
-            Teacher teacher = teacherService.getByJobNumber(jwtUserData.getNumber());
+            String number = jwtUserData.getNumber().replace("\"", "");
+            Teacher teacher = teacherService.getByJobNumber(number);
             CourseApplyingData courseApplyingData = teacherCourseApplyingData.getCourseApply();
             courseApplyingData.setTeacherNum(teacher.getJobNumber());
             courseApplyingData.setApplicant(teacher.getName());
@@ -46,17 +49,19 @@ public class TeacherApplyController {
             courseService.pushCourseApplying(courseApplyingData, CourseApplyingType.Publish);
             return Result.succ(null);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(740,e.getMessage());
         }
     }
+
     @RequestMapping("/updateCourseInfo")
     public Result updateCourseInfo(@RequestBody TeacherCourseApplyingData teacherCourseApplyingData,
                                    HttpServletRequest request){
         try{
             String token = request.getHeader("token");
             JwtUserData jwtUserData = JwtUtil.getToken(token);
-            Teacher teacher = teacherService.getByJobNumber(jwtUserData.getNumber());
+            String number = jwtUserData.getNumber().replace("\"", "");
+            Teacher teacher = teacherService.getByJobNumber(number);
             CourseApplyingData courseApplyingData = teacherCourseApplyingData.getCourseApply();
             courseApplyingData.setTeacherNum(teacher.getJobNumber());
             courseApplyingData.setApplicant(teacher.getName());
@@ -65,21 +70,28 @@ public class TeacherApplyController {
             courseService.pushCourseApplying(courseApplyingData, CourseApplyingType.Change);
             return Result.succ(null);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(731,e.getMessage());
         }
     }
     @PostMapping("/deleteCourse")
-    public Result deleteCourse(@RequestBody Map<String,Object> map){
+    public Result deleteCourse(@RequestBody TeacherCourseApplyingData teacherCourseApplyingData,
+                               HttpServletRequest request){
         try{
-            Integer courseId = (Integer) map.get("id");
-            CourseApplyingData courseApplyingData = new CourseApplyingData();
-            courseApplyingData.setId(courseId);
+            String token = request.getHeader("token");
+            JwtUserData jwtUserData = JwtUtil.getToken(token);
+            String number = jwtUserData.getNumber().replace("\"", "");
+            Teacher teacher = teacherService.getByJobNumber(number);
+            CourseApplyingData courseApplyingData = teacherCourseApplyingData.getCourseApply();
+            courseApplyingData.setTeacherNum(teacher.getJobNumber());
+            courseApplyingData.setApplicant(teacher.getName());
+            courseApplyingData.setMajor(teacher.getMajor());
+            courseApplyingData.setSchool(teacher.getSchool());
             courseService.pushCourseApplying(courseApplyingData,CourseApplyingType.Delete);
             return Result.succ(null);
         }
         catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(732,e.getMessage());
         }
     }
@@ -88,18 +100,20 @@ public class TeacherApplyController {
                                  HttpServletRequest request){
         String token = request.getHeader("token");
         JwtUserData jwtUserData = JwtUtil.getToken(token);
+        String number = jwtUserData.getNumber().replace("\"", "");
         try{
             Map<String,Object> map = new HashMap<>();
-            Page<Course> coursePage = courseService.findAPageCourseOfTeacher(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch(), jwtUserData.getNumber());
+            Page<Course> coursePage = courseService.findAPageCourseOfTeacher(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch(),number);
             map.put("records",coursePage.getContent());
             map.put("total",coursePage.getTotalElements());
             return Result.succ(map);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(770,e.getMessage());
         }
 
     }
+
 
 
 

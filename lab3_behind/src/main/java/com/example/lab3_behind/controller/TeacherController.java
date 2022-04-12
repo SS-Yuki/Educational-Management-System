@@ -1,18 +1,20 @@
 package com.example.lab3_behind.controller;
 
 
-import com.example.lab3_behind.common.ChangePasswordData;
-import com.example.lab3_behind.common.JwtUserData;
-import com.example.lab3_behind.common.MaintainInfoData;
+import com.example.lab3_behind.common.*;
+import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.Teacher;
+import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
 import com.example.lab3_behind.domain.resp.Result;
+import com.example.lab3_behind.service.CourseService;
 import com.example.lab3_behind.service.StudentService;
 import com.example.lab3_behind.service.TeacherService;
 import com.example.lab3_behind.service.UserAccountService;
 import com.example.lab3_behind.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +28,8 @@ public class TeacherController {
     TeacherService teacherService;
     @Autowired
     UserAccountService userAccountService;
+    @Autowired
+    CourseService courseService;
 
     @PostMapping("/information")
     public Result information(@RequestBody String number, HttpServletRequest request){
@@ -36,6 +40,7 @@ public class TeacherController {
             if(number.equals(jwtUserData.getNumber())){
                 throw new Exception("请求与账号不匹配");
             }
+            String ss =  jwtUserData.getNumber();
             Teacher teacher = teacherService.getByJobNumber(number);
             map.put("role","教师");
             map.put("number",teacher.getJobNumber());
@@ -46,7 +51,7 @@ public class TeacherController {
             map.put("school",teacher.getSchool());
             map.put("major",teacher.getMajor());
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(661,e.getMessage());
         }
         return Result.succ(map);
@@ -67,7 +72,7 @@ public class TeacherController {
             userAccountService.changePassword(number,oldPassword,newPassword);
             map.put("number",number);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(670,e.getMessage());
         }
         return Result.succ(map);
@@ -95,10 +100,11 @@ public class TeacherController {
             map.put("school",teacher.getSchool());
             map.put("major",teacher.getMajor());
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(680,e.getMessage());
         }
         return Result.succ(map);
     }
+
 
 }

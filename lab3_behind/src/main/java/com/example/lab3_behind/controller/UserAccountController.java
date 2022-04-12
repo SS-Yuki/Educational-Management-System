@@ -43,7 +43,7 @@ public class UserAccountController {
             map.put("initLogin",userAccount.isFirstLogin());
             map.put("role",userAccount.getRole());
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(620,e.getMessage());
         }
         return Result.succ(map);
@@ -82,7 +82,7 @@ public class UserAccountController {
             }
             else throw new Exception("注册身份错误");
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(622,e.getMessage());
         }
         return Result.succ(map);

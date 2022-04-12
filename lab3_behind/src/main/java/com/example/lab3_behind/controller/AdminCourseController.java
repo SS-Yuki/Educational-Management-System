@@ -33,7 +33,7 @@ public class AdminCourseController {
             courseService.insertCourse(courseApplyingData);
             return Result.succ(null);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(730,e.getMessage());
         }
     }
@@ -43,7 +43,7 @@ public class AdminCourseController {
             courseService.updateCourse(courseApplyingData);
             return Result.succ(null);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(731,e.getMessage());
         }
     }
@@ -55,7 +55,7 @@ public class AdminCourseController {
             return Result.succ(null);
         }
         catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(732,e.getMessage());
         }
     }

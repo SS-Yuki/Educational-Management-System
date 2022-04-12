@@ -35,7 +35,7 @@ public class AdminTimeController {
             map.put("timeName",timeData.getTimeName());
             return Result.succ(map);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(710,e.getMessage());
         }
     }
@@ -46,7 +46,7 @@ public class AdminTimeController {
             teachingAffairsService.updateClassTime(timeData.toClassTimeData());
             return Result.succ(null);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(711,e.getMessage());
         }
     }

@@ -44,7 +44,7 @@ public class StudentController {
             map.put("school",student.getSchool());
             map.put("major",student.getMajor());
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(660,e.getMessage());
         }
         return Result.succ(map);
@@ -65,7 +65,7 @@ public class StudentController {
             userAccountService.changePassword(number,oldPassword,newPassword);
             map.put("number",number);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(670,e.getMessage());
         }
         return Result.succ(map);
@@ -95,7 +95,7 @@ public class StudentController {
             map.put("school",student.getSchool());
             map.put("major",student.getMajor());
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(680,e.getMessage());
         }
         return Result.succ(map);

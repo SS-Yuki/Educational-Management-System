@@ -40,7 +40,7 @@ public class AdminSchoolController {
             School school = schoolService.insertSchool(schoolAddingData);
             map.put("schoolName",school.getName());
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(680,e.getMessage());
         }
         return Result.succ(map);
@@ -51,7 +51,7 @@ public class AdminSchoolController {
         try{
             schoolService.updateSchool(schoolUpdatingData);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(681,e.getMessage());
         }
         return Result.succ(map);
@@ -73,7 +73,7 @@ public class AdminSchoolController {
             School school = schoolService.deleteSchool(schoolName);
         }
         catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(690,e.getMessage());
         }
         return Result.succ(null);
@@ -102,7 +102,7 @@ public class AdminSchoolController {
             Major major = schoolService.insertMajor(majorAddingData);
             map.put("majorName",major.getName());
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(682,e.getMessage());
         }
         return Result.succ(map);

@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
@@ -16,12 +13,12 @@ import javax.persistence.Table;
 @Table(name = "time_table")
 public class TimeTable {
     @Id
-    @Column(name = "num", unique = true)
-    Integer num;
+    @Column(name = "name", unique = true)
+    private String name;
 
     @Column(name = "start_time")
-    String startTime;
+    private String startTime;
 
     @Column(name = "end_time")
-    String endTime;
+    private String endTime;
 }

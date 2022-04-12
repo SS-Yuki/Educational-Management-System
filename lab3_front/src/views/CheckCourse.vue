@@ -257,6 +257,7 @@ export default {
     },
     handleEdit(id,courseName,courseNumber,teacherNum,major,school,classPeriod,classroom,
     creditHours,credits,capacity,introduction,applicant){
+      this.dialogVisible=true
       this.editCourse.id=id
       this.editCourse.courseName=courseName
       this.editCourse.courseNumber=courseNumber

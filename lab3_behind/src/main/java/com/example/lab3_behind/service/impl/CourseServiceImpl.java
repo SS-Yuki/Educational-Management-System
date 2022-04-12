@@ -42,7 +42,7 @@ public class CourseServiceImpl implements CourseService {
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("courseNumber", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("teacher", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("teacherName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)
@@ -80,7 +80,7 @@ public class CourseServiceImpl implements CourseService {
         CourseApplying courseApplying = new CourseApplying();
         courseApplying.setCourseName(search);
         courseApplying.setTeacherNum(search);
-        courseApplying.setCourseNumber(search);
+
         courseApplying.setIntroduction(search);
         courseApplying.setMajor(search);
         courseApplying.setApplicant(search);
@@ -88,7 +88,7 @@ public class CourseServiceImpl implements CourseService {
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("courseNumber", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("teacher", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("teacherNum", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)
@@ -107,14 +107,15 @@ public class CourseServiceImpl implements CourseService {
         Teacher teacher = teacherRepository.findByJobNumber(courseApplying.getTeacherNum());
         Course course = new Course(courseApplying);
         teacher.getCourses().add(course);
+        // TODO: 2022/4/12
         return course;
     }
 
     @Override
-    public CourseApplying pushCourseApplying(CourseApplyingData courseData, CourseApplyingType applyingType) throws Exception {
-        CourseApplying courseApplying = new CourseApplying((courseData));
+    public CourseApplying pushCourseApplying(CourseApplyingData courseApplyingData, CourseApplyingType applyingType) throws Exception {
+        CourseApplying courseApplying = new CourseApplying((courseApplyingData));
         courseApplying.setType(applyingType);
-        Teacher teacher = teacherRepository.findByJobNumber(courseData.getTeacherNum());
+        Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
         if(teacher == null){
             throw new Exception("该教师不存在");
         }
@@ -122,14 +123,53 @@ public class CourseServiceImpl implements CourseService {
         teacherRepository.save(teacher);
         return courseApplying;
     }
-//    @Override
-//    public Course insertCourse(CourseApplyingData courseApplyingData){
-//
-//    }
-//
-//    @Override
-//    public Course updateCourse(CourseApplyingData courseApplyingData){}
-//
-//    @Override
-//    public Course deleteCourse(Integer courseId){}
+
+    @Override
+    public Course insertCourse(CourseApplyingData courseApplyingData) throws Exception {
+        Course course = new Course(courseApplyingData);
+        Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
+        if(teacher == null){
+            throw new Exception("该教师不存在");
+        }
+        teacher.getCourses().add(course);
+        teacherRepository.save(teacher);
+        return course;
+    }
+
+    @Override
+    public Course updateCourse(CourseApplyingData courseApplyingData) throws Exception {
+        Course course = courseRepository.findById(courseApplyingData.getId());
+        if(course == null){
+            throw new Exception("所修改课程不存在，或已被删除");
+        }
+        Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
+        if(teacher == null){
+            throw new Exception("所修改课程的教师不存在");
+        }
+        Course thisCourse = teacher.getCourses().get(teacher.getCourses().indexOf(course));
+        thisCourse.setCourseName(courseApplyingData.getCourseName());
+        thisCourse.setCourseNumber(courseApplyingData.getCourseNumber());
+        thisCourse.setIntroduction(courseApplyingData.getIntroduction());
+        thisCourse.setCapacity(courseApplyingData.getCapacity());
+        thisCourse.setClassPeriod(courseApplyingData.getClassPeriod());
+        thisCourse.setMajor(courseApplyingData.getMajor());
+        thisCourse.setSchool(courseApplyingData.getSchool());
+        thisCourse.setCredits(courseApplyingData.getCredits());
+        thisCourse.setCreditHours(courseApplyingData.getCreditHours());
+        thisCourse.setClassroom(courseApplyingData.getClassroom());
+        teacherRepository.save(teacher);
+        return thisCourse;
+    }
+
+    @Override
+    public Course deleteCourse(Integer courseId) throws Exception {
+        Course course = courseRepository.findById(courseId);
+        if(course == null){
+            throw new Exception("所删除课程不存在，或已被删除");
+        }
+        Teacher teacher = teacherRepository.findByJobNumber(course.getTeacherNum());
+        teacher.getCourses().remove(course);
+        teacherRepository.save(teacher);
+        return course;
+    }
 }

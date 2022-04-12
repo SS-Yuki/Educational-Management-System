@@ -121,13 +121,13 @@
             <el-input v-model="editCourse.courseNumber" />
           </el-form-item>
           <el-form-item label="新教师工号">
-            <el-input v-model="editCourse.teacherNum" />
+            <el-input v-model="editCourse.teacherNum" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="新开课专业">
-            <el-input v-model="editCourse.major" />
+            <el-input v-model="editCourse.major" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="新开课院系">
-            <el-input v-model="editCourse.school" />
+            <el-input v-model="editCourse.school" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="新上课时间">
             <el-input v-model="editCourse.classPeriod" />

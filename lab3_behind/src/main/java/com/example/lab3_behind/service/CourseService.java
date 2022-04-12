@@ -15,7 +15,7 @@ public interface CourseService {
     Page<CourseApplying> findCourseApplyingOfTeacher(Integer page, Integer size, String search, String jobNum) throws Exception;
     CourseApplying pushCourseApplying(CourseApplyingData courseData, CourseApplyingType applyingType) throws Exception;
     Course ApproveCourseApplying(Integer courseApplyingId) throws Exception;
-//    Course insertCourse(CourseApplyingData courseApplyingData);
-//    Course updateCourse(CourseApplyingData courseApplyingData);
-//    Course deleteCourse(Integer courseId);
+    Course insertCourse(CourseApplyingData courseApplyingData) throws Exception;
+    Course updateCourse(CourseApplyingData courseApplyingData) throws Exception;
+    Course deleteCourse(Integer courseId) throws Exception;
 }

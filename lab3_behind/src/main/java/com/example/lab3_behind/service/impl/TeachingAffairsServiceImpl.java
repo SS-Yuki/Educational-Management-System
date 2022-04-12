@@ -35,7 +35,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             return teachingBuildingRepository.findAll(pageable);
         }
         TeachingBuilding teachingBuilding = new TeachingBuilding();
-
+        teachingBuilding.setName(search);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withIgnoreCase(true)
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatcher::contains)

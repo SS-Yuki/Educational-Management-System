@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface CourseService {
     Page<Course> findAPageCourse(Integer page, Integer size, String search);
-//    Page<Course> findApageCourseOfMajor(Integer page, Integer size, String search);
+    Page<Course> findAPageCourseForSelecting(Integer page, Integer size, String search, String stuNum) throws Exception;
+    Page<Course> findAPageCourseOfTeacher(Integer page, Integer size, String search, String jobNum) throws Exception;
     Page<CourseApplying> findAPageCourseApplying(Integer page, Integer size, String search);
     Page<CourseApplying> findCourseApplyingOfTeacher(Integer page, Integer size, String search, String jobNum) throws Exception;
     CourseApplying pushCourseApplying(CourseApplyingData courseData, CourseApplyingType applyingType) throws Exception;

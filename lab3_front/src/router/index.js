@@ -4,7 +4,6 @@ import Login from "@/views/Login";
 import Admin from "@/views/Admin";
 import Teacher from "@/views/Teacher";
 import Student from "@/views/Student";
-import ViewCourse from "@/views/ViewCourse";
 import CheckCourse from "@/views/CheckCourse";
 import CheckStudentInfo from "@/views/CheckStudentInfo";
 import CheckTeacherInfo from "@/views/CheckTeacherInfo";
@@ -16,6 +15,8 @@ import CheckTime from "@/views/CheckTime";
 import CheckApplication from "@/views/CheckApplication";
 import TeacherInfo from "@/views/TeacherInfo";
 import StudentInfo from "@/views/StudentInfo";
+import TeacherCourse from "@/views/TeacherCourse";
+import StudentCourse from "@/views/StudentCourse";
 
 
 export const routes = [
@@ -104,7 +105,7 @@ export const teacher_routes =
       {
         path: 'teachercourse',
         name: 'TeacherCourse',
-        component: CheckCourse
+        component: TeacherCourse
       }
     ]
   }
@@ -123,7 +124,7 @@ export const student_routes =
       {
         path: 'studentcourse',
         name: 'StudentCourse',
-        component: ViewCourse
+        component: StudentCourse
       }
     ]
   }

@@ -52,14 +52,18 @@ public class CourseServiceImpl implements CourseService {
         courseApplying.setTeacherNum(search);
         courseApplying.setCourseNumber(search);
         courseApplying.setIntroduction(search);
-        courseApplying.setDepartment(search);
+        courseApplying.setMajor(search);
+        courseApplying.setApplicant(search);
+        courseApplying.setSchool(search);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("courseNumber", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("teacher", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("department", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("id", "classPeriod", "creditHours", "credits", "capacity", "applicant", "type");
+                .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("applicant", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withIgnorePaths("id", "classPeriod", "creditHours", "credits", "capacity", "type");
         Example<CourseApplying> example = Example.of(courseApplying, matcher);
         return courseApplyingRepository.findAll(example,pageable);
     }
@@ -77,12 +81,15 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseApplying pushCourseApplying(CourseApplyingData courseData, CourseApplyingType applyingType){
+    public CourseApplying pushCourseApplying(CourseApplyingData courseData, CourseApplyingType applyingType) throws Exception {
         CourseApplying courseApplying = new CourseApplying((courseData));
         courseApplying.setType(applyingType);
         Teacher teacher = teacherRepository.findByJobNumber(courseData.getTeacherNum());
-        courseApplying.setTeacherName(teacher.getName());
-        courseApplyingRepository.save(courseApplying);
+        if(teacher == null){
+            throw new Exception("该教师不存在");
+        }
+        teacher.getCoursesApplying().add(courseApplying);
+        teacherRepository.save(teacher);
         return courseApplying;
     }
 //    @Override

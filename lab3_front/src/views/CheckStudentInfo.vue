@@ -176,7 +176,7 @@ export default {
       tableData:[],
       add_rules: {
         role: [{required: true, message: '请选择身份', trigger: 'change'}],
-        school_major: [{required: true, message: '请选择院系/专业', trigger: 'blur'}],
+        //school_major: [{required: true, message: '请选择院系/专业', trigger: 'blur'}],
         number: [{required: true, message: '请填写学号', trigger: 'blur'},
           {pattern: /^\d{6}$/, message: '学号格式错误'}],
         name: [{required: true, message: '请填写姓名', trigger: 'blur'},

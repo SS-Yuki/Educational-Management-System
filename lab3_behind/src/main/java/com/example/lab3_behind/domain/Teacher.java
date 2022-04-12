@@ -39,7 +39,7 @@ public class Teacher {
     private UserAccount userAccount;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "course_id")
+    @JoinColumn(name = "course_id_id")
     private List<Course> courses;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

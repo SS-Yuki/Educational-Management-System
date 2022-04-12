@@ -194,7 +194,7 @@ export default {
         applicant:''
       },
       editCourse:{
-        id:'',
+        id:0,
         courseName:'',
         courseNumber:'',
         teacherNum:'',
@@ -202,9 +202,9 @@ export default {
         school:'',
         classPeriod:'',
         classroom:'',
-        creditHours:'',
-        credits:'',
-        capacity:'',
+        creditHours:0,
+        credits:0,
+        capacity:0,
         introduction:'',
         applicant:''
       },

@@ -253,8 +253,12 @@ export default {
             let obj = {}
             obj.number = results.data[i][0]
             obj.name = results.data[i][1]
-            obj.nameRemark = results.data[i][2]
-            obj.index = results.data[i][3]
+            obj.idNum = results.data[i][2]
+            obj.phoneNum = results.data[i][3]
+            obj.email = results.data[i][4]
+            obj.role = results.data[i][5]
+            obj.school = results.data[i][6]
+            obj.major = results.data[i][7]
             data.push(obj)
           }
           data.splice(0, 1)//将数组第一位的表格名称去除

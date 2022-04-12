@@ -1,20 +1,24 @@
 <template>
   <div class="checkstudent">
-    <div>
-      <div class="add" style="margin: 10px 0">
-        <div>
-          <el-button size="large" @click="add" type="primary">新增</el-button>
-          <el-upload
-              class="upload-demo"
-              action=""
-              :on-change="handleChange"
-              :on-exceed="handleExceed"
-              :on-remove="handleRemove"
-              :file-list="fileListUpload"
-              accept=".csv"
-              :auto-upload="false">
-            <el-button size="large" type="primary">导入</el-button>
-          </el-upload>
+    <div class="add">
+      <div style="margin: 10px 0">
+        <div style="margin-left: 300px">
+          <div style="float: left">
+            <el-button size="large" @click="add" type="primary">新增</el-button>
+          </div>
+          <div>
+            <el-upload
+                class="upload-demo"
+                action=""
+                :on-change="handleChange"
+                :on-exceed="handleExceed"
+                :on-remove="handleRemove"
+                :file-list="fileListUpload"
+                accept=".csv"
+                :auto-upload="false">
+              <el-button size="large" type="primary">导入</el-button>
+            </el-upload>
+          </div>
         </div>
 
         <div>
@@ -22,7 +26,7 @@
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>
       </div>
-      <div class="table">
+      <div>
         <el-table :data="tableData" style="width: 100%" border stripe>
           <el-table-column fixed prop="number" label="学号" width="150" sortable/>
           <el-table-column prop="name" label="姓名" width="120" />
@@ -386,13 +390,11 @@ export default {
 
 <style scoped>
 .checkstudent{
-
   display: flex;
 }
 .add{
+  margin-left: auto;
   text-align: left;
 }
-.table{
-  margin-left: 100px;
-}
+
 </style>

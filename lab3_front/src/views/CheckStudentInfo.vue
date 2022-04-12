@@ -272,6 +272,7 @@ export default {
       this.major = major
       this.password = password
       this.dialogVisible2 = true
+
     },
     handleDelete(number) {
       request.post("/admin/delete",number).then(res => {

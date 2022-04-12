@@ -2,11 +2,11 @@
   <div class="checkstudent">
     <div class="add">
       <div style="margin: 10px 0">
-        <div style="margin-left: 300px">
+        <div>
           <div style="float: left">
             <el-button size="large" @click="add" type="primary">新增</el-button>
           </div>
-          <div>
+          <div style="float: left">
             <el-upload
                 class="upload-demo"
                 action=""
@@ -21,7 +21,7 @@
           </div>
         </div>
 
-        <div>
+        <div style="float: left">
           <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>

@@ -2,24 +2,30 @@
   <div class="checkschool">
     <div>
       <div class="add" style="margin: 10px 0">
-        <el-button size="large" @click="add" type="primary">新增</el-button>
-        <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
-        <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
+        <div style="float: left">
+          <el-button size="large" @click="add" type="primary">新增</el-button>
+        </div>
+        <div style="float: left">
+          <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
+          <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
+        </div>
       </div>
-      <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column prop="schoolName" label="学院" width="120" />
-        <el-table-column prop="introduction" label="简介" width="600" />
-        <el-table-column fixed="right" label="操作" width="120">
-          <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(scope.row.schoolName)">编辑</el-button>
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.schoolName)">
-              <template #reference>
-                <el-button type="text">删除</el-button>
-              </template>
-            </el-popconfirm>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div>
+        <el-table :data="tableData" style="width: 100%" border stripe>
+          <el-table-column prop="schoolName" label="学院" width="120" />
+          <el-table-column prop="introduction" label="简介" width="600" />
+          <el-table-column fixed="right" label="操作" width="120">
+            <template #default="scope">
+              <el-button type="text" size="small" @click="handleEdit(scope.row.schoolName)">编辑</el-button>
+              <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.schoolName)">
+                <template #reference>
+                  <el-button type="text">删除</el-button>
+                </template>
+              </el-popconfirm>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
       <div style="margin: 10px 0">
         <el-pagination
             v-model:currentPage="currentPage"

@@ -2,9 +2,27 @@
   <div class="checkschool">
     <div>
       <div class="add" style="margin: 10px 0">
-        <el-button size="large" @click="add" type="primary">新增</el-button>
-        <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
-        <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
+        <div style="float: left">
+          <el-button size="large" @click="add" type="primary">新增</el-button>
+        </div>
+        <div style="float: left">
+          <el-upload
+              class="upload-demo"
+              action=""
+              :on-change="handleChange"
+              :on-exceed="handleExceed"
+              :on-remove="handleRemove"
+              :file-list="fileListUpload"
+              accept=".csv"
+              :auto-upload="false">
+            <el-button size="large" type="primary">导入</el-button>
+          </el-upload>
+        </div>
+        <div style="float: left">
+          <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
+          <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
+        </div>
+
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
         <el-table-column prop="courseId" label="courseId" width="0" v-if="false" />
@@ -73,7 +91,7 @@
             <el-input v-model="addCourse.courseNumber" />
           </el-form-item>
           <el-form-item label="新教师工号">
-            <el-input v-model="addCourse.teacherNum" />69+
+            <el-input v-model="addCourse.teacherNum" />
           </el-form-item>
           <el-form-item label="新开课专业">
             <el-input v-model="addCourse.major" />
@@ -167,6 +185,7 @@
 
 <script>
 import request from "@/utils/request";
+import Papa from "papaparse";
 
 export default {
   name: "CheckCourse",
@@ -218,6 +237,55 @@ export default {
     this.load()
   },
   methods:{
+    handleChange(file, fileList) {
+      this.fileTemp = file.raw
+      if (this.fileTemp) {
+        if (this.fileTemp.type==='text/csv') {
+          this.importcsv(file.raw)
+        } else {
+          this.$message({
+            type: 'warning',
+            message: '附件格式错误，请删除后重新上传！'
+          })
+        }
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '请上传附件！'
+        })
+      }
+    },
+
+    importcsv (obj) {
+      // let _this = this//如果需要点击事件结束之后对DOM进行操作使用)_this.xx=xx进行操作
+      Papa.parse(obj, {
+        complete (results) {
+          console.log(results)//这个是csv文件的数据
+          let data = []
+          //遍历csv文件中的数据，存放到data中 方法不唯一，可自己更改
+          for (let i = 0; i < results.data.length-1; i++) {
+            let obj = {}
+            obj.id = results.data[i][0]
+            obj.courseName = results.data[i][1]
+            obj.courseNumber = results.data[i][2]
+            obj.major = results.data[i][3]
+            obj.school = results.data[i][4]
+            obj.classPeriod = results.data[i][5]
+            obj.classroom = results.data[i][6]
+            obj.creditHours = results.data[i][7]
+            obj.credits = results.data[i][8]
+            obj.capacity = results.data[i][9]
+            obj.introduction = results.data[i][10]
+            obj.applicant = results.data[i][11]
+            data.push(obj)
+          }
+          data.splice(0, 1)//将数组第一位的表格名称去除
+          let num = 0
+          console.log('data', data)
+          // _this.tableData = data//将数据放入要展示的表格中
+        }
+      })
+    },
     load(){
       console.log(this.pageData)
       request.post("/admin/findCoursePage",{

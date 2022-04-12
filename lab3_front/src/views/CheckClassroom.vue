@@ -1,17 +1,17 @@
 <template>
-  <div class="checkschool">
+  <div class="checkclassroom">
     <div>
       <div class="add" style="margin: 10px 0">
         <el-button size="large" @click="add" type="primary">新增</el-button>
-        <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
+        <el-input clearable v-model="search" placeholder="请输入关键字" style="width:99%;margin-left: 100px"></el-input>
         <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column prop="schoolName" label="学院" width="120" />
+        <el-table-column prop="classroomName" label="教室" width="120" />
+        <el-table-column prop="buildingName" label="教学楼" width="120" />
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(scope.row.schoolName)">编辑</el-button>
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.schoolName)">
+            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.classroomName)">
               <template #reference>
                 <el-button type="text">删除</el-button>
               </template>
@@ -35,35 +35,17 @@
       </div>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible" title="添加新院系" width="30%">
-        <el-form :model="addSchool" label-width="120px">
-          <el-form-item label="新院系">
-            <el-input v-model="addSchool.schoolName" />
+      <el-dialog v-model="dialogVisible" title="添加新教学楼" width="30%">
+        <el-form :model="addClassroom" label-width="120px">
+          <el-form-item label="新教室">
+            <el-input v-model="addClassroom.classroomName" />
           </el-form-item>
-          <el-form-item label="新介绍">
-            <el-input v-model="addSchool.introduction"/>
+          <el-form-item label="新教学楼">
+            <el-input v-model="addClassroom.buildingName" />
           </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="save">确认</el-button>
-      </span>
-        </el-form>
-        <template #footer>
-        </template>
-      </el-dialog>
-    </div>
-    <div>
-      <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
-        <el-form :model="newSchool" label-width="120px">
-          <el-form-item label="新院系">
-            <el-input v-model="newName" />
-          </el-form-item>
-          <el-form-item label="新介绍">
-            <el-input v-model="introduction"/>
-          </el-form-item>
-          <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="saveEdit">确认</el-button>
       </span>
         </el-form>
         <template #footer>
@@ -86,18 +68,10 @@ export default {
       search:'',
       dialogVisible:false,
       dialogVisible2:false,
-      oldName:'',
-      newName:'',
-      introduction:'',
-      addSchool:{
-        schoolName:'',
-        introduction:''
+      addClassroom:{
+        classroomName:'',
+        buildingName:''
       },
-      // newSchool:{
-      //   oldName:'',
-      //   newName:'',
-      //   introduction:''
-      // },
       tableData:[]
     }
   },
@@ -107,7 +81,7 @@ export default {
   methods:{
     load(){
       console.log(this.pageData)
-      request.post("/admin/findSchoolPage",{
+      request.post("/admin/findClassroomPage",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search
@@ -128,36 +102,17 @@ export default {
     },
     add:function (){
       this.dialogVisible=true
-      this.addSchool={}
+      this.buildingName=''
     },
     save:function (){
-      request.post("/admin/addSchool", this.addSchool).then(res => {
+      request.post("/admin/addClassroom", this.addClassroom).then(res => {
         console.log(res)
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })
     },
-    saveEdit(){
-      console.log(this.newSchool)
-      request.post("/admin/updateSchoolInfo", {
-        oldName:this.oldName,
-        newName:this.newName,
-        introduction:this.introduction
-      }).then(res=>{
-        console.log(res)
-        this.load()
-        this.dialogVisible2=false
-      })
-    },
-    handleEdit(schoolName){
-      console.log(schoolName)
-      this.oldName=schoolName
-      console.log(this.oldName)
-      this.dialogVisible2 = true
-      this.newSchool={}
-    },
-    handleDelete(schoolName) {
-      request.post("/admin/deleteSchool",schoolName).then(res => {
+    handleDelete(buildingName) {
+      request.post("/admin/deleteClassrom",buildingName).then(res => {
         this.load()  // 删除之后重新加载表格的数据
       })
     },
@@ -176,7 +131,7 @@ export default {
 </script>
 
 <style scoped>
-.checkschool{
+.checkclassroom{
   margin-left: 100px;
   display: flex;
 }

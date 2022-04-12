@@ -1,9 +1,11 @@
 package com.example.lab3_behind.controller;
 
 import com.example.lab3_behind.common.*;
+import com.example.lab3_behind.domain.Classroom;
 import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.TeachingBuilding;
+import com.example.lab3_behind.domain.dto.ClassroomAddingData;
 import com.example.lab3_behind.domain.dto.MajorUpdatingData;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.TeachingAffairsService;
@@ -42,7 +44,7 @@ public class AdminBuildingController {
             teachingAffairsService.updateTeachingBuilding(buildingUpdatingData.getOldBuildingName(),buildingUpdatingData.getNewBuildingName());
             return Result.succ(null);
         }catch (Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             return Result.fail(701,e.getMessage());
         }
     }
@@ -75,8 +77,34 @@ public class AdminBuildingController {
         return Result.succ(map);
     }
 
-//    @RequestMapping("addClassroom")
-//    public Result addClassroom(){
-//
-//    }
+    @RequestMapping("addClassroom")
+    public Result addClassroom(@RequestBody ClassroomData classrommData){
+        try{
+            teachingAffairsService.insertClassroom(new ClassroomAddingData(classrommData.getClassroomName(),classrommData.getBuildingName()));
+            return Result.succ(null);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.fail(721,e.getMessage());
+        }
+    }
+    @PostMapping("/deleteClassroom")
+    public Result deleteClassroom(@RequestBody ClassroomData classrommData){
+        try{
+            teachingAffairsService.deleteClassroom(classrommData.getClassroomName(),classrommData.getBuildingName());
+            return Result.succ(null);
+        }
+        catch (Exception e){
+            //e.printStackTrace();
+            return Result.fail(722,e.getMessage());
+        }
+    }
+    @RequestMapping("/findBuildingPage")
+    public Result findClassroomPage(@RequestBody PageSearchData pageSearchData){
+        Map<String,Object> map = new HashMap<>();
+        Page<Classroom> classroomPage = teachingAffairsService.findAPageClassroom(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch());
+        List<ClassroomData> classroomDatas = ClassroomData.getContents(classroomPage.getContent());
+        map.put("records",classroomDatas);
+        map.put("total",classroomPage.getTotalElements());
+        return Result.succ(map);
+    }
 }

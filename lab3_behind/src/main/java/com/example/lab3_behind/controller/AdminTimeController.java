@@ -35,6 +35,7 @@ public class AdminTimeController {
             map.put("timeName",timeData.getTimeName());
             return Result.succ(map);
         }catch (Exception e){
+            e.printStackTrace();
             return Result.fail(710,e.getMessage());
         }
     }

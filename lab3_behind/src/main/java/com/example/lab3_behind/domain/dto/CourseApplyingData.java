@@ -14,7 +14,9 @@ public class CourseApplyingData {
 
     private String teacherNum;
 
-    private String department ;
+    private String major;
+
+    private String school;
 
     private String classPeriod ;
 

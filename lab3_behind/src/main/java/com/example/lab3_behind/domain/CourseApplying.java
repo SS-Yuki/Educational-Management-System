@@ -32,8 +32,11 @@ public class CourseApplying {
     @Column(name = "teacher_name", nullable = true)
     private String teacherName;
 
-    @Column(name = "department ")
-    private String department ;
+    @Column(name = "major")
+    private String major;
+
+    @Column(name = "school")
+    private String school;
 
     @Column(name = "class_period")
     private String classPeriod ;
@@ -62,6 +65,7 @@ public class CourseApplying {
     private CourseApplyingType type;
 
     public CourseApplying(CourseApplyingData courseApplyingData){
+        this.teacherName = courseApplyingData.getApplicant();
         this.applicant = courseApplyingData.getApplicant();
         this.capacity = courseApplyingData.getCapacity();
         this.courseName = courseApplyingData.getCourseName();
@@ -70,7 +74,8 @@ public class CourseApplying {
         this.creditHours = courseApplyingData.getCreditHours();
         this.classPeriod = courseApplyingData.getClassPeriod();
         this.credits = courseApplyingData.getCredits();
-        this.department = courseApplyingData.getDepartment();
+        this.major = courseApplyingData.getMajor();
+        this.school = courseApplyingData.getSchool();
         this.teacherNum = courseApplyingData.getTeacherNum();
         this.introduction = courseApplyingData.getIntroduction();
     }

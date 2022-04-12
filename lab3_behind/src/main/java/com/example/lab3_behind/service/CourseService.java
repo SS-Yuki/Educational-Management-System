@@ -12,7 +12,7 @@ public interface CourseService {
 //    Page<Course> findAPageCourse(Integer page, Integer size, String search);
     Page<CourseApplying> findAPageCourseApplying(Integer page, Integer size, String search);
     Page<CourseApplying> findCourseApplyingOfTeacher(Integer page, Integer size, String search, String jobNum) throws Exception;
-    CourseApplying pushCourseApplying(CourseApplyingData courseData, CourseApplyingType applyingType);
+    CourseApplying pushCourseApplying(CourseApplyingData courseData, CourseApplyingType applyingType) throws Exception;
     Course ApproveCourseApplying(Integer courseApplyingId) throws Exception;
 //    Course insertCourse(CourseApplyingData courseApplyingData);
 //    Course updateCourse(CourseApplyingData courseApplyingData);

@@ -100,9 +100,12 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         }
         Classroom classroom = new Classroom();
         classroom.setName(search);
+        TeachingBuilding teachingBuilding = new TeachingBuilding();
+        classroom.setTeachingBuilding(teachingBuilding);
         classroom.getTeachingBuilding().setName(search);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("teachingBuilding", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withIgnorePaths("id");
         Example<Classroom> example = Example.of(classroom, matcher);
         return classroomRepository.findAll(example,pageable);

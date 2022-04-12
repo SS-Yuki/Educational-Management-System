@@ -122,14 +122,6 @@ export default {
         this.tableData[5].value = this.info.idNum
         this.tableData[6].value = this.info.phoneNum
         this.tableData[7].value = this.info.email
-        // this.info.number=res.data.data.number
-        // this.info.name=res.data.data.name
-        // this.info.role=res.data.data.role
-        // this.info.idNum=res.data.data.idNum
-        // this.info.phoneNum=res.data.data.phoneNum
-        // this.info.email=res.data.data.email
-        // this.info.school=res.data.data.school
-        // this.info.major=res.data.data.major
       })
     }
   },

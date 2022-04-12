@@ -3,6 +3,7 @@
     <div>
       <h1>复日大学教务系统</h1>
     </div>
+    <el-button @click="test">h</el-button>
     <div class="login">
       <el-form :model="login_data" size="normal" :rules="rules">
         <el-form-item prop="number">
@@ -58,18 +59,22 @@ export default {
             message: "登录成功"
           })
           sessionStorage.setItem("user", JSON.stringify(res.data.data))
+          console.log(JSON.stringify(res.data.data))
           if (res.data.data.role === "admin") {
             router.addRoute(admin_routes)
-            console.log(router.getRoutes())
-            this.$router.push('/admin')
+            sessionStorage["routes"] = JSON.stringify(router.getRoutes())
+            //sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()))
+            router.push('/admin')
           }
           else if (res.data.data.role === "student") {
             router.addRoute(student_routes)
-            this.$router.push('/student')
+            sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()));
+            router.push('/student')
           }
           else if (res.data.data.role === "teacher") {
             router.addRoute(teacher_routes)
-            this.$router.push('/teacher')
+            sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()));
+            router.push('/teacher')
           }
           else
             console.log("hhh")
@@ -83,8 +88,12 @@ export default {
         }
 
       })
+    },
+    test: function () {
+      console.log(sessionStorage.getItem('routes'))
     }
   },
+
 
   // mounted() {
   //   router.addRoute(admin_routes)

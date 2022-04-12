@@ -57,9 +57,10 @@
 </template>
 
 <script>
-import {routes} from "@/router";
+import router, {routes} from "@/router";
+import store from "@/store";
 import {createRouter, createWebHistory} from "vue-router";
-import router from "@/router";
+import request from "@/utils/request";
 
 
 export default {
@@ -68,12 +69,33 @@ export default {
 
   },
   methods: {
+
     logout: function (){
-      router = createRouter({
-        history: createWebHistory(process.env.BASE_URL),
-        routes
+      request.post("/user/logout", JSON.parse(sessionStorage["user"]).token).then(res => {
+        console.log(res)
+        console.log(res.data.code)
+        if (res.data.code === 200) {
+          this.$message({
+            type: "success",
+            message: res.data.msg
+          })
+        }
+        router = createRouter({
+          history: createWebHistory(process.env.BASE_URL),
+          routes
+        })
+        console.log("---")
+        //sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()));
+        sessionStorage["routes"] = JSON.stringify(router.getRoutes())
+        sessionStorage.removeItem("user")
+        //sessionStorage.clear()
+        console.log(sessionStorage.getItem("routes"))
+        console.log("---")
+        this.$router.push("/login")
+        console.log("tui chu le")
+        console.log(router.getRoutes())
+        console.log("hahaha")
       })
-      console.log(router)
     }
   }
 }

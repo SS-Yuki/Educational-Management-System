@@ -11,12 +11,13 @@ import CheckStudentInfo from "@/views/CheckStudentInfo";
 import CheckTeacherInfo from "@/views/CheckTeacherInfo";
 import CheckSchool from "@/views/CheckSchool";
 import CheckMajor from "@/views/CheckMajor";
+import store from '@/store'
 
 
 export const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: Home,
     redirect: '/login'
   },
@@ -24,18 +25,18 @@ export const routes = [
     path: '/login',
     name: 'Login',
     component: Login
-  },
-  {
-    path: "/:catchAll(.*)",
-    redirect: '/login'
   }
+  // {
+  //   path: "/:catchAll(.*)",
+  //   redirect: '/login'
+  // }
   ]
 
 export const admin_routes =
   {
     path: '/admin',
     name: 'Admin',
-    component: Admin,
+    component: require("@/views/Admin.vue").default,
     children: [
         {
             path: 'checkstudentinfo',
@@ -103,11 +104,61 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from) => {
+// router.beforeEach((to, from) => {
+//     console.log("hhh")
+//
+//     //sessionStorage.setItem("user", JSON.stringify(res.data.data))
+//     //console.log(store.state.routes_store)
+//     if (!sessionStorage.getItem('routes')) {
+//         console.log("kong le")
+//         sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()));
+//         //store.commit('change_routes', router.getRoutes())
+//     }
+//
+//     let store_routes = JSON.parse(sessionStorage.getItem('routes'))
+//     let now_routes = router.getRoutes()
+//     if (now_routes.length < store_routes.length) {
+//         router.addRoute(admin_routes)
+//         store_routes.forEach(item => {
+//             console.log(typeof (item.components.default.__file))
+//             console.log(item.path)
+//             console.log(item.name)
+//             console.log(item.default)
+//
+//             if (!now_routes.includes(item)) {
+//                 router.addRoute({
+//                         path: item.path,
+//                         component: item.components.default.__file,
+//                         name: item.name
+//                     })
+//                 // router.addRoute(item)
+//             }
+//         })
+//     }
+//     // if (router.getRoutes().find(item => item.name === to.name)) {
+//     //     this.$store.routes_store.forEach(item => {
+//     //         if (item.name === to.name) {}
+//     //     })
+//     //
+//     // }
+//     console.log(router.getRoutes())
+//     console.log("haha")
+//     console.log(JSON.parse(sessionStorage.getItem('routes')))
+//     // if (to.matched.length === 0) { router.push(to.path)}
+//     //router.push(to.path)
+//     return true
+// })
 
-    console.log(router.getRoutes())
-    return true
-})
+// router.afterEach((to, from) => {
+//     if (from.path === "/login") {
+//         console.log("liu")
+//         console.log(store.state.routes_store.length)
+//         if (store.state.routes_store.length < router.getRoutes().length) {
+//             store.commit('change_routes', router.getRoutes())
+//         }
+//         console.log(store.state.routes_store)
+//     }
+// })
 
 export default router
 

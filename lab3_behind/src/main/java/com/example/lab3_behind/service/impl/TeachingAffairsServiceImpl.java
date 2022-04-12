@@ -49,7 +49,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             throw new Exception("该教室名已存在");
         }
         TeachingBuilding teachingBuilding = teachingBuildingRepository.findByName(classroomData.getTeachingBuildingName());
-        Classroom newClassroom = new Classroom(classroomData.getClassroomName(),teachingBuilding);
+        Classroom newClassroom = new Classroom(null, classroomData.getClassroomName(),teachingBuilding);
         teachingBuilding.getClassrooms().add(newClassroom);
         return newClassroom;
     }

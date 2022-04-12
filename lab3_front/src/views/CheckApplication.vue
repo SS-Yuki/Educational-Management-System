@@ -29,7 +29,7 @@
         <el-table-column prop="courseId" label="courseId" width="0" v-if="false" />
         <el-table-column prop="courseName" label="课程名" width="150" />
         <el-table-column prop="courseNumber" label="课程编号" width="150" />
-        <el-table-column prop="teacherNum" label="教师工号" width="150"v-if="false" />
+        <el-table-column prop="teacherNum" label="教师工号" width="150" v-if="false" />
         <el-table-column prop="teacherName" label="教师姓名" width="150" />
         <el-table-column prop="major" label="开课专业" width="150" v-if="false"/>
         <el-table-column prop="school" label="开课院系" width="150" />

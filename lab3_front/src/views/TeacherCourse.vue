@@ -41,7 +41,6 @@
         <el-pagination
             v-model:currentPage="currentPage"
             v-model:page-size="pageSize"
-            
             :page-sizes="[5,10,20]"
             :small="small"
             :disabled="disabled"

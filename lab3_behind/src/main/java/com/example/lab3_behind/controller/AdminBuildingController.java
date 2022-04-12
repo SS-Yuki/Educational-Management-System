@@ -44,7 +44,7 @@ public class AdminBuildingController {
             teachingAffairsService.updateTeachingBuilding(buildingUpdatingData.getOldBuildingName(),buildingUpdatingData.getNewBuildingName());
             return Result.succ(null);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(701,e.getMessage());
         }
     }
@@ -83,7 +83,7 @@ public class AdminBuildingController {
             teachingAffairsService.insertClassroom(new ClassroomAddingData(classrommData.getClassroomName(),classrommData.getBuildingName()));
             return Result.succ(null);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(721,e.getMessage());
         }
     }

@@ -131,7 +131,7 @@
             <el-input v-model="email" />
           </el-form-item>
           <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button @click="dialogVisible2 = false">取消</el-button>
         <el-button type="primary" @click="saveEdit">确认</el-button>
       </span>
         </el-form>

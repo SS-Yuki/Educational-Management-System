@@ -47,7 +47,7 @@ public class AdminController {
             }else throw new Exception("注册身份错误");
         }catch (Exception e){
             
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(683,e.getMessage());
         }
         return Result.succ(map);
@@ -60,7 +60,7 @@ public class AdminController {
             String stuNumber = studentUpdatingData.getStuNumber();
             studentService.updateStudentInfo(new RevisableDataForAdmin(studentUpdatingData),stuNumber);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(683,e.getMessage());
         }
         return Result.succ(map);
@@ -73,7 +73,7 @@ public class AdminController {
             String jobNumber = teacherUpdatingData.getJobNumber();
             teacherService.updateTeacherInfo(new RevisableDataForAdmin(teacherUpdatingData),jobNumber);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(684,e.getMessage());
         }
         return Result.succ(map);

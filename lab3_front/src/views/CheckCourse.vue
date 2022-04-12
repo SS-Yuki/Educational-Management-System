@@ -172,7 +172,7 @@
             <el-input v-model="editCourse.applicant" />
           </el-form-item>
           <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button @click="dialogVisible2 = false">取消</el-button>
         <el-button type="primary" @click="saveEdit">确认</el-button>
       </span>
         </el-form>
@@ -268,15 +268,16 @@ export default {
             obj.id = results.data[i][0]
             obj.courseName = results.data[i][1]
             obj.courseNumber = results.data[i][2]
-            obj.major = results.data[i][3]
-            obj.school = results.data[i][4]
-            obj.classPeriod = results.data[i][5]
-            obj.classroom = results.data[i][6]
-            obj.creditHours = results.data[i][7]
-            obj.credits = results.data[i][8]
-            obj.capacity = results.data[i][9]
-            obj.introduction = results.data[i][10]
-            obj.applicant = results.data[i][11]
+            obj.teacherNum=results.data[i][3]
+            obj.major = results.data[i][4]
+            obj.school = results.data[i][5]
+            obj.classPeriod = results.data[i][6]
+            obj.classroom = results.data[i][7]
+            obj.creditHours = results.data[i][8]
+            obj.credits = results.data[i][9]
+            obj.capacity = results.data[i][10]
+            obj.introduction = results.data[i][11]
+            obj.applicant = results.data[i][12]
             data.push(obj)
           }
           data.splice(0, 1)//将数组第一位的表格名称去除

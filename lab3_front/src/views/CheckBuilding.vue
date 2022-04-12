@@ -131,6 +131,7 @@ export default {
       console.log(this.newSchool)
       request.post("/admin/updateBuildingInfo", {
         oldBuildingName:this.oldBuildingName,
+
         newBuildingName:this.newBuildingName
       }).then(res=>{
         console.log(res)

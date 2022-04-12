@@ -44,30 +44,34 @@
     <div>
       <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
         <el-form :model="addStudent" label-width="120px">
-          <el-form-item label="新工号">
+          <el-form-item label="身份">
+            <el-radio v-model="addStudent.role" label="student">学生</el-radio>
+          </el-form-item>
+          <el-form-item label="院系/专业" prop="school_major">
+            <el-cascader  v-model="school_major" :options="options" @change="school_major_select"/>
+          </el-form-item>
+          <el-form-item label="学号">
             <el-input v-model="addStudent.number" />
           </el-form-item>
-          <el-form-item label="新姓名">
+          <el-form-item label="姓名">
             <el-input v-model="addStudent.name" />
           </el-form-item>
-          <el-form-item label="新电话">
+          <el-form-item label="电话">
             <el-input v-model="addStudent.phoneNum" />
           </el-form-item>
-          <el-form-item label="新身份证号">
+          <el-form-item label="身份证号">
             <el-input v-model="addStudent.idNum" />
           </el-form-item>
-          <el-form-item label="新邮箱">
+          <el-form-item label="邮箱">
             <el-input v-model="addStudent.email" />
           </el-form-item>
-          <el-form-item label="新身份">
-            <el-radio v-model="addStudent.role" label="学生" checked="true">学生</el-radio>
-          </el-form-item>
-          <el-form-item label="新院系">
-            <el-input v-model="addStudent.school" />
-          </el-form-item>
-          <el-form-item label="新专业">
-            <el-input v-model="addStudent.major"/>
-          </el-form-item>
+
+<!--          <el-form-item label="新院系">-->
+<!--            <el-input v-model="addStudent.school" />-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="新专业">-->
+<!--            <el-input v-model="addStudent.major"/>-->
+<!--          </el-form-item>-->
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="save">确认</el-button>
@@ -141,6 +145,7 @@ export default {
       stuStatus:'',
       major:'',
       school:'',
+      school_major:'',
       addStudent:{
         number:'',
         name:'',
@@ -151,11 +156,6 @@ export default {
         school:'',
         major:''
       },
-      // newSchool:{
-      //   oldName:'',
-      //   newName:'',
-      //   introduction:''
-      // },
       tableData:[]
     }
   },
@@ -163,9 +163,6 @@ export default {
     this.load()
   },
   methods:{
-    school_major_select(){
-
-    },
     load(){
       console.log(this.pageData)
       request.post("/admin/findStudentPage",{
@@ -234,6 +231,28 @@ export default {
     handleCurrentChange:function (pageNum){
       this.currentPage = pageNum
       this.load()
+    },
+    getOption: function () {
+      request.post("/admin/allMajors").then(res => {
+        console.log(res)
+        let that = this
+        if (!res.data) return
+        res.data.forEach (function (item) {
+          console.log(item);
+          let option = {value: item.school, label: item.school, children: []}
+          if (!item.major) return
+          item.major.forEach (function (item) {
+            let child = {value: item, label: item}
+            option.children.push(child)
+          })
+          that.options.push(option)
+        })
+      })
+    },
+    school_major_select: function () {
+      this.addStudent.school = this.school_major[0]
+      this.addStudent.major = this.school_major[1]
+      console.log(this.addStudent.major)
     }
   }
 }

@@ -139,7 +139,7 @@
 
 <script>
 import request from "@/utils/request";
-
+import Papa from "papaparse";
 // const validatorPassword = (rule, value, callback) => {
 //   const reg = /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/
 //   if (!value) {
@@ -155,7 +155,8 @@ import request from "@/utils/request";
 // };
 
 export default {
-  name: "CheckTeacherInfo",
+
+  name: "CheckStudentInfo",
   data(){
     return{
 

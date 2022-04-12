@@ -42,7 +42,7 @@ public class CourseServiceImpl implements CourseService {
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("courseNumber", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("teacher", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("teacherName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)

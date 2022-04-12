@@ -61,7 +61,7 @@
     <div>
       <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
         <el-form :model="newSchool" label-width="120px">
-          <el-form-item label="新院系">
+          <el-form-item label="新专业">
             <el-input v-model="majorNewName" />
           </el-form-item>
           <el-form-item label="院系">

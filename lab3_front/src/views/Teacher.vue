@@ -3,41 +3,44 @@
     <div class="header">
       复旦大学教师系统
     </div>
+
     <div class="user">
       <el-dropdown>
         <span class="el-dropdown-link">
-          你好, {{user_name}}
+          你好, {{user_num}}
           <el-icon class="el-icon--right">
             <arrow-down/>
           </el-icon>
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item @click="change_password">修改密码</el-dropdown-item>
+            <el-dropdown-item @click="pop">修改密码</el-dropdown-item>
             <el-dropdown-item @click="this.$router.push('/teacher')">返回首页</el-dropdown-item>
             <el-dropdown-item divided @click="logout">登出</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
     </div>
+
     <div>
       <el-dialog v-model="dialogVisible" title="Tips" width="30%">
-        <el-form :model="new_info" label-width="120px">
-          <el-form-item label="邮箱">
-            <el-input v-model="new_info.email" />
+        <el-form :model="change_pass_set" label-width="120px">
+          <el-form-item label="旧密码">
+            <el-input v-model="change_pass_set.old_pass" />
           </el-form-item>
-          <el-form-item label="电话">
-            <el-input v-model="new_info.phoneNum" />
+          <el-form-item label="新密码">
+            <el-input v-model="change_pass_set.new_pass" />
           </el-form-item>
         </el-form>
         <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="send_newinfo">确认</el-button>
+        <el-button type="primary" @click="change_pass">确认</el-button>
       </span>
         <template #footer>
         </template>
       </el-dialog>
     </div>
+
   </div>
   <el-divider />
   <div class="teacher_menu">
@@ -81,15 +84,18 @@ export default {
   name: "Teacher",
   data() {
     return {
-      user_name: '',
+      user_num: '',
       dialogVisible:false,
+      change_pass_set: {
+        old_pass: '',
+        new_pass: ''
+      }
     }
   },
   components:{
   },
   mounted() {
-    this.user_name = JSON.parse(sessionStorage.getItem("user")).number
-
+    this.user_num = JSON.parse(sessionStorage.getItem("user")).number
   },
   methods: {
     logout: function () {
@@ -111,12 +117,25 @@ export default {
         this.$router.push("/login")
       })
     },
-    change_password: function () {
-
-    },
-    input_newinfo: function (){
+    pop: function () {
       this.dialogVisible=true
-      this.new_info={}
+    },
+    change_pass: function () {
+      request.post("/user/changePassword", this.change_pass_set).then(res => {
+        console.log(res)
+        if (res.data.code === 200) {
+          this.$message({
+            type: "success",
+            message: res.data.msg
+          })
+        }
+        else {
+          this.$message({
+            type: "error",
+            message: res.data.msg
+          })
+        }
+      })
     }
   }
 }

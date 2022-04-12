@@ -63,8 +63,11 @@
     <div>
       <el-dialog v-model="dialogVisible" title="添加新课程" width="30%">
         <el-form :model="addCourse" label-width="120px">
+          <el-form-item label="课程id">
+            <el-input v-model="addCourse.id" readonly="readonly"/>
+          </el-form-item>
           <el-form-item label="新课程名">
-            <el-input v-model="addCourse.courseName" />
+            <el-input v-model="addCourse.courseName"/>
           </el-form-item>
           <el-form-item label="新课程编号">
             <el-input v-model="addCourse.courseNumber" />
@@ -175,8 +178,8 @@ export default {
       search:'',
       dialogVisible:false,
       dialogVisible2:false,
-      id:0,
       addCourse:{
+        id:0,
         courseName:'',
         courseNumber:'',
         teacherNum:'',
@@ -238,7 +241,7 @@ export default {
       this.buildingName=''
     },
     save:function (){
-      request.post("/admin/addCourse", this.id+this.addCourse).then(res => {
+      request.post("/admin/addCourse", this.addCourse).then(res => {
         console.log(res)
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
@@ -254,6 +257,7 @@ export default {
     },
     handleEdit(id,courseName,courseNumber,teacherNum,major,school,classPeriod,classroom,
     creditHours,credits,capacity,introduction,applicant){
+      this.dialogVisible2=true
       this.editCourse.id=id
       this.editCourse.courseName=courseName
       this.editCourse.courseNumber=courseNumber

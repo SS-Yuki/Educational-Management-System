@@ -1,7 +1,9 @@
 package com.example.lab3_behind.controller;
 
 
+import com.example.lab3_behind.common.ChangePasswordData;
 import com.example.lab3_behind.common.JwtUserData;
+import com.example.lab3_behind.common.MaintainInfoData;
 import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
@@ -11,10 +13,7 @@ import com.example.lab3_behind.service.TeacherService;
 import com.example.lab3_behind.service.UserAccountService;
 import com.example.lab3_behind.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -29,7 +28,7 @@ public class TeacherController {
     UserAccountService userAccountService;
 
     @PostMapping("/information")
-    public Result information(@RequestParam("number") String number, HttpServletRequest request){
+    public Result information(@RequestBody String number, HttpServletRequest request){
         Map<String,Object> map = new HashMap<>();
         try {
             String token = request.getHeader("token");
@@ -53,10 +52,10 @@ public class TeacherController {
     }
 
     @PostMapping("/changePassword")
-    public Result changePassword(@RequestParam("number") String number,
-                                 @RequestParam("oldPassword") String oldPassword,
-                                 @RequestParam("newPassword") String newPassword,
-                                 HttpServletRequest request){
+    public Result changePassword(@RequestBody ChangePasswordData changePasswordData, HttpServletRequest request){
+        String number = changePasswordData.getNumber();
+        String oldPassword = changePasswordData.getOldPassword();
+        String newPassword = changePasswordData.getNewPassword();
         Map<String,Object> map = new HashMap<>();
         try {
             String token = request.getHeader("token");
@@ -74,15 +73,15 @@ public class TeacherController {
     }
 
     @PostMapping("/maintainInfo")
-    public Result maintainInfo(@RequestParam("number") String number,
-                               @RequestParam("phoneNum") String phoneNum,
-                               @RequestParam("email") String email,
-                               HttpServletRequest request){
+    public Result maintainInfo(@RequestBody MaintainInfoData maintainInfoData, HttpServletRequest request){
         Map<String,Object> map = new HashMap<>();
+        String number=maintainInfoData.getNumber();
+        String phoneNum = maintainInfoData.getPhoneNum();
+        String email = maintainInfoData.getEmail();
         try {
             String token = request.getHeader("token");
             JwtUserData jwtUserData = JwtUtil.getToken(token);
-            if(number.equals(jwtUserData.getNumber())){
+            if(maintainInfoData.getNumber().equals(jwtUserData.getNumber())){
                 throw new Exception("请求与账号不匹配");
             }
             teacherService.maintainTeacherInfo(new RevisableDataForUser(phoneNum,email),number);

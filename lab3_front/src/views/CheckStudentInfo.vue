@@ -12,7 +12,7 @@
         <el-table-column prop="idNum" label="身份证号" width="120" />
         <el-table-column prop="phoneNum" label="电话" width="120" />
         <el-table-column prop="email" label="邮箱" width="120" />
-        <el-table-column prop="stuStatue" label="状态" width="120" />
+        <el-table-column prop="stuStatus" label="状态" width="120" />
         <el-table-column prop="school" label="院系" width="120" />
         <el-table-column prop="major" label="专业" width="120" />
         <el-table-column fixed="right" label="操作" width="120">
@@ -44,7 +44,7 @@
     <div>
       <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
         <el-form :model="addStudent" label-width="120px">
-          <el-form-item label="新工号">
+          <el-form-item label="新学号">
             <el-input v-model="addStudent.number" />
           </el-form-item>
           <el-form-item label="新姓名">
@@ -60,7 +60,7 @@
             <el-input v-model="addStudent.email" />
           </el-form-item>
           <el-form-item label="新身份">
-            <el-radio v-model="addStudent.role" label="学生" checked="true">学生</el-radio>
+            <el-radio v-model="addStudent.role" label="student" checked="true">student</el-radio>
           </el-form-item>
           <el-form-item label="新院系">
             <el-input v-model="addStudent.school" />
@@ -121,7 +121,7 @@
 import request from "@/utils/request";
 
 export default {
-  name: "CheckTeacherInfo",
+  name: "CheckStudentInfo",
   data(){
     return{
       options:[],
@@ -199,7 +199,6 @@ export default {
       })
     },
     saveEdit(){
-      console.log(this.newSchool)
       request.post("/admin/updateStudentInfo", {
         stuNumber:this.stuNumber,
         name:this.name,

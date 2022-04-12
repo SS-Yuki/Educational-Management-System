@@ -1,26 +1,24 @@
 <template>
-  <div class="checkinfo">
+  <div class="checkteacher">
     <div>
       <div class="add" style="margin: 10px 0">
-        <el-button size="large" @click="input" type="primary">新增</el-button>
-        <el-input v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
-        <el-button type="primary" style="margin-left: 5px">搜索</el-button>
+        <el-button size="large" @click="add" type="primary">新增</el-button>
+        <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
+        <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
       </div>
-
       <el-table :data="tableData" style="width: 100%" border stripe>
         <el-table-column fixed prop="number" label="工号" width="150" sortable/>
         <el-table-column prop="name" label="姓名" width="120" />
-        <el-table-column prop="phone_num" label="电话" width="120" />
-        <el-table-column prop="id_num" label="身份证号" width="120" />
+        <el-table-column prop="idNum" label="身份证号" width="120" />
+        <el-table-column prop="phoneNum" label="电话" width="120" />
         <el-table-column prop="email" label="邮箱" width="120" />
-        <el-table-column prop="password" label="密码" width="120" />
-        <el-table-column prop="role" label="身份" width="120" />
+        <el-table-column prop="teaStatus" label="状态" width="120" />
         <el-table-column prop="school" label="院系" width="120" />
         <el-table-column prop="major" label="专业" width="120" />
         <el-table-column fixed="right" label="操作" width="120">
-          <template #default>
-            <el-button type="text" size="small" @click="handleClick">编辑</el-button>
-            <el-popconfirm title="确认删除?">
+          <template #default="scope">
+            <el-button type="text" size="small" @click="handleEdit(scope.row.number)">编辑</el-button>
+            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.number)">
               <template #reference>
                 <el-button type="text">删除</el-button>
               </template>
@@ -43,46 +41,79 @@
         />
       </div>
     </div>
-  </div>
-  <div>
-    <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
-      <el-form :model="new_people" label-width="120px">
-        <el-form-item label="新工号">
-          <el-input v-model="new_people.new_number" />
-        </el-form-item>
-        <el-form-item label="新姓名">
-          <el-input v-model="new_people.new_name" />
-        </el-form-item>
-        <el-form-item label="新电话">
-          <el-input v-model="new_people.new_phonenum" />
-        </el-form-item>
-        <el-form-item label="新身份证号">
-          <el-input v-model="new_people.new_idnum" />
-        </el-form-item>
-        <el-form-item label="新邮箱">
-          <el-input v-model="new_people.new_email" />
-        </el-form-item>
-        <el-form-item label="新密码">
-          <el-input v-model="new_people.new_password" />
-        </el-form-item>
-        <el-form-item label="新身份">
-          <el-radio v-model="new_people.new_role" label="学生">学生</el-radio>
-          <el-radio v-model="new_people.new_role" label="老师">老师</el-radio>
-        </el-form-item>
-        <el-form-item label="新院系">
-          <el-input v-model="new_people.new_school" />
-        </el-form-item>
-        <el-form-item label="新专业">
-          <el-input v-model="new_people.new_major"/>
-        </el-form-item>
-        <span class="dialog-footer">
+    <div>
+      <el-dialog v-model="dialogVisible" title="添加新用户" width="30%">
+        <el-form :model="addStudent" label-width="120px">
+          <el-form-item label="新工号">
+            <el-input v-model="addTeacher.number" />
+          </el-form-item>
+          <el-form-item label="新姓名">
+            <el-input v-model="addTeacher.name" />
+          </el-form-item>
+          <el-form-item label="新电话">
+            <el-input v-model="addTeacher.phoneNum" />
+          </el-form-item>
+          <el-form-item label="新身份证号">
+            <el-input v-model="addTeacher.idNum" />
+          </el-form-item>
+          <el-form-item label="新邮箱">
+            <el-input v-model="addTeacher.email" />
+          </el-form-item>
+          <el-form-item label="新身份">
+            <el-radio v-model="addTeacher.role" label="teacher" checked="true">teacher</el-radio>
+          </el-form-item>
+          <el-form-item label="新院系">
+            <el-input v-model="addTeacher.school" />
+          </el-form-item>
+          <el-form-item label="新专业">
+            <el-input v-model="addTeacher.major"/>
+          </el-form-item>
+          <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="send_newpeople">确认</el-button>
+        <el-button type="primary" @click="save">确认</el-button>
       </span>
-      </el-form>
-      <template #footer>
-      </template>
-    </el-dialog>
+        </el-form>
+        <template #footer>
+        </template>
+      </el-dialog>
+    </div>
+    <div>
+      <el-dialog v-model="dialogVisible2" title="编辑信息" width="30%">
+        <el-form :model="newSchool" label-width="120px">
+          <el-form-item label="新名字">
+            <el-input v-model="name" />
+          </el-form-item>
+          <el-form-item label="新密码">
+            <el-input v-model="password" />
+          </el-form-item>
+          <el-form-item label="新身份证号">
+            <el-input v-model="idNum" />
+          </el-form-item>
+          <el-form-item label="新电话号">
+            <el-input v-model="phoneNum" />
+          </el-form-item>
+          <el-form-item label="新邮箱">
+            <el-input v-model="email" />
+          </el-form-item>
+          <el-form-item label="新状态">
+            <el-radio v-model="teaStatus" label="Dimission" checked="true">Dimisson</el-radio>
+            <el-radio v-model="teaStatus" label="Normal" checked="true">Normal</el-radio>
+          </el-form-item>
+          <el-form-item label="新专业">
+            <el-input v-model="major" />
+          </el-form-item>
+          <el-form-item label="新学院">
+            <el-input v-model="school" />
+          </el-form-item>
+          <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="saveEdit">确认</el-button>
+      </span>
+        </el-form>
+        <template #footer>
+        </template>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -93,48 +124,104 @@ export default {
   name: "CheckTeacherInfo",
   data(){
     return{
+      options:[],
       total:0,
       pageSize:10,
       currentPage:1,
       search:'',
       dialogVisible:false,
-      new_people:{
-        new_number:'',
-        new_name:'',
-        new_phonenum:'',
-        new_idnum:'',
-        new_email:'',
-        new_password:'',
-        new_role:'',
-        new_school:'',
-        new_major:''
+      dialogVisible2:false,
+      //edit
+      jobNumber:'',
+      name:'',
+      password:'',
+      idNum:'',
+      phoneNum:'',
+      email:'',
+      teaStatus:'',
+      major:'',
+      school:'',
+      addTeacher:{
+        number:'',
+        name:'',
+        idNum:'',
+        phoneNum:'',
+        email:'',
+        role:'teacher',
+        school:'',
+        major:''
       },
+      // newSchool:{
+      //   oldName:'',
+      //   newName:'',
+      //   introduction:''
+      // },
       tableData:[]
     }
   },
-  created() {
+  mounted() {
     this.load()
   },
   methods:{
+    school_major_select(){
+
+    },
     load(){
-      request.get("/api/checkinfo",{
-        pageNum:this.currentPage,
-        pageSize:this.pageSize, //每页的条目数
-        search:this.search
-      }).then(res=>{
+      console.log(this.pageData)
+      request.post("/admin/findTeacherPage",{
+            pageNum: this.currentPage,
+            pageSize: this.pageSize,
+            search: this.search
+          }
+      ).then(res=>{
         console.log(res)
-        this.tableData=res.data.records
-        this.total=res.data.total
+        if(res.data.code===200){
+          this.tableData=res.data.data.records
+          this.total=res.data.data.total
+        }
+        else{
+          this.$message({
+            type:"fail",
+            message: "失败"
+          })
+        }
       })
     },
-    input:function (){
+    add:function (){
       this.dialogVisible=true
-      this.new_people={}
+      this.addTeacher={}
     },
-    send_newpeople:function (){
-      this.dialogVisible=false
-      request.post("/user/checkinfo",this.new_people).then(res=>{
+    save:function (){
+      request.post("/admin/register", this.addTeacher).then(res => {
         console.log(res)
+        this.load() // 刷新表格的数据
+        this.dialogVisible = false  // 关闭弹窗
+      })
+    },
+    saveEdit(){
+      request.post("/admin/updateTeacherInfo", {
+        jobNumber:this.jobNumber,
+        name:this.name,
+        password:this.password,
+        idNum:this.idNum,
+        phoneNum: this.phoneNum,
+        email:this.email,
+        teaStatus:this.teaStatus,
+        major:this.major,
+        school:this.school
+      }).then(res=>{
+        console.log(res)
+        this.load()
+        this.dialogVisible2=false
+      })
+    },
+    handleEdit(number){
+      this.jobNumber=number
+      this.dialogVisible2 = true
+    },
+    handleDelete(number) {
+      request.post("/admin/delete",number).then(res => {
+        this.load()  // 删除之后重新加载表格的数据
       })
     },
     handleClick:function (){
@@ -143,18 +230,16 @@ export default {
     handleSizeChange:function (){
 
     },
-    handleCurrentChange:function (){
-
+    handleCurrentChange:function (pageNum){
+      this.currentPage = pageNum
+      this.load()
     }
   }
-}
-const handleClick = () => {
-  console.log('click')
 }
 </script>
 
 <style scoped>
-.checkinfo{
+.checkteacher{
   margin-left: 100px;
   display: flex;
 }

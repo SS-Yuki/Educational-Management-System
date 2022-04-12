@@ -57,12 +57,12 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     }
 
     @Override
-    public TeachingBuilding updateTeachingBuilding(String teachingBuildingName) throws Exception {
-        TeachingBuilding teachingBuilding = teachingBuildingRepository.findByName(teachingBuildingName);
+    public TeachingBuilding updateTeachingBuilding(String teachingBuildingOldName, String teachingBuildingNewName) throws Exception {
+        TeachingBuilding teachingBuilding = teachingBuildingRepository.findByName(teachingBuildingOldName);
         if(teachingBuilding == null){
             throw new Exception("该教学楼不存在");
         }
-        teachingBuilding.setName(teachingBuildingName);
+        teachingBuilding.setName(teachingBuildingNewName);
         return teachingBuilding;
     }
 

@@ -20,6 +20,6 @@ public interface TeachingAffairsService {
 //    //Classroom updateClassroom();
 //    Classroom deleteClassroom(String classroomName);
     TeachingBuilding insertTeachingBuilding(String teachingBuildingName) throws Exception;
-    TeachingBuilding updateTeachingBuilding(String teachingBuildingName) throws Exception;
+    TeachingBuilding updateTeachingBuilding(String teachingBuildingOldName, String teachingBuildingNewName) throws Exception;
     TeachingBuilding deleteTeachingBuilding(String teachingBuildingName) throws Exception;
 }

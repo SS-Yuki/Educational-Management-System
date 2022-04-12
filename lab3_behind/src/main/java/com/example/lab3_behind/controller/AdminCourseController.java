@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,8 +48,9 @@ public class AdminCourseController {
         }
     }
     @PostMapping("/deleteCourse")
-    public Result deleteCourse(@RequestBody Integer courseId){
+    public Result deleteCourse(@RequestBody Map<String,Object> map){
         try{
+            Integer courseId = (Integer) map.get("id");
             courseService.deleteCourse(courseId);
             return Result.succ(null);
         }

@@ -81,9 +81,11 @@ public class AdminSchoolController {
 
     @PostMapping("/allSchool")
     public Result allSchool(){
+        Map<String,Object> map = new HashMap<>();
         try{
             List<String> schoolNames = schoolService.getAllSchool();
-            return Result.succ(null);
+            map.put("schools",schoolNames);
+            return Result.succ(map);
         }
         catch (Exception e){
             //e.printStackTrace();

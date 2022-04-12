@@ -23,7 +23,7 @@
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
             <el-button type="text" size="small" @click="handleEdit(
-                scope.row.id,
+                scope.row.courseId,
                 scope.row.courseName,
                 scope.row.courseNumber,
                 scope.row.teacherNum,
@@ -258,10 +258,10 @@ export default {
         this.dialogVisible2=false
       })
     },
-    handleEdit(id,courseName,courseNumber,teacherNum,major,school,classPeriod,classroom,
+    handleEdit(courseId,courseName,courseNumber,teacherNum,major,school,classPeriod,classroom,
     creditHours,credits,capacity,introduction,applicant){
       this.dialogVisible2=true
-      this.editCourse.id=id
+      this.editCourse.id=courseId
       this.editCourse.courseName=courseName
       this.editCourse.courseNumber=courseNumber
       this.editCourse.teacherNum=teacherNum

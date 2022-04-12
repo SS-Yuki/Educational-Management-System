@@ -249,7 +249,7 @@ export default {
           console.log(results)//这个是csv文件的数据
           let data = []
           //遍历csv文件中的数据，存放到data中 方法不唯一，可自己更改
-          for (let i = 0; i < results.data.length; i++) {
+          for (let i = 0; i < results.data.length-1; i++) {
             let obj = {}
             obj.number = results.data[i][0]
             obj.name = results.data[i][1]

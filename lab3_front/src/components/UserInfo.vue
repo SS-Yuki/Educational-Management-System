@@ -11,7 +11,7 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="pop">修改密码</el-dropdown-item>
-            <el-dropdown-item @click="this.$router.push('/teacher')">返回首页</el-dropdown-item>
+            <el-dropdown-item @click="return_home">返回首页</el-dropdown-item>
             <el-dropdown-item divided @click="logout">登出</el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -100,6 +100,18 @@ export default {
           })
         }
       })
+    },
+    return_home: function () {
+      let user = JSON.parse(sessionStorage.getItem("user"))
+      if (user.role === "admin") {
+        this.$router.push("/admin")
+      }
+      else if (user.role === "teacher"){
+        this.$router.push("/teacher")
+      }
+      else if (user.role === "student") {
+        this.$router.push("/student")
+      }
     }
   }
 }

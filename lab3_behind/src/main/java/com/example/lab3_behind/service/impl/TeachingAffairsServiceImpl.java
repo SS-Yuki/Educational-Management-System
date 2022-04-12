@@ -36,10 +36,11 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         if(aTimePeriod != null){
             throw new Exception("该时间段命名已存在");
         }
-        aTimePeriod.setStartTime(classTimeData.getStartTime());
-        aTimePeriod.setEndTime(classTimeData.getEndTime());
-        timeTableRepository.save(aTimePeriod);
-        return aTimePeriod;
+        TimeTable newTime = new TimeTable();
+        newTime.setStartTime(classTimeData.getStartTime());
+        newTime.setEndTime(classTimeData.getEndTime());
+        timeTableRepository.save(newTime);
+        return newTime;
     }
 
     @Override

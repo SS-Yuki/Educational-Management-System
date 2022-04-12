@@ -57,8 +57,8 @@ public class AdminController {
     public Result updateStudentInfo(@RequestBody StudentUpdatingData studentUpdatingData){
         Map<String,Object> map = new HashMap<>();
         try{
-            String stuNumebr = studentUpdatingData.getStuNumebr();
-            studentService.updateStudentInfo(new RevisableDataForAdmin(studentUpdatingData),stuNumebr);
+            String stuNumber = studentUpdatingData.getStuNumber();
+            studentService.updateStudentInfo(new RevisableDataForAdmin(studentUpdatingData),stuNumber);
         }catch (Exception e){
             e.printStackTrace();
             return Result.fail(683,e.getMessage());

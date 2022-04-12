@@ -179,7 +179,7 @@ export default {
       dialogVisible:false,
       dialogVisible2:false,
       addCourse:{
-        id:'0',
+        id:0,
         courseName:'',
         courseNumber:'',
         teacherNum:'',

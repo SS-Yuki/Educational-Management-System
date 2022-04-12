@@ -36,10 +36,9 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         if(aTimePeriod != null){
             throw new Exception("该时间段命名已存在");
         }
-        aTimePeriod.setStartTime(classTimeData.getStartTime());
-        aTimePeriod.setEndTime(classTimeData.getEndTime());
-        timeTableRepository.save(aTimePeriod);
-        return aTimePeriod;
+        TimeTable newTime = new TimeTable(null,classTimeData.getName(), classTimeData.getStartTime(), classTimeData.getEndTime());
+        timeTableRepository.save(newTime);
+        return newTime;
     }
 
     @Override
@@ -65,7 +64,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     }
 
     @Override
-    public Page<TimeTable> getAPageTimeTable(Integer page, Integer size, String search){
+    public Page<TimeTable> findAPageTimeTable(Integer page, Integer size, String search){
         Pageable pageable =  PageRequest.of(page - 1, size);
         if(search.isEmpty()){
             return timeTableRepository.findAll(pageable);

@@ -13,6 +13,9 @@ import javax.persistence.*;
 @Table(name = "time_table")
 public class TimeTable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @Column(name = "name", unique = true)
     private String name;
 

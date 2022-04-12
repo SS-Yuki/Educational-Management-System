@@ -88,9 +88,9 @@ public class AdminBuildingController {
         }
     }
     @PostMapping("/deleteClassroom")
-    public Result deleteClassroom(@RequestBody ClassroomData classrommData){
+    public Result deleteClassroom(@RequestBody ClassroomData classroomData){
         try{
-            teachingAffairsService.deleteClassroom(classrommData.getClassroomName(),classrommData.getBuildingName());
+            teachingAffairsService.deleteClassroom(classroomData.getClassroomName(),classroomData.getBuildingName());
             return Result.succ(null);
         }
         catch (Exception e){

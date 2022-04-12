@@ -108,7 +108,7 @@ export default {
   methods:{
     load(){
       console.log(this.pageData)
-      request.post("/admin/findBuildingPage",{
+      request.post("/admin/findTimePage",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search

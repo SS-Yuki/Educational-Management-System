@@ -25,9 +25,33 @@ public class CourseServiceImpl implements CourseService {
         this.teacherRepository = teacherRepository;
     }
 
-//    @Override
-//    public Page<Course> findAPageCourse(Integer page, Integer size, String search){}
-//
+    @Override
+    public Page<Course> findAPageCourse(Integer page, Integer size, String search){
+        Pageable pageable =  PageRequest.of(page - 1, size);
+        if(search.isEmpty()){
+            return courseRepository.findAll(pageable);
+        }
+        Course course = new Course();
+        course.setCourseName(search);
+        course.setTeacherNum(search);
+        course.setCourseNumber(search);
+        course.setIntroduction(search);
+        course.setMajor(search);
+        course.setTeacherName(search);
+        course.setSchool(search);
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("courseNumber", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("teacher", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("teacherName", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withIgnorePaths("id", "classPeriod", "creditHours", "credits", "capacity", "type");
+        Example<Course> example = Example.of(course, matcher);
+        return courseRepository.findAll(example,pageable);
+    }
+
     @Override
     public Page<CourseApplying> findCourseApplyingOfTeacher(Integer page, Integer size, String search, String jobNum) throws Exception {
         Teacher teacher = teacherRepository.findByJobNumber(jobNum);
@@ -38,7 +62,13 @@ public class CourseServiceImpl implements CourseService {
         if(search.isEmpty()){
             return courseApplyingRepository.findAll(pageable);
         }
-        return courseApplyingRepository.findAllByTeacherNum(jobNum, pageable);
+        CourseApplying courseApplying = new CourseApplying();
+        courseApplying.setCourseName(search);
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withIgnorePaths("id", "classPeriod", "creditHours", "credits", "capacity", "type");
+        Example<CourseApplying> example = Example.of(courseApplying, matcher);
+        return courseApplyingRepository.findAllByTeacherNum(jobNum, example, pageable);
     }
 
     @Override
@@ -99,5 +129,5 @@ public class CourseServiceImpl implements CourseService {
 //    public Course updateCourse(CourseApplyingData courseApplyingData){}
 //
 //    @Override
-//    public Course deleteCourse(CourseApplyingData courseApplyingData){}
+//    public Course deleteCourse(Integer courseId){}
 }

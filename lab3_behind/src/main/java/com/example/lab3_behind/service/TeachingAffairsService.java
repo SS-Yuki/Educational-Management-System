@@ -13,7 +13,7 @@ public interface TeachingAffairsService {
     TimeTable addClassTime(ClassTimeData classTimeData) throws Exception;
     TimeTable updateClassTime(ClassTimeData classTimeData) throws Exception;
     TimeTable deleteClassTime(String name) throws Exception;
-    Page<TimeTable> getAPageTimeTable(Integer page, Integer size, String search);
+    Page<TimeTable> findAPageTimeTable(Integer page, Integer size, String search);
     Page<TeachingBuilding> findAPageTeachingBuilding(Integer page, Integer size, String search);
     Page<Classroom> findAPageClassroom(Integer page, Integer size, String search);
     Classroom insertClassroom(ClassroomAddingData classroomData) throws Exception;

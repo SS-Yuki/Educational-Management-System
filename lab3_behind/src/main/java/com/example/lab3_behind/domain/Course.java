@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.servlet.http.PushBuilder;
 
 @Data
 @AllArgsConstructor
@@ -61,6 +62,7 @@ public class Course {
     private CourseStatus courseStatus;
 
     public Course(CourseApplyingData courseApplyingData){
+        this.courseId = null;
         this.teacherName = courseApplyingData.getApplicant();
         this.capacity = courseApplyingData.getCapacity();
         this.courseName = courseApplyingData.getCourseName();
@@ -74,6 +76,11 @@ public class Course {
         this.teacherNum = courseApplyingData.getTeacherNum();
         this.introduction = courseApplyingData.getIntroduction();
     }
+
+//    public static Course getACourse(CourseApplyingData courseApplyingData){
+//        new Course(null,
+//                )
+//    }
 
     public Course(CourseApplying courseApplying){
         this.capacity = courseApplying.getCapacity();

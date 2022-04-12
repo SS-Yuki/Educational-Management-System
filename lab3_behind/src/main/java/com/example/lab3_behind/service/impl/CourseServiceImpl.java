@@ -99,16 +99,42 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course ApproveCourseApplying(Integer courseApplyingId) throws Exception {
+    public CourseApplying approveCourseApplying(Integer courseApplyingId) throws Exception {
         CourseApplying courseApplying = courseApplyingRepository.findByApplyId(courseApplyingId);
         if(courseApplying == null){
             throw new Exception("该申请不存在");
         }
         Teacher teacher = teacherRepository.findByJobNumber(courseApplying.getTeacherNum());
-        Course course = new Course(courseApplying);
-        teacher.getCourses().add(course);
-        // TODO: 2022/4/12
-        return course;
+        if(teacher == null){
+            throw new Exception("该申请所属老师不存在");
+        }
+        CourseApplyingData courseApplyingData = new CourseApplyingData(courseApplying);
+        if(courseApplying.getType() == CourseApplyingType.Publish){
+            this.insertCourse(courseApplyingData);
+        } else if(courseApplying.getType() == CourseApplyingType.Change){
+            this.updateCourse(courseApplyingData);
+        } else if(courseApplying.getType() == CourseApplyingType.Delete){
+            this.deleteCourse(courseApplying.getCourseId());
+        }
+        teacher.getCoursesApplying().remove(courseApplying);
+        teacherRepository.save(teacher);
+        return courseApplying;
+    }
+
+    @Override
+    public CourseApplying rejectCourseApplying(Integer courseApplyingId) throws Exception {
+        CourseApplying courseApplying = courseApplyingRepository.findByApplyId(courseApplyingId);
+        if(courseApplying == null){
+            throw new Exception("该申请不存在");
+        }
+        Teacher teacher = teacherRepository.findByJobNumber(courseApplying.getTeacherNum());
+        if(teacher == null){
+            courseApplyingRepository.delete(courseApplying);
+            throw new Exception("该申请所属老师不存在");
+        }
+        teacher.getCoursesApplying().remove(courseApplying);
+        teacherRepository.save(teacher);
+        return courseApplying;
     }
 
     @Override

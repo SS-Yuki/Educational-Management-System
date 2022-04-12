@@ -37,11 +37,12 @@ public class TeacherController {
                 throw new Exception("请求与账号不匹配");
             }
             Teacher teacher = teacherService.getByJobNumber(number);
+            map.put("role","教师");
             map.put("number",teacher.getJobNumber());
             map.put("name",teacher.getName());
             map.put("idNum",teacher.getIdNum());
             map.put("phoneNum",teacher.getPhoneNum());
-            map.put("enail",teacher.getEmail());
+            map.put("email",teacher.getEmail());
             map.put("school",teacher.getSchool());
             map.put("major",teacher.getMajor());
         }catch (Exception e){

@@ -35,11 +35,12 @@ public class StudentController {
                 throw new Exception("请求与账号不匹配");
             }
             Student student = studentService.getByStuNumber(number);
+            map.put("role","学生");
             map.put("number",student.getStuNumber());
             map.put("name",student.getName());
             map.put("idNum",student.getIdNum());
             map.put("phoneNum",student.getPhoneNum());
-            map.put("enail",student.getEmail());
+            map.put("email",student.getEmail());
             map.put("school",student.getSchool());
             map.put("major",student.getMajor());
         }catch (Exception e){

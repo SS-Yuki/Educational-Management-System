@@ -87,9 +87,9 @@
       <el-dialog v-model="dialogVisible2" title="查看申请信息" width="30%">
         <el-form :model="editCourse" label-width="120px">
           <el-form-item label="applyId">
-            <el-input v-model="applyIdId" />
+            <el-input v-model="applyId" />
           </el-form-item>
-          <el-form-item label="id">
+          <el-form-item label="课程id">
             <el-input v-model="courseId" />
           </el-form-item>
           <el-form-item label="课程名">

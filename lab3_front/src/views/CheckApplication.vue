@@ -186,9 +186,11 @@ export default {
   methods:{
     accept:function(applyId) {
       request.post("/admin/acceptApply",applyId)
+      this.load()
     },
     reject:function(applyId) {
       request.post("/admin/rejectApply",applyId)
+      this.load()
     },
     load(){
       console.log(this.pageData)

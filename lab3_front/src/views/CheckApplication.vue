@@ -40,6 +40,7 @@
         <el-table-column prop="capacity" label="容量" width="0" v-if="false" />
         <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
         <el-table-column prop="applicant" label="申请人" width="0" v-if="false" />
+        <el-table-column prop="applyType" label="申请操作" width="0"/>
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
             <el-button type="text" size="small" @click="handleCheck(
@@ -57,7 +58,8 @@
                 scope.row.credits,
                 scope.row.capacity,
                 scope.row.introduction,
-                scope.row.applicant
+                scope.row.applicant,
+                scope.row.applyType
                 )">查看详情</el-button>
             <el-button size="small" @click="accept(scope.row.applyId)">
               通过
@@ -131,6 +133,9 @@
           <el-form-item label="申请人">
             <el-input v-model="applicant" />
           </el-form-item>
+          <el-form-item label="申请操作">
+            <el-input v-model="applyType" />
+          </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible2 = false">关闭</el-button>
       </span>
@@ -171,6 +176,7 @@ export default {
       capacity:'',
       introduction:'',
       applicant:'',
+      applyType:'',
       tableData:[]
     }
   },
@@ -226,7 +232,7 @@ export default {
     },
     handleCheck(applyId,courseId,courseName,courseNumber,teacherNum,teacherName,
                 major,school,classPeriod,classroom,
-               creditHours,credits,capacity,introduction,applicant){
+               creditHours,credits,capacity,introduction,applicant,applyType){
       this.dialogVisible2=true
       this.applyId=applyId
       this.courseId=courseId
@@ -243,6 +249,7 @@ export default {
       this.capacity=capacity
       this.introduction=introduction
       this.applicant=applicant
+      this.applyType=applyType
     },
     handleDelete(courseId) {
       this.id.id=courseId

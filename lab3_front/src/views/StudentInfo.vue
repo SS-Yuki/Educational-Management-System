@@ -78,7 +78,8 @@ export default {
     },
     input_newinfo:function (){
       this.dialogVisible=true
-      this.new_info={}
+      this.new_info.email = this.info.email
+      this.new_info.phoneNum = this.info.phoneNum
     },
     get_info:function (){
       let user = JSON.parse(sessionStorage.getItem("user"))

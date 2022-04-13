@@ -68,6 +68,7 @@ public class CourseApplying {
     private CourseApplyingType type;
 
     public CourseApplying(CourseApplyingData courseApplyingData){
+        this.courseId = courseApplyingData.getId();
         this.teacherName = courseApplyingData.getApplicant();
         this.applicant = courseApplyingData.getApplicant();
         this.capacity = courseApplyingData.getCapacity();

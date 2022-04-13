@@ -43,7 +43,7 @@
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
             <el-button type="text" size="small" @click="handleCheck(
-                scope.applyId,
+                scope.row.applyId,
                 scope.row.courseId,
                 scope.row.courseName,
                 scope.row.courseNumber,

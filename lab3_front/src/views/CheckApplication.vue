@@ -40,7 +40,7 @@
         <el-table-column prop="capacity" label="容量" width="0" v-if="false" />
         <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
         <el-table-column prop="applicant" label="申请人" width="0" v-if="false" />
-        <el-table-column prop="applyType" label="申请操作" width="0"/>
+        <el-table-column prop="applyType" label="申请类型" width="0"/>
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
             <el-button type="text" size="small" @click="handleCheck(
@@ -133,7 +133,7 @@
           <el-form-item label="申请人">
             <el-input v-model="applicant" />
           </el-form-item>
-          <el-form-item label="申请操作">
+          <el-form-item label="申请类型">
             <el-input v-model="applyType" />
           </el-form-item>
           <span class="dialog-footer">

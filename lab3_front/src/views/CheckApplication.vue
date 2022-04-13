@@ -186,7 +186,7 @@ export default {
     },
     load(){
       console.log(this.pageData)
-      request.post("/admin/findCoursePage",{
+      request.post("/admin/findApplyPage",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search

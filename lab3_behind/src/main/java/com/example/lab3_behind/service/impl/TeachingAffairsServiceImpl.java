@@ -117,6 +117,9 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             throw new Exception("该教室名已存在");
         }
         TeachingBuilding teachingBuilding = teachingBuildingRepository.findByName(classroomData.getTeachingBuildingName());
+        if(teachingBuilding == null){
+            throw new Exception("教室信息有误，教学楼不存在");
+        }
         Classroom newClassroom = new Classroom(null, classroomData.getClassroomName(),teachingBuilding);
         teachingBuilding.getClassrooms().add(newClassroom);
         teachingBuildingRepository.save(teachingBuilding);

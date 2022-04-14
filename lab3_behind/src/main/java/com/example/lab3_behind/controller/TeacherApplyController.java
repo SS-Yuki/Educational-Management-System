@@ -95,26 +95,5 @@ public class TeacherApplyController {
             return Result.fail(732,e.getMessage());
         }
     }
-    @RequestMapping("/findCoursePage")
-    public Result findCoursePage(@RequestBody PageSearchData pageSearchData,
-                                 HttpServletRequest request){
-        String token = request.getHeader("token");
-        JwtUserData jwtUserData = JwtUtil.getToken(token);
-        String number = jwtUserData.getNumber().replace("\"", "");
-        try{
-            Map<String,Object> map = new HashMap<>();
-            Page<Course> coursePage = courseService.findAPageCourseOfTeacher(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch(),number);
-            map.put("records",coursePage.getContent());
-            map.put("total",coursePage.getTotalElements());
-            return Result.succ(map);
-        }catch (Exception e){
-            //e.printStackTrace();
-            return Result.fail(770,e.getMessage());
-        }
-
-    }
-
-
-
 
 }

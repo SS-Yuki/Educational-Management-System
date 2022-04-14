@@ -101,7 +101,7 @@ export default {
       this.dialogVisible=false
       this.new_info.number = JSON.parse(sessionStorage.getItem("user")).number
       request.post("/teacher/maintainInfo",this.new_info).then(res=>{
-        console.log(res.data.data)
+        
         this.tableData[6].value = this.new_info.phoneNum
         this.tableData[7].value = this.new_info.email
       })
@@ -114,7 +114,7 @@ export default {
     get_info:function (){
       let user = JSON.parse(sessionStorage.getItem("user"))
       request.post("teacher/information", user.number).then(res=>{
-        console.log(res.data)
+        
         this.info = res.data.data
         this.tableData[0].value = this.info.name
         this.tableData[1].value = this.info.idNum

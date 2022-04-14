@@ -159,14 +159,14 @@ export default {
   },
   methods:{
     load(){
-      console.log(this.pageData)
+      
       request.post("/student/selectCourse",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search
           }
       ).then(res=>{
-        console.log(res)
+        
         if(res.data.code===200){
           this.tableData=res.data.data.records
           this.total=res.data.data.total

@@ -39,7 +39,7 @@ request.interceptors.request.use(config => {
 //         return res;
 //     },
 //     error => {
-//         console.log('err' + error) // for debug
+//         
 //         return Promise.reject(error)
 //     }
 // )

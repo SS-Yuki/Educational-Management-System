@@ -145,25 +145,25 @@ export default {
   methods:{
     getOption: function () {
       request.post("/admin/allMajors").then(res => {
-        console.log(res)
+        
         let that = this
         if (!res.data) return
         res.data.data.schools.forEach (function (item) {
-          console.log(item);
+          
           let option = {value: item.school, label: item.school}
           that.options.push(option)
         })
       })
     },
     load(){
-      console.log(this.pageData)
+      
       request.post("/admin/findMajorPage",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search
           }
       ).then(res=>{
-        console.log(res)
+        
         if(res.data.code===200){
           this.tableData=res.data.data.records
           this.total=res.data.data.total
@@ -182,13 +182,13 @@ export default {
     },
     save:function (){
       request.post("/admin/addMajor", this.addMajor).then(res => {
-        console.log(res)
+        
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })
     },
     saveEdit(){
-      console.log(this.newSchool)
+      
       request.post("/admin/updateMajorInfo", {
         majorOldName:this.majorOldName,
         majorNewName:this.majorNewName,
@@ -196,7 +196,7 @@ export default {
         majorOldSchool:this.majorOldSchool,
         majorNewSchool:this.majorNewSchool
       }).then(res=>{
-        console.log(res)
+        
         this.load()
         this.dialogVisible2=false
       })

@@ -94,25 +94,24 @@ export default {
   methods:{
     getOption: function () {
       request.post("/admin/allBuildings").then(res => {
-        console.log(res)
         let that = this
         if (!res.data) return
         res.data.data.buildings.forEach (function (item) {
-          console.log(item);
+          
           let option = {value: item, label: item}
           that.options.push(option)
         })
       })
     },
     load(){
-      console.log(this.pageData)
+      
       request.post("/admin/findClassroomPage",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search
           }
       ).then(res=>{
-        console.log(res)
+        
         if(res.data.code===200){
           this.tableData=res.data.data.records
           this.total=res.data.data.total
@@ -131,7 +130,7 @@ export default {
     },
     save:function (){
       request.post("/admin/addClassroom", this.addClassroom).then(res => {
-        console.log(res)
+        
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })

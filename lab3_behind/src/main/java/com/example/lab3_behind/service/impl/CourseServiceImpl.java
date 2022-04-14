@@ -1,6 +1,7 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.common.CourseApplyingType;
+import com.example.lab3_behind.common.CourseStatus;
 import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.CourseApplying;
 import com.example.lab3_behind.domain.Student;
@@ -14,6 +15,11 @@ import com.example.lab3_behind.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -68,7 +74,8 @@ public class CourseServiceImpl implements CourseService {
                 .withIgnoreCase(true)
                 .withMatcher("teacherNum", ExampleMatcher.GenericPropertyMatcher::exact)
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("applyId", "classPeriod", "creditHours", "credits", "capacity", "type");
+                .withIgnorePaths("courseId", "classPeriod", "creditHours", "credits", "capacity", "type"
+                , "courseNumber", "teacherName", "major", "school", "classroom", "introduction", "courseStatus");
         Example<Course> example = Example.of(course, matcher);
         return courseRepository.findAll(example, pageable);
     }

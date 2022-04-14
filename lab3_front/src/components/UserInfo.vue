@@ -66,8 +66,6 @@ export default {
   methods: {
     logout: function () {
       request.post("/user/logout", JSON.parse(sessionStorage["user"]).token).then(res => {
-        console.log(res)
-        console.log(res.data.code)
         if (res.data.code === 200) {
           this.$message({
             type: "success",
@@ -88,7 +86,6 @@ export default {
     },
     change_pass: function () {
       request.post("/user/changePassword", this.changePassSet).then(res => {
-        console.log(res)
         if (res.data.code === 200) {
           this.$message({
             type: "success",

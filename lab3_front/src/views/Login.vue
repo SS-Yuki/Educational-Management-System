@@ -50,15 +50,15 @@ export default {
   methods: {
     login: function (){
       request.post("/user/login", this.login_data).then(res => {
-        console.log(res)
-        console.log(res.data.code)
+        
+        
         if (res.data.code === 200) {
           this.$message({
             type: "success",
             message: "登录成功"
           })
           sessionStorage.setItem("user", JSON.stringify(res.data.data))
-          console.log(JSON.stringify(res.data.data))
+          
           if (res.data.data.role === "admin") {
             router.addRoute(admin_routes)
             sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()))
@@ -86,10 +86,10 @@ export default {
             }, 10);
           }
           else
-            console.log("hhh")
+            
         }
         else {
-          console.log("hihi")
+          
           this.$message({
             type: "error",
             message: res.data.msg
@@ -105,10 +105,10 @@ export default {
   //   router.addRoute(admin_routes)
   //   router.addRoute(teacher_routes)
   //   router.addRoute(student_routes)
-  //   console.log(router.getRoutes())
-  //   // console.log({teacher_routes})
-  //   // console.log({student_routes})
-  //   // console.log({admin_routes})
+  //   
+  //   // 
+  //   // 
+  //   // 
   //
   // }
 }

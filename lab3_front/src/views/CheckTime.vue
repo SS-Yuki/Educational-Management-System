@@ -117,14 +117,14 @@ export default {
   },
   methods:{
     load(){
-      console.log(this.pageData)
+      
       request.post("/admin/findTimePage",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search
           }
       ).then(res=>{
-        console.log(res)
+        
         if(res.data.code===200){
           this.tableData=res.data.data.records
           this.total=res.data.data.total
@@ -143,19 +143,19 @@ export default {
     },
     save:function (){
       request.post("/admin/addTime", this.addTime).then(res => {
-        console.log(res)
+        
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })
     },
     saveEdit(){
-      console.log(this.newSchool)
+      
       request.post("/admin/updateTimeInfo", {
         timeName:this.timeName,
         startTime: this.startTime,
         endTime: this.endTime
       }).then(res=>{
-        console.log(res)
+        
         this.load()
         this.dialogVisible2=false
       })

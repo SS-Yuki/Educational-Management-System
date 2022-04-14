@@ -14,7 +14,6 @@
                 :on-exceed="handleExceed"
                 :on-remove="handleRemove"
                 :file-list="fileListUpload"
-                :before-upload="fileUpload"
                 accept=".csv"
                 :auto-upload="false">
               <el-button size="large" type="primary">导入</el-button>
@@ -150,7 +149,6 @@
 <script>
 import request from "@/utils/request";
 import Papa from "papaparse";
-import {isUtf8} from "@/utils";
 
 export default {
 
@@ -220,23 +218,7 @@ export default {
     this.getOption()
   },
   methods:{
-    fileUpload(file) {
-      // resolve(file) 正确放行file
-      return new Promise(async (resolve, reject) => {
-        const isTxt = file.type === "text/plain";
-        const isLt12M = file.size / 1024 / 1024 < 12;
-        try {
-          await isUtf8(file);
-        } catch (e) {
-          this.$toast({
-            message: "编码格式错误，请上传 UTF-8 格式文件",
-            type: 2
-          });
-          return reject(false);
-        }
-        return resolve(file);
-      });
-    },
+
 
     handleChange(file, fileList) {
       this.fileTemp = file.raw

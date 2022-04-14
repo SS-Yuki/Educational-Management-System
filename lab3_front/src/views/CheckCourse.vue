@@ -82,7 +82,7 @@
       <el-dialog v-model="dialogVisible" title="添加新课程" width="30%">
         <el-form :model="addCourse" label-width="120px">
           <el-form-item label="课程id">
-            <el-input v-model="addCourse.id" readonly="readonly"/>
+            <el-input v-model="addCourse.id" disabled/>
           </el-form-item>
           <el-form-item label="课程名">
             <el-input v-model="addCourse.courseName"/>
@@ -142,13 +142,13 @@
             <el-input v-model="editCourse.courseNumber" />
           </el-form-item>
           <el-form-item label="教师工号">
-            <el-input v-model="editCourse.teacherNum" readonly="readonly"/>
+            <el-input v-model="editCourse.teacherNum" disabled/>
           </el-form-item>
           <el-form-item label="开课专业">
-            <el-input v-model="editCourse.major" readonly="readonly"/>
+            <el-input v-model="editCourse.major" disabled/>
           </el-form-item>
           <el-form-item label="开课院系">
-            <el-input v-model="editCourse.school" readonly="readonly"/>
+            <el-input v-model="editCourse.school" disabled/>
           </el-form-item>
           <el-form-item label="上课时间">
             <el-input v-model="editCourse.classPeriod" />

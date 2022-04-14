@@ -101,16 +101,16 @@
             <el-input v-model="courseNumber"/>
           </el-form-item>
           <el-form-item label="教师工号">
-            <el-input v-model="teacherNum" readonly="readonly"/>
+            <el-input v-model="teacherNum" disabled/>
           </el-form-item>
           <el-form-item label="教师姓名">
-            <el-input v-model="teacherName" readonly="readonly"/>
+            <el-input v-model="teacherName" disabled/>
           </el-form-item>
           <el-form-item label="开课专业">
-            <el-input v-model="major" readonly="readonly"/>
+            <el-input v-model="major" disabled/>
           </el-form-item>
           <el-form-item label="开课院系">
-            <el-input v-model="school" readonly="readonly"/>
+            <el-input v-model="school" disabled/>
           </el-form-item>
           <el-form-item label="上课时间">
             <el-input v-model="classPeriod" />

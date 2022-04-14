@@ -66,7 +66,7 @@
       <el-dialog v-model="dialogVisible" title="添加新课程" width="30%">
         <el-form :model="addCourse" label-width="120px">
           <el-form-item label="课程id">
-            <el-input v-model="addCourse.id" readonly="readonly"/>
+            <el-input v-model="addCourse.id" disabled/>
           </el-form-item>
           <el-form-item label="新课程名">
             <el-input v-model="addCourse.courseName"/>

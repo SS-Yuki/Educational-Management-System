@@ -66,52 +66,52 @@
       <el-dialog v-model="dialogVisible2" title="查看申请信息" width="30%">
         <el-form :model="editCourse" label-width="120px">
           <el-form-item label="applyId">
-            <el-input v-model="applyId" readonly="readonly"/>
+            <el-input v-model="applyId" disabled/>
           </el-form-item>
           <el-form-item label="课程id">
-            <el-input v-model="courseId" readonly="readonly"/>
+            <el-input v-model="courseId" disabled/>
           </el-form-item>
           <el-form-item label="课程名">
-            <el-input v-model="courseName" readonly="readonly"/>
+            <el-input v-model="courseName" disabled/>
           </el-form-item>
           <el-form-item label="课程编号">
-            <el-input v-model="courseNumber"readonly="readonly"/>
+            <el-input v-model="courseNumber" disabled/>
           </el-form-item>
           <el-form-item label="教师工号">
-            <el-input v-model="teacherNum" readonly="readonly"/>
+            <el-input v-model="teacherNum" disabled/>
           </el-form-item>
           <el-form-item label="教师姓名">
-            <el-input v-model="teacherName" readonly="readonly"/>
+            <el-input v-model="teacherName" disabled/>
           </el-form-item>
           <el-form-item label="开课专业">
-            <el-input v-model="major" readonly="readonly"/>
+            <el-input v-model="major" disabled/>
           </el-form-item>
           <el-form-item label="开课院系">
-            <el-input v-model="school" readonly="readonly"/>
+            <el-input v-model="school" disabled/>
           </el-form-item>
           <el-form-item label="上课时间">
-            <el-input v-model="classPeriod" readonly="readonly"/>
+            <el-input v-model="classPeriod" disabled/>
           </el-form-item>
           <el-form-item label="教室">
-            <el-input v-model="classroom" readonly="readonly"/>
+            <el-input v-model="classroom" disabled/>
           </el-form-item>
           <el-form-item label="学时">
-            <el-input v-model="creditHours" readonly="readonly"/>
+            <el-input v-model="creditHours" disabled/>
           </el-form-item>
           <el-form-item label="学分">
-            <el-input v-model="credits" readonly="readonly"/>
+            <el-input v-model="credits" disabled/>
           </el-form-item>
           <el-form-item label="容量">
-            <el-input v-model="capacity"readonly="readonly" />
+            <el-input v-model="capacity" disabled />
           </el-form-item>
           <el-form-item label="介绍">
-            <el-input v-model="introduction" readonly="readonly"/>
+            <el-input v-model="introduction" disabled/>
           </el-form-item>
           <el-form-item label="申请人">
-            <el-input v-model="applicant" readonly="readonly"/>
+            <el-input v-model="applicant" disabled/>
           </el-form-item>
           <el-form-item label="申请类型">
-            <el-input v-model="applyType"readonly="readonly" />
+            <el-input v-model="applyType" disabled />
           </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible2 = false">关闭</el-button>

@@ -11,7 +11,8 @@
         <el-form-item prop="number">
           <el-input prefix-icon="User" v-model="login_data.number"/>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item prop="pass
+        word">
           <el-input show-password prefix-icon="Lock" v-model="login_data.password" />
         </el-form-item>
         <el-button style="width: 100%" type="primary" @click="login">

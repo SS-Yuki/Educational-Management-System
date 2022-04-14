@@ -197,9 +197,10 @@ export default {
       },
       edit_rules: {
         password: [{
-          // required: true,
+          required: true,
           pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
-          message: '密码格式错误'
+          message: '密码格式错误',
+          trigger:'blur'
         }]
       }
     }
@@ -227,25 +228,26 @@ export default {
       })
     },
     load(){
-      
-      request.post("/admin/findTeacherPage",{
-            pageNum: this.currentPage,
-            pageSize: this.pageSize,
-            search: this.search
+      setTimeout(() => {
+        request.post("/admin/findTeacherPage",{
+              pageNum: this.currentPage,
+              pageSize: this.pageSize,
+              search: this.search
+            }
+        ).then(res=>{
+          
+          if(res.data.code===200){
+            this.tableData=res.data.data.records
+            this.total=res.data.data.total
           }
-      ).then(res=>{
-        
-        if(res.data.code===200){
-          this.tableData=res.data.data.records
-          this.total=res.data.data.total
-        }
-        else{
-          this.$message({
-            type:"fail",
-            message: res.data.msg
-          })
-        }
-      })
+          else{
+            this.$message({
+              type:"fail",
+              message: res.data.msg
+            })
+          }
+        })
+      }, 10)
     },
     add:function (){
       this.dialogVisible=true

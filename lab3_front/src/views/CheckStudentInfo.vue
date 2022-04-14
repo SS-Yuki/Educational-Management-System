@@ -112,14 +112,14 @@
     <div>
       <el-dialog v-model="dialogVisible2" title="编辑学生信息" width="30%" >
         <el-form :model="newSchool" label-width="120px" :rules="edit_rules">
-          <el-form-item label="院系/专业">
+          <el-form-item label="院系/专业" prop="school_major">
             <el-cascader  v-if="flag" v-model="edit_school_major" :options="options"/>
           </el-form-item>
-          <el-form-item label="状态">
+          <el-form-item label="状态" prop="status">
             <el-radio v-model="stuStatus" label="Graduated" checked="true">Graduated</el-radio>
             <el-radio v-model="stuStatus" label="Normal" checked="true">Normal</el-radio>
           </el-form-item>
-          <el-form-item label="姓名">
+          <el-form-item label="姓名" prop="name">
             <el-input v-model="name" />
           </el-form-item>
           <el-form-item label="密码" prop="password">
@@ -149,19 +149,7 @@
 <script>
 import request from "@/utils/request";
 import Papa from "papaparse";
-// const validatorPassword = (rule, value, callback) => {
-//   const reg = /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/
-//   if (!value) {
-//     return callback(new Error("请输入密码"));
-//   } else {
-//     if (reg.test(value)) {
-//       callback();
-//     } else {
-//       return callback(new Error('密码格式不正确'))
-//     }
-//   }
-//   
-// };
+
 
 export default {
 
@@ -219,8 +207,7 @@ export default {
         email: [{pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '电子邮箱格式错误'}],
       },
       edit_rules: {
-        password: [{
-          // required: true,
+        password: [{required: true, message: '请填写新密码', trigger: 'blur'}, {
           pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
           message: '密码格式错误'
         }]
@@ -302,25 +289,26 @@ export default {
       })
     },
     load(){
-      
-      request.post("/admin/findStudentPage",{
-            pageNum: this.currentPage,
-            pageSize: this.pageSize,
-            search: this.search
+      setTimeout(() => {
+        request.post("/admin/findStudentPage",{
+              pageNum: this.currentPage,
+              pageSize: this.pageSize,
+              search: this.search
+            }
+        ).then(res=>{
+          
+          if(res.data.code===200){
+            this.tableData=res.data.data.records
+            this.total=res.data.data.total
           }
-      ).then(res=>{
-        
-        if(res.data.code===200){
-          this.tableData=res.data.data.records
-          this.total=res.data.data.total
-        }
-        else{
-          this.$message({
-            type:"fail",
-            message: res.data.msg
-          })
-        }
-      })
+          else{
+            this.$message({
+              type:"fail",
+              message: res.data.msg
+            })
+          }
+        })
+      }, 10)
     },
     add:function (){
       this.dialogVisible=true

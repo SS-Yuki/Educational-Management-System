@@ -162,25 +162,26 @@ export default {
   },
   methods:{
     load(){
-      
-      request.post("/teacher/findApplyPage",{
-            pageNum: this.currentPage,
-            pageSize: this.pageSize,
-            search: this.search
+      setTimeout(() => {
+        request.post("/teacher/findApplyPage",{
+              pageNum: this.currentPage,
+              pageSize: this.pageSize,
+              search: this.search
+            }
+        ).then(res=>{
+          
+          if(res.data.code===200){
+            this.tableData=res.data.data.records
+            this.total=res.data.data.total
           }
-      ).then(res=>{
-        
-        if(res.data.code===200){
-          this.tableData=res.data.data.records
-          this.total=res.data.data.total
-        }
-        else{
-          this.$message({
-            type:"fail",
-            message: res.data.msg
-          })
-        }
-      })
+          else{
+            this.$message({
+              type:"fail",
+              message: res.data.msg
+            })
+          }
+        })
+      }, 10)
     },
     add:function (){
       this.dialogVisible=true

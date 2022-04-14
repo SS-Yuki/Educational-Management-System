@@ -20,7 +20,7 @@
 
     <div>
       <el-dialog v-model="dialogVisible" title="Tips" width="30%">
-        <el-form :model="changePassSet" label-width="120px" :rules="rules">
+        <el-form :model="changePassSet" label-width="120px" :rules="rules" ref="change">
           <el-form-item label="旧密码" prop="oldPassword">
             <el-input v-model="changePassSet.oldPassword" />
           </el-form-item>
@@ -56,10 +56,7 @@ export default {
         newPassword: ''
       },
       rules: {
-        oldPassword: [{required: true, message: '请填写新密码', trigger: 'blur'}, {
-          pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
-          message: '密码格式错误'
-        }],
+        oldPassword: [{required: true, message: '请填写旧密码', trigger: 'blur'}],
         newPassword: [{required: true, message: '请填写新密码', trigger: 'blur'}, {
           pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
           message: '密码格式错误'
@@ -95,18 +92,28 @@ export default {
       this.dialogVisible=true
     },
     change_pass: function () {
-      request.post("/user/changePassword", this.changePassSet).then(res => {
-        if (res.data.code === 200) {
-          this.$message({
-            type: "success",
-            message: res.data.msg
+      this.$refs["change"].validate((valid) => {
+        if (valid) {
+          request.post("/user/changePassword", this.changePassSet).then(res => {
+            if (res.data.code === 200) {
+              this.$message({
+                type: "success",
+                message: res.data.msg
+              })
+              this.dialogVisible = false
+            }
+            else {
+              this.$message({
+                type: "error",
+                message: res.data.msg
+              })
+            }
           })
-          this.dialogVisible = false
         }
         else {
           this.$message({
             type: "error",
-            message: res.data.msg
+            message: "请按格式填写"
           })
         }
       })

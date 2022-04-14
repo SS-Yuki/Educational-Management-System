@@ -52,24 +52,23 @@ export default {
   methods:{
     open:function(){
       request.post("/admin/openSelectCourse",)
-      setTimeout(() => {
-        this.load()
-      }, 10);
+      this.load()
     },
     close:function(){
       request.post("/admin/closeSelectCourse",)
-      setTimeout(() => {
-        this.load()
-      }, 10);
+      this.load()
     },
     load(){
-      request.post("/admin/isSelectCourseOpen").then(res=>{
-        this.$message({
-          type:"success",
-          message: res.data.msg
+      setTimeout(() => {
+        request.post("/admin/isSelectCourseOpen").then(res=>{
+          this.$message({
+            type:"success",
+            message: res.data.msg
+          })
+          this.tableData[0].value=res.data.data;
         })
-        this.tableData[0].value=res.data.data;
-      })
+      }, 10)
+
     }
   }
 }

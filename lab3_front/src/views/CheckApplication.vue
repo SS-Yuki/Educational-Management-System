@@ -193,25 +193,26 @@ export default {
       this.load()
     },
     load(){
-      
-      request.post("/admin/findApplyPage",{
+      setTimeout(() => {
+        request.post("/admin/findApplyPage",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search
           }
-      ).then(res=>{
-        
-        if(res.data.code===200){
-          this.tableData=res.data.data.records
-          this.total=res.data.data.total
-        }
-        else{
-          this.$message({
-            type:"fail",
-            message: res.data.msg
-          })
-        }
-      })
+        ).then(res=>{
+          
+          if(res.data.code===200){
+            this.tableData=res.data.data.records
+            this.total=res.data.data.total
+          }
+          else{
+            this.$message({
+              type:"fail",
+              message: res.data.msg
+            })
+          }
+        })
+      }, 10);  
     },
     add:function (){
       this.dialogVisible=true

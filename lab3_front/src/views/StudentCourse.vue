@@ -163,25 +163,26 @@ export default {
   },
   methods:{
     load(){
-      
-      request.post("/student/selectCourse",{
-            pageNum: this.currentPage,
-            pageSize: this.pageSize,
-            search: this.search
+      setTimeout(() => {
+        request.post("/student/selectCourse",{
+              pageNum: this.currentPage,
+              pageSize: this.pageSize,
+              search: this.search
+            }
+        ).then(res=>{
+          
+          if(res.data.code===200){
+            this.tableData=res.data.data.records
+            this.total=res.data.data.total
           }
-      ).then(res=>{
-        
-        if(res.data.code===200){
-          this.tableData=res.data.data.records
-          this.total=res.data.data.total
-        }
-        else{
-          this.$message({
-            type:"error",
-            message: res.data.msg
-          })
-        }
-      })
+          else{
+            this.$message({
+              type:"error",
+              message: res.data.msg
+            })
+          }
+        })
+      }, 10)
     },
     handleEdit(courseId,courseName,courseNumber,teacherNum,major,school,classPeriod,classroom,
                creditHours,credits,capacity,introduction,applicant){

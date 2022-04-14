@@ -35,6 +35,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         if (authority == null){
             Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, "false");
             authorityRepository.save(courseSelectingAuthority);
+            return false;
         }
         if(status){
             authority.setAuthorityValue("true");

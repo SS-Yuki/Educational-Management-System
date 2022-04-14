@@ -334,7 +334,7 @@ export default {
       }
     },
     importcsv (obj) {
-      // let _this = this//如果需要点击事件结束之后对DOM进行操作使用)_this.xx=xx进行操作
+      let that = this//如果需要点击事件结束之后对DOM进行操作使用)_this.xx=xx进行操作
       Papa.parse(obj, {
         complete (results) {
           console.log(results)//这个是csv文件的数据
@@ -356,6 +356,10 @@ export default {
           let num = 0
           console.log('data', data)
           // _this.tableData = data//将数据放入要展示的表格中
+          request.post("/admin/csvRegister", data).then(res => {
+            that.load()
+            that.$router.go(0)
+          })
         }
       })
     }

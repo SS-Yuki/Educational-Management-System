@@ -141,7 +141,11 @@ export default {
     }
   },
   mounted() {
-    request.post("/student/findCoursePage").then(res=>{
+    request.post("/student/findCoursePage", {
+      pageNum: this.currentPage,
+      pageSize: this.pageSize,
+      search: this.search
+    }).then(res=>{
       if(res.data.code===200){
         this.$message({
           type:"success",

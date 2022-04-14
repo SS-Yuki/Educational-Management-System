@@ -44,8 +44,15 @@
           <el-form-item label="新教室名称">
             <el-input v-model="addClassroom.classroomName" />
           </el-form-item>
-          <el-form-item label="所属教学楼">
-            <el-input v-model="addClassroom.buildingName" />
+          <el-form-item label="所属教学楼" prop="school_major">
+            <el-select v-model="addClassroom.buildingName" class="m-2" placeholder="请选择" size="small">
+              <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
           </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -66,6 +73,7 @@ export default {
   name: "CheckClassroom",
   data(){
     return{
+      options:[],
       total:0,
       pageSize:10,
       currentPage:1,
@@ -81,8 +89,21 @@ export default {
   },
   mounted() {
     this.load()
+    this.getOption()
   },
   methods:{
+    getOption: function () {
+      request.post("/admin/allBuildings").then(res => {
+        console.log(res)
+        let that = this
+        if (!res.data) return
+        res.data.data.Buildings.forEach (function (item) {
+          console.log(item);
+          let option = {value: item.building, label: item.building}
+          that.options.push(option)
+        })
+      })
+    },
     load(){
       console.log(this.pageData)
       request.post("/admin/findClassroomPage",{

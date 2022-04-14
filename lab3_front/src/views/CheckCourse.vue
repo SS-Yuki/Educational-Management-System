@@ -91,7 +91,7 @@
             <el-input v-model="addCourse.courseNumber" />
           </el-form-item>
           <el-form-item label="教师工号">
-            <el-input v-model="addCourse.teacherNum" />69+
+            <el-input v-model="addCourse.teacherNum" />
           </el-form-item>
           <el-form-item label="开课专业">
             <el-input v-model="addCourse.major" />

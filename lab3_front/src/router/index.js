@@ -17,7 +17,10 @@ import TeacherInfo from "@/views/TeacherInfo";
 import StudentInfo from "@/views/StudentInfo";
 import TeacherCourse from "@/views/TeacherCourse";
 import StudentCourse from "@/views/StudentCourse";
-
+import checkCourseOpen from "@/views/CheckCourseOpen";
+import teacherApplication from "@/views/TeacherApplication";
+import CheckCourseOpen from "@/views/CheckCourseOpen";
+import TeacherApplication from "@/views/TeacherApplication";
 
 export const routes = [
   {
@@ -88,6 +91,11 @@ export const admin_routes =
             name: 'CheckApplication',
             component: CheckApplication
         },
+        {
+            path: 'checkcourseopen',
+            name: 'CheckCourseOpen',
+            component: CheckCourseOpen
+        },
     ]
   }
 
@@ -106,6 +114,11 @@ export const teacher_routes =
         path: 'teachercourse',
         name: 'TeacherCourse',
         component: TeacherCourse
+      },
+      {
+        path: 'teacherapplication',
+        name: 'TeacherApplication',
+        component: TeacherApplication
       }
     ]
   }

@@ -55,7 +55,7 @@ export default {
         if (res.data.code === 200) {
           this.$message({
             type: "success",
-            message: "登录成功"
+            message: res.data.msg
           })
           sessionStorage.setItem("user", JSON.stringify(res.data.data))
           

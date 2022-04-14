@@ -60,6 +60,10 @@ export default {
     },
     load(){
       request.post("/admin/isSelectCourseOpen").then(res=>{
+        this.$message({
+          type:"success",
+          message: res.data.msg
+        })
         this.tableData[0].value=res.data.data;
       })
     }

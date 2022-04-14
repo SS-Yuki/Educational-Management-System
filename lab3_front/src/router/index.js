@@ -17,8 +17,6 @@ import TeacherInfo from "@/views/TeacherInfo";
 import StudentInfo from "@/views/StudentInfo";
 import TeacherCourse from "@/views/TeacherCourse";
 import StudentCourse from "@/views/StudentCourse";
-import checkCourseOpen from "@/views/CheckCourseOpen";
-import teacherApplication from "@/views/TeacherApplication";
 import CheckCourseOpen from "@/views/CheckCourseOpen";
 import TeacherApplication from "@/views/TeacherApplication";
 

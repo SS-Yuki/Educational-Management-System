@@ -14,7 +14,6 @@ import Papa from 'papaparse';
 const app = createApp(App);
 {
     if (!sessionStorage.getItem('routes')) {
-        console.log("kong le")
         sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()));
     }
 

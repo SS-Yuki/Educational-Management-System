@@ -249,11 +249,11 @@ export default {
   methods:{
     getOption: function () {
       request.post("/admin/allMajors").then(res => {
-        console.log(res)
+        
         let that = this
         if (!res.data) return
         res.data.data.schools.forEach (function (item) {
-          console.log(item);
+          
           let option = {value: item.school, label: item.school, children: []}
           if (!item.majors) return
           item.majors.forEach (function (item) {
@@ -287,7 +287,7 @@ export default {
       let that = this//如果需要点击事件结束之后对DOM进行操作使用)_this.xx=xx进行操作
       Papa.parse(obj, {
         complete (results) {
-          console.log(results)//这个是csv文件的数据
+          
           let data = []
           //遍历csv文件中的数据，存放到data中 方法不唯一，可自己更改
           for (let i = 0; i < results.data.length-1; i++) {
@@ -309,7 +309,7 @@ export default {
           }
           data.splice(0, 1)//将数组第一位的表格名称去除
           let num = 0
-          console.log('data', data)
+          
           // _this.tableData = data//将数据放入要展示的表格中
           request.post("/admin/csvRegister", data).then(res => {
             that.load()
@@ -319,14 +319,14 @@ export default {
       })
     },
     load(){
-      console.log(this.pageData)
+      
       request.post("/admin/findCoursePage",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search
           }
       ).then(res=>{
-        console.log(res)
+        
         if(res.data.code===200){
           this.tableData=res.data.data.records
           this.total=res.data.data.total
@@ -347,7 +347,7 @@ export default {
       this.addCourse.school = this.add_school_major[0]
       this.addCourse.major = this.add_school_major[1]
       request.post("/admin/addCourse", this.addCourse).then(res => {
-        console.log(res)
+        
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })
@@ -355,9 +355,9 @@ export default {
     saveEdit(){
       this.editCourse.school = this.edit_school_major[0]
       this.editCourse.major = this.editCourse[1]
-      console.log(this.newSchool)
+      
       request.post("/admin/updateCourseInfo",this.editCourse).then(res=>{
-        console.log(res)
+        
         this.load()
         this.dialogVisible2=false
       })

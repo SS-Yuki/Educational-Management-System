@@ -79,22 +79,18 @@ export default {
   methods: {
     register: function () {
       request.post("/user/register", this.register_data).then(res => {
-        console.log(res)
         //this.$router.push('/login')
       })
     },
     school_major_select: function () {
       this.register_data.school = this.school_major[0]
       this.register_data.major = this.school_major[1]
-      console.log(this.register_data.major)
     },
     getOption: function () {
       request.post("/admin/allMajors").then(res => {
-        console.log(res)
         let that = this
         if (!res.data) return
         res.data.forEach (function (item) {
-          console.log(item);
           let option = {value: item.school, label: item.school, children: []}
           if (!item.major) return
           item.major.forEach (function (item) {

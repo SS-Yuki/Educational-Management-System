@@ -109,14 +109,14 @@ export default {
   },
   methods:{
     load(){
-      console.log(this.pageData)
+      
       request.post("/admin/findSchoolPage",{
               pageNum: this.currentPage,
               pageSize: this.pageSize,
               search: this.search
           }
       ).then(res=>{
-        console.log(res)
+        
         if(res.data.code===200){
           this.tableData=res.data.data.records
           this.total=res.data.data.total
@@ -135,29 +135,29 @@ export default {
     },
     save:function (){
       request.post("/admin/addSchool", this.addSchool).then(res => {
-        console.log(res)
+        
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })
     },
     saveEdit(){
-      console.log(this.newSchool)
+      
       request.post("/admin/updateSchoolInfo", {
         oldName:this.oldName,
         newName:this.newName,
         introduction:this.introduction
       }).then(res=>{
-        console.log(res)
+        
         this.load()
         this.dialogVisible2=false
       })
     },
     handleEdit(schoolName, introduction){
-      console.log(schoolName)
+      
       this.oldName=schoolName
       this.newName=schoolName
       this.introduction=introduction
-      console.log(this.oldName)
+      
       this.dialogVisible2 = true
       this.newSchool={}
     },

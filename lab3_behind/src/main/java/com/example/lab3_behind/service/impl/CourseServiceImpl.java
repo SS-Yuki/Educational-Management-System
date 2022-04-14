@@ -64,9 +64,9 @@ public class CourseServiceImpl implements CourseService {
         Course course = new Course();
         course.setCourseName(search);
         course.setTeacherNum(jobNumber);
-        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+        ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withIgnoreCase(true)
-                .withMatcher("teacherNum", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("teacherNum", ExampleMatcher.GenericPropertyMatcher::exact)
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withIgnorePaths("applyId", "classPeriod", "creditHours", "credits", "capacity", "type");
         Example<Course> example = Example.of(course, matcher);

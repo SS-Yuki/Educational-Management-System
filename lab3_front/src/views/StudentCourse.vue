@@ -141,7 +141,21 @@ export default {
     }
   },
   mounted() {
-    this.load()
+    request.post("/student/findCoursePage").then(res=>{
+      if(res.data.code===200){
+        this.$message({
+          type:"success",
+          message: res.data.msg
+        })
+        this.load()
+      }
+      else {
+        this.$message({
+          type:"error",
+          message: res.data.msg
+        })
+      }
+    })
   },
   methods:{
     load(){

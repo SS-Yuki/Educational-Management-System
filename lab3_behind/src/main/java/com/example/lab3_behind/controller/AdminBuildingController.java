@@ -73,7 +73,7 @@ public class AdminBuildingController {
     @RequestMapping("/allBuildings")
     public Result allBuildings(){
         Map<String,Object> map = new HashMap<>();
-        //map.put("buildings",teachingAffairsService.);
+        map.put("buildings",teachingAffairsService.findAllTeachingBuilding());
         return Result.succ(map);
     }
 

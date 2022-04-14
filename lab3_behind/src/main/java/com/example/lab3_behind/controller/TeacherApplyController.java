@@ -124,6 +124,7 @@ public class TeacherApplyController {
             map.put("total",coursePage.getTotalElements());
             return Result.succ(map);
         }catch (Exception e){
+            e.printStackTrace();
             return Result.fail(843,e.getMessage());
         }
     }

@@ -1,10 +1,13 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.common.StudentStatus;
+import com.example.lab3_behind.domain.School;
 import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.dto.RevisableDataForAdmin;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
+import com.example.lab3_behind.repository.MajorRepository;
+import com.example.lab3_behind.repository.SchoolRepository;
 import com.example.lab3_behind.repository.StudentRepository;
 import com.example.lab3_behind.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +18,13 @@ import org.yaml.snakeyaml.introspector.GenericProperty;
 @Service
 public class StudentServiceImpl implements StudentService {
     StudentRepository studentRepository;
+    SchoolRepository schoolRepository;
+    MajorRepository majorRepository;
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository){
+    public StudentServiceImpl(StudentRepository studentRepository, SchoolRepository schoolRepository, MajorRepository majorRepository){
         this.studentRepository = studentRepository;
+        this.schoolRepository = schoolRepository;
+        this.majorRepository = majorRepository;
     }
 
     @Override
@@ -51,8 +58,16 @@ public class StudentServiceImpl implements StudentService {
     public Student insertStudent(UserEnteringData userData) throws Exception {
         if(studentRepository.findByStuNumber(userData.getNumber()) != null){
             throw new Exception("工号已注册");
-        }else if(studentRepository.findByIdNum(userData.getIdNum()) != null){
+        }
+        if(studentRepository.findByIdNum(userData.getIdNum()) != null){
             throw new Exception("身份证号已注册");
+        }
+        School school = schoolRepository.findByName(userData.getSchool());
+        if(school == null){
+            throw new Exception("学院不存在");
+        }
+        if(majorRepository.findByNameAndSchool(userData.getMajor(),school) == null){
+            throw new Exception("教师所属学院下不存在此专业");
         }
         Student student = new Student(userData);
         studentRepository.save(student);

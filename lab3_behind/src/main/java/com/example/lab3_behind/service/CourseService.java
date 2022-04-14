@@ -6,7 +6,6 @@ import com.example.lab3_behind.domain.CourseApplying;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
 
 public interface CourseService {
     Page<Course> findAPageCourse(Integer page, Integer size, String search);

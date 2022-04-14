@@ -1,25 +1,14 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.common.CourseApplyingType;
-import com.example.lab3_behind.common.CourseStatus;
-import com.example.lab3_behind.domain.Course;
-import com.example.lab3_behind.domain.CourseApplying;
-import com.example.lab3_behind.domain.Student;
-import com.example.lab3_behind.domain.Teacher;
+import com.example.lab3_behind.domain.*;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
-import com.example.lab3_behind.repository.CourseApplyingRepository;
-import com.example.lab3_behind.repository.CourseRepository;
-import com.example.lab3_behind.repository.StudentRepository;
-import com.example.lab3_behind.repository.TeacherRepository;
+import com.example.lab3_behind.repository.*;
 import com.example.lab3_behind.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Lob;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -27,9 +16,14 @@ public class CourseServiceImpl implements CourseService {
     CourseApplyingRepository courseApplyingRepository;
     TeacherRepository teacherRepository;
     StudentRepository studentRepository;
+    SchoolRepository schoolRepository;
+    MajorRepository majorRepository;
     @Autowired
     public CourseServiceImpl(CourseRepository courseRepository, CourseApplyingRepository courseApplyingRepository,
-                             TeacherRepository teacherRepository, StudentRepository studentRepository){
+                             TeacherRepository teacherRepository, StudentRepository studentRepository,
+                             SchoolRepository schoolRepository, MajorRepository majorRepository){
+        this.schoolRepository = schoolRepository;
+        this.majorRepository = majorRepository;
         this.courseRepository = courseRepository;
         this.courseApplyingRepository = courseApplyingRepository;
         this.teacherRepository = teacherRepository;
@@ -206,6 +200,12 @@ public class CourseServiceImpl implements CourseService {
         if(teacher == null){
             throw new Exception("该教师不存在");
         }
+        if(applyingType != CourseApplyingType.Publish){
+            CourseApplying oldCourseApplying = courseApplyingRepository.findByCourseId(courseApplyingData.getId());
+            if(oldCourseApplying != null){
+                throw new Exception("该课程已有申请正在审核");
+            }
+        }
         teacher.getCoursesApplying().add(courseApplying);
         teacherRepository.save(teacher);
         return courseApplying;
@@ -218,7 +218,13 @@ public class CourseServiceImpl implements CourseService {
         if(teacher == null){
             throw new Exception("该教师不存在");
         }
-
+        School school = schoolRepository.findByName(courseApplyingData.getSchool());
+        if(school == null){
+            throw new Exception("学院不存在");
+        }
+        if(majorRepository.findByNameAndSchool(courseApplyingData.getMajor(),school) == null){
+            throw new Exception("课程所属学院下不存在此专业");
+        }
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
         return course;

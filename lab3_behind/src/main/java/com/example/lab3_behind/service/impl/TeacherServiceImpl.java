@@ -1,11 +1,14 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.common.TeacherStatus;
+import com.example.lab3_behind.domain.School;
 import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.dto.RevisableDataForAdmin;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
+import com.example.lab3_behind.repository.MajorRepository;
+import com.example.lab3_behind.repository.SchoolRepository;
 import com.example.lab3_behind.repository.TeacherRepository;
 import com.example.lab3_behind.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +18,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class TeacherServiceImpl implements TeacherService {
     TeacherRepository teacherRepository;
+    SchoolRepository schoolRepository;
+    MajorRepository majorRepository;
     @Autowired
-    public TeacherServiceImpl(TeacherRepository teacherRepository){
+    public TeacherServiceImpl(TeacherRepository teacherRepository, SchoolRepository schoolRepository, MajorRepository majorRepository){
         this.teacherRepository = teacherRepository;
+        this.schoolRepository = schoolRepository;
+        this.majorRepository = majorRepository;
     }
 
     @Override
@@ -26,6 +33,13 @@ public class TeacherServiceImpl implements TeacherService {
             throw new Exception("工号已注册");
         }else if(teacherRepository.findByIdNum(userData.getIdNum()) != null){
             throw new Exception("身份证号已注册");
+        }
+        School school = schoolRepository.findByName(userData.getSchool());
+        if(school == null){
+            throw new Exception("学院不存在");
+        }
+        if(majorRepository.findByNameAndSchool(userData.getMajor(),school) == null){
+            throw new Exception("学生所属学院下不存在此专业");
         }
         Teacher teacher = new Teacher(userData);
         teacherRepository.save(teacher);

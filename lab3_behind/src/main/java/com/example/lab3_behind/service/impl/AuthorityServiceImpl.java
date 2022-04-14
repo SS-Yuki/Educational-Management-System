@@ -39,9 +39,11 @@ public class AuthorityServiceImpl implements AuthorityService {
         Authority courseSelectingAuthority = authorityRepository.findByAuthorityName(AuthorityName.CourseSelecting);
         if(status){
             courseSelectingAuthority.setAuthorityValue("true");
+            authorityRepository.save(authority);
             return true;
         }
         courseSelectingAuthority.setAuthorityValue("false");
+        authorityRepository.save(authority);
         return false;
     }
 }

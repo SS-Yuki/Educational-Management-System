@@ -110,7 +110,7 @@
       </el-dialog>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible2" title="编辑学生信息" width="30%">
+      <el-dialog v-model="dialogVisible2" title="编辑学生信息" width="30%" >
         <el-form :model="newSchool" label-width="120px" :rules="edit_rules">
           <el-form-item label="院系/专业">
             <el-cascader  v-if="flag" v-model="edit_school_major" :options="options"/>
@@ -373,6 +373,7 @@ export default {
       this.school = school
       this.major = major
       this.password = password
+      this.edit_school_major = [school, major]
       this.dialogVisible2 = true
       this.flag=true
       

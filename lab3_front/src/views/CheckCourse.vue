@@ -120,9 +120,9 @@
           <el-form-item label="介绍">
             <el-input v-model="addCourse.introduction" />
           </el-form-item>
-          <el-form-item label="申请人">
-            <el-input v-model="addCourse.applicant" />
-          </el-form-item>
+<!--          <el-form-item label="申请人">-->
+<!--            <el-input v-model="addCourse.applicant" />-->
+<!--          </el-form-item>-->
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="save">确认</el-button>
@@ -174,9 +174,9 @@
           <el-form-item label="介绍">
             <el-input v-model="editCourse.introduction" />
           </el-form-item>
-          <el-form-item label="申请人">
-            <el-input v-model="editCourse.applicant" />
-          </el-form-item>
+<!--          <el-form-item label="申请人">-->
+<!--            <el-input v-model="editCourse.applicant" />-->
+<!--          </el-form-item>-->
           <span class="dialog-footer">
         <el-button @click="dialogVisible2 = false">取消</el-button>
         <el-button type="primary" @click="saveEdit">确认</el-button>
@@ -378,6 +378,7 @@ export default {
       this.editCourse.capacity=capacity
       this.editCourse.introduction=introduction
       this.editCourse.applicant=applicant
+      this.edit_school_major = [school, major]
     },
     handleDelete(courseId) {
       this.id.id=courseId

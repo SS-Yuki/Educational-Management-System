@@ -52,38 +52,17 @@ export default {
   methods:{
     open:function(){
       request.post("/admin/openSelectCourse",)
-      this.get_info()
+      this.load()
     },
     close:function(){
       request.post("/admin/closeSelectCourse",)
-      this.get_info()
+      this.load()
     },
-    get_info:function (){
+    load(){
       request.post("/admin/isSelectCourseOpen").then(res=>{
         this.tableData[0].value=res.data.data;
       })
-    },
-    load(){
-      console.log(this.pageData)
-      request.post("/admin/findSchoolPage",{
-            pageNum: this.currentPage,
-            pageSize: this.pageSize,
-            search: this.search
-          }
-      ).then(res=>{
-        console.log(res)
-        if(res.data.code===200){
-          this.tableData=res.data.data.records
-          this.total=res.data.data.total
-        }
-        else{
-          this.$message({
-            type:"fail",
-            message: "失败"
-          })
-        }
-      })
-    },
+    }
   }
 }
 </script>

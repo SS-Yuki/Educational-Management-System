@@ -41,5 +41,6 @@ public class UserAccountServiceImpl implements UserAccountService {
             throw new Exception("新密码与旧密码相同");
         }
         userAccount.setPassword(Password);
+        userAccountRepository.save(userAccount);
     }
 }

@@ -3,7 +3,7 @@
     <div class="user">
       <el-dropdown>
         <span class="el-dropdown-link">
-          你好, {{user_num}}
+          你好, {{userNum}}
           <el-icon class="el-icon--right">
             <arrow-down/>
           </el-icon>
@@ -20,12 +20,12 @@
 
     <div>
       <el-dialog v-model="dialogVisible" title="Tips" width="30%">
-        <el-form :model="change_pass_set" label-width="120px">
+        <el-form :model="changePassSet" label-width="120px">
           <el-form-item label="旧密码">
-            <el-input v-model="change_pass_set.old_pass" />
+            <el-input v-model="changePassSet.oldPass" />
           </el-form-item>
           <el-form-item label="新密码">
-            <el-input v-model="change_pass_set.new_pass" />
+            <el-input v-model="changePassSet.new_pass" />
           </el-form-item>
         </el-form>
         <span class="dialog-footer">
@@ -48,18 +48,20 @@ export default {
   name: "UserInfo",
   data() {
     return {
-      user_num: '',
+      userNum: '',
       dialogVisible:false,
-      change_pass_set: {
-        old_pass: '',
-        new_pass: ''
+      changePassSet: {
+        number:'',
+        oldPassword: '',
+        newPassword: ''
       }
     }
   },
   components:{
   },
   mounted() {
-    this.user_num = JSON.parse(sessionStorage.getItem("user")).number
+    this.userNum = JSON.parse(sessionStorage.getItem("user")).number
+    this.changePassSet.number = this.userNum
   },
   methods: {
     logout: function () {
@@ -85,7 +87,7 @@ export default {
       this.dialogVisible=true
     },
     change_pass: function () {
-      request.post("/user/changePassword", this.change_pass_set).then(res => {
+      request.post("/user/changePassword", this.changePassSet).then(res => {
         console.log(res)
         if (res.data.code === 200) {
           this.$message({

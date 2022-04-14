@@ -74,9 +74,7 @@
                 <router-link to="/admin/checkapplication">教师申请管理</router-link>
               </el-menu-item>
               <el-menu-item index="1-3">
-                <router-link to="/admin/checkteacherinfo">
-
-                </router-link>
+                <router-link to="/admin/checkcourseopen">选课开放管理</router-link>
               </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>

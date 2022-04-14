@@ -8,6 +8,7 @@ import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.TeachingBuilding;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.domain.resp.Result;
+import com.example.lab3_behind.service.AuthorityService;
 import com.example.lab3_behind.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,16 +28,30 @@ public class AdminCourseController {
     @Autowired
     CourseService courseService;
 
+
     @PostMapping("/addCourse")
     public Result addCourse(@RequestBody CourseApplyingData courseApplyingData){
         try {
             courseService.insertCourse(courseApplyingData);
             return Result.succ(null);
         }catch (Exception e){
-            //e.printStackTrace();
             return Result.fail(730,e.getMessage());
         }
     }
+
+    @PostMapping("/csvAddCourse")
+    public Result csvAddCourse(@RequestBody List<CourseApplyingData> courseApplyingDatas){
+        try {
+            for(CourseApplyingData courseApplyingData:courseApplyingDatas){
+                courseService.insertCourse(courseApplyingData);
+            }
+            return Result.succ(null);
+        }catch (Exception e){
+            return Result.fail(730,e.getMessage());
+        }
+    }
+
+
     @RequestMapping("/updateCourseInfo")
     public Result updateCourseInfo(@RequestBody CourseApplyingData courseApplyingData){
         try{
@@ -67,5 +82,6 @@ public class AdminCourseController {
         map.put("total",coursePage.getTotalElements());
         return Result.succ(map);
     }
+
 
 }

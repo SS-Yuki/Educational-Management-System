@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <div id="personalinfo" class="personalinfo">
-      <div class="display">
-        <el-table :data="tableData" border :show-header="status" style="width: 100%" size="large">
+  <div  style="margin: 50px 400px ">
+      <div style="margin-top: 300px">
+        <el-table :data="tableData" border :show-header="status" style="width: 100%"  stripe size="large">
           <el-table-column prop="key"  width="180" />
           <el-table-column prop="value"  width="180" />
         </el-table>
@@ -10,7 +9,6 @@
           编辑
         </el-button>
       </div>
-    </div>
     <el-dialog v-model="dialogVisible" title="Tips" width="30%">
       <el-form :model="new_info" label-width="120px">
         <el-form-item label="邮箱">
@@ -78,7 +76,8 @@ export default {
     },
     input_newinfo:function (){
       this.dialogVisible=true
-      this.new_info={}
+      this.new_info.email = this.info.email
+      this.new_info.phoneNum = this.info.phoneNum
     },
     get_info:function (){
       let user = JSON.parse(sessionStorage.getItem("user"))
@@ -103,11 +102,5 @@ export default {
 </script>
 
 <style scoped>
-.personalinfo{
-  margin-left: 400px;
-  margin-right: 400px;
-}
-.display{
-  margin-top: 300px;
-}
+
 </style>

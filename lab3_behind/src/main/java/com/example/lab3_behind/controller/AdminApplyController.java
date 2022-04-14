@@ -1,13 +1,10 @@
 package com.example.lab3_behind.controller;
 
-import com.example.lab3_behind.common.BuildingUpdatingData;
-import com.example.lab3_behind.common.JwtUserData;
+import com.example.lab3_behind.common.ApplyContent;
 import com.example.lab3_behind.common.PageSearchData;
-import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.CourseApplying;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.CourseService;
-import com.example.lab3_behind.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +22,7 @@ public class AdminApplyController {
     CourseService courseService;
 
     @RequestMapping("/acceptApply")
-    public Result acceptApply(@RequestBody Map<String,Object> map){
-        Integer applyId = (Integer) map.get("applyId");
+    public Result acceptApply(@RequestBody Integer applyId){
         try{
             courseService.approveCourseApplying(applyId);
             return Result.succ(null);
@@ -36,8 +32,7 @@ public class AdminApplyController {
     }
 
     @RequestMapping("/rejectApply")
-    public Result rejectApply(@RequestBody Map<String,Object> map){
-        Integer applyId = (Integer) map.get("applyId");
+    public Result rejectApply(@RequestBody Integer applyId){
         try{
             courseService.rejectCourseApplying(applyId);
             return Result.succ(null);
@@ -51,9 +46,8 @@ public class AdminApplyController {
                                  HttpServletRequest request){
         try{
             Map<String,Object> map = new HashMap<>();
-
             Page<CourseApplying> courseApplyingPage = courseService.findAPageCourseApplying(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch());
-            map.put("records",courseApplyingPage.getContent());
+            map.put("records", ApplyContent.getContents(courseApplyingPage.getContent()));
             map.put("total",courseApplyingPage.getTotalElements());
             return Result.succ(map);
         }catch (Exception e){

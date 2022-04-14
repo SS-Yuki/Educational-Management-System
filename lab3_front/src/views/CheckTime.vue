@@ -132,7 +132,7 @@ export default {
         else{
           this.$message({
             type:"fail",
-            message: "失败"
+            message: res.data.msg
           })
         }
       })

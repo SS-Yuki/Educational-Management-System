@@ -29,7 +29,17 @@
                 scope.row.capacity,
                 scope.row.introduction
                 )">查看/修改申请</el-button>
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.courseId)">
+            <el-popconfirm title="确认删除?" @confirm="handleDelete(
+                scope.row.courseId,
+                scope.row.courseName,
+                scope.row.courseNumber,
+                scope.row.classPeriod,
+                scope.row.classroom,
+                scope.row.creditHours,
+                scope.row.credits,
+                scope.row.capacity,
+                scope.row.introduction
+            )">
               <template #reference>
                 <el-button type="text">删除申请</el-button>
               </template>
@@ -146,8 +156,16 @@ export default {
       search:'',
       dialogVisible:false,
       dialogVisible2:false,
-      id:{
-        id:0
+      deleteApplycation:{
+        id:0,
+        courseName:'',
+        courseNumber:'',
+        classPeriod:'',
+        classroom:'',
+        creditHours:'',
+        credits:'',
+        capacity:'',
+        introduction:''
       },
       addCourse:{
         id:0,
@@ -231,9 +249,18 @@ export default {
       this.editCourse.capacity=capacity
       this.editCourse.introduction=introduction
     },
-    handleDelete(courseId) {
-      this.id.id=courseId
-      request.post("/teacher/deleteCourse",this.id).then(res => {
+    handleDelete(courseId,courseName,courseNumber,classPeriod,classroom,
+                 creditHours,credits,capacity,introduction) {
+      this.deleteApplycation.id=courseId
+      this.deleteApplycation.courseName=courseName
+      this.deleteApplycation.courseNumber=courseNumber
+      this.deleteApplycation.classPeriod=classPeriod
+      this.deleteApplycation.classroom=classroom
+      this.deleteApplycation.creditHours=creditHours
+      this.deleteApplycation.credits=credits
+      this.deleteApplycation.capacity=capacity
+      this.deleteApplycation.introduction=introduction
+      request.post("/teacher/deleteCourse",this.deleteApplycation).then(res => {
         this.load()  // 删除之后重新加载表格的数据
       })
     },

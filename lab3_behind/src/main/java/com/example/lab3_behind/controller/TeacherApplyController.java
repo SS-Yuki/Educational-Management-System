@@ -1,10 +1,9 @@
 package com.example.lab3_behind.controller;
 
-import com.example.lab3_behind.common.CourseApplyingType;
-import com.example.lab3_behind.common.JwtUserData;
-import com.example.lab3_behind.common.PageSearchData;
-import com.example.lab3_behind.common.TeacherCourseApplyingData;
+import com.example.lab3_behind.common.*;
 import com.example.lab3_behind.domain.Course;
+import com.example.lab3_behind.domain.CourseApplying;
+import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.domain.resp.Result;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -93,6 +93,38 @@ public class TeacherApplyController {
         catch (Exception e){
             //e.printStackTrace();
             return Result.fail(732,e.getMessage());
+        }
+    }
+    @PostMapping("/findApplyPage")
+    public Result findApplyPage(@RequestBody PageSearchData pageSearchData,HttpServletRequest request){
+        Map<String,Object> map = new HashMap<>();
+        try {
+            String token = request.getHeader("token");
+            JwtUserData jwtUserData = JwtUtil.getToken(token);
+            String number = jwtUserData.getNumber().replace("\"", "");
+            Page<CourseApplying> courseApplyingPage = courseService.findCourseApplyingOfTeacher(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch(),number);
+            List<ApplyContent> applyContents = ApplyContent.getContents(courseApplyingPage.getContent());
+            map.put("records",applyContents);
+            map.put("total",courseApplyingPage.getTotalElements());
+            return Result.succ(map);
+        }catch (Exception e){
+            return Result.fail(842,e.getMessage());
+        }
+    }
+
+    @PostMapping("/findCoursePage")
+    public Result findCoursePage(@RequestBody PageSearchData pageSearchData,HttpServletRequest request){
+        Map<String,Object> map = new HashMap<>();
+        try {
+            String token = request.getHeader("token");
+            JwtUserData jwtUserData = JwtUtil.getToken(token);
+            String number = jwtUserData.getNumber().replace("\"", "");
+            Page<Course> coursePage = courseService.findAPageCourseOfTeacher(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch(),number);
+            map.put("records",coursePage.getContent());
+            map.put("total",coursePage.getTotalElements());
+            return Result.succ(map);
+        }catch (Exception e){
+            return Result.fail(843,e.getMessage());
         }
     }
 

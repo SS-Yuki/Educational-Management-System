@@ -46,7 +46,6 @@ public class AdminApplyController {
                                  HttpServletRequest request){
         try{
             Map<String,Object> map = new HashMap<>();
-
             Page<CourseApplying> courseApplyingPage = courseService.findAPageCourseApplying(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch());
             map.put("records", ApplyContent.getContents(courseApplyingPage.getContent()));
             map.put("total",courseApplyingPage.getTotalElements());

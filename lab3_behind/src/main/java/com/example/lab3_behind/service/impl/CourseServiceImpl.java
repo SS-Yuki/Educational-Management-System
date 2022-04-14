@@ -50,9 +50,12 @@ public class CourseServiceImpl implements CourseService {
         }
         Course course = new Course();
         course.setCourseName(search);
-        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+        course.setMajor(major);
+        ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("applyId", "classPeriod", "creditHours", "credits", "capacity", "type");
+                .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::exact)
+                .withIgnorePaths("courseId", "classPeriod", "creditHours", "credits", "capacity", "type", "teacherNum"
+                        , "courseNumber", "teacherName", "school", "classroom", "introduction", "courseStatus");
         Example<Course> example = Example.of(course, matcher);
         return courseRepository.findAll(example, pageable);
     }
@@ -119,11 +122,14 @@ public class CourseServiceImpl implements CourseService {
         }
         CourseApplying courseApplying = new CourseApplying();
         courseApplying.setCourseName(search);
-        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+        courseApplying.setTeacherNum(jobNum);
+        ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("applyId", "classPeriod", "creditHours", "credits", "capacity", "type");
+                .withMatcher("teacherNum", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withIgnorePaths("applyId", "classPeriod", "creditHours", "credits", "capacity", "type", "courseId", "applicant"
+                        , "courseNumber", "teacherName", "major", "school", "classroom", "introduction");
         Example<CourseApplying> example = Example.of(courseApplying, matcher);
-        return courseApplyingRepository.findAllByTeacherNum(jobNum, example, pageable);
+        return courseApplyingRepository.findAll(example, pageable);
     }
 
     @Override

@@ -163,8 +163,7 @@ export default {
   },
   methods:{
     load(){
-      
-      request.post("/student/selectCourse",{
+      request.post("/student/findCoursePage",{
             pageNum: this.currentPage,
             pageSize: this.pageSize,
             search: this.search

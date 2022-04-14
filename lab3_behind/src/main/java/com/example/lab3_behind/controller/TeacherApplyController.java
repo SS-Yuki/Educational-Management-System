@@ -10,6 +10,8 @@ import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.CourseService;
 import com.example.lab3_behind.service.TeacherService;
 import com.example.lab3_behind.utils.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +33,7 @@ public class TeacherApplyController {
     CourseService courseService;
     @Autowired
     TeacherService teacherService;
-
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @PostMapping("/addCourse")
     public Result addCourse(@RequestBody TeacherCourseApplyingData teacherCourseApplyingData,
@@ -124,6 +126,7 @@ public class TeacherApplyController {
             map.put("total",coursePage.getTotalElements());
             return Result.succ(map);
         }catch (Exception e){
+            logger.trace("----findCoursePage捕获到了异常----");
             e.printStackTrace();
             return Result.fail(843,e.getMessage());
         }

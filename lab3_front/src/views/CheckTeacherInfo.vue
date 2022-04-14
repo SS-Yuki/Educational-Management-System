@@ -298,6 +298,7 @@ export default {
       this.school = school
       this.major = major
       this.password = password
+      this.edit_school_major = [school, major]
       this.dialogVisible2 = true
     },
     handleDelete(number) {

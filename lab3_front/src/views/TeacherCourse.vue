@@ -281,7 +281,7 @@ export default {
 
 <style scoped>
 .checkschool{
-  margin-left: 100px;
+  margin: auto 250px;
   display: flex;
 }
 .add{

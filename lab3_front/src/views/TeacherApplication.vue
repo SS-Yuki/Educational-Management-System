@@ -1,12 +1,10 @@
 <template>
   <div class="checkschool">
-    <div>
       <div class="add" style="margin: 10px 0">
-        <div style="float: left">
+        <div style="margin-bottom: 20px">
           <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>
-      </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
         <el-table-column prop="applyId" label="applyId" width="150" />
         <el-table-column prop="courseId" label="courseId" width="0" v-if="false" />
@@ -230,7 +228,7 @@ export default {
 
 <style scoped>
 .checkschool{
-  margin-left: 100px;
+  margin:auto 150px;
   display: flex;
 }
 .add{

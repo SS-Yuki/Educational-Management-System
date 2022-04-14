@@ -111,18 +111,18 @@
     </div>
     <div>
       <el-dialog v-model="dialogVisible2" title="编辑学生信息" width="30%" >
-        <el-form :model="newSchool" label-width="120px" :rules="edit_rules">
-          <el-form-item label="院系/专业" prop="school_major">
+        <el-form :model="newSchool" label-width="120px">
+          <el-form-item label="院系/专业">
             <el-cascader  v-if="flag" v-model="edit_school_major" :options="options"/>
           </el-form-item>
-          <el-form-item label="状态" prop="status">
+          <el-form-item label="状态">
             <el-radio v-model="stuStatus" label="Graduated" checked="true">Graduated</el-radio>
             <el-radio v-model="stuStatus" label="Normal" checked="true">Normal</el-radio>
           </el-form-item>
-          <el-form-item label="姓名" prop="name">
+          <el-form-item label="姓名">
             <el-input v-model="name" />
           </el-form-item>
-          <el-form-item label="密码" prop="password">
+          <el-form-item label="密码">
             <el-input v-model="password" />
           </el-form-item>
           <el-form-item label="身份证号">
@@ -206,12 +206,12 @@ export default {
         phoneNum: [{pattern: /^1\d{10}$/, message: '手机号码格式错误'}],
         email: [{pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '电子邮箱格式错误'}],
       },
-      edit_rules: {
-        password: [{required: true, message: '请填写新密码', trigger: 'blur'}, {
-          pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
-          message: '密码格式错误'
-        }]
-      }
+      // edit_rules: {
+      //   password: [{required: true, message: '请填写新密码', trigger: 'blur'}, {
+      //     pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
+      //     message: '密码格式错误'
+      //   }]
+      // }
     }
   },
   mounted() {

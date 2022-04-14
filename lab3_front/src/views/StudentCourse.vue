@@ -1,6 +1,6 @@
 
 <template>
-  <div style="margin: 50px 100px ">
+  <div style="margin: auto 200px ">
       <div style="margin-bottom: 20px">
         <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
         <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>

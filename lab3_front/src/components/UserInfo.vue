@@ -22,10 +22,10 @@
       <el-dialog v-model="dialogVisible" title="Tips" width="30%">
         <el-form :model="changePassSet" label-width="120px">
           <el-form-item label="旧密码">
-            <el-input v-model="changePassSet.oldPass" />
+            <el-input v-model="changePassSet.oldPassword" />
           </el-form-item>
           <el-form-item label="新密码">
-            <el-input v-model="changePassSet.new_pass" />
+            <el-input v-model="changePassSet.newPassword" />
           </el-form-item>
         </el-form>
         <span class="dialog-footer">
@@ -94,6 +94,7 @@ export default {
             type: "success",
             message: res.data.msg
           })
+          this.dialogVisible = false
         }
         else {
           this.$message({

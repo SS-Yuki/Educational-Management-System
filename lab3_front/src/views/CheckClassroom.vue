@@ -97,9 +97,9 @@ export default {
         console.log(res)
         let that = this
         if (!res.data) return
-        res.data.data.Buildings.forEach (function (item) {
+        res.data.data.buildings.forEach (function (item) {
           console.log(item);
-          let option = {value: item.building, label: item.building}
+          let option = {value: item, label: item}
           that.options.push(option)
         })
       })

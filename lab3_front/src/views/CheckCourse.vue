@@ -93,11 +93,14 @@
           <el-form-item label="教师工号">
             <el-input v-model="addCourse.teacherNum" />
           </el-form-item>
-          <el-form-item label="开课专业">
-            <el-input v-model="addCourse.major" />
-          </el-form-item>
-          <el-form-item label="开课院系">
-            <el-input v-model="addCourse.school" />
+<!--          <el-form-item label="开课专业">-->
+<!--            <el-input v-model="addCourse.major" />-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="开课院系">-->
+<!--            <el-input v-model="addCourse.school" />-->
+<!--          </el-form-item>-->
+          <el-form-item label="院系/专业" prop="school_major">
+            <el-cascader  v-model="add_school_major" :options="options"/>
           </el-form-item>
           <el-form-item label="上课时间">
             <el-input v-model="addCourse.classPeriod" />
@@ -144,11 +147,14 @@
           <el-form-item label="教师工号">
             <el-input v-model="editCourse.teacherNum" disabled/>
           </el-form-item>
-          <el-form-item label="开课专业">
-            <el-input v-model="editCourse.major" disabled/>
-          </el-form-item>
-          <el-form-item label="开课院系">
-            <el-input v-model="editCourse.school" disabled/>
+<!--          <el-form-item label="开课专业">-->
+<!--            <el-input v-model="editCourse.major" disabled/>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="开课院系">-->
+<!--            <el-input v-model="editCourse.school" disabled/>-->
+<!--          </el-form-item>-->
+          <el-form-item label="院系/专业" prop="school_major">
+            <el-cascader  v-model="edit_school_major" :options="options"/>
           </el-form-item>
           <el-form-item label="上课时间">
             <el-input v-model="editCourse.classPeriod" />
@@ -197,6 +203,9 @@ export default {
       search:'',
       dialogVisible:false,
       dialogVisible2:false,
+      add_school_major:'',
+      edit_school_major:'',
+      options:[],
       id:{
         id:0
       },
@@ -235,8 +244,26 @@ export default {
   },
   mounted() {
     this.load()
+    this.getOption()
   },
   methods:{
+    getOption: function () {
+      request.post("/admin/allMajors").then(res => {
+        console.log(res)
+        let that = this
+        if (!res.data) return
+        res.data.data.schools.forEach (function (item) {
+          console.log(item);
+          let option = {value: item.school, label: item.school, children: []}
+          if (!item.majors) return
+          item.majors.forEach (function (item) {
+            let child = {value: item, label: item}
+            option.children.push(child)
+          })
+          that.options.push(option)
+        })
+      })
+    },
     handleChange(file, fileList) {
       this.fileTemp = file.raw
       if (this.fileTemp) {
@@ -317,6 +344,8 @@ export default {
       this.buildingName=''
     },
     save:function (){
+      this.addCourse.school = this.add_school_major[0]
+      this.addCourse.major = this.add_school_major[1]
       request.post("/admin/addCourse", this.addCourse).then(res => {
         console.log(res)
         this.load() // 刷新表格的数据
@@ -324,6 +353,8 @@ export default {
       })
     },
     saveEdit(){
+      this.editCourse.school = this.edit_school_major[0]
+      this.editCourse.major = this.editCourse[1]
       console.log(this.newSchool)
       request.post("/admin/updateCourseInfo",this.editCourse).then(res=>{
         console.log(res)

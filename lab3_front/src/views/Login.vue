@@ -85,8 +85,6 @@ export default {
               router.go(0)
             }, 10);
           }
-          else
-            
         }
         else {
           

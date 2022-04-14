@@ -26,16 +26,16 @@ public class JwtInterceptor implements HandlerInterceptor {
             JwtUtil.verify(token);
             return true;
         }catch (SignatureVerificationException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             result = Result.fail(600,"无效签名");
         } catch (TokenExpiredException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             result = Result.fail(601,"令牌过期");
         } catch (AlgorithmMismatchException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             result = Result.fail(602,"token算法不一致");
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             result = Result.fail(603,"token失效");
         }
 

@@ -17,7 +17,7 @@ public class JwtUtil {
 
 
 
-    private static Long passTime = Long.valueOf(1000 * 60)*60*24;//一小时后过期
+    private static final Long passTime = 1000L*60*60*24;//一小时后过期
     private static final String signature = "husivhjsdkvnksdjvnsdhvwehe88*&^%";
 
     @Autowired

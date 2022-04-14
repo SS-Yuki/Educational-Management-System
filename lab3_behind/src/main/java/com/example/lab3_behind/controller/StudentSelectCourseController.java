@@ -37,7 +37,7 @@ public class StudentSelectCourseController {
                 throw new Exception("当前选课未开放");
             }
             Map<String,Object> map = new HashMap<>();
-            Page<Course> coursePage = courseService.findAPageCourseOfTeacher(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch(),number);
+            Page<Course> coursePage = courseService.findAPageCourseForSelecting(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch(),number);
             map.put("records",coursePage.getContent());
             map.put("total",coursePage.getTotalElements());
             return Result.succ(map);

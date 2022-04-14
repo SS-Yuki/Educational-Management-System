@@ -110,7 +110,7 @@ public class TeacherApplyController {
             map.put("total",courseApplyingPage.getTotalElements());
             return Result.succ(map);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(842,e.getMessage());
         }
     }
@@ -127,8 +127,8 @@ public class TeacherApplyController {
             map.put("total",coursePage.getTotalElements());
             return Result.succ(map);
         }catch (Exception e){
-            logger.trace("----findCoursePage捕获到了异常----");
-            e.printStackTrace();
+            //logger.trace("----findCoursePage捕获到了异常----");
+            //logger.trace(e.getMessage());
             return Result.fail(843,e.getMessage());
         }
     }

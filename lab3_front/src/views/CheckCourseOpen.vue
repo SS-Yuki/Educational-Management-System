@@ -52,11 +52,15 @@ export default {
   methods:{
     open:function(){
       request.post("/admin/openSelectCourse",)
-      this.load()
+      setTimeout(() => {
+        this.load()
+      }, 10);
     },
     close:function(){
       request.post("/admin/closeSelectCourse",)
-      this.load()
+      setTimeout(() => {
+        this.load()
+      }, 10);
     },
     load(){
       request.post("/admin/isSelectCourseOpen").then(res=>{

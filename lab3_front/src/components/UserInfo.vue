@@ -20,11 +20,11 @@
 
     <div>
       <el-dialog v-model="dialogVisible" title="Tips" width="30%">
-        <el-form :model="changePassSet" label-width="120px">
-          <el-form-item label="旧密码">
+        <el-form :model="changePassSet" label-width="120px" :rules="rules">
+          <el-form-item label="旧密码" prop="oldPassword">
             <el-input v-model="changePassSet.oldPassword" />
           </el-form-item>
-          <el-form-item label="新密码">
+          <el-form-item label="新密码" prop="newPassword">
             <el-input v-model="changePassSet.newPassword" />
           </el-form-item>
         </el-form>
@@ -54,6 +54,16 @@ export default {
         number:'',
         oldPassword: '',
         newPassword: ''
+      },
+      rules: {
+        oldPassword: [{required: true, message: '请填写新密码', trigger: 'blur'}, {
+          pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
+          message: '密码格式错误'
+        }],
+        newPassword: [{required: true, message: '请填写新密码', trigger: 'blur'}, {
+          pattern: /^((?=.*\d)(?=.*[a-zA-Z])|(?=.*\d)(?=.*[-_])|(?=.*[a-zA-Z])(?=.*[-_]))[a-zA-Z0-9-_]{6,32}$/,
+          message: '密码格式错误'
+        }]
       }
     }
   },

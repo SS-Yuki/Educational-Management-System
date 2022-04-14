@@ -50,26 +50,6 @@ public class StudentController {
         return Result.succ(map);
     }
 
-    @PostMapping("/changePassword")
-    public Result changePassword(@RequestBody ChangePasswordData changePasswordData, HttpServletRequest request){
-        Map<String,Object> map = new HashMap<>();
-        String number = changePasswordData.getNumber();
-        String oldPassword = changePasswordData.getOldPassword();
-        String newPassword = changePasswordData.getNewPassword();
-        try {
-            String token = request.getHeader("token");
-            JwtUserData jwtUserData = JwtUtil.getToken(token);
-            if(number.equals(jwtUserData.getNumber())){
-                throw new Exception("请求与账号不匹配");
-            }
-            userAccountService.changePassword(number,oldPassword,newPassword);
-            map.put("number",number);
-        }catch (Exception e){
-            //e.printStackTrace();
-            return Result.fail(670,e.getMessage());
-        }
-        return Result.succ(map);
-    }
 
     @PostMapping("/maintainInfo")
     public Result maintainInfo(@RequestBody MaintainInfoData maintainInfoData, HttpServletRequest request){

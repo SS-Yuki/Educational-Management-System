@@ -164,20 +164,19 @@ export default {
   methods:{
     load(){
       setTimeout(() => {
-        request.post("/student/selectCourse",{
+        request.post("/student/findCoursePage", {
               pageNum: this.currentPage,
               pageSize: this.pageSize,
               search: this.search
             }
-        ).then(res=>{
-          
-          if(res.data.code===200){
-            this.tableData=res.data.data.records
-            this.total=res.data.data.total
-          }
-          else{
+        ).then(res => {
+
+          if (res.data.code === 200) {
+            this.tableData = res.data.data.records
+            this.total = res.data.data.total
+          } else {
             this.$message({
-              type:"error",
+              type: "error",
               message: res.data.msg
             })
           }

@@ -3,7 +3,7 @@
     <div>
       <h1>复日大学教务系统</h1>
     </div>
-    <div class="login">
+    <div class="login" @keyup.enter="login">
       <el-form :model="login_data" size="normal" :rules="rules">
         <el-form-item prop="number">
           <el-input prefix-icon="User" v-model="login_data.number"/>

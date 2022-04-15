@@ -126,6 +126,12 @@ export default {
     },
     save:function (){
       request.post("/admin/addBuilding", this.buildingName).then(res => {
+        if(res.data.code!==200) {
+          this.$message({
+            type:"fail",
+            message: res.data.msg
+          })
+        }
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })
@@ -136,6 +142,12 @@ export default {
 
         newBuildingName:this.newBuildingName
       }).then(res=>{
+        if(res.data.code!==200) {
+          this.$message({
+            type:"fail",
+            message: res.data.msg
+          })
+        }
         this.load()
         this.dialogVisible2=false
       })
@@ -147,6 +159,12 @@ export default {
     },
     handleDelete(buildingName) {
       request.post("/admin/deleteBuilding",buildingName).then(res => {
+        if(res.data.code!==200) {
+          this.$message({
+            type:"fail",
+            message: res.data.msg
+          })
+        }
         this.load()  // 删除之后重新加载表格的数据
       })
     },

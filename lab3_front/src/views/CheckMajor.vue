@@ -183,7 +183,12 @@ export default {
     },
     save:function (){
       request.post("/admin/addMajor", this.addMajor).then(res => {
-        
+        if(res.data.code!==200) {
+          this.$message({
+            type:"fail",
+            message: res.data.msg
+          })
+        }
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })
@@ -197,7 +202,12 @@ export default {
         majorOldSchool:this.majorOldSchool,
         majorNewSchool:this.majorNewSchool
       }).then(res=>{
-        
+        if(res.data.code!==200) {
+          this.$message({
+            type:"fail",
+            message: res.data.msg
+          })
+        }
         this.load()
         this.dialogVisible2=false
       })
@@ -217,6 +227,12 @@ export default {
         majorName:majorName,
         schoolName:schoolName
       }).then(res => {
+        if(res.data.code!==200) {
+          this.$message({
+            type:"fail",
+            message: res.data.msg
+          })
+        }
         this.load()  // 删除之后重新加载表格的数据
       })
     },

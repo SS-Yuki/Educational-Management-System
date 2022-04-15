@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface CourseApplyingRepository extends JpaRepository<CourseApplying, Long> {
     CourseApplying findByApplyId(Integer applyId);
     CourseApplying findByCourseId(Integer courseId);
+    CourseApplying deleteByCourseId(Integer courseId);
     Page<CourseApplying> findAllByTeacherNum(String teacherNum, Pageable pageable);
     //Page<CourseApplying> findByTeacherNum(String teacherNum, Example example, Pageable pageable);
 }

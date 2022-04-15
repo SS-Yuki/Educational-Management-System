@@ -357,7 +357,6 @@ export default {
           }
           data.splice(0, 1)//将数组第一位的表格名称去除
           let num = 0
-          
           // _this.tableData = data//将数据放入要展示的表格中
           request.post("/admin/csvRegister", data).then(res => {
             that.load()

@@ -355,7 +355,7 @@ export default {
     },
     saveEdit(){
       this.editCourse.school = this.edit_school_major[0]
-      this.editCourse.major = this.editCourse[1]
+      this.editCourse.major = this.edit_school_major[1]
       
       request.post("/admin/updateCourseInfo",this.editCourse).then(res=>{
         
@@ -365,6 +365,7 @@ export default {
     },
     handleEdit(courseId,courseName,courseNumber,teacherNum,major,school,classPeriod,classroom,
     creditHours,credits,capacity,introduction,applicant){
+      this.addCourse={}
       this.dialogVisible2=true
       this.editCourse.id=courseId
       this.editCourse.courseName=courseName

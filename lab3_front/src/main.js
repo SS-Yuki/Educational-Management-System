@@ -9,7 +9,6 @@ import * as ElIconModules from '@element-plus/icons'
 import '@/assets/css/global.css'
 import locale from 'element-ui/lib/locale/lang/zh-CN'
 
-import Papa from 'papaparse';
 
 const app = createApp(App);
 {

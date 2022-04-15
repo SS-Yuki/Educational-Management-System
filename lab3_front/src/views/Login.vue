@@ -3,9 +3,6 @@
     <div>
       <h1>复日大学教务系统</h1>
     </div>
-    <div class="logo">
-      <img src="../assets/logo.jpg">
-    </div>
     <div class="login" @keyup.enter="login">
       <el-form :model="login_data" size="normal" :rules="rules">
         <el-form-item prop="number">
@@ -123,12 +120,6 @@ export default {
   width: 300px;
   height: 500px;
   margin: 100px auto;
-}
-.logo {
-  width: 30px;
-  height: 50px;
-  color: white;
-  margin: auto 0;
 }
 
 </style>

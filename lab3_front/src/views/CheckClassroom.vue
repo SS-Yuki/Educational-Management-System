@@ -131,7 +131,12 @@ export default {
     },
     save:function (){
       request.post("/admin/addClassroom", this.addClassroom).then(res => {
-        
+        if(res.data.code!==200) {
+          this.$message({
+            type:"fail",
+            message: res.data.msg
+          })
+        }
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })
@@ -141,6 +146,12 @@ export default {
         buildingName:buildingName,
         classroomName:classroomName
       }).then(res => {
+        if(res.data.code!==200) {
+          this.$message({
+            type:"fail",
+            message: res.data.msg
+          })
+        }
         this.load()  // 删除之后重新加载表格的数据
       })
     },

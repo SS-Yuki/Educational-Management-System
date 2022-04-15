@@ -206,7 +206,7 @@ export default {
           }
           else{
             this.$message({
-              type:"fail",
+              type:"error",
               message: res.data.msg
             })
           }

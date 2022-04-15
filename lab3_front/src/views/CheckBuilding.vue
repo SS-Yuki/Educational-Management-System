@@ -113,7 +113,7 @@ export default {
           }
           else{
             this.$message({
-              type:"fail",
+              type:"error",
               message: res.data.msg
             })
           }
@@ -128,7 +128,7 @@ export default {
       request.post("/admin/addBuilding", this.buildingName).then(res => {
         if(res.data.code!==200) {
           this.$message({
-            type:"fail",
+            type:"error",
             message: res.data.msg
           })
         }
@@ -144,7 +144,7 @@ export default {
       }).then(res=>{
         if(res.data.code!==200) {
           this.$message({
-            type:"fail",
+            type:"error",
             message: res.data.msg
           })
         }
@@ -161,7 +161,7 @@ export default {
       request.post("/admin/deleteBuilding",buildingName).then(res => {
         if(res.data.code!==200) {
           this.$message({
-            type:"fail",
+            type:"error",
             message: res.data.msg
           })
         }

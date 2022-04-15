@@ -314,7 +314,7 @@ export default {
           request.post("/admin/csvRegister", data).then(res => {
             if(res.data.code!==200) {
               this.$message({
-                type:"fail",
+                type:"error",
                 message: res.data.msg
               })
             }
@@ -339,7 +339,7 @@ export default {
           }
           else{
             this.$message({
-              type:"fail",
+              type:"error",
               message: res.data.msg
             })
           }
@@ -356,7 +356,7 @@ export default {
       request.post("/admin/addCourse", this.addCourse).then(res => {
         if(res.data.code!==200) {
           this.$message({
-            type:"fail",
+            type:"error",
             message: res.data.msg
           })
         }
@@ -371,7 +371,7 @@ export default {
       request.post("/admin/updateCourseInfo",this.editCourse).then(res=>{
         if(res.data.code!==200) {
           this.$message({
-            type:"fail",
+            type:"error",
             message: res.data.msg
           })
         }
@@ -403,7 +403,7 @@ export default {
       request.post("/admin/deleteCourse",this.id).then(res => {
         if(res.data.code!==200) {
           this.$message({
-            type:"fail",
+            type:"error",
             message: res.data.msg
           })
         }

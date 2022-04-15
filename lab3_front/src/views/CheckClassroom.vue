@@ -118,7 +118,7 @@ export default {
           }
           else{
             this.$message({
-              type:"fail",
+              type:"error",
               message: res.data.msg
             })
           }
@@ -133,7 +133,7 @@ export default {
       request.post("/admin/addClassroom", this.addClassroom).then(res => {
         if(res.data.code!==200) {
           this.$message({
-            type:"fail",
+            type:"error",
             message: res.data.msg
           })
         }
@@ -148,7 +148,7 @@ export default {
       }).then(res => {
         if(res.data.code!==200) {
           this.$message({
-            type:"fail",
+            type:"error",
             message: res.data.msg
           })
         }

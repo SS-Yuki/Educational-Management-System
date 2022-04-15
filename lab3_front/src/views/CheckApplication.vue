@@ -149,7 +149,6 @@
 
 <script>
 import request from "@/utils/request";
-import Papa from "papaparse";
 
 export default {
   name: "CheckApplication",

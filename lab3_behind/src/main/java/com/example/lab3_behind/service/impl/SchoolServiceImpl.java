@@ -3,9 +3,12 @@ package com.example.lab3_behind.service.impl;
 import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
 import com.example.lab3_behind.domain.Student;
+import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.dto.*;
 import com.example.lab3_behind.repository.MajorRepository;
 import com.example.lab3_behind.repository.SchoolRepository;
+import com.example.lab3_behind.repository.StudentRepository;
+import com.example.lab3_behind.repository.TeacherRepository;
 import com.example.lab3_behind.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -18,10 +21,15 @@ import java.util.List;
 public class SchoolServiceImpl implements SchoolService {
     SchoolRepository schoolRepository;
     MajorRepository majorRepository;
+    TeacherRepository teacherRepository;
+    StudentRepository studentRepository;
     @Autowired
-    public SchoolServiceImpl(SchoolRepository schoolRepository, MajorRepository majorRepository){
+    public SchoolServiceImpl(SchoolRepository schoolRepository, MajorRepository majorRepository,
+    TeacherRepository teacherRepository, StudentRepository studentRepository){
         this.schoolRepository = schoolRepository;
         this.majorRepository = majorRepository;
+        this.teacherRepository = teacherRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -115,6 +123,14 @@ public class SchoolServiceImpl implements SchoolService {
         if(school == null){
             throw new Exception("专业信息有误，学院不存在");
         }
+        Student student = studentRepository.findByMajor(majorName);
+        if(student != null){
+            throw new Exception("该专业下有学生存在，无法删除");
+        }
+        Teacher teacher = teacherRepository.findByMajor(majorName);
+        if(teacher != null){
+            throw new Exception("该专业下有教师存在，无法删除");
+        }
         Major major = majorRepository.findByNameAndSchool(majorName, school);
         Major thisMajor = school.getMajors().get(school.getMajors().indexOf(major));
         school.getMajors().remove(thisMajor);
@@ -141,6 +157,14 @@ public class SchoolServiceImpl implements SchoolService {
         if(school == null){
             throw new Exception("学院不存在");
         }
+        Student student = studentRepository.findBySchool(schoolName);
+        if(student != null){
+            throw new Exception("该学院下有学生存在，无法删除");
+        }
+        Teacher teacher = teacherRepository.findBySchool(schoolName);
+        if(teacher != null){
+            throw new Exception("该学院下有教师存在，无法删除");
+        }
         schoolRepository.delete(school);
         return school;
     }
@@ -152,7 +176,7 @@ public class SchoolServiceImpl implements SchoolService {
             return schoolRepository.findAll(pageable);
         }
         School school = new School();
-        school.setName(search);;
+        school.setName(search);
         school.setIntroduction(search);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withIgnoreCase(true)

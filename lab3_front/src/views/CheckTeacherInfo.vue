@@ -242,7 +242,7 @@ export default {
           }
           else{
             this.$message({
-              type:"fail",
+              type:"error",
               message: res.data.msg
             })
           }
@@ -259,7 +259,12 @@ export default {
       this.$refs["add"].validate((valid) => {
         if (valid) {
           request.post("/admin/register", this.addTeacher).then(res => {
-            
+            if(res.data.code!==200) {
+              this.$message({
+                type:"error",
+                message: res.data.msg
+              })
+            }
             this.load() // 刷新表格的数据
             this.dialogVisible = false  // 关闭弹窗
           })
@@ -285,7 +290,12 @@ export default {
         major:this.edit_school_major[1],
         school:this.edit_school_major[0]
       }).then(res=>{
-        
+        if(res.data.code!==200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
         this.load()
         this.dialogVisible2=false
       })
@@ -305,6 +315,12 @@ export default {
     },
     handleDelete(number) {
       request.post("/admin/delete",number).then(res => {
+        if(res.data.code!==200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
         this.load()  // 删除之后重新加载表格的数据
       })
     },
@@ -361,6 +377,12 @@ export default {
           request.post("/admin/csvRegister", data).then(res => {
             that.load()
             that.$router.go(0)
+            if(res.data.code!==200) {
+              this.$message({
+                type:"error",
+                message: res.data.msg
+              })
+            }
           })
         }
       })

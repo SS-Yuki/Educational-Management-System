@@ -123,7 +123,7 @@ export default {
           }
           else{
             this.$message({
-              type:"fail",
+              type:"error",
               message: res.data.msg
             })
           }
@@ -136,7 +136,12 @@ export default {
     },
     save:function (){
       request.post("/admin/addSchool", this.addSchool).then(res => {
-        
+        if(res.data.code!==200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })
@@ -148,7 +153,12 @@ export default {
         newName:this.newName,
         introduction:this.introduction
       }).then(res=>{
-        
+        if(res.data.code!==200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
         this.load()
         this.dialogVisible2=false
       })
@@ -164,6 +174,12 @@ export default {
     },
     handleDelete(schoolName) {
       request.post("/admin/deleteSchool",schoolName).then(res => {
+        if(res.data.code!==200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
         this.load()  // 删除之后重新加载表格的数据
       })
     },

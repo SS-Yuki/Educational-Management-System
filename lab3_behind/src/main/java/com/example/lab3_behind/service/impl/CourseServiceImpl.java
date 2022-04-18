@@ -297,10 +297,10 @@ public class CourseServiceImpl implements CourseService {
             throw new Exception("所删除课程不存在，或已被删除");
         }
         CourseApplying courseApplying = courseApplyingRepository.findByCourseId(courseId);
-        if(courseApplying!=null){
-            courseApplyingRepository.deleteByCourseId(courseId);
-        }
         Teacher teacher = teacherRepository.findByJobNumber(course.getTeacherNum());
+        if(courseApplying!=null){
+            teacher.getCoursesApplying().remove(courseApplying);
+        }
         teacher.getCourses().remove(course);
         teacherRepository.save(teacher);
         return course;

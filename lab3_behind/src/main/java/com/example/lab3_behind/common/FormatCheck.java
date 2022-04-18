@@ -14,7 +14,7 @@ public class FormatCheck {
         if(userEnteringData.getEmail()!=null && (!isEmail(userEnteringData.getEmail()))){
             throw new Exception("邮箱格式有误");
         }
-        if(isPassword("fDu" + userEnteringData.getNumber())){
+        if(!isPassword("fDu" + userEnteringData.getNumber())){
             throw new Exception("密码格式有误");
         }
     }

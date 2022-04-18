@@ -50,11 +50,6 @@
                 scope.row.major,
                 scope.row.password
                 )">编辑</el-button>
-              <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.number)">
-                <template #reference>
-                  <el-button type="text">删除</el-button>
-                </template>
-              </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>

@@ -62,14 +62,14 @@
     <div>
       <el-dialog v-model="dialogVisible" title="查看课程信息" width="30%">
         <el-form :model="editCourse" label-width="120px">
-          <el-form-item label="id">
-            <el-input v-model="editCourse.id" />
+          <el-form-item label="id" >
+            <el-input v-model="editCourse.id" disabled/>
           </el-form-item>
           <el-form-item label="课程名">
-            <el-input v-model="editCourse.courseName" />
+            <el-input v-model="editCourse.courseName" disabled/>
           </el-form-item>
           <el-form-item label="课程编号">
-            <el-input v-model="editCourse.courseNumber" />
+            <el-input v-model="editCourse.courseNumber" disabled/>
           </el-form-item>
           <el-form-item label="教师工号">
             <el-input v-model="editCourse.teacherNum" disabled/>
@@ -81,22 +81,22 @@
             <el-input v-model="editCourse.school" disabled/>
           </el-form-item>
           <el-form-item label="上课时间">
-            <el-input v-model="editCourse.classPeriod" />
+            <el-input v-model="editCourse.classPeriod" disabled/>
           </el-form-item>
           <el-form-item label="教室">
-            <el-input v-model="editCourse.classroom" />
+            <el-input v-model="editCourse.classroom" disabled/>
           </el-form-item>
           <el-form-item label="学时">
-            <el-input v-model="editCourse.creditHours" />
+            <el-input v-model="editCourse.creditHours" disabled/>
           </el-form-item>
           <el-form-item label="学分">
-            <el-input v-model="editCourse.credits" />
+            <el-input v-model="editCourse.credits" disabled/>
           </el-form-item>
           <el-form-item label="容量">
-            <el-input v-model="editCourse.capacity" />
+            <el-input v-model="editCourse.capacity" disabled/>
           </el-form-item>
           <el-form-item label="介绍">
-            <el-input v-model="editCourse.introduction" />
+            <el-input v-model="editCourse.introduction" disabled/>
           </el-form-item>
           <span class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">确认</el-button>

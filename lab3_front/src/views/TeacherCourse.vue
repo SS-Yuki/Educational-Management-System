@@ -41,7 +41,7 @@
                 scope.row.introduction
             )">
               <template #reference>
-                <el-button type="text">删除申请</el-button>
+                <el-button type="text">申请删除</el-button>
               </template>
             </el-popconfirm>
           </template>

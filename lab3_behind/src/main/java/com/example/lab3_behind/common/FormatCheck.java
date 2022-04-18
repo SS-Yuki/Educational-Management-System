@@ -87,9 +87,11 @@ public class FormatCheck {
             Matcher m = p.matcher(password);
             if (Character.isDigit(password.charAt(i))) {   //用char包装类中的判断数字的方法判断每一个字符
                 isDigit = true;
-            } else if (Character.isLetter(password.charAt(i))) {  //用char包装类中的判断字母的方法判断每一个字符
+            }
+            if (Character.isLetter(password.charAt(i))) {  //用char包装类中的判断字母的方法判断每一个字符
                 isLetter = true;
-            }else if (m.find()) {//判断是否包含特殊字符
+            }
+            if (m.find()) {//判断是否包含特殊字符
                 isSpecial = true;
             }
         }

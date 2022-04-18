@@ -37,7 +37,7 @@ public class CourseServiceImpl implements CourseService {
         if(student == null){
             throw new Exception("学生不存在");
         }
-        String major = student.getMajor();
+        String major = student.getMajor().getName();
         Pageable pageable =  PageRequest.of(page - 1, size);
         if(search.isEmpty()){
             return courseRepository.findAllByMajor(major, pageable);
@@ -166,12 +166,13 @@ public class CourseServiceImpl implements CourseService {
         CourseApplyingData courseApplyingData = new CourseApplyingData(courseApplying);
         if(courseApplying.getType() == CourseApplyingType.Publish){
             this.insertCourse(courseApplyingData);
+            teacher.getCoursesApplying().remove(courseApplying);
         } else if(courseApplying.getType() == CourseApplyingType.Change){
             this.updateCourse(courseApplyingData);
+            teacher.getCoursesApplying().remove(courseApplying);
         } else if(courseApplying.getType() == CourseApplyingType.Delete){
             this.deleteCourse(courseApplying.getCourseId());
         }
-        teacher.getCoursesApplying().remove(courseApplying);
         teacherRepository.save(teacher);
         return courseApplying;
     }

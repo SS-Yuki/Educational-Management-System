@@ -50,21 +50,24 @@ public class Teacher {
     @Column(name = "status")
     private TeacherStatus status;
 
-    @Column(name = "school")
-    private String school;
+    @ManyToOne
+    @JoinColumn(name = "school")
+    private School school;
 
-    @Column(name = "major")
-    private String major;
+    @ManyToOne
+    @JoinColumn(name = "major")
+    private Major major;
 
+    //无major、school！
     public Teacher(UserEnteringData user){
         this.jobNumber = user.getNumber();
         this.name = user.getName();
         this.idNum = user.getIdNum();
         this.phoneNum = user.getPhoneNum();
         this.email = user.getEmail();
-        this.school = user.getSchool();
-        this.major = user.getMajor();
         this.status = TeacherStatus.Normal;
+        this.major = null;
+        this.school = null;
         UserAccount account = new UserAccount();
         account.setAccount(user.getNumber());
         account.setPassword("fDu" + this.jobNumber);

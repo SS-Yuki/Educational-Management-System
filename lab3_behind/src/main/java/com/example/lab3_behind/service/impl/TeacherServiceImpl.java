@@ -4,7 +4,6 @@ import com.example.lab3_behind.common.FormatCheck;
 import com.example.lab3_behind.common.TeacherStatus;
 import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
-import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.dto.RevisableDataForAdmin;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
@@ -45,7 +44,7 @@ public class TeacherServiceImpl implements TeacherService {
         }
         Teacher teacher = new Teacher(userData, schoolRepository.findByName(userData.getSchool()), majorRepository.findByName(userData.getMajor()));
         try {
-            FormatCheck.UserEnteringDataCheck(userData);
+            FormatCheck.userEnteringDataCheck(userData);
         } catch (Exception e){
             throw e;
         }

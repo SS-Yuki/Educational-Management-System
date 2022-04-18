@@ -76,7 +76,7 @@ public class StudentServiceImpl implements StudentService {
         }
         Student student = new Student(userData, schoolRepository.findByName(userData.getSchool()), majorRepository.findByName(userData.getMajor()));
         try {
-            FormatCheck.UserEnteringDataCheck(userData);
+            FormatCheck.userEnteringDataCheck(userData);
         } catch (Exception e){
             throw e;
         }

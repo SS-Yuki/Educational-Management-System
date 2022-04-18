@@ -1,5 +1,6 @@
 package com.example.lab3_behind.common;
 
+import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
 
 import java.util.regex.Matcher;
@@ -7,7 +8,19 @@ import java.util.regex.Pattern;
 
 public class FormatCheck {
 
-    public static void UserEnteringDataCheck(UserEnteringData userEnteringData) throws Exception {
+    public static void courseApplyingDataCheck(CourseApplyingData courseApplyingData) throws Exception {
+        if(courseApplyingData.getCapacity() <= 0){
+            throw new Exception("课程容量不合法");
+        }
+        if(courseApplyingData.getCredits() <= 0){
+            throw new Exception("课程学分不合法");
+        }
+        if(courseApplyingData.getCreditHours() <=0){
+            throw new Exception("课程学时不合法");
+        }
+    }
+
+    public static void userEnteringDataCheck(UserEnteringData userEnteringData) throws Exception {
         if(!isIDNum(userEnteringData.getIdNum())){
             throw new Exception("身份证号格式有误");
         }

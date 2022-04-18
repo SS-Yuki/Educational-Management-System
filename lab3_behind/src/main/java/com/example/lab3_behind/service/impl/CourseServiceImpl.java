@@ -1,6 +1,7 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.common.CourseApplyingType;
+import com.example.lab3_behind.common.FormatCheck;
 import com.example.lab3_behind.domain.*;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.repository.*;
@@ -212,6 +213,11 @@ public class CourseServiceImpl implements CourseService {
         if(major == null){
             throw new Exception("申请对应课程所属学院下不存在此专业");
         }
+        try {
+            FormatCheck.courseApplyingDataCheck(courseApplyingData);
+        } catch (Exception e) {
+            throw e;
+        }
         CourseApplying courseApplying = new CourseApplying((courseApplyingData), school, major);
         courseApplying.setType(applyingType);
         Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
@@ -231,6 +237,11 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course insertCourse(CourseApplyingData courseApplyingData) throws Exception {
+        try {
+            FormatCheck.courseApplyingDataCheck(courseApplyingData);
+        } catch (Exception e) {
+            throw e;
+        }
         Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
         if(teacher == null){
             throw new Exception("该教师不存在");
@@ -251,6 +262,11 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course updateCourse(CourseApplyingData courseApplyingData) throws Exception {
+        try {
+            FormatCheck.courseApplyingDataCheck(courseApplyingData);
+        } catch (Exception e) {
+            throw e;
+        }
         Course course = courseRepository.findByCourseId(courseApplyingData.getId());
         if(course == null){
             throw new Exception("所修改课程不存在，或已被删除");

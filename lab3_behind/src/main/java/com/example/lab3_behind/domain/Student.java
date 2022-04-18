@@ -58,16 +58,15 @@ public class Student {
     @JoinColumn(name = "major")
     private Major major;
 
-    //无major、school！
-    public Student(UserEnteringData user){
+    public Student(UserEnteringData user, School school, Major major){
         this.stuNumber = user.getNumber();
         this.name = user.getName();
         this.idNum = user.getIdNum();
         this.phoneNum = user.getPhoneNum();
         this.email = user.getEmail();
         this.status = StudentStatus.Normal;
-        this.major = null;
-        this.school = null;
+        this.major = major;
+        this.school = school;
         UserAccount account = new UserAccount();
         account.setAccount(user.getNumber());
         account.setPassword("fDu" + this.stuNumber);

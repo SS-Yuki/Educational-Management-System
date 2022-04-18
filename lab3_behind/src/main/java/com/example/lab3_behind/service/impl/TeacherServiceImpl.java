@@ -43,14 +43,12 @@ public class TeacherServiceImpl implements TeacherService {
         if(majorRepository.findByNameAndSchool(userData.getMajor(),school) == null){
             throw new Exception("学生所属学院下不存在此专业");
         }
+        Teacher teacher = new Teacher(userData, schoolRepository.findByName(userData.getSchool()), majorRepository.findByName(userData.getMajor()));
         try {
             FormatCheck.UserEnteringDataCheck(userData);
         } catch (Exception e){
             throw e;
         }
-        Teacher teacher = new Teacher(userData);
-        teacher.setMajor(majorRepository.findByName(userData.getMajor()));
-        teacher.setSchool(schoolRepository.findByName(userData.getSchool()));
         teacherRepository.save(teacher);
         return teacher;
     }

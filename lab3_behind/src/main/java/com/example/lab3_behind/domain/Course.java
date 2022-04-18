@@ -32,11 +32,13 @@ public class Course {
     @Column(name = "teacher_name", nullable = true)
     private String teacherName;
 
-    @Column(name = "major")
-    private String major;
+    @ManyToOne
+    @JoinColumn(name = "school")
+    private School school;
 
-    @Column(name = "school")
-    private String school;
+    @ManyToOne
+    @JoinColumn(name = "major")
+    private Major major;
 
     @Column(name = "class_period")
     private String classPeriod ;
@@ -61,7 +63,7 @@ public class Course {
     @Column(name = "course_status")
     private CourseStatus courseStatus;
 
-    public Course(CourseApplyingData courseApplyingData){
+    public Course(CourseApplyingData courseApplyingData, School school, Major major){
         this.teacherName = courseApplyingData.getApplicant();
         this.capacity = courseApplyingData.getCapacity();
         this.courseName = courseApplyingData.getCourseName();
@@ -70,8 +72,8 @@ public class Course {
         this.creditHours = courseApplyingData.getCreditHours();
         this.classPeriod = courseApplyingData.getClassPeriod();
         this.credits = courseApplyingData.getCredits();
-        this.major = courseApplyingData.getMajor();
-        this.school = courseApplyingData.getSchool();
+        this.major = major;
+        this.school = school;
         this.teacherNum = courseApplyingData.getTeacherNum();
         this.introduction = courseApplyingData.getIntroduction();
     }
@@ -81,7 +83,7 @@ public class Course {
 //                )
 //    }
 
-    public Course(CourseApplying courseApplying){
+    public Course(CourseApplying courseApplying, School school, Major major){
         this.capacity = courseApplying.getCapacity();
         this.courseName = courseApplying.getCourseName();
         this.courseNumber = courseApplying.getCourseNumber();
@@ -89,8 +91,8 @@ public class Course {
         this.creditHours = courseApplying.getCreditHours();
         this.classPeriod = courseApplying.getClassPeriod();
         this.credits = courseApplying.getCredits();
-        this.major = courseApplying.getMajor();
-        this.school = courseApplying.getSchool();
+        this.major = major;
+        this.school = school;
         this.teacherNum = courseApplying.getTeacherNum();
         this.introduction = courseApplying.getIntroduction();
         this.teacherName = courseApplying.getTeacherName();

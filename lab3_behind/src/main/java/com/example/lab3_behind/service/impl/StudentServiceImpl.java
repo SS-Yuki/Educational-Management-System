@@ -74,14 +74,12 @@ public class StudentServiceImpl implements StudentService {
         if(majorRepository.findByNameAndSchool(userData.getMajor(),school) == null){
             throw new Exception("教师所属学院下不存在此专业");
         }
+        Student student = new Student(userData, schoolRepository.findByName(userData.getSchool()), majorRepository.findByName(userData.getMajor()));
         try {
             FormatCheck.UserEnteringDataCheck(userData);
         } catch (Exception e){
             throw e;
         }
-        Student student = new Student(userData);
-        student.setMajor(majorRepository.findByName(userData.getMajor()));
-        student.setSchool(schoolRepository.findByName(userData.getSchool()));
         studentRepository.save(student);
         return student;
     }

@@ -311,7 +311,13 @@ export default {
           let num = 0
           
           // _this.tableData = data//将数据放入要展示的表格中
-          request.post("/admin/csvAddCourse", data).then(res => {
+          request.post("/admin/csvRegister", data).then(res => {
+            if(res.data.code!==200) {
+              this.$message({
+                type:"error",
+                message: res.data.msg
+              })
+            }
             that.load()
             that.$router.go(0)
           })
@@ -333,7 +339,7 @@ export default {
           }
           else{
             this.$message({
-              type:"fail",
+              type:"error",
               message: res.data.msg
             })
           }
@@ -348,7 +354,12 @@ export default {
       this.addCourse.school = this.add_school_major[0]
       this.addCourse.major = this.add_school_major[1]
       request.post("/admin/addCourse", this.addCourse).then(res => {
-        
+        if(res.data.code!==200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })
@@ -358,7 +369,12 @@ export default {
       this.editCourse.major = this.edit_school_major[1]
       
       request.post("/admin/updateCourseInfo",this.editCourse).then(res=>{
-        
+        if(res.data.code!==200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
         this.load()
         this.dialogVisible2=false
       })
@@ -385,6 +401,12 @@ export default {
     handleDelete(courseId) {
       this.id.id=courseId
       request.post("/admin/deleteCourse",this.id).then(res => {
+        if(res.data.code!==200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
         this.load()  // 删除之后重新加载表格的数据
       })
     },
@@ -401,9 +423,6 @@ export default {
   }
 }
 </script>
-
-
-
 
 <style scoped>
 .checkschool{

@@ -123,11 +123,11 @@ public class SchoolServiceImpl implements SchoolService {
         if(school == null){
             throw new Exception("专业信息有误，学院不存在");
         }
-        Student student = studentRepository.findByMajor(majorName);
+        Student student = studentRepository.findByMajor(majorRepository.findByName(majorName));
         if(student != null){
             throw new Exception("该专业下有学生存在，无法删除");
         }
-        Teacher teacher = teacherRepository.findByMajor(majorName);
+        Teacher teacher = teacherRepository.findByMajor(majorRepository.findByName(majorName));
         if(teacher != null){
             throw new Exception("该专业下有教师存在，无法删除");
         }
@@ -157,11 +157,11 @@ public class SchoolServiceImpl implements SchoolService {
         if(school == null){
             throw new Exception("学院不存在");
         }
-        Student student = studentRepository.findBySchool(schoolName);
+        Student student = studentRepository.findBySchool(schoolRepository.findByName(schoolName));
         if(student != null){
             throw new Exception("该学院下有学生存在，无法删除");
         }
-        Teacher teacher = teacherRepository.findBySchool(schoolName);
+        Teacher teacher = teacherRepository.findBySchool(schoolRepository.findByName(schoolName));
         if(teacher != null){
             throw new Exception("该学院下有教师存在，无法删除");
         }

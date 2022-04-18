@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MajorRepository extends JpaRepository<Major, Long> {
     Major findByNameAndSchool(String name, School school);
+    Major findByName(String name);
 }

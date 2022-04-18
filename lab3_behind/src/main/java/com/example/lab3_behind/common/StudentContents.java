@@ -36,8 +36,8 @@ public class StudentContents {
                 temp.setStuStatus("Graduated");
             }
             else temp.setStuStatus("Normal");
-            temp.setSchool(student.getSchool());
-            temp.setMajor(student.getMajor());
+            temp.setSchool(student.getSchool().getName());
+            temp.setMajor(student.getMajor().getName());
             temp.setPassword(student.getUserAccount().getPassword());
             studentContents.add(temp);
         }

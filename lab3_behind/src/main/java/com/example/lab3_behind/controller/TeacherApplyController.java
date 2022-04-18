@@ -46,8 +46,8 @@ public class TeacherApplyController {
             CourseApplyingData courseApplyingData = teacherCourseApplyingData.getCourseApply();
             courseApplyingData.setTeacherNum(teacher.getJobNumber());
             courseApplyingData.setApplicant(teacher.getName());
-            courseApplyingData.setMajor(teacher.getMajor());
-            courseApplyingData.setSchool(teacher.getSchool());
+            courseApplyingData.setMajor(teacher.getMajor().getName());
+            courseApplyingData.setSchool(teacher.getSchool().getName());
             courseService.pushCourseApplying(courseApplyingData, CourseApplyingType.Publish);
             return Result.succ(null);
         }catch (Exception e){
@@ -67,8 +67,8 @@ public class TeacherApplyController {
             CourseApplyingData courseApplyingData = teacherCourseApplyingData.getCourseApply();
             courseApplyingData.setTeacherNum(teacher.getJobNumber());
             courseApplyingData.setApplicant(teacher.getName());
-            courseApplyingData.setMajor(teacher.getMajor());
-            courseApplyingData.setSchool(teacher.getSchool());
+            courseApplyingData.setMajor(teacher.getMajor().getName());
+            courseApplyingData.setSchool(teacher.getSchool().getName());
             courseService.pushCourseApplying(courseApplyingData, CourseApplyingType.Change);
             return Result.succ(null);
         }catch (Exception e){
@@ -87,8 +87,8 @@ public class TeacherApplyController {
             CourseApplyingData courseApplyingData = teacherCourseApplyingData.getCourseApply();
             courseApplyingData.setTeacherNum(teacher.getJobNumber());
             courseApplyingData.setApplicant(teacher.getName());
-            courseApplyingData.setMajor(teacher.getMajor());
-            courseApplyingData.setSchool(teacher.getSchool());
+            courseApplyingData.setMajor(teacher.getMajor().getName());
+            courseApplyingData.setSchool(teacher.getSchool().getName());
             courseService.pushCourseApplying(courseApplyingData,CourseApplyingType.Delete);
             return Result.succ(null);
         }

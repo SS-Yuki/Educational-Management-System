@@ -41,8 +41,8 @@ public class StudentController {
             map.put("idNum",student.getIdNum());
             map.put("phoneNum",student.getPhoneNum());
             map.put("email",student.getEmail());
-            map.put("school",student.getSchool());
-            map.put("major",student.getMajor());
+            map.put("school",student.getSchool().getName());
+            map.put("major",student.getMajor().getName());
         }catch (Exception e){
             //e.printStackTrace();
             return Result.fail(660,e.getMessage());
@@ -72,8 +72,8 @@ public class StudentController {
             map.put("idNum",student.getIdNum());
             map.put("phoneNum",student.getPhoneNum());
             map.put("enail",student.getEmail());
-            map.put("school",student.getSchool());
-            map.put("major",student.getMajor());
+            map.put("school",student.getSchool().getName());
+            map.put("major",student.getMajor().getName());
         }catch (Exception e){
             //e.printStackTrace();
             return Result.fail(680,e.getMessage());

@@ -48,8 +48,8 @@ public class TeacherController {
             map.put("idNum",teacher.getIdNum());
             map.put("phoneNum",teacher.getPhoneNum());
             map.put("email",teacher.getEmail());
-            map.put("school",teacher.getSchool());
-            map.put("major",teacher.getMajor());
+            map.put("school",teacher.getSchool().getName());
+            map.put("major",teacher.getMajor().getName());
         }catch (Exception e){
             //e.printStackTrace();
             return Result.fail(661,e.getMessage());
@@ -75,9 +75,9 @@ public class TeacherController {
             map.put("name",teacher.getName());
             map.put("idNum",teacher.getIdNum());
             map.put("phoneNum",teacher.getPhoneNum());
-            map.put("enail",teacher.getEmail());
-            map.put("school",teacher.getSchool());
-            map.put("major",teacher.getMajor());
+            map.put("email",teacher.getEmail());
+            map.put("school",teacher.getSchool().getName());
+            map.put("major",teacher.getMajor().getName());
         }catch (Exception e){
             //e.printStackTrace();
             return Result.fail(680,e.getMessage());

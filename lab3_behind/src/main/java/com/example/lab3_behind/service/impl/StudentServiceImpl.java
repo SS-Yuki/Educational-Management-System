@@ -1,6 +1,8 @@
 package com.example.lab3_behind.service.impl;
 
+import com.example.lab3_behind.common.FormatCheck;
 import com.example.lab3_behind.common.StudentStatus;
+import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
 import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.dto.RevisableDataForAdmin;
@@ -13,7 +15,6 @@ import com.example.lab3_behind.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.introspector.GenericProperty;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -37,8 +38,12 @@ public class StudentServiceImpl implements StudentService {
         student.setName(search);
         student.setEmail(search);
         student.setPhoneNum(search);
-        student.setMajor(search);
-        student.setSchool(search);
+        Major major = new Major();
+        major.setName(search);
+        student.setMajor(major);
+        School school = new School();
+        school.setName(search);
+        student.setSchool(school);
         student.setStuNumber(search);
         student.setIdNum(search);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
@@ -69,7 +74,14 @@ public class StudentServiceImpl implements StudentService {
         if(majorRepository.findByNameAndSchool(userData.getMajor(),school) == null){
             throw new Exception("教师所属学院下不存在此专业");
         }
+        try {
+            FormatCheck.UserEnteringDataCheck(userData);
+        } catch (Exception e){
+            throw e;
+        }
         Student student = new Student(userData);
+        student.setMajor(majorRepository.findByName(userData.getMajor()));
+        student.setSchool(schoolRepository.findByName(userData.getSchool()));
         studentRepository.save(student);
         return student;
     }
@@ -85,8 +97,8 @@ public class StudentServiceImpl implements StudentService {
         student.setName(userData.getName());
         student.setPhoneNum(userData.getPhoneNum());
         student.setStatus(userData.getStuStatus());
-        student.setMajor(userData.getMajor());
-        student.setSchool(userData.getSchool());
+        student.setMajor(majorRepository.findByName(userData.getMajor()));
+        student.setSchool(schoolRepository.findByName(userData.getSchool()));
         student.getUserAccount().setPassword(userData.getPassword());
         if(!userData.getStuStatus().equals(StudentStatus.Normal)){
             student.getUserAccount().setPermission("false");

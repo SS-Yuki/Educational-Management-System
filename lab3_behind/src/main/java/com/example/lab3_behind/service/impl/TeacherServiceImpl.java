@@ -1,6 +1,8 @@
 package com.example.lab3_behind.service.impl;
 
+import com.example.lab3_behind.common.FormatCheck;
 import com.example.lab3_behind.common.TeacherStatus;
+import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
 import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.Teacher;
@@ -41,7 +43,14 @@ public class TeacherServiceImpl implements TeacherService {
         if(majorRepository.findByNameAndSchool(userData.getMajor(),school) == null){
             throw new Exception("学生所属学院下不存在此专业");
         }
+        try {
+            FormatCheck.UserEnteringDataCheck(userData);
+        } catch (Exception e){
+            throw e;
+        }
         Teacher teacher = new Teacher(userData);
+        teacher.setMajor(majorRepository.findByName(userData.getMajor()));
+        teacher.setSchool(schoolRepository.findByName(userData.getSchool()));
         teacherRepository.save(teacher);
         return teacher;
     }
@@ -57,8 +66,8 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.setName(userData.getName());
         teacher.setPhoneNum(userData.getPhoneNum());
         teacher.setStatus(userData.getTeaStatus());
-        teacher.setMajor(userData.getMajor());
-        teacher.setSchool(userData.getSchool());
+        teacher.setMajor(majorRepository.findByName(userData.getMajor()));
+        teacher.setSchool(schoolRepository.findByName(userData.getSchool()));
         teacher.getUserAccount().setPassword(userData.getPassword());
         if(!userData.getTeaStatus().equals(TeacherStatus.Normal)){
             teacher.getUserAccount().setPermission("false");
@@ -100,8 +109,12 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.setName(search);
         teacher.setEmail(search);
         teacher.setPhoneNum(search);
-        teacher.setMajor(search);
-        teacher.setSchool(search);
+        Major major = new Major();
+        major.setName(search);
+        teacher.setMajor(major);
+        School school = new School();
+        school.setName(search);
+        teacher.setSchool(school);
         teacher.setJobNumber(search);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatcher::contains)

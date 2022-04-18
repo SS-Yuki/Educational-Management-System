@@ -402,6 +402,9 @@ export default {
 }
 </script>
 
+
+
+
 <style scoped>
 .checkschool{
   margin-left: 100px;

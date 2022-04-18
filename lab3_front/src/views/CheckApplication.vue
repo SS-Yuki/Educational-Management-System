@@ -185,6 +185,7 @@ export default {
   methods:{
     accept:function(applyId) {
       request.post("/admin/acceptApply",applyId)
+
       this.load()
     },
     reject:function(applyId) {
@@ -211,7 +212,7 @@ export default {
             })
           }
         })
-      }, 10);  
+      }, 50);
     },
     add:function (){
       this.dialogVisible=true

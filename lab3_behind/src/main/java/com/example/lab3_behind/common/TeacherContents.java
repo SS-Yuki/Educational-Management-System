@@ -38,8 +38,8 @@ public class TeacherContents {
                 temp.setTeaStatus("Dimission");
             }
             else temp.setTeaStatus("Normal");
-            temp.setSchool(teacher.getSchool());
-            temp.setMajor(teacher.getMajor());
+            temp.setSchool(teacher.getSchool().getName());
+            temp.setMajor(teacher.getMajor().getName());
             temp.setPassword(teacher.getUserAccount().getPassword());
             teacherContents.add(temp);
         }

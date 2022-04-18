@@ -35,11 +35,13 @@ public class CourseApplying {
     @Column(name = "teacher_name", nullable = true)
     private String teacherName;
 
-    @Column(name = "major")
-    private String major;
+    @ManyToOne
+    @JoinColumn(name = "school")
+    private School school;
 
-    @Column(name = "school")
-    private String school;
+    @ManyToOne
+    @JoinColumn(name = "major")
+    private Major major;
 
     @Column(name = "class_period")
     private String classPeriod ;
@@ -67,7 +69,7 @@ public class CourseApplying {
     @Column(name = "type")
     private CourseApplyingType type;
 
-    public CourseApplying(CourseApplyingData courseApplyingData){
+    public CourseApplying(CourseApplyingData courseApplyingData, School school, Major major){
         this.courseId = courseApplyingData.getId();
         this.teacherName = courseApplyingData.getApplicant();
         this.applicant = courseApplyingData.getApplicant();
@@ -78,8 +80,8 @@ public class CourseApplying {
         this.creditHours = courseApplyingData.getCreditHours();
         this.classPeriod = courseApplyingData.getClassPeriod();
         this.credits = courseApplyingData.getCredits();
-        this.major = courseApplyingData.getMajor();
-        this.school = courseApplyingData.getSchool();
+        this.major = major;
+        this.school = school;
         this.teacherNum = courseApplyingData.getTeacherNum();
         this.introduction = courseApplyingData.getIntroduction();
     }

@@ -44,7 +44,9 @@ public class CourseServiceImpl implements CourseService {
         }
         Course course = new Course();
         course.setCourseName(search);
-        course.setMajor(major);
+        Major major1 = new Major();
+        major1.setName(search);
+        course.setMajor(major1);
         ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::exact)
@@ -88,9 +90,12 @@ public class CourseServiceImpl implements CourseService {
         course.setTeacherNum(search);
         course.setCourseNumber(search);
         course.setIntroduction(search);
-        course.setMajor(search);
+        Major major = new Major();
+        course.setMajor(major);
         course.setTeacherName(search);
-        course.setSchool(search);
+        School school = new School();
+        school.setName(search);
+        course.setSchool(school);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("courseNumber", ExampleMatcher.GenericPropertyMatcher::contains)
@@ -137,9 +142,13 @@ public class CourseServiceImpl implements CourseService {
         courseApplying.setTeacherNum(search);
 
         courseApplying.setIntroduction(search);
-        courseApplying.setMajor(search);
+        Major major = new Major();
+        major.setName(search);
+        courseApplying.setMajor(major);
         courseApplying.setApplicant(search);
-        courseApplying.setSchool(search);
+        School school = new School();
+        school.setName(search);
+        courseApplying.setSchool(school);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("courseNumber", ExampleMatcher.GenericPropertyMatcher::contains)
@@ -195,7 +204,15 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseApplying pushCourseApplying(CourseApplyingData courseApplyingData, CourseApplyingType applyingType) throws Exception {
-        CourseApplying courseApplying = new CourseApplying((courseApplyingData));
+        School school = schoolRepository.findByName(courseApplyingData.getSchool());
+        if(school == null){
+            throw new Exception("申请对应课程所属学院不存在");
+        }
+        Major major = majorRepository.findByNameAndSchool(courseApplyingData.getMajor(),school);
+        if(major == null){
+            throw new Exception("申请对应课程所属学院下不存在此专业");
+        }
+        CourseApplying courseApplying = new CourseApplying((courseApplyingData), school, major);
         courseApplying.setType(applyingType);
         Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
         if(teacher == null){
@@ -214,18 +231,19 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course insertCourse(CourseApplyingData courseApplyingData) throws Exception {
-        Course course = new Course(courseApplyingData);
         Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
         if(teacher == null){
             throw new Exception("该教师不存在");
         }
         School school = schoolRepository.findByName(courseApplyingData.getSchool());
         if(school == null){
-            throw new Exception("学院不存在");
+            throw new Exception("课程所属学院不存在");
         }
-        if(majorRepository.findByNameAndSchool(courseApplyingData.getMajor(),school) == null){
+        Major major = majorRepository.findByNameAndSchool(courseApplyingData.getMajor(),school);
+        if(major == null){
             throw new Exception("课程所属学院下不存在此专业");
         }
+        Course course = new Course(courseApplyingData, school,major);
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
         return course;
@@ -247,8 +265,8 @@ public class CourseServiceImpl implements CourseService {
         thisCourse.setIntroduction(courseApplyingData.getIntroduction());
         thisCourse.setCapacity(courseApplyingData.getCapacity());
         thisCourse.setClassPeriod(courseApplyingData.getClassPeriod());
-        thisCourse.setMajor(courseApplyingData.getMajor());
-        thisCourse.setSchool(courseApplyingData.getSchool());
+        thisCourse.setMajor(majorRepository.findByName(courseApplyingData.getMajor()));
+        thisCourse.setSchool(schoolRepository.findByName(courseApplyingData.getSchool()));
         thisCourse.setCredits(courseApplyingData.getCredits());
         thisCourse.setCreditHours(courseApplyingData.getCreditHours());
         thisCourse.setClassroom(courseApplyingData.getClassroom());

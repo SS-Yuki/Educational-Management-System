@@ -311,7 +311,7 @@ export default {
           let num = 0
           
           // _this.tableData = data//将数据放入要展示的表格中
-          request.post("/admin/csvRegister", data).then(res => {
+          request.post("/admin/csvAddCourse", data).then(res => {
             if(res.data.code!==200) {
               this.$message({
                 type:"error",

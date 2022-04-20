@@ -3,6 +3,7 @@ package com.example.lab3_behind.controller;
 
 import com.example.lab3_behind.common.BuildingContents;
 import com.example.lab3_behind.common.BuildingUpdatingData;
+import com.example.lab3_behind.common.CourseContent;
 import com.example.lab3_behind.common.PageSearchData;
 import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.TeachingBuilding;
@@ -78,7 +79,8 @@ public class AdminCourseController {
     public Result findCoursePage(@RequestBody PageSearchData pageSearchData){
         Map<String,Object> map = new HashMap<>();
         Page<Course> coursePage = courseService.findAPageCourse(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch());
-        map.put("records",coursePage.getContent());
+        List<CourseContent> courseContents = CourseContent.getContent(coursePage.getContent());
+        map.put("records",courseContents);
         map.put("total",coursePage.getTotalElements());
         return Result.succ(map);
     }

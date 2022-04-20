@@ -1,5 +1,6 @@
 package com.example.lab3_behind.controller;
 
+import com.example.lab3_behind.common.CourseContent;
 import com.example.lab3_behind.common.JwtUserData;
 import com.example.lab3_behind.common.PageSearchData;
 import com.example.lab3_behind.domain.Course;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -38,7 +40,8 @@ public class StudentSelectCourseController {
             }
             Map<String,Object> map = new HashMap<>();
             Page<Course> coursePage = courseService.findAPageCourseForSelecting(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch(),number);
-            map.put("records",coursePage.getContent());
+            List<CourseContent> courseContents = CourseContent.getContent(coursePage.getContent());
+            map.put("records",courseContents);
             map.put("total",coursePage.getTotalElements());
             return Result.succ(map);
         }catch (Exception e){

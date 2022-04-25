@@ -123,7 +123,8 @@ public class TeacherApplyController {
             JwtUserData jwtUserData = JwtUtil.getToken(token);
             String number = jwtUserData.getNumber().replace("\"", "");
             Page<Course> coursePage = courseService.findAPageCourseOfTeacher(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch(),number);
-            map.put("records",coursePage.getContent());
+            List<CourseContent> courseContents = CourseContent.getContent(coursePage.getContent());
+            map.put("records",courseContents);
             map.put("total",coursePage.getTotalElements());
             return Result.succ(map);
         }catch (Exception e){

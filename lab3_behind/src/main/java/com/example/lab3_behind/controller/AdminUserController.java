@@ -37,6 +37,7 @@ public class AdminUserController {
                 teacherService.insertTeacher(userEnteringData);
             }else throw new Exception("注册身份错误");
         }catch (Exception e){
+            e.printStackTrace();
             return Result.fail(683,e.getMessage());
         }
         return Result.succ(null);
@@ -44,18 +45,21 @@ public class AdminUserController {
 
     @RequestMapping("/csvRegister")
     public Result csvRegister(@RequestBody List<UserEnteringData> userEnteringDatas){
-        try{
-            for(UserEnteringData userEnteringData:userEnteringDatas){
+        int failNum=0;
+        for(UserEnteringData userEnteringData:userEnteringDatas){
+            try{
                 if(userEnteringData.getRole().equals("student")){
                     studentService.insertStudent(userEnteringData);
-                }else if(userEnteringData.getRole().equals("teacher")){
+                }else if(userEnteringData.getRole().equals("teacher")) {
                     teacherService.insertTeacher(userEnteringData);
                 }else throw new Exception("注册身份错误");
+            } catch (Exception e){
+                e.printStackTrace();
+                failNum++;
             }
-        }catch (Exception e){
-            return Result.fail(684,e.getMessage());
         }
-        return Result.succ(null);
+        if(failNum==0) return Result.succ(null);
+        else return Result.fail(880,"部分信息不符合要求");
     }
 
     @RequestMapping("/updateStudentInfo")

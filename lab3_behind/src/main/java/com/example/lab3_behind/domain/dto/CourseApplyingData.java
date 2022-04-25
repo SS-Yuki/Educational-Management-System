@@ -45,8 +45,8 @@ public class CourseApplyingData {
         this.creditHours = courseApplying.getCreditHours();
         this.classPeriod = courseApplying.getClassPeriod();
         this.credits = courseApplying.getCredits();
-        this.major = courseApplying.getMajor();
-        this.school = courseApplying.getSchool();
+        this.major = courseApplying.getMajor().getName();
+        this.school = courseApplying.getSchool().getName();
         this.teacherNum = courseApplying.getTeacherNum();
         this.introduction = courseApplying.getIntroduction();
     }

@@ -27,6 +27,7 @@ public class AdminApplyController {
             courseService.approveCourseApplying(applyId);
             return Result.succ(null);
         }catch (Exception e){
+            e.printStackTrace();
             return Result.fail(800,e.getMessage());
         }
     }

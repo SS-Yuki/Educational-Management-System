@@ -123,5 +123,26 @@ public class AdminBuildingController {
         return Result.succ(map);
     }
 
+    //伪接口
+    @RequestMapping("getClassroomSpareTime")
+    public Result getClassroomSpareTime(@RequestBody String classroom){
+        Map<String,Object> map = new HashMap<>();
+        System.out.println(classroom);
+        List<Boolean> oneday = new ArrayList<>();
+        oneday.add(true);
+        oneday.add(true);
+        oneday.add(true);
+        List<List<Boolean>> days= new ArrayList<>();
+        days.add(oneday);
+        days.add(oneday);
+        days.add(oneday);
+        days.add(oneday);
+        days.add(oneday);
+        days.add(oneday);
+        days.add(oneday);
+        map.put("days",days);
+        return Result.succ(map);
+    }
+
 
 }

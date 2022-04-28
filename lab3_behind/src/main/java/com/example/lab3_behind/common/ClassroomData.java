@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 public class ClassroomData {
     private String classroomName;
+    private Integer capacity;
     private String buildingName;
 
     public static List<ClassroomData> getContents(List<Classroom> classrooms){

@@ -49,3 +49,63 @@
 这个同以前一样的，只不过TimeName是我们后端自动生成的第几节了。
 
 ==后端==，直接把数字给Controller层即可，Controller层进行包装再传给前端。
+
+#### 6.获得某个教室的所有可用时间段信息
+
+> /admin/getClassroomSpareTime
+
+==前端==，传参的时候直接传一个String就好，不需要包装成JSON的格式。true表示已经有别的课了。
+
+==后端==：注意，true表示该时间段已经有别的课了，false表示没有课。
+
+下面这是一个七天，每天只有三节课的例子，days[0]代表周一的内容。
+
+```JSON
+{
+    "code": 200,
+    "msg": "succ",
+    "data": {
+        "days": [
+            [
+                true,
+                true,
+                true
+            ],
+            [
+                true,
+                true,
+                true
+            ],
+            [
+                true,
+                true,
+                true
+            ],
+            [
+                true,
+                true,
+                true
+            ],
+            [
+                true,
+                true,
+                true
+            ],
+            [
+                true,
+                true,
+                true
+            ],
+            [
+                true,
+                true,
+                true
+            ]
+        ]
+    }
+}
+```
+
+![getClassroomSpareTime.png](https://s2.loli.net/2022/04/28/Rr8Vw9sCNcnaoz6.png)
+
+#### 7.

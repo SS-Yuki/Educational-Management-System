@@ -51,9 +51,9 @@ public class AdminTimeController {
         }
     }
     @PostMapping("/deleteTime")
-    public Result deleteTime(@RequestBody String timeName){
+    public Result deleteTime(){
         try{
-            teachingAffairsService.deleteClassTime(timeName);
+            teachingAffairsService.deleteClassTime();
             return Result.succ(null);
         }
         catch (Exception e){

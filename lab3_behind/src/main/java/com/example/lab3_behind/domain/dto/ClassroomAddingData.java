@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ClassroomAddingData {
     String classroomName;
-
     String teachingBuildingName;
-
     Integer capacity;
 }

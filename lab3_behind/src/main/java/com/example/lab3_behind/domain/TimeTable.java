@@ -16,8 +16,8 @@ public class TimeTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name", unique = true)
-    private String name;
+    @Column(name = "section", unique = true)
+    private Integer section;
 
     @Column(name = "start_time")
     private String startTime;

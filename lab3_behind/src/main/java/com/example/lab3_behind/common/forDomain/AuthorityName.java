@@ -1,4 +1,4 @@
-package com.example.lab3_behind.common;
+package com.example.lab3_behind.common.forDomain;
 
 import com.example.lab3_behind.domain.Course;
 

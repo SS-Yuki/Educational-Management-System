@@ -7,10 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClassTimeData {
-    Integer section;
+public class ClassroomUpdatingData {
+    String oldClassroomName;
 
-    String startTime;
+    String newClassroomName;
 
-    String endTime;
+    String TeachingBuilding;
+
+    Integer capacity;
 }

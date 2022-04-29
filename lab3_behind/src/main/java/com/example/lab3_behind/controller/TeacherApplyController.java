@@ -1,9 +1,9 @@
 package com.example.lab3_behind.controller;
 
 import com.example.lab3_behind.common.*;
+import com.example.lab3_behind.common.forDomain.CourseApplyingType;
 import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.CourseApplying;
-import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.domain.resp.Result;

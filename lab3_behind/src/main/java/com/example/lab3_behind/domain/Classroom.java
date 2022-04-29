@@ -23,4 +23,7 @@ public class Classroom {
     @JoinColumn(name = "teaching_building")
     private TeachingBuilding teachingBuilding;
 
+    @Column(name = "capacity")
+    private Integer capacity;
+
 }

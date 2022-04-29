@@ -1,4 +1,4 @@
-package com.example.lab3_behind.common;
+package com.example.lab3_behind.utils;
 
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
@@ -6,7 +6,7 @@ import com.example.lab3_behind.domain.dto.UserEnteringData;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FormatCheck {
+public class AccountFormatCheck {
 
     public static void courseApplyingDataCheck(CourseApplyingData courseApplyingData) throws Exception {
         if(courseApplyingData.getCapacity() <= 0){

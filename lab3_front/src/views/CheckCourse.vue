@@ -22,6 +22,16 @@
           <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>
+        <div>
+          <el-select v-model="semester" placeholder="请选择学期">
+            <el-option
+                v-for="item in semesterOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
 
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
@@ -200,6 +210,8 @@ export default {
   name: "CheckCourse",
   data(){
     return{
+      semester:'',
+      semesterOptions:[],
       total:0,
       pageSize:10,
       currentPage:1,
@@ -254,6 +266,7 @@ export default {
     this.load()
     this.getOptionMajor()
     this.getOptionClassroom()
+    this.getOptionSemesters()
   },
   methods:{
     getOptionMajor: function () {
@@ -283,6 +296,16 @@ export default {
             option.children.push(child)
           })
           that.classroomOptions.push(option)
+        })
+      })
+    },
+    getOptionSemesters: function (){
+      request.post("/admin/allSemesters").then(res => {
+        if (!res.data) return
+        this.semester = res.data.data.defaultSemester
+        res.data.data.semesters.forEach ((item) => {
+          let option = {value: item, label: item}
+          this.semesterOptions.push(option)
         })
       })
     },

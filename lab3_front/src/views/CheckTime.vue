@@ -47,19 +47,28 @@
     <div>
       <el-dialog v-model="dialogVisible" title="添加新事件" width="30%">
         <el-form :model="addTime" label-width="120px">
-          <el-form-item label="事件">
-            <el-input v-model="addTime.timeName" />
-          </el-form-item>
-          <el-form-item label="开始时间">
-            <el-input v-model="addTime.startTime" />
-          </el-form-item>
-          <el-form-item label="结束时间">
-            <el-input v-model="addTime.endTime" />
-          </el-form-item>
+<!--          <el-form-item label="事件">-->
+<!--            <el-input v-model="addTime.timeName" />-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="开始时间">-->
+<!--            <el-input v-model="addTime.startTime" />-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="结束时间">-->
+<!--            <el-input v-model="addTime.endTime" />-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="时间选择">-->
+            <el-time-picker
+                v-model="addTime.timeValue"
+                is-range
+                range-separator="To"
+                start-placeholder="Start time"
+                end-placeholder="End time"
+            />
+<!--          </el-form-item>-->
           <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="save">确认</el-button>
-      </span>
+            <el-button @click="dialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="save">确认</el-button>
+          </span>
         </el-form>
         <template #footer>
         </template>
@@ -84,7 +93,14 @@
       </el-dialog>
     </div>
   </div>
+  <el-time-picker
+      v-model="value3"
+      is-range
+      range-separator="To"
+      start-placeholder="Start time"
+      end-placeholder="End time"
 
+  />
 
 </template>
 
@@ -107,13 +123,16 @@ export default {
       addTime:{
         timeName:'',
         startTime:'',
-        endTime:''
+        endTime:'',
+        timeValue:[new Date(2016, 9, 10, 8, 40,0), new Date(2016, 9, 10, 9, 40, 0)]
       },
-      tableData:[]
+      tableData:[],
+      value3: []
     }
   },
   mounted() {
     this.load()
+    console.log(new Date(2016, 9, 10, 8, 40,0))
   },
   methods:{
     load(){

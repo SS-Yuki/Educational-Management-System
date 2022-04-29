@@ -1,4 +1,3 @@
-
 <template>
   <div style="margin: auto 200px ">
       <div style="margin-bottom: 20px">

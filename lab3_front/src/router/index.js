@@ -138,11 +138,11 @@ export const student_routes =
         name: 'StudentChooseCourse',
         component: StudentChooseCourse
       },
-        {
-            path: 'studentcheckcourse',
-            name: 'StudentCheckCourse',
-            component: StudentCheckCourse
-        }
+      {
+        path: 'studentcheckcourse',
+        name: 'StudentCheckCourse',
+        component: StudentCheckCourse
+      }
     ]
   }
 

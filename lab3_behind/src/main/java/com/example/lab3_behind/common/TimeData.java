@@ -11,12 +11,15 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class TimeData {
-    private String sectionName;
+    private String timeName;
     private String startTime;
     private String endTime;
 
     public ClassTimeData toClassTimeData(){
-        Integer section = Integer.valueOf(sectionName.substring(1,sectionName.length()-1));
+        Integer section=0;
+        if(timeName !=null && timeName.length()>=3){
+            section = Integer.valueOf(timeName.substring(1,timeName.length()-1));
+        }
         return new ClassTimeData(section,startTime,endTime);
     }
 

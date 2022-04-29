@@ -26,4 +26,15 @@ public class Classroom {
     @Column(name = "capacity")
     private Integer capacity;
 
+    @Lob
+    @Column(name = "schedule", columnDefinition="TEXT")
+    private String schedule;
+    /*格式说明：
+    id-id-id-id-id-id-id\n
+    id-id-id-id-id-id-id\n
+    id-id-id-id-id-id-id\n
+    ......
+    每列依次对于星期一、二、三...
+     */
+
 }

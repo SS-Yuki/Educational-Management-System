@@ -5,6 +5,7 @@ import com.example.lab3_behind.domain.Classroom;
 import com.example.lab3_behind.domain.TeachingBuilding;
 import com.example.lab3_behind.domain.dto.BuildingAndClassroomsData;
 import com.example.lab3_behind.domain.dto.ClassroomAddingData;
+import com.example.lab3_behind.domain.dto.ClassroomUpdatingData;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.TeachingAffairsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +106,16 @@ public class AdminBuildingController {
         map.put("records",classroomDatas);
         map.put("total",classroomPage.getTotalElements());
         return Result.succ(map);
+    }
+
+    @RequestMapping("updateClassroom")
+    public Result updateClassroom(@RequestBody ClassroomUpdatingData classroomUpdatingData){
+        try{
+            teachingAffairsService.updateClassroom(classroomUpdatingData);
+            return Result.succ(null);
+        }catch (Exception e){
+            return Result.fail(725,e.getMessage());
+        }
     }
 
     //伪接口

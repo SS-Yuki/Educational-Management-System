@@ -20,4 +20,6 @@ public class StudentUpdatingData {
     private String school;
 
     private String major;
+
+    private String grade;
 }

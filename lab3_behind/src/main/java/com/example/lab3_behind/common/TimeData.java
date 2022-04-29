@@ -11,16 +11,17 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class TimeData {
-    private String timeName;
+    private String sectionName;
     private String startTime;
     private String endTime;
 
     public ClassTimeData toClassTimeData(){
-        return new ClassTimeData(timeName,startTime,endTime);
+        Integer section = Integer.valueOf(sectionName.substring(1,sectionName.length()-1));
+        return new ClassTimeData(section,startTime,endTime);
     }
 
     public static TimeData getTimeDataType(TimeTable timeTable){
-        return new TimeData(timeTable.getName(),timeTable.getStartTime(),timeTable.getEndTime());
+        return new TimeData("第"+timeTable.getSection().toString()+"节",timeTable.getStartTime(),timeTable.getEndTime());
     }
 
 

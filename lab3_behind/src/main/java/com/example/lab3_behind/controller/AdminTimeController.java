@@ -29,11 +29,9 @@ public class AdminTimeController {
 
     @RequestMapping("addTime")
     public Result addTime(@RequestBody TimeData timeData){
-        Map<String,Object> map = new HashMap<>();
         try{
             teachingAffairsService.addClassTime(timeData.toClassTimeData());
-            map.put("timeName",timeData.getTimeName());
-            return Result.succ(map);
+            return Result.succ(null);
         }catch (Exception e){
             //e.printStackTrace();
             return Result.fail(710,e.getMessage());

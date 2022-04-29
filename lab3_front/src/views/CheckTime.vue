@@ -57,13 +57,7 @@
 <!--            <el-input v-model="addTime.endTime" />-->
 <!--          </el-form-item>-->
 <!--          <el-form-item label="时间选择">-->
-            <el-time-picker
-                v-model="addTime.timeValue"
-                is-range
-                range-separator="To"
-                start-placeholder="Start time"
-                end-placeholder="End time"
-            />
+
 <!--          </el-form-item>-->
           <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取消</el-button>
@@ -93,14 +87,7 @@
       </el-dialog>
     </div>
   </div>
-  <el-time-picker
-      v-model="value3"
-      is-range
-      range-separator="To"
-      start-placeholder="Start time"
-      end-placeholder="End time"
 
-  />
 
 </template>
 
@@ -124,10 +111,9 @@ export default {
         timeName:'',
         startTime:'',
         endTime:'',
-        timeValue:[new Date(2016, 9, 10, 8, 40,0), new Date(2016, 9, 10, 9, 40, 0)]
       },
       tableData:[],
-      value3: []
+
     }
   },
   mounted() {

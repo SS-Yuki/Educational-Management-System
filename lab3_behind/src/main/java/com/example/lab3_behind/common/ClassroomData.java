@@ -18,6 +18,7 @@ public class ClassroomData {
             ClassroomData temp = new ClassroomData();
             temp.setClassroomName(classroom.getName());
             temp.setBuildingName(classroom.getTeachingBuilding().getName());
+            temp.setCapacity(classroom.getCapacity());
             classroomDatas.add(temp);
         }
         return classroomDatas;

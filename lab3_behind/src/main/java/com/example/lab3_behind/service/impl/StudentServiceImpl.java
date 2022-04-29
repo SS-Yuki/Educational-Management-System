@@ -1,7 +1,7 @@
 package com.example.lab3_behind.service.impl;
 
-import com.example.lab3_behind.common.FormatCheck;
-import com.example.lab3_behind.common.StudentStatus;
+import com.example.lab3_behind.utils.AccountFormatCheck;
+import com.example.lab3_behind.common.forDomain.StudentStatus;
 import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
 import com.example.lab3_behind.domain.Student;
@@ -76,7 +76,7 @@ public class StudentServiceImpl implements StudentService {
         }
         Student student = new Student(userData, schoolRepository.findByName(userData.getSchool()), majorRepository.findByName(userData.getMajor()));
         try {
-            FormatCheck.userEnteringDataCheck(userData);
+            AccountFormatCheck.userEnteringDataCheck(userData);
         } catch (Exception e){
             throw e;
         }
@@ -95,6 +95,7 @@ public class StudentServiceImpl implements StudentService {
         student.setName(userData.getName());
         student.setPhoneNum(userData.getPhoneNum());
         student.setStatus(userData.getStuStatus());
+        student.setGrade(userData.getGrade());
         student.setMajor(majorRepository.findByName(userData.getMajor()));
         student.setSchool(schoolRepository.findByName(userData.getSchool()));
         student.getUserAccount().setPassword(userData.getPassword());

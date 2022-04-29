@@ -1,12 +1,14 @@
 package com.example.lab3_behind.domain;
 
-import com.example.lab3_behind.common.TeacherStatus;
+import com.example.lab3_behind.common.forDomain.TeacherStatus;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -57,6 +59,10 @@ public class Teacher {
     @ManyToOne
     @JoinColumn(name = "major")
     private Major major;
+
+    @CreatedDate
+    @Column(name = "register_time")
+    private Date registerTime;
 
     public Teacher(UserEnteringData user, School school, Major major){
         this.jobNumber = user.getNumber();

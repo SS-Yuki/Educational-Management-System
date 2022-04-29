@@ -1,7 +1,6 @@
 package com.example.lab3_behind.domain;
 
-import com.example.lab3_behind.common.CourseApplyingType;
-import com.example.lab3_behind.common.StudentStatus;
+import com.example.lab3_behind.common.forDomain.CourseApplyingType;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import lombok.AllArgsConstructor;
 import lombok.Data;

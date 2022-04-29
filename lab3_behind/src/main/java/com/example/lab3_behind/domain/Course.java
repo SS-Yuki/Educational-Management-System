@@ -1,13 +1,12 @@
 package com.example.lab3_behind.domain;
 
-import com.example.lab3_behind.common.CourseStatus;
+import com.example.lab3_behind.common.forDomain.CourseStatus;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.servlet.http.PushBuilder;
 
 @Data
 @AllArgsConstructor

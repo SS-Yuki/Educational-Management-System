@@ -43,8 +43,8 @@ public class Student {
 
     @ManyToMany
     @JoinTable(
-            name = "courseSelectingRecord",
-            joinColumns = {@JoinColumn(name = "student_num")},
+            name = "course_selecting_record",
+            joinColumns = {@JoinColumn(name = "student_id")},
             inverseJoinColumns = {@JoinColumn(name = "course_id")}
     )
     private List<Course> courses;

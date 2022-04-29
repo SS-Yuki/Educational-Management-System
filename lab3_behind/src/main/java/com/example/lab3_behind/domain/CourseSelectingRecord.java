@@ -17,11 +17,13 @@ public class CourseSelectingRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "course_id")
-    private String courseId;
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
-    @Column(name = "student_num")
-    private String studentNum;
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
 
     @Column(name = "score")
     private double score;

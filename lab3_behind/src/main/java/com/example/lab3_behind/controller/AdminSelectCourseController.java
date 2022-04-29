@@ -42,4 +42,39 @@ public class AdminSelectCourseController {
             return Result.fail(841,e.getMessage());
         }
     }
+
+    @RequestMapping("/whichTurn")
+    public Result whichTurn(){
+//        try {
+//            authorityService.changeCourseSelectingAuthority(false);
+//            return Result.succ(null);
+//        }catch (Exception e){
+//            return Result.fail(841,e.getMessage());
+//        }
+        return Result.succ("一轮选课");
+    }
+
+    @RequestMapping("/nextTurn")
+    public Result nextTurn(){
+//        try {
+//            authorityService.changeCourseSelectingAuthority(false);
+//            return Result.succ(null);
+//        }catch (Exception e){
+//            return Result.fail(841,e.getMessage());
+//        }
+        return Result.succ(null);
+    }
+
+    @RequestMapping("/randomSelect")
+    public Result randomSelect(){
+//        try {
+//            authorityService.changeCourseSelectingAuthority(false);
+//            return Result.succ(null);
+//        }catch (Exception e){
+//            return Result.fail(841,e.getMessage());
+//        }
+        return Result.succ(null);
+    }
+
+
 }

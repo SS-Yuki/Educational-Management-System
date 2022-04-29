@@ -135,7 +135,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             throw new Exception("教室信息有误，教学楼不存在");
         }
         Classroom newClassroom = new Classroom(null, classroomData.getClassroomName(), teachingBuilding,
-                classroomData.getCapacity(), classroomData.getSchedule());
+                classroomData.getCapacity(), null);
         teachingBuilding.getClassrooms().add(newClassroom);
         teachingBuildingRepository.save(teachingBuilding);
         return newClassroom;

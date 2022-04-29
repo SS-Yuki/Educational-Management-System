@@ -113,7 +113,7 @@
 import request from "@/utils/request";
 
 export default {
-  name: "CheckCourse",
+  name: "StudentChooseCourse",
   data(){
     return{
       total:0,

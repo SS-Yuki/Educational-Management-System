@@ -22,6 +22,16 @@
           <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>
+        <div>
+          <el-select v-model="semester" placeholder="请选择学期">
+            <el-option
+                v-for="item in semesterOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
 
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
@@ -100,14 +110,17 @@
 <!--            <el-input v-model="addCourse.school" />-->
 <!--          </el-form-item>-->
           <el-form-item label="院系/专业" prop="school_major">
-            <el-cascader  v-model="add_school_major" :options="options"/>
+            <el-cascader  v-model="add_school_major" :options="majorOptions"/>
           </el-form-item>
           <el-form-item label="上课时间">
             <el-input v-model="addCourse.classPeriod" />
           </el-form-item>
-          <el-form-item label="教室">
-            <el-input v-model="addCourse.classroom" />
+          <el-form-item label="教学楼/教室" prop="building_classroom">
+            <el-cascader  v-model="add_building_classroom" :options="classroomOptions"/>
           </el-form-item>
+<!--          <el-form-item label="教室">-->
+<!--            <el-input v-model="addCourse.classroom" />-->
+<!--          </el-form-item>-->
           <el-form-item label="学时">
             <el-input v-model="addCourse.creditHours" />
           </el-form-item>
@@ -154,13 +167,13 @@
 <!--            <el-input v-model="editCourse.school" disabled/>-->
 <!--          </el-form-item>-->
           <el-form-item label="院系/专业" prop="school_major">
-            <el-cascader  v-model="edit_school_major" :options="options"/>
+            <el-cascader  v-model="edit_school_major" :options="majorOptions"/>
           </el-form-item>
           <el-form-item label="上课时间">
             <el-input v-model="editCourse.classPeriod" />
           </el-form-item>
-          <el-form-item label="教室">
-            <el-input v-model="editCourse.classroom" />
+          <el-form-item label="教学楼/教室" prop="building_classroom">
+            <el-cascader  v-model="edit_building_classroom" :options="classroomOptions"/>
           </el-form-item>
           <el-form-item label="学时">
             <el-input v-model="editCourse.creditHours" />
@@ -197,6 +210,8 @@ export default {
   name: "CheckCourse",
   data(){
     return{
+      semester:'',
+      semesterOptions:[],
       total:0,
       pageSize:10,
       currentPage:1,
@@ -204,8 +219,11 @@ export default {
       dialogVisible:false,
       dialogVisible2:false,
       add_school_major:'',
+      add_building_classroom:'',
       edit_school_major:'',
-      options:[],
+      edit_building_classroom:'',
+      majorOptions:[],
+      classroomOptions:[],
       id:{
         id:0
       },
@@ -217,6 +235,7 @@ export default {
         major:'',
         school:'',
         classPeriod:'',
+        building:'',
         classroom:'',
         creditHours:'',
         credits:'',
@@ -232,6 +251,7 @@ export default {
         major:'',
         school:'',
         classPeriod:'',
+        building:'',
         classroom:'',
         creditHours:0,
         credits:0,
@@ -244,23 +264,48 @@ export default {
   },
   mounted() {
     this.load()
-    this.getOption()
+    this.getOptionMajor()
+    this.getOptionClassroom()
+    this.getOptionSemesters()
   },
   methods:{
-    getOption: function () {
+    getOptionMajor: function () {
       request.post("/admin/allMajors").then(res => {
-        
         let that = this
         if (!res.data) return
         res.data.data.schools.forEach (function (item) {
-          
           let option = {value: item.school, label: item.school, children: []}
           if (!item.majors) return
           item.majors.forEach (function (item) {
             let child = {value: item, label: item}
             option.children.push(child)
           })
-          that.options.push(option)
+          that.majorOptions.push(option)
+        })
+      })
+    },
+    getOptionClassroom: function () {
+      request.post("/admin/allClassrooms").then(res => {
+        let that = this
+        if (!res.data) return
+        res.data.data.buildings.forEach (function (item) {
+          let option = {value: item.buiding, label: item.building, children: []}
+          if (!item.classrooms) return
+          item.classrooms.forEach (function (item) {
+            let child = {value: item, label: item}
+            option.children.push(child)
+          })
+          that.classroomOptions.push(option)
+        })
+      })
+    },
+    getOptionSemesters: function (){
+      request.post("/admin/allSemesters").then(res => {
+        if (!res.data) return
+        this.semester = res.data.data.defaultSemester
+        res.data.data.semesters.forEach ((item) => {
+          let option = {value: item, label: item}
+          this.semesterOptions.push(option)
         })
       })
     },
@@ -353,6 +398,8 @@ export default {
     save:function (){
       this.addCourse.school = this.add_school_major[0]
       this.addCourse.major = this.add_school_major[1]
+      this.addCourse.building = this.add_building_classroom[0]
+      this.addCourse.classroom = this.add_building_classroom[1]
       request.post("/admin/addCourse", this.addCourse).then(res => {
         if(res.data.code!==200) {
           this.$message({
@@ -367,7 +414,8 @@ export default {
     saveEdit(){
       this.editCourse.school = this.edit_school_major[0]
       this.editCourse.major = this.edit_school_major[1]
-      
+      this.editCourse.building = this.edit_building_classroom[0]
+      this.editCourse.classroom = this.edit_building_classroom[1]
       request.post("/admin/updateCourseInfo",this.editCourse).then(res=>{
         if(res.data.code!==200) {
           this.$message({

@@ -51,15 +51,15 @@ export default {
   methods: {
     login: function (){
       request.post("/user/login", this.login_data).then(res => {
-        
-        
+
+
         if (res.data.code === 200) {
           this.$message({
             type: "success",
             message: res.data.msg
           })
           sessionStorage.setItem("user", JSON.stringify(res.data.data))
-          
+
           if (res.data.data.role === "admin") {
             router.addRoute(admin_routes)
             sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()))
@@ -88,7 +88,7 @@ export default {
           }
         }
         else {
-          
+
           this.$message({
             type: "error",
             message: res.data.msg
@@ -104,10 +104,10 @@ export default {
   //   router.addRoute(admin_routes)
   //   router.addRoute(teacher_routes)
   //   router.addRoute(student_routes)
-  //   
-  //   // 
-  //   // 
-  //   // 
+  //
+  //   //
+  //   //
+  //   //
   //
   // }
 }

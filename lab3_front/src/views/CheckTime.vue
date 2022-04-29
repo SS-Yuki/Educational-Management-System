@@ -6,6 +6,9 @@
           <el-button size="large" @click="add" type="primary">新增</el-button>
         </div>
         <div style="float: left">
+          <el-button size="large" @click="delete" type="primary">删除</el-button>
+        </div>
+        <div style="float: left">
           <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>
@@ -14,20 +17,6 @@
         <el-table-column prop="timeName" label="事件" width="200" />
         <el-table-column prop="startTime" label="开始时间" width="200" />
         <el-table-column prop="endTime" label="结束时间" width="200" />
-        <el-table-column fixed="right" label="操作" width="200">
-          <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(
-                scope.row.timeName,
-                scope.row.startTime,
-                scope.row.endTime
-                )">编辑</el-button>
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.timeName)">
-              <template #reference>
-                <el-button type="text">删除</el-button>
-              </template>
-            </el-popconfirm>
-          </template>
-        </el-table-column>
       </el-table>
       <div style="margin: 10px 0">
         <el-pagination
@@ -47,19 +36,41 @@
     <div>
       <el-dialog v-model="dialogVisible" title="添加新事件" width="30%">
         <el-form :model="addTime" label-width="120px">
-          <el-form-item label="事件">
-            <el-input v-model="addTime.timeName" />
-          </el-form-item>
-          <el-form-item label="开始时间">
-            <el-input v-model="addTime.startTime" />
-          </el-form-item>
-          <el-form-item label="结束时间">
-            <el-input v-model="addTime.endTime" />
-          </el-form-item>
+<!--          <el-form-item label="事件">-->
+<!--            <el-input v-model="addTime.timeName" />-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="开始时间">-->
+<!--            <el-input v-model="addTime.startTime" />-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="结束时间">-->
+<!--            <el-input v-model="addTime.endTime" />-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="时间选择">-->
+<!--          </el-form-item>-->
+          <div class="demo-time-range">
+            <el-time-select
+                v-model="addTime.startTime"
+                :max-time="addTime.endTime"
+                class="mr-4"
+                placeholder="开始时间"
+                start="08:00"
+                step="00:05"
+                end="21:05"
+            />
+            <el-time-select
+                v-model="addTime.endTime"
+                :min-time="addTime.startTime"
+                placeholder="结束时间"
+                start="08:00"
+                step="00:05"
+                end="21:05"
+            />
+          </div>
+          <br><br>
           <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="save">确认</el-button>
-      </span>
+            <el-button @click="dialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="save">确认</el-button>
+          </span>
         </el-form>
         <template #footer>
         </template>
@@ -85,7 +96,13 @@
     </div>
   </div>
 
-
+  <el-time-select
+      v-model="value"
+      start="08:30"
+      step="00:10"
+      end="18:30"
+      placeholder="Select time"
+  />
 </template>
 
 <script>
@@ -95,6 +112,7 @@ export default {
   name: "CheckTime",
   data(){
     return{
+      value:'',
       total:0,
       pageSize:10,
       currentPage:1,
@@ -105,15 +123,16 @@ export default {
       startTime:'',
       endTime:'',
       addTime:{
-        timeName:'',
         startTime:'',
-        endTime:''
+        endTime:'',
       },
-      tableData:[]
+      tableData:[],
+
     }
   },
   mounted() {
     this.load()
+
   },
   methods:{
     load(){
@@ -141,6 +160,10 @@ export default {
     add:function (){
       this.dialogVisible=true
       this.buildingName=''
+    },
+    delete:function(){
+      request.post("/admin/deleteTime",)
+      this.load()
     },
     save:function (){
       request.post("/admin/addTime", this.addTime).then(res => {

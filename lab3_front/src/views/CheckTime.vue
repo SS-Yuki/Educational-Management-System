@@ -88,7 +88,13 @@
     </div>
   </div>
 
-
+  <el-time-select
+      v-model="value"
+      start="08:30"
+      step="00:10"
+      end="18:30"
+      placeholder="Select time"
+  />
 </template>
 
 <script>
@@ -98,6 +104,7 @@ export default {
   name: "CheckTime",
   data(){
     return{
+      value:'',
       total:0,
       pageSize:10,
       currentPage:1,
@@ -118,7 +125,7 @@ export default {
   },
   mounted() {
     this.load()
-    console.log(new Date(2016, 9, 10, 8, 40,0))
+
   },
   methods:{
     load(){

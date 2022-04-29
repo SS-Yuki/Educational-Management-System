@@ -2,12 +2,9 @@ package com.example.lab3_behind.controller;
 
 import com.example.lab3_behind.common.*;
 import com.example.lab3_behind.domain.Classroom;
-import com.example.lab3_behind.domain.Major;
-import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.TeachingBuilding;
-import com.example.lab3_behind.domain.dto.BuildingAndClassrommsData;
+import com.example.lab3_behind.domain.dto.BuildingAndClassroomsData;
 import com.example.lab3_behind.domain.dto.ClassroomAddingData;
-import com.example.lab3_behind.domain.dto.MajorUpdatingData;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.TeachingAffairsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,10 +113,10 @@ public class AdminBuildingController {
         List<String> classrooms = new ArrayList<>();
         classrooms.add("H3101");
         classrooms.add("H3201");
-        List<BuildingAndClassrommsData> buildingAndClassrommsDatas = new ArrayList<>();
-        buildingAndClassrommsDatas.add(new BuildingAndClassrommsData("第3教学楼",classrooms));
+        List<BuildingAndClassroomsData> buildingAndClassroomsData = new ArrayList<>();
+        buildingAndClassroomsData.add(new BuildingAndClassroomsData("第3教学楼",classrooms));
         Map<String,Object> map = new HashMap<>();
-        map.put("buildings",buildingAndClassrommsDatas);
+        map.put("buildings", buildingAndClassroomsData);
         return Result.succ(map);
     }
 

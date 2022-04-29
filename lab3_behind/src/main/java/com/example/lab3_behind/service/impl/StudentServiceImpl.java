@@ -1,7 +1,7 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.common.FormatCheck;
-import com.example.lab3_behind.common.StudentStatus;
+import com.example.lab3_behind.common.forDomain.StudentStatus;
 import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
 import com.example.lab3_behind.domain.Student;

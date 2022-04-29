@@ -1,7 +1,7 @@
 package com.example.lab3_behind.domain.dto;
 
-import com.example.lab3_behind.common.StudentStatus;
-import com.example.lab3_behind.common.TeacherStatus;
+import com.example.lab3_behind.common.forDomain.StudentStatus;
+import com.example.lab3_behind.common.forDomain.TeacherStatus;
 import com.example.lab3_behind.domain.vo.StudentUpdatingData;
 import com.example.lab3_behind.domain.vo.TeacherUpdatingData;
 import lombok.AllArgsConstructor;

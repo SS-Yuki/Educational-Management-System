@@ -1,12 +1,15 @@
 package com.example.lab3_behind.domain;
 
-import com.example.lab3_behind.common.StudentStatus;
+import com.example.lab3_behind.common.forDomain.Grade;
+import com.example.lab3_behind.common.forDomain.StudentStatus;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -58,6 +61,17 @@ public class Student {
     @JoinColumn(name = "major")
     private Major major;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "grade")
+    private Grade grade;
+
+    @Column(name = "gpa")
+    private Double gpa;
+
+    @CreatedDate
+    @Column(name = "register_time")
+    private Date registerTime;
+
     public Student(UserEnteringData user, School school, Major major){
         this.stuNumber = user.getNumber();
         this.name = user.getName();
@@ -67,6 +81,8 @@ public class Student {
         this.status = StudentStatus.Normal;
         this.major = major;
         this.school = school;
+        this.grade = Grade.Freshman;
+        this.gpa = 0.0;
         UserAccount account = new UserAccount();
         account.setAccount(user.getNumber());
         account.setPassword("fDu" + this.stuNumber);

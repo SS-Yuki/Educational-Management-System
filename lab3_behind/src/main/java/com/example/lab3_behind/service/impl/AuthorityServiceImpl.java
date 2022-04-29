@@ -1,6 +1,6 @@
 package com.example.lab3_behind.service.impl;
 
-import com.example.lab3_behind.common.AuthorityName;
+import com.example.lab3_behind.common.forDomain.AuthorityName;
 import com.example.lab3_behind.domain.Authority;
 import com.example.lab3_behind.repository.AuthorityRepository;
 import com.example.lab3_behind.service.AuthorityService;

@@ -3,8 +3,10 @@ package com.example.lab3_behind.service.impl;
 import com.example.lab3_behind.domain.Classroom;
 import com.example.lab3_behind.domain.TeachingBuilding;
 import com.example.lab3_behind.domain.TimeTable;
+import com.example.lab3_behind.domain.dto.BuildingAndClassroomsData;
 import com.example.lab3_behind.domain.dto.ClassTimeData;
 import com.example.lab3_behind.domain.dto.ClassroomAddingData;
+import com.example.lab3_behind.domain.dto.ClassroomUpdatingData;
 import com.example.lab3_behind.repository.ClassroomRepository;
 import com.example.lab3_behind.repository.TeachingBuildingRepository;
 import com.example.lab3_behind.repository.TimeTableRepository;
@@ -32,20 +34,25 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
 
     @Override
     public TimeTable addClassTime(ClassTimeData classTimeData) throws Exception {
-        TimeTable aTimePeriod = timeTableRepository.findByName(classTimeData.getName());
-        if(aTimePeriod != null){
-            throw new Exception("该时间段命名已存在");
+        Integer last = 0;
+        List<TimeTable> timeTables = timeTableRepository.findAll();
+        for(TimeTable timeTable : timeTables){
+            Integer temp = timeTable.getSection();
+            if(temp.compareTo(last) >= 0){
+                last = temp;
+            }
         }
-        TimeTable newTime = new TimeTable(null,classTimeData.getName(), classTimeData.getStartTime(), classTimeData.getEndTime());
+        last = last + 1;
+        TimeTable newTime = new TimeTable(null, last, classTimeData.getStartTime(), classTimeData.getEndTime());
         timeTableRepository.save(newTime);
         return newTime;
     }
 
     @Override
     public TimeTable updateClassTime(ClassTimeData classTimeData) throws Exception {
-        TimeTable timePeriod = timeTableRepository.findByName(classTimeData.getName());
+        TimeTable timePeriod = timeTableRepository.findBySection(classTimeData.getSection());
         if(timePeriod == null){
-            throw new Exception("该时间段名不存在");
+            throw new Exception("该节次不存在");
         }
         timePeriod.setStartTime(classTimeData.getStartTime());
         timePeriod.setEndTime(classTimeData.getEndTime());
@@ -54,13 +61,19 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     }
 
     @Override
-    public TimeTable deleteClassTime(String name) throws Exception {
-        TimeTable timePeriod = timeTableRepository.findByName(name);
-        if(timePeriod == null){
-            throw new Exception("该时间段名不存在");
+    public TimeTable deleteClassTime() throws Exception {
+        List<TimeTable> timeTables = timeTableRepository.findAll();
+        if(timeTables == null){
+            throw new Exception("当前已无课程节次时间安排，无法删除");
         }
-        timeTableRepository.delete(timePeriod);
-        return timePeriod;
+        TimeTable last = new TimeTable(null, 0, null, null);
+        for(TimeTable timeTable : timeTables){
+            if(timeTable.getSection().compareTo(last.getSection()) >= 0){
+                last = timeTable;
+            }
+        }
+        timeTableRepository.delete(last);
+        return last;
     }
 
     @Override
@@ -70,11 +83,9 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             return timeTableRepository.findAll(pageable);
         }
         TimeTable timeTable = new TimeTable();
-        timeTable.setName(search);
         timeTable.setStartTime(search);
         timeTable.setEndTime(search);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
-                .withMatcher("name", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("startTime", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("endTime", ExampleMatcher.GenericPropertyMatcher::contains);
         Example<TimeTable> example = Example.of(timeTable, matcher);
@@ -112,6 +123,9 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
 
     @Override
     public Classroom insertClassroom(ClassroomAddingData classroomData) throws Exception {
+        if(classroomData.getCapacity().compareTo(0) <= 0){
+            throw new Exception("教室容量有误，必须为正整数");
+        }
         Classroom classroom = classroomRepository.findByName(classroomData.getClassroomName());
         if(classroom != null){
             throw new Exception("该教室名已存在");
@@ -120,10 +134,27 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         if(teachingBuilding == null){
             throw new Exception("教室信息有误，教学楼不存在");
         }
-        Classroom newClassroom = new Classroom(null, classroomData.getClassroomName(),teachingBuilding);
+        Classroom newClassroom = new Classroom(null, classroomData.getClassroomName(),teachingBuilding, classroomData.getCapacity());
         teachingBuilding.getClassrooms().add(newClassroom);
         teachingBuildingRepository.save(teachingBuilding);
         return newClassroom;
+    }
+
+    @Override
+    public Classroom updateClassroom(ClassroomUpdatingData classroomData) throws Exception {
+        if(classroomData.getCapacity().compareTo(0) <= 0){
+            throw new Exception("教室容量有误，必须为正整数");
+        }
+        TeachingBuilding teachingBuilding = teachingBuildingRepository.findByName(classroomData.getTeachingBuilding());
+        if(teachingBuilding == null){
+            throw new Exception("教室信息有误，教学楼不存在");
+        }
+        Classroom classroom = classroomRepository.findByName(classroomData.getOldClassroomName());
+        Classroom thisClassroom = teachingBuilding.getClassrooms().get(teachingBuilding.getClassrooms().indexOf(classroom));
+        thisClassroom.setName(classroomData.getNewClassroomName());
+        thisClassroom.setCapacity(classroomData.getCapacity());
+        teachingBuildingRepository.save(teachingBuilding);
+        return thisClassroom;
     }
 
     @Override
@@ -133,6 +164,9 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             throw new Exception("教室信息有误，教学楼不存在");
         }
         Classroom classroom = classroomRepository.findByName(classroomName);
+        if(classroom == null){
+            throw new Exception("该教室不存在");
+        }
         Classroom thisClassroom = teachingBuilding.getClassrooms().get(teachingBuilding.getClassrooms().indexOf(classroom));
         teachingBuilding.getClassrooms().remove(thisClassroom);
         classroomRepository.delete(thisClassroom);
@@ -196,5 +230,19 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         }
         teachingBuildingRepository.delete(teachingBuilding);
         return teachingBuilding;
+    }
+
+    @Override
+    public List<BuildingAndClassroomsData> getAllBuildingAndClassrooms(){
+        List<BuildingAndClassroomsData> result = new ArrayList<>();
+        List<TeachingBuilding> buildings = teachingBuildingRepository.findAll();
+        for(TeachingBuilding building : buildings){
+            List<String> classroomNames = new ArrayList<>();
+            for(Classroom classroom : building.getClassrooms()){
+                classroomNames.add(classroom.getName());
+            }
+            result.add(new BuildingAndClassroomsData(building.getName(),classroomNames));
+        }
+        return result;
     }
 }

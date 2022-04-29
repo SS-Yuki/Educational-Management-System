@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "courseSelectingRecord")
+@Table(name = "course_selecting_record")
 public class CourseSelectingRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +22,8 @@ public class CourseSelectingRecord {
 
     @Column(name = "student_num")
     private String studentNum;
+
+    @Column(name = "score")
+    private double score;
+
 }

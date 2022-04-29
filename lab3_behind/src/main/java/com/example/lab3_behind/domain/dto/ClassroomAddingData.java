@@ -12,4 +12,5 @@ public class ClassroomAddingData {
 
     String teachingBuildingName;
 
+    Integer capacity;
 }

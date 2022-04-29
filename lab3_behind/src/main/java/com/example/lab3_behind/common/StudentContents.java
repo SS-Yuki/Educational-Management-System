@@ -1,6 +1,6 @@
 package com.example.lab3_behind.common;
 
-import com.example.lab3_behind.domain.Major;
+import com.example.lab3_behind.common.forDomain.StudentStatus;
 import com.example.lab3_behind.domain.Student;
 import lombok.AllArgsConstructor;
 import lombok.Data;

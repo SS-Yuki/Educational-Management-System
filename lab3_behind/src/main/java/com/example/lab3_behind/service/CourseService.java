@@ -1,6 +1,6 @@
 package com.example.lab3_behind.service;
 
-import com.example.lab3_behind.common.CourseApplyingType;
+import com.example.lab3_behind.common.forDomain.CourseApplyingType;
 import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.CourseApplying;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;

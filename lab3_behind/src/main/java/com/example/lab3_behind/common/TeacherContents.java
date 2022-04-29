@@ -42,7 +42,9 @@ public class TeacherContents {
             temp.setSchool(teacher.getSchool().getName());
             temp.setMajor(teacher.getMajor().getName());
             temp.setPassword(teacher.getUserAccount().getPassword());
-            temp.setRegisterTime(teacher.getRegisterTime().toString());
+            if(teacher.getRegisterTime()!=null){
+                temp.setRegisterTime(teacher.getRegisterTime().toString());
+            }
             teacherContents.add(temp);
         }
         return teacherContents;

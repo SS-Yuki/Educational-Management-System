@@ -63,7 +63,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     @Override
     public TimeTable deleteClassTime() throws Exception {
         List<TimeTable> timeTables = timeTableRepository.findAll();
-        if(timeTables == null){
+        if(timeTables.isEmpty()){
             throw new Exception("当前已无课程节次时间安排，无法删除");
         }
         TimeTable last = new TimeTable(null, 0, null, null);
@@ -134,7 +134,8 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         if(teachingBuilding == null){
             throw new Exception("教室信息有误，教学楼不存在");
         }
-        Classroom newClassroom = new Classroom(null, classroomData.getClassroomName(),teachingBuilding, classroomData.getCapacity());
+        Classroom newClassroom = new Classroom(null, classroomData.getClassroomName(), teachingBuilding,
+                classroomData.getCapacity(), classroomData.getSchedule());
         teachingBuilding.getClassrooms().add(newClassroom);
         teachingBuildingRepository.save(teachingBuilding);
         return newClassroom;
@@ -153,6 +154,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         Classroom thisClassroom = teachingBuilding.getClassrooms().get(teachingBuilding.getClassrooms().indexOf(classroom));
         thisClassroom.setName(classroomData.getNewClassroomName());
         thisClassroom.setCapacity(classroomData.getCapacity());
+        thisClassroom.setSchedule(classroomData.getSchedule());
         teachingBuildingRepository.save(teachingBuilding);
         return thisClassroom;
     }

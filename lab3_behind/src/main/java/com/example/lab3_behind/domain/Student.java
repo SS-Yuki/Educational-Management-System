@@ -81,7 +81,9 @@ public class Student {
         this.status = StudentStatus.Normal;
         this.major = major;
         this.school = school;
-        this.grade = Grade.Freshman;
+        for(Grade grade : Grade.values()){
+            this.grade = grade;
+        }
         this.gpa = 0.0;
         UserAccount account = new UserAccount();
         account.setAccount(user.getNumber());

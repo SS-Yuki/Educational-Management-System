@@ -15,4 +15,6 @@ public class ClassroomUpdatingData {
     String TeachingBuilding;
 
     Integer capacity;
+
+    String schedule;
 }

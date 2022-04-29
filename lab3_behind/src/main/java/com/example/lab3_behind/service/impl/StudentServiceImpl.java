@@ -95,6 +95,7 @@ public class StudentServiceImpl implements StudentService {
         student.setName(userData.getName());
         student.setPhoneNum(userData.getPhoneNum());
         student.setStatus(userData.getStuStatus());
+        student.setGrade(userData.getGrade());
         student.setMajor(majorRepository.findByName(userData.getMajor()));
         student.setSchool(schoolRepository.findByName(userData.getSchool()));
         student.getUserAccount().setPassword(userData.getPassword());

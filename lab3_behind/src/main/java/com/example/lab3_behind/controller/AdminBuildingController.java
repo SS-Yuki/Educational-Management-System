@@ -77,9 +77,9 @@ public class AdminBuildingController {
     }
 
     @RequestMapping("addClassroom")
-    public Result addClassroom(@RequestBody ClassroomData classrommData){
+    public Result addClassroom(@RequestBody ClassroomAddingData classroomData){
         try{
-            teachingAffairsService.insertClassroom(new ClassroomAddingData(classrommData.getClassroomName(),classrommData.getBuildingName()));
+            teachingAffairsService.insertClassroom(classroomData);
             return Result.succ(null);
         }catch (Exception e){
             //e.printStackTrace();
@@ -110,13 +110,8 @@ public class AdminBuildingController {
     //伪接口
     @RequestMapping("allClassrooms")
     public Result allClassrooms(){
-        List<String> classrooms = new ArrayList<>();
-        classrooms.add("H3101");
-        classrooms.add("H3201");
-        List<BuildingAndClassroomsData> buildingAndClassroomsData = new ArrayList<>();
-        buildingAndClassroomsData.add(new BuildingAndClassroomsData("第3教学楼",classrooms));
         Map<String,Object> map = new HashMap<>();
-        map.put("buildings", buildingAndClassroomsData);
+        map.put("buildings",teachingAffairsService.getAllBuildingAndClassrooms());
         return Result.succ(map);
     }
 

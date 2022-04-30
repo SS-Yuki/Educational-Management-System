@@ -92,63 +92,6 @@
       </div>
     </div>
     <div>
-      <el-dialog v-model="dialogVisible" title="添加新课程" width="30%">
-        <el-form :model="addCourse" label-width="120px">
-          <el-form-item label="课程id">
-            <el-input v-model="addCourse.id" disabled/>
-          </el-form-item>
-          <el-form-item label="课程名">
-            <el-input v-model="addCourse.courseName"/>
-          </el-form-item>
-          <el-form-item label="课程编号">
-            <el-input v-model="addCourse.courseNumber" />
-          </el-form-item>
-          <el-form-item label="教师工号">
-            <el-input v-model="addCourse.teacherNum" />
-          </el-form-item>
-<!--          <el-form-item label="开课专业">-->
-<!--            <el-input v-model="addCourse.major" />-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="开课院系">-->
-<!--            <el-input v-model="addCourse.school" />-->
-<!--          </el-form-item>-->
-          <el-form-item label="院系/专业" prop="school_major">
-            <el-cascader  v-model="add_school_major" :options="majorOptions"/>
-          </el-form-item>
-          <el-form-item label="上课时间">
-            <el-input v-model="addCourse.classPeriod" />
-          </el-form-item>
-          <el-form-item label="教学楼/教室" prop="building_classroom">
-            <el-cascader  v-model="add_building_classroom" :options="classroomOptions"/>
-          </el-form-item>
-<!--          <el-form-item label="教室">-->
-<!--            <el-input v-model="addCourse.classroom" />-->
-<!--          </el-form-item>-->
-          <el-form-item label="学时">
-            <el-input v-model="addCourse.creditHours" />
-          </el-form-item>
-          <el-form-item label="学分">
-            <el-input v-model="addCourse.credits" />
-          </el-form-item>
-          <el-form-item label="容量">
-            <el-input v-model="addCourse.capacity" />
-          </el-form-item>
-          <el-form-item label="介绍">
-            <el-input v-model="addCourse.introduction" />
-          </el-form-item>
-<!--          <el-form-item label="申请人">-->
-<!--            <el-input v-model="addCourse.applicant" />-->
-<!--          </el-form-item>-->
-          <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="save">确认</el-button>
-      </span>
-        </el-form>
-        <template #footer>
-        </template>
-      </el-dialog>
-    </div>
-    <div>
       <el-dialog v-model="dialogVisible2" title="编辑课程信息" width="30%">
         <el-form :model="editCourse" label-width="120px">
           <el-form-item label="id">
@@ -163,12 +106,6 @@
           <el-form-item label="教师工号">
             <el-input v-model="editCourse.teacherNum" disabled/>
           </el-form-item>
-<!--          <el-form-item label="开课专业">-->
-<!--            <el-input v-model="editCourse.major" disabled/>-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="开课院系">-->
-<!--            <el-input v-model="editCourse.school" disabled/>-->
-<!--          </el-form-item>-->
           <el-form-item label="院系/专业" prop="school_major">
             <el-cascader  v-model="edit_school_major" :options="majorOptions"/>
           </el-form-item>
@@ -190,9 +127,6 @@
           <el-form-item label="介绍">
             <el-input v-model="editCourse.introduction" />
           </el-form-item>
-<!--          <el-form-item label="申请人">-->
-<!--            <el-input v-model="editCourse.applicant" />-->
-<!--          </el-form-item>-->
           <span class="dialog-footer">
         <el-button @click="dialogVisible2 = false">取消</el-button>
         <el-button type="primary" @click="saveEdit">确认</el-button>

@@ -69,4 +69,13 @@ public class AdminTimeController {
         return Result.succ(map);
     }
 
+    @RequestMapping("/allTime")
+    public Result allTime(){
+        Map<String,Object> map = new HashMap<>();
+        List<TimeTable> timeTables = teachingAffairsService.findAllTimeTable();
+        List<TimeData> timeDatas = TimeData.getContents(timeTables);
+        map.put("times",timeDatas);
+        return Result.succ(map);
+    }
+
 }

@@ -116,7 +116,7 @@ public class TeacherApplyController {
     }
 
     @PostMapping("/findCoursePage")
-    public Result findCoursePage(@RequestBody PageSearchData pageSearchData,HttpServletRequest request){
+    public Result findCoursePage(@RequestBody PageSearchWithYearAndSemester pageSearchData,HttpServletRequest request){
         Map<String,Object> map = new HashMap<>();
         try {
             String token = request.getHeader("token");

@@ -1,18 +1,17 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.common.Global;
+import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.domain.Classroom;
 import com.example.lab3_behind.domain.TeachingBuilding;
 import com.example.lab3_behind.domain.TimeTable;
-import com.example.lab3_behind.domain.dto.BuildingAndClassroomsData;
-import com.example.lab3_behind.domain.dto.ClassTimeData;
-import com.example.lab3_behind.domain.dto.ClassroomAddingData;
-import com.example.lab3_behind.domain.dto.ClassroomUpdatingData;
+import com.example.lab3_behind.domain.dto.*;
 import com.example.lab3_behind.repository.ClassroomRepository;
 import com.example.lab3_behind.repository.TeachingBuildingRepository;
 import com.example.lab3_behind.repository.TimeTableRepository;
 import com.example.lab3_behind.service.TeachingAffairsService;
+import com.example.lab3_behind.utils.EnumTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -93,7 +92,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         for(Classroom classroom : allClassrooms){
             int index1 = 0;
             int index2 = classroom.getSchedule().indexOf("\n") + 1;
-            while (index2 != -1){
+            while (index2 != 0){
                 index1 = index2;
                 index2 = classroom.getSchedule().indexOf("\n", index1) + 1;
             }
@@ -128,6 +127,20 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             classroomNames.add(classroom.getName());
         }
         return classroomNames;
+    }
+
+    @Override
+    public List<YearAndSemestersData> getAllYearAndSemesters() {
+        List<YearAndSemestersData> result = new ArrayList<>();
+        for(SchoolYear schoolYear : SchoolYear.values()){
+              YearAndSemestersData data = new YearAndSemestersData();
+              data.setYear(EnumTool.transString(schoolYear));
+              for(Semester semester : Semester.values()){
+                  data.getSemesters().add(EnumTool.transString(semester));
+              }
+              result.add(data);
+        }
+        return result;
     }
 
     @Override

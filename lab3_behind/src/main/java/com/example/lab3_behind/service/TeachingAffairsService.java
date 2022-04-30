@@ -10,6 +10,7 @@ import java.util.List;
 public interface TeachingAffairsService {
     List<List<Boolean>> getClassroomTime(String name) throws Exception;
     List<String> findAllClassroom();
+    List<YearAndSemestersData> getAllYearAndSemesters();
     List<String> findAllTeachingBuilding();
     List<BuildingAndClassroomsData> getAllBuildingAndClassrooms();
     TimeTable addClassTime(ClassTimeData classTimeData) throws Exception;

@@ -1,9 +1,12 @@
 package com.example.lab3_behind.domain.dto;
 
+import com.example.lab3_behind.common.forDomain.CourseSelectType;
 import com.example.lab3_behind.domain.CourseApplying;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -34,6 +37,10 @@ public class CourseApplyingData {
     private String introduction;
 
     private String applicant;
+
+    private String selectTypeString;
+    private List<String> majorLimits;
+    private String openSemester;
 
     public CourseApplyingData(CourseApplying courseApplying){
         this.id = courseApplying.getCourseId();

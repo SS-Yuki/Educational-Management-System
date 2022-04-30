@@ -26,14 +26,15 @@
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>
         <div>
-          <el-select v-model="semester" placeholder="请选择学期">
-            <el-option
-                v-for="item in semesterOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-            </el-option>
-          </el-select>
+          <el-cascader  v-model="select_year_semester" :options="semesterOptions" placeholder="请选择学期"/>
+<!--          <el-select v-model="semester" placeholder="请选择学期">-->
+<!--            <el-option-->
+<!--                v-for="item in semesterOptions"-->
+<!--                :key="item.value"-->
+<!--                :label="item.label"-->
+<!--                :value="item.value">-->
+<!--            </el-option>-->
+<!--          </el-select>-->
         </div>
 
       </div>
@@ -147,7 +148,7 @@ export default {
   name: "CheckCourse",
   data(){
     return{
-      semester:'',
+      select_year_semester:[],
       semesterOptions:[],
       total:0,
       pageSize:10,
@@ -238,12 +239,18 @@ export default {
     },
     getOptionSemesters: function (){
       request.post("/common/allSemesters").then(res => {
+        let that = this
         if (!res.data) return
-        this.semester = res.data.data.defaultSemester
-        res.data.data.semesters.forEach ((item) => {
-          let option = {value: item, label: item}
-          this.semesterOptions.push(option)
+        res.data.data.yearAndSemesters.forEach (function (item) {
+          let option = {value: item.year, label: item.year, children: []}
+          if (!item.semesters) return
+          item.semesters.forEach (function (item) {
+            let child = {value: item, label: item}
+            option.children.push(child)
+          })
+          that.semesterOptions.push(option)
         })
+        this.select_year_semester = [res.data.data.defaultYear, res.data.data.defaultSemester]
       })
     },
     handleChange(file, fileList) {

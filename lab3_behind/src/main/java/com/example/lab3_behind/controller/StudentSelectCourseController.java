@@ -3,6 +3,7 @@ package com.example.lab3_behind.controller;
 import com.example.lab3_behind.common.CourseContent;
 import com.example.lab3_behind.common.JwtUserData;
 import com.example.lab3_behind.common.PageSearchData;
+import com.example.lab3_behind.common.StudentApplyForSelectCourse;
 import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.AuthorityService;
@@ -48,5 +49,10 @@ public class StudentSelectCourseController {
             //e.printStackTrace();
             return Result.fail(830,e.getMessage());
         }
+    }
+
+    @RequestMapping("/applyForSelectCourse")
+    public Result applyForSelectCourse(@RequestBody StudentApplyForSelectCourse apply){
+        return Result.succ(null);
     }
 }

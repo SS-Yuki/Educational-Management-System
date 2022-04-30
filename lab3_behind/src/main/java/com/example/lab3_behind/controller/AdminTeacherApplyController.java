@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin")
-public class AdminApplyController {
+public class AdminTeacherApplyController {
     @Autowired
     CourseService courseService;
 
@@ -55,7 +55,6 @@ public class AdminApplyController {
             //e.printStackTrace();
             return Result.fail(870,e.getMessage());
         }
-
     }
 
 }

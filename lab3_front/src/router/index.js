@@ -21,6 +21,9 @@ import StudentChooseCourse from "@/views/StudentChooseCourse";
 import StudentCheckCourse from "@/views/StudentCheckCourse";
 import CheckCourseOpen from "@/views/CheckCourseOpen";
 import TeacherApplication from "@/views/TeacherApplication";
+import StudentApply from "@/views/StudentApply";
+import StudentViewApplication from "@/views/StudentViewApplication";
+import StudentViewTable from "@/views/StudentViewTable";
 
 export const routes = [
   {
@@ -148,7 +151,22 @@ export const student_routes =
         path: 'studentcheckcourse',
         name: 'StudentCheckCourse',
         component: StudentCheckCourse
-      }
+      },
+    {
+        path: 'studentapply',
+        name: 'StudentApply',
+        component: StudentApply
+    },
+    {
+        path: 'studentviewapplication',
+        name: 'StudentViewApplication',
+        component: StudentViewApplication
+    },
+    {
+        path: 'studentviewtable',
+        name: 'StudentViewTable',
+        component: StudentViewTable
+    }
     ]
   }
 

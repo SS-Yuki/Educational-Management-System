@@ -20,56 +20,56 @@
         <el-form-item label="上课时间">
           <div>
             <el-checkbox-group  style="display: inline-block" disabled size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label="item" style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                   value=item  disabled="spare[0][item]===true">
                 {{ startTimes[item].label + "-" + endTimes[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day1" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
-                                  value=item+1>
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+                                  value=item+1 >
                 {{ timeNames[item].label}}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day2" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                   value=item+1>
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day3" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                   value=item+1 >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day4" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                   value=item+1  >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day5" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                   value=item+1 >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day6" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                   value=item+1 >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day7" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                   value=item+1 >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
@@ -321,6 +321,9 @@ export default {
       this.addCourse.year = this.add_year_semester[0]
       this.addCourse.semester = this.add_year_semester[1]
       this.addCourse.occupyTime = this.day
+
+      console.log(this.day1)
+
       console.log(this.addCourse.occupyTime)
       if (this.limit_school_major !== []) {
         this.limit_school_major.forEach((item)=>{

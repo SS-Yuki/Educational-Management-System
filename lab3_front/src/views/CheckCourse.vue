@@ -6,6 +6,7 @@
           <el-button size="large" @click="add" type="primary">
             新增
           </el-button>
+          <router-view></router-view>
         </div>
         <div style="float: left">
           <el-upload

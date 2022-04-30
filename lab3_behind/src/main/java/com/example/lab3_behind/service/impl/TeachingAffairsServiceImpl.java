@@ -48,7 +48,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         String schedule = classroom.getSchedule();
         int index1 = 0;
         int index2 = schedule.indexOf("\n") + 1;
-        while (index2 != -1){
+        while (index2 != 0){
             String section = schedule.substring(index1, index2 - 1);
             String[] sectionArr = section.split("-");
             for(int i = 0; i < result.size(); i++){

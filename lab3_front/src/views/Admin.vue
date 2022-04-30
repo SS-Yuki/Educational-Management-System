@@ -1,11 +1,11 @@
 <template>
-  <div class="common-layout">
+  <div>
     <el-container>
-      <el-header class="header">
-        复旦大学管理员系统
+      <el-header height="60px">
+        <span class="title">复旦大学管理员系统</span>
         <UserInfo/>
-        <el-divider/>
       </el-header>
+      <el-divider/>
       <el-container>
         <el-aside width="200px">
           <el-row class="tac" style="width: 400px">
@@ -81,16 +81,13 @@
             </el-col>
           </el-row>
         </el-aside>
-        <el-container style="padding-top: 50px">
-          <el-main>
-            <router-view></router-view>
-          </el-main>
-        </el-container>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
-
 
 <script>
 
@@ -107,13 +104,15 @@ export default {
 </script>
 
 <style scoped>
-.header{
-  height:60px;
+.title{
   font-size: 50px;
   color: transparent;
   background-color : black;
   text-shadow : rgba(255,255,255,0.5) 0 5px 6px, rgba(255,255,255,0.2) 1px 3px 3px;
   -webkit-background-clip : text;
+}
+.main{
+  padding-top: 50px;
 }
 
 </style>

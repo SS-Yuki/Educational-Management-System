@@ -41,7 +41,9 @@ public class StudentContents {
             temp.setSchool(student.getSchool().getName());
             temp.setMajor(student.getMajor().getName());
             temp.setPassword(student.getUserAccount().getPassword());
-            temp.setRegisterTime(student.getRegisterTime().toString());
+            if(student.getRegisterTime()!=null){
+                temp.setRegisterTime(student.getRegisterTime().toString());
+            }
             String newGrade;
             switch (student.getGrade()){
                 case G2019:newGrade = "2019级";break;

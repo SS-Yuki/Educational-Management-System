@@ -108,8 +108,8 @@ public class AdminBuildingController {
         return Result.succ(map);
     }
 
-    @RequestMapping("updateClassroom")
-    public Result updateClassroom(@RequestBody ClassroomUpdatingData classroomUpdatingData){
+    @RequestMapping("updateClassroomInfo")
+    public Result updateClassroomInfo(@RequestBody ClassroomUpdatingData classroomUpdatingData){
         try{
             teachingAffairsService.updateClassroom(classroomUpdatingData);
             return Result.succ(null);

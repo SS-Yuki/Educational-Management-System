@@ -6,7 +6,7 @@
           <el-button size="large" @click="add" type="primary">新增</el-button>
         </div>
         <div style="float: left">
-          <el-button size="large" @click="delete" type="primary">删除</el-button>
+          <el-button size="large" @click="deleteTime" type="primary">删除</el-button>
         </div>
         <div style="float: left">
           <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
@@ -153,7 +153,7 @@ export default {
       this.dialogVisible=true
       this.buildingName=''
     },
-    delete:function(){
+    deleteTime:function(){
       request.post("/admin/deleteTime",)
       this.load()
     },

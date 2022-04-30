@@ -152,13 +152,13 @@
 
 ![allSemesters.png](https://s2.loli.net/2022/04/28/7GpgyvDN9XFmOSt.png)
 
-
+****
 
 #### 8.管理员添加课程
 
 > /admin/addCourse
 
-相比以前，我们需要额外**添加**：开课学期（选择器），选课类型，专业限制。
+相比以前，我们需要额外**添加**：开课学期（选择器）openSemester，选课类型selectType，专业限制majorLimits,这是一个**List<String>**。
 
 选课类型有三种：通识课程，面向部分专业课程，专业课程。
 

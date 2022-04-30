@@ -26,7 +26,12 @@
             </el-menu-item-group>
             <el-menu-item-group>
               <el-menu-item index="1-2">
-                <router-link to="/student/studentcourse">查看课程</router-link>
+                <router-link to="/student/studentchoosecourse">选课</router-link>
+              </el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group>
+              <el-menu-item index="1-2">
+                <router-link to="/student/studentcheckcourse">查看课程</router-link>
               </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>

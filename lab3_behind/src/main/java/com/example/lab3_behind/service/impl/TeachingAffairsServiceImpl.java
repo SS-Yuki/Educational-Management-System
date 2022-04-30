@@ -50,9 +50,12 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         int index2 = schedule.indexOf("\n");
         while (index2 != -1){
             String section = schedule.substring(index1, index2 - 1);
-            String[] sectionArr = section.split("-");
+            String[] sectionArr = section.split("-", Global.WEEKDAY);
+            for (String str: sectionArr) {
+                System.out.println(str);
+            }
             for(int i = 0; i < result.size(); i++){
-                result.get(1).add(Integer.parseInt(sectionArr[i]) != Global.CLASSROOM_TIME_IS_SPARE);
+                result.get(i).add(Integer.parseInt(sectionArr[i]) != Global.CLASSROOM_TIME_IS_SPARE);
             }
             index1 = index2;
             index2 = schedule.indexOf("\n", index1 + 1);
@@ -88,6 +91,19 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         }
         TimeTable last = timeTableRepository.findBySection(getLastSection());
         timeTableRepository.delete(last);
+
+        List<Classroom> allClassrooms = classroomRepository.findAll();
+        for(Classroom classroom : allClassrooms){
+            int index1 = 0;
+            int index2 = classroom.getSchedule().indexOf("\n");
+            while (index2 != -1){
+                index1 = index2;
+                index2 = classroom.getSchedule().indexOf("\n", index1 + 1);
+            }
+            classroom.setSchedule(classroom.getSchedule().substring(0,index1));
+            classroomRepository.save(classroom);
+        }
+
         return last;
     }
 

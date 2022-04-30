@@ -6,7 +6,7 @@ import com.example.lab3_behind.domain.dto.UserEnteringData;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AccountFormatCheck {
+public class FormatCheck {
 
     public static void courseApplyingDataCheck(CourseApplyingData courseApplyingData) throws Exception {
         if(courseApplyingData.getCapacity() <= 0){

@@ -95,14 +95,6 @@
       </el-dialog>
     </div>
   </div>
-
-  <el-time-select
-      v-model="value"
-      start="08:30"
-      step="00:10"
-      end="18:30"
-      placeholder="Select time"
-  />
 </template>
 
 <script>

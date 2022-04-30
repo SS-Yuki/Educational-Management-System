@@ -28,18 +28,18 @@
       </div>
       <div>
         <el-table :data="tableData" style="width: 100%" border stripe>
-          <el-table-column fixed prop="number" label="学号" width="150" sortable/>
-          <el-table-column prop="name" label="姓名" width="120" />
-          <el-table-column prop="idNum" label="身份证号" width="120" />
-          <el-table-column prop="phoneNum" label="电话" width="120" />
-          <el-table-column prop="email" label="邮箱" width="120" />
-          <el-table-column prop="stuStatus" label="状态" width="120" />
-          <el-table-column prop="school" label="院系" width="120" />
-          <el-table-column prop="major" label="专业" width="120" />
-          <el-table-column prop="grade" label="年级" width="120" />
-          <el-table-column prop="registerTime" label="注册时间" width="120" />
-          <el-table-column prop="password" label="密码" width="120" />
-          <el-table-column fixed="right" label="操作" width="120">
+          <el-table-column fixed prop="number" label="学号" width="80" sortable/>
+          <el-table-column prop="name" label="姓名" width="80" />
+          <el-table-column prop="idNum" label="身份证号" width="80" />
+          <el-table-column prop="phoneNum" label="电话" width="80" />
+          <el-table-column prop="email" label="邮箱" width="80" />
+          <el-table-column prop="stuStatus" label="状态" width="80" />
+          <el-table-column prop="school" label="院系" width="80" />
+          <el-table-column prop="major" label="专业" width="80" />
+          <el-table-column prop="grade" label="年级" width="80" />
+          <el-table-column prop="registerTime" label="注册时间" width="80" />
+          <el-table-column prop="password" label="密码" width="80" v-if="false"/>
+          <el-table-column fixed="right" label="操作" width="80">
             <template #default="scope">
               <el-button type="text" size="small" @click="handleEdit(
                 scope.row.number,
@@ -112,6 +112,16 @@
           <el-form-item label="院系/专业">
             <el-cascader  v-if="flag" v-model="edit_school_major" :options="options"/>
           </el-form-item>
+          <el-form-item label="年级">
+            <el-select v-model="grade" class="m-2" placeholder="Select" size="small">
+              <el-option
+                  v-for="item in grades"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
           <el-form-item label="状态">
             <el-radio v-model="stuStatus" label="Graduated" checked="true">Graduated</el-radio>
             <el-radio v-model="stuStatus" label="Normal" checked="true">Normal</el-radio>
@@ -130,16 +140,6 @@
           </el-form-item>
           <el-form-item label="邮箱">
             <el-input v-model="email" />
-          </el-form-item>
-          <el-form-item label="年级">
-            <el-select v-model="grade" class="m-2" placeholder="Select" size="small">
-              <el-option
-                  v-for="item in grades"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-              />
-            </el-select>
           </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible2 = false">取消</el-button>
@@ -391,7 +391,7 @@ export default {
         this.dialogVisible2=false
       })
     },
-    handleEdit(number,name,idNum,phoneNum,email,stuStatus,school,major,grade,registerTime,password){
+    handleEdit(number,name,idNum,phoneNum,email,stuStatus,school,major,grade,password){
       this.stuNumber=number
       this.name = name
       this.idNum = idNum
@@ -401,6 +401,7 @@ export default {
       this.school = school
       this.major = major
       this.password = password
+      this.grade = grade
       this.edit_school_major = [school, major]
       this.dialogVisible2 = true
       this.flag=true

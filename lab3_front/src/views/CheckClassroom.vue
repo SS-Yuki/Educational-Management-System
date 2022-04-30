@@ -12,14 +12,14 @@
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
         <el-table-column prop="classroomName" label="教室" width="300" />
-        <el-table-column prop="buildingName" label="教学楼" width="300" />
+        <el-table-column prop="teachingBuildingName" label="教学楼" width="300" />
         <el-table-column prop="capacity" label="教室容量" width="300" />
         <el-table-column fixed="right" label="操作" width="300">
           <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(scope.row.classroomName, scope.row.buildingName, scope.row.capacity)">
+            <el-button type="text" size="small" @click="handleEdit(scope.row.classroomName, scope.row.teachingBuildingName, scope.row.capacity)">
               编辑
             </el-button>
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.buildingName,scope.row.classroomName)">
+            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.teachingBuildingName,scope.row.classroomName)">
               <template #reference>
                 <el-button type="text">删除</el-button>
               </template>
@@ -46,7 +46,7 @@
       <el-dialog v-model="dialogVisible" title="新教室信息" width="30%">
         <el-form :model="addClassroom" label-width="120px">
           <el-form-item label="所属教学楼" prop="school_major">
-            <el-select v-model="addClassroom.buildingName" class="m-2" placeholder="请选择" size="small">
+            <el-select v-model="addClassroom.teachingBuildingName" class="m-2" placeholder="请选择" size="small">
               <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -74,7 +74,7 @@
       <el-dialog v-model="dialogVisible2" title="编辑教室信息" width="30%">
         <el-form :model="editClassroom" label-width="120px">
           <el-form-item label="教室名称">
-            <el-input v-model="editClassroom.classroomName" />
+            <el-input v-model="editClassroom.newClassroomName" />
           </el-form-item>
           <el-form-item label="教室容量">
             <el-input v-model="editClassroom.capacity" />
@@ -105,13 +105,17 @@ export default {
       dialogVisible2:false,
       addClassroom:{
         classroomName:'',
-        buildingName:'',
-        capacity:''
+        teachingBuildingName:'',
+        capacity:0
       },
       editClassroom:{
-        classroomName:'',
-        buildingName:'',
-        capacity:''
+        oldClassroomName: '',
+        newClassroomName: '',
+        TeachingBuilding: '',
+        capacity: 0
+        // classroomName:'',
+        // teachingBuildingName:'',
+        // capacity:0
       },
       tableData:[]
     }
@@ -156,7 +160,7 @@ export default {
     },
     add:function (){
       this.dialogVisible=true
-      this.buildingName=''
+      this.teachingBuildingName=''
     },
     save:function (){
       request.post("/admin/addClassroom", this.addClassroom).then(res => {
@@ -182,15 +186,16 @@ export default {
         this.dialogVisible2=false
       })
     },
-    handleEdit(classroomName, buildingName, capacity){
+    handleEdit(classroomName, teachingBuildingName, capacity){
       this.dialogVisible2=true
-      this.editClassroom.classroomName=classroomName
-      this.editClassroom.buildingName=buildingName
+      this.editClassroom.oldClassroomName=classroomName
+      this.editClassroom.newClassroomName=classroomName
+      this.editClassroom.TeachingBuilding=teachingBuildingName
       this.editClassroom.capacity=capacity
     },
-    handleDelete(buildingName,classroomName) {
+    handleDelete(teachingBuildingName,classroomName) {
       request.post("/admin/deleteClassroom", {
-        buildingName:buildingName,
+        teachingBuildingName:teachingBuildingName,
         classroomName:classroomName
       }).then(res => {
         if(res.data.code!==200) {

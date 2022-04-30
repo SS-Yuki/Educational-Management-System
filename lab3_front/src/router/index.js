@@ -84,14 +84,12 @@ export const admin_routes =
         {
             path: 'checkcourse',
             name: 'CheckCourse',
-            component: CheckCourse,
-            children: [
-                {
-                    path: 'addcourse',
-                    name: 'AddCourse',
-                    component: AddCourse
-                }
-            ]
+            component: CheckCourse
+        },
+        {
+            path: 'addcourse',
+            name: 'AddCourse',
+            component: AddCourse
         },
         {
             path: 'checkapplication',

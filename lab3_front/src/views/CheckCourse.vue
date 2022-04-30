@@ -395,7 +395,7 @@ export default {
       }, 10)
     },
     add:function (){
-      this.$router.push("/admin/checkcourse/addcourse")
+      this.$router.push("/admin/addcourse")
     },
     save:function (){
       this.addCourse.school = this.add_school_major[0]

@@ -47,18 +47,15 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         }
         String schedule = classroom.getSchedule();
         int index1 = 0;
-        int index2 = schedule.indexOf("\n");
+        int index2 = schedule.indexOf("\n") + 1;
         while (index2 != -1){
-            String section = schedule.substring(index1, index2 - 1);
-            String[] sectionArr = section.split("-", Global.WEEKDAY);
-            for (String str: sectionArr) {
-                System.out.println(str);
-            }
+            String section = schedule.substring(index1, index2 - 2);
+            String[] sectionArr = section.split("-");
             for(int i = 0; i < result.size(); i++){
                 result.get(i).add(Integer.parseInt(sectionArr[i]) != Global.CLASSROOM_TIME_IS_SPARE);
             }
             index1 = index2;
-            index2 = schedule.indexOf("\n", index1 + 1);
+            index2 = schedule.indexOf("\n", index1) + 1;
         }
         return result;
     }

@@ -28,49 +28,49 @@
 
             <el-checkbox-group v-model="day1" style="display: inline-block" size="small">
               <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
-                                  value=item>
+                                  value=item+1>
                 {{ timeNames[item].label}}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day2" style="display: inline-block" size="small">
               <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
-                                  value=item>
+                                  value=item+1>
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day3" style="display: inline-block" size="small">
               <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
-                                  value=item >
+                                  value=item+1 >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day4" style="display: inline-block" size="small">
               <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
-                                  value=item  >
+                                  value=item+1  >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day5" style="display: inline-block" size="small">
               <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
-                                  value=item >
+                                  value=item+1 >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day6" style="display: inline-block" size="small">
               <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
-                                  value=item >
+                                  value=item+1 >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day7" style="display: inline-block" size="small">
               <el-checkbox-button v-for="item in range" :key="item" :label="timeNames[item]" style="display: block"
-                                  value=item >
+                                  value=item+1 >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
@@ -133,7 +133,7 @@ export default {
         teacherNum:'',
         major:'',
         school:'',
-
+        classPeriod:'',
         classroom:'',
         creditHours:'',
         credits:'',
@@ -188,6 +188,7 @@ export default {
       // major_limit_show:"请选择专业"
       school_major_props:{},
       major_limit_show:"默认选择所有专业"
+
     }
   },
   mounted() {
@@ -319,6 +320,8 @@ export default {
       this.addCourse.classroom = this.add_building_classroom[1]
       this.addCourse.year = this.add_year_semester[0]
       this.addCourse.semester = this.add_year_semester[1]
+      this.addCourse.occupyTime = this.day
+      console.log(this.addCourse.occupyTime)
       if (this.limit_school_major !== []) {
         this.limit_school_major.forEach((item)=>{
           this.addCourse.majorLimits.push(item[1])

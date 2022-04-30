@@ -2,12 +2,10 @@ package com.example.lab3_behind.controller;
 
 import com.example.lab3_behind.common.*;
 import com.example.lab3_behind.domain.Classroom;
-import com.example.lab3_behind.domain.Major;
-import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.TeachingBuilding;
-import com.example.lab3_behind.domain.dto.BuildingAndClassrommsData;
+import com.example.lab3_behind.domain.dto.BuildingAndClassroomsData;
 import com.example.lab3_behind.domain.dto.ClassroomAddingData;
-import com.example.lab3_behind.domain.dto.MajorUpdatingData;
+import com.example.lab3_behind.domain.dto.ClassroomUpdatingData;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.TeachingAffairsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,9 +78,9 @@ public class AdminBuildingController {
     }
 
     @RequestMapping("addClassroom")
-    public Result addClassroom(@RequestBody ClassroomData classrommData){
+    public Result addClassroom(@RequestBody ClassroomAddingData classroomData){
         try{
-            teachingAffairsService.insertClassroom(new ClassroomAddingData(classrommData.getClassroomName(),classrommData.getBuildingName()));
+            teachingAffairsService.insertClassroom(classroomData);
             return Result.succ(null);
         }catch (Exception e){
             //e.printStackTrace();
@@ -110,16 +108,21 @@ public class AdminBuildingController {
         return Result.succ(map);
     }
 
+    @RequestMapping("updateClassroomInfo")
+    public Result updateClassroomInfo(@RequestBody ClassroomUpdatingData classroomUpdatingData){
+        try{
+            teachingAffairsService.updateClassroom(classroomUpdatingData);
+            return Result.succ(null);
+        }catch (Exception e){
+            return Result.fail(725,e.getMessage());
+        }
+    }
+
     //伪接口
     @RequestMapping("allClassrooms")
     public Result allClassrooms(){
-        List<String> classrooms = new ArrayList<>();
-        classrooms.add("H3101");
-        classrooms.add("H3201");
-        List<BuildingAndClassrommsData> buildingAndClassrommsDatas = new ArrayList<>();
-        buildingAndClassrommsDatas.add(new BuildingAndClassrommsData("第3教学楼",classrooms));
         Map<String,Object> map = new HashMap<>();
-        map.put("buildings",buildingAndClassrommsDatas);
+        map.put("buildings",teachingAffairsService.getAllBuildingAndClassrooms());
         return Result.succ(map);
     }
 

@@ -1,7 +1,7 @@
 package com.example.lab3_behind.service.impl;
 
-import com.example.lab3_behind.common.CourseApplyingType;
-import com.example.lab3_behind.common.FormatCheck;
+import com.example.lab3_behind.common.forDomain.CourseApplyingType;
+import com.example.lab3_behind.utils.AccountFormatCheck;
 import com.example.lab3_behind.domain.*;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.repository.*;
@@ -214,7 +214,7 @@ public class CourseServiceImpl implements CourseService {
             throw new Exception("申请对应课程所属学院下不存在此专业");
         }
         try {
-            FormatCheck.courseApplyingDataCheck(courseApplyingData);
+            AccountFormatCheck.courseApplyingDataCheck(courseApplyingData);
         } catch (Exception e) {
             throw e;
         }
@@ -238,7 +238,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course insertCourse(CourseApplyingData courseApplyingData) throws Exception {
         try {
-            FormatCheck.courseApplyingDataCheck(courseApplyingData);
+            AccountFormatCheck.courseApplyingDataCheck(courseApplyingData);
         } catch (Exception e) {
             throw e;
         }
@@ -263,7 +263,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course updateCourse(CourseApplyingData courseApplyingData) throws Exception {
         try {
-            FormatCheck.courseApplyingDataCheck(courseApplyingData);
+            AccountFormatCheck.courseApplyingDataCheck(courseApplyingData);
         } catch (Exception e) {
             throw e;
         }

@@ -1,7 +1,7 @@
 package com.example.lab3_behind.common;
 
 
-import com.example.lab3_behind.domain.Student;
+import com.example.lab3_behind.common.forDomain.TeacherStatus;
 import com.example.lab3_behind.domain.Teacher;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +24,7 @@ public class TeacherContents {
     private String teaStatus;
     private String school;
     private String major;
+    private String registerTime;
 
     public static List<TeacherContents> getContents(List<Teacher> teachers){
         List<TeacherContents> teacherContents = new ArrayList<>();
@@ -41,6 +42,9 @@ public class TeacherContents {
             temp.setSchool(teacher.getSchool().getName());
             temp.setMajor(teacher.getMajor().getName());
             temp.setPassword(teacher.getUserAccount().getPassword());
+            if(teacher.getRegisterTime()!=null){
+                temp.setRegisterTime(teacher.getRegisterTime().toString());
+            }
             teacherContents.add(temp);
         }
         return teacherContents;

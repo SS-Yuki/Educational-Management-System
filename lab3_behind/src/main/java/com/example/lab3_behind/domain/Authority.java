@@ -1,6 +1,6 @@
 package com.example.lab3_behind.domain;
 
-import com.example.lab3_behind.common.AuthorityName;
+import com.example.lab3_behind.common.forDomain.AuthorityName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,3 @@
-
 <template>
   <div style="margin: auto 200px ">
       <div style="margin-bottom: 20px">
@@ -113,7 +112,7 @@
 import request from "@/utils/request";
 
 export default {
-  name: "CheckCourse",
+  name: "StudentChooseCourse",
   data(){
     return{
       total:0,

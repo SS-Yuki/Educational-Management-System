@@ -5,6 +5,7 @@ import Admin from "@/views/Admin";
 import Teacher from "@/views/Teacher";
 import Student from "@/views/Student";
 import CheckCourse from "@/views/CheckCourse";
+import AddCourse from "@/views/AddCourse";
 import CheckStudentInfo from "@/views/CheckStudentInfo";
 import CheckTeacherInfo from "@/views/CheckTeacherInfo";
 import CheckSchool from "@/views/CheckSchool";
@@ -16,7 +17,8 @@ import CheckApplication from "@/views/CheckApplication";
 import TeacherInfo from "@/views/TeacherInfo";
 import StudentInfo from "@/views/StudentInfo";
 import TeacherCourse from "@/views/TeacherCourse";
-import StudentCourse from "@/views/StudentCourse";
+import StudentChooseCourse from "@/views/StudentChooseCourse";
+import StudentCheckCourse from "@/views/StudentCheckCourse";
 import CheckCourseOpen from "@/views/CheckCourseOpen";
 import TeacherApplication from "@/views/TeacherApplication";
 
@@ -82,7 +84,14 @@ export const admin_routes =
         {
             path: 'checkcourse',
             name: 'CheckCourse',
-            component: CheckCourse
+            component: CheckCourse,
+            children: [
+                {
+                    path: 'addcourse',
+                    name: 'AddCourse',
+                    component: AddCourse
+                }
+            ]
         },
         {
             path: 'checkapplication',
@@ -133,9 +142,14 @@ export const student_routes =
         component: StudentInfo
       },
       {
-        path: 'studentcourse',
-        name: 'StudentCourse',
-        component: StudentCourse
+        path: 'studentchoosecourse',
+        name: 'StudentChooseCourse',
+        component: StudentChooseCourse
+      },
+      {
+        path: 'studentcheckcourse',
+        name: 'StudentCheckCourse',
+        component: StudentCheckCourse
       }
     ]
   }

@@ -28,16 +28,18 @@
       </div>
       <div>
         <el-table :data="tableData" style="width: 100%" border stripe>
-          <el-table-column fixed prop="number" label="学号" width="150" sortable/>
-          <el-table-column prop="name" label="姓名" width="120" />
-          <el-table-column prop="idNum" label="身份证号" width="120" />
-          <el-table-column prop="phoneNum" label="电话" width="120" />
-          <el-table-column prop="email" label="邮箱" width="120" />
-          <el-table-column prop="stuStatus" label="状态" width="120" />
-          <el-table-column prop="school" label="院系" width="120" />
-          <el-table-column prop="major" label="专业" width="120" />
-          <el-table-column prop="password" label="密码" width="120" />
-          <el-table-column fixed="right" label="操作" width="120">
+          <el-table-column fixed prop="number" label="学号" width="80" sortable/>
+          <el-table-column prop="name" label="姓名" width="80" />
+          <el-table-column prop="idNum" label="身份证号" width="80" />
+          <el-table-column prop="phoneNum" label="电话" width="80" />
+          <el-table-column prop="email" label="邮箱" width="80" />
+          <el-table-column prop="stuStatus" label="状态" width="80" />
+          <el-table-column prop="school" label="院系" width="80" />
+          <el-table-column prop="major" label="专业" width="80" />
+          <el-table-column prop="grade" label="年级" width="80" />
+          <el-table-column prop="registerTime" label="注册时间" width="80" />
+          <el-table-column prop="password" label="密码" width="80" v-if="false"/>
+          <el-table-column fixed="right" label="操作" width="80">
             <template #default="scope">
               <el-button type="text" size="small" @click="handleEdit(
                 scope.row.number,
@@ -48,6 +50,7 @@
                 scope.row.stuStatus,
                 scope.row.school,
                 scope.row.major,
+                scope.row.grade,
                 scope.row.password
                 )">编辑</el-button>
             </template>
@@ -94,7 +97,6 @@
           <el-form-item label="邮箱" prop="email">
             <el-input v-model="addStudent.email" />
           </el-form-item>
-
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="save">确认</el-button>
@@ -109,6 +111,16 @@
         <el-form :model="newSchool" label-width="120px">
           <el-form-item label="院系/专业">
             <el-cascader  v-if="flag" v-model="edit_school_major" :options="options"/>
+          </el-form-item>
+          <el-form-item label="年级">
+            <el-select v-model="grade" class="m-2" placeholder="Select" size="small">
+              <el-option
+                  v-for="item in grades"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="状态">
             <el-radio v-model="stuStatus" label="Graduated" checked="true">Graduated</el-radio>
@@ -144,16 +156,31 @@
 <script>
 import request from "@/utils/request";
 import Papa from "papaparse";
-
 export default {
 
   name: "CheckStudentInfo",
   data(){
     return{
-
+      grades:[
+        {
+          value: '2019',
+          label: '2019',
+        },
+        {
+          value: '2020',
+          label: '2020',
+        },
+        {
+          value: '2021',
+          label: '2021',
+        },
+        {
+          value: '2022',
+          label: '2022',
+        }
+      ],
       fileTemp: null,
       fileListUpload: [],
-
       options:[],
       total:0,
       pageSize:10,
@@ -172,6 +199,7 @@ export default {
       stuStatus:'',
       major:'',
       school:'',
+      grade:'',
       edit_school_major: [],
       add_school_major: [],
       addStudent:{
@@ -213,8 +241,6 @@ export default {
     this.getOption()
   },
   methods:{
-
-
     handleChange(file, fileList) {
       this.fileTemp = file.raw
       if (this.fileTemp) {
@@ -351,7 +377,8 @@ export default {
         email:this.email,
         stuStatus:this.stuStatus,
         major:this.edit_school_major[1],
-        school:this.edit_school_major[0]
+        school:this.edit_school_major[0],
+        grade:this.grade
 
       }).then(res=>{
         if(res.data.code!==200) {
@@ -364,7 +391,7 @@ export default {
         this.dialogVisible2=false
       })
     },
-    handleEdit(number,name,idNum,phoneNum,email,stuStatus,school,major,password){
+    handleEdit(number,name,idNum,phoneNum,email,stuStatus,school,major,grade,password){
       this.stuNumber=number
       this.name = name
       this.idNum = idNum
@@ -374,6 +401,7 @@ export default {
       this.school = school
       this.major = major
       this.password = password
+      this.grade = grade
       this.edit_school_major = [school, major]
       this.dialogVisible2 = true
       this.flag=true

@@ -12,12 +12,14 @@ public class ClassroomData {
     private Integer capacity;
     private String buildingName;
 
+
     public static List<ClassroomData> getContents(List<Classroom> classrooms){
         List<ClassroomData> classroomDatas = new ArrayList<>();
         for(Classroom classroom:classrooms){
             ClassroomData temp = new ClassroomData();
             temp.setClassroomName(classroom.getName());
             temp.setBuildingName(classroom.getTeachingBuilding().getName());
+            temp.setCapacity(classroom.getCapacity());
             classroomDatas.add(temp);
         }
         return classroomDatas;

@@ -7,8 +7,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClassroomAddingData {
-    String classroomName;
-    String teachingBuildingName;
+public class ClassroomUpdatingData {
+    String oldClassroomName;
+
+    String newClassroomName;
+
+    String TeachingBuilding;
+
     Integer capacity;
+
+    String schedule;
 }

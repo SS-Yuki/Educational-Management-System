@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClassTimeData {
-    String name;
+    Integer section;
 
     String startTime;
 

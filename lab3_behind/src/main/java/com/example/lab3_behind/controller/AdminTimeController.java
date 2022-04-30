@@ -29,13 +29,11 @@ public class AdminTimeController {
 
     @RequestMapping("addTime")
     public Result addTime(@RequestBody TimeData timeData){
-        Map<String,Object> map = new HashMap<>();
         try{
             teachingAffairsService.addClassTime(timeData.toClassTimeData());
-            map.put("timeName",timeData.getTimeName());
-            return Result.succ(map);
+            return Result.succ(null);
         }catch (Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             return Result.fail(710,e.getMessage());
         }
     }
@@ -51,9 +49,9 @@ public class AdminTimeController {
         }
     }
     @PostMapping("/deleteTime")
-    public Result deleteTime(@RequestBody String timeName){
+    public Result deleteTime(){
         try{
-            teachingAffairsService.deleteClassTime(timeName);
+            teachingAffairsService.deleteClassTime();
             return Result.succ(null);
         }
         catch (Exception e){

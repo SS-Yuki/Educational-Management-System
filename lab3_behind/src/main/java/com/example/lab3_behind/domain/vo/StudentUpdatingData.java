@@ -1,7 +1,5 @@
 package com.example.lab3_behind.domain.vo;
 
-import com.example.lab3_behind.common.StudentStatus;
-import com.example.lab3_behind.common.TeacherStatus;
 import lombok.Data;
 
 @Data
@@ -22,4 +20,6 @@ public class StudentUpdatingData {
     private String school;
 
     private String major;
+
+    private String grade;
 }

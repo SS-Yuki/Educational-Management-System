@@ -16,11 +16,15 @@ public class TimeData {
     private String endTime;
 
     public ClassTimeData toClassTimeData(){
-        return new ClassTimeData(timeName,startTime,endTime);
+        Integer section=0;
+        if(timeName !=null && timeName.length()>=3){
+            section = Integer.valueOf(timeName.substring(1,timeName.length()-1));
+        }
+        return new ClassTimeData(section,startTime,endTime);
     }
 
     public static TimeData getTimeDataType(TimeTable timeTable){
-        return new TimeData(timeTable.getName(),timeTable.getStartTime(),timeTable.getEndTime());
+        return new TimeData("第"+timeTable.getSection().toString()+"节",timeTable.getStartTime(),timeTable.getEndTime());
     }
 
 

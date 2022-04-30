@@ -12,10 +12,14 @@
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
         <el-table-column prop="classroomName" label="教室" width="300" />
-        <el-table-column prop="buildingName" label="教学楼" width="300" />
+        <el-table-column prop="teachingBuildingName" label="教学楼" width="300" />
+        <el-table-column prop="capacity" label="教室容量" width="300" />
         <el-table-column fixed="right" label="操作" width="300">
           <template #default="scope">
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.buildingName,scope.row.classroomName)">
+            <el-button type="text" size="small" @click="handleEdit(scope.row.classroomName, scope.row.teachingBuildingName, scope.row.capacity)">
+              编辑
+            </el-button>
+            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.teachingBuildingName,scope.row.classroomName)">
               <template #reference>
                 <el-button type="text">删除</el-button>
               </template>
@@ -41,11 +45,8 @@
     <div>
       <el-dialog v-model="dialogVisible" title="新教室信息" width="30%">
         <el-form :model="addClassroom" label-width="120px">
-          <el-form-item label="新教室名称">
-            <el-input v-model="addClassroom.classroomName" />
-          </el-form-item>
           <el-form-item label="所属教学楼" prop="school_major">
-            <el-select v-model="addClassroom.buildingName" class="m-2" placeholder="请选择" size="small">
+            <el-select v-model="addClassroom.teachingBuildingName" class="m-2" placeholder="请选择" size="small">
               <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -54,6 +55,12 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item label="新教室名称">
+            <el-input v-model="addClassroom.classroomName" />
+          </el-form-item>
+          <el-form-item label="新教室容量">
+            <el-input v-model="addClassroom.capacity" />
+          </el-form-item>
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="save">确认</el-button>
@@ -61,6 +68,22 @@
         </el-form>
         <template #footer>
         </template>
+      </el-dialog>
+    </div>
+    <div>
+      <el-dialog v-model="dialogVisible2" title="编辑教室信息" width="30%">
+        <el-form :model="editClassroom" label-width="120px">
+          <el-form-item label="教室名称">
+            <el-input v-model="editClassroom.newClassroomName" />
+          </el-form-item>
+          <el-form-item label="教室容量">
+            <el-input v-model="editClassroom.capacity" />
+          </el-form-item>
+          <span class="dialog-footer">
+            <el-button @click="dialogVisible2 = false">取消</el-button>
+            <el-button type="primary" @click="saveEdit">确认</el-button>
+          </span>
+        </el-form>
       </el-dialog>
     </div>
   </div>
@@ -82,7 +105,17 @@ export default {
       dialogVisible2:false,
       addClassroom:{
         classroomName:'',
-        buildingName:''
+        teachingBuildingName:'',
+        capacity:0
+      },
+      editClassroom:{
+        oldClassroomName: '',
+        newClassroomName: '',
+        TeachingBuilding: '',
+        capacity: 0
+        // classroomName:'',
+        // teachingBuildingName:'',
+        // capacity:0
       },
       tableData:[]
     }
@@ -127,7 +160,7 @@ export default {
     },
     add:function (){
       this.dialogVisible=true
-      this.buildingName=''
+      this.teachingBuildingName=''
     },
     save:function (){
       request.post("/admin/addClassroom", this.addClassroom).then(res => {
@@ -141,9 +174,28 @@ export default {
         this.dialogVisible = false  // 关闭弹窗
       })
     },
-    handleDelete(buildingName,classroomName) {
+    saveEdit(){
+      request.post("/admin/updateCourseInfo",this.editClassroom).then(res=>{
+        if(res.data.code!==200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
+        this.load()
+        this.dialogVisible2=false
+      })
+    },
+    handleEdit(classroomName, teachingBuildingName, capacity){
+      this.dialogVisible2=true
+      this.editClassroom.oldClassroomName=classroomName
+      this.editClassroom.newClassroomName=classroomName
+      this.editClassroom.TeachingBuilding=teachingBuildingName
+      this.editClassroom.capacity=capacity
+    },
+    handleDelete(teachingBuildingName,classroomName) {
       request.post("/admin/deleteClassroom", {
-        buildingName:buildingName,
+        teachingBuildingName:teachingBuildingName,
         classroomName:classroomName
       }).then(res => {
         if(res.data.code!==200) {

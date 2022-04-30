@@ -3,9 +3,7 @@
     <div>
       <div class="add" style="margin: 10px 0">
         <div style="float: left">
-          <el-button size="large" @click="add" type="primary">
-            新增
-          </el-button>
+          <el-button size="large" @click="add" type="primary">新增</el-button>
         </div>
         <div style="float: left">
           <el-upload
@@ -105,12 +103,12 @@
           <el-form-item label="教师工号">
             <el-input v-model="addCourse.teacherNum" />
           </el-form-item>
-<!--          <el-form-item label="开课专业">-->
-<!--            <el-input v-model="addCourse.major" />-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="开课院系">-->
-<!--            <el-input v-model="addCourse.school" />-->
-<!--          </el-form-item>-->
+          <!--          <el-form-item label="开课专业">-->
+          <!--            <el-input v-model="addCourse.major" />-->
+          <!--          </el-form-item>-->
+          <!--          <el-form-item label="开课院系">-->
+          <!--            <el-input v-model="addCourse.school" />-->
+          <!--          </el-form-item>-->
           <el-form-item label="院系/专业" prop="school_major">
             <el-cascader  v-model="add_school_major" :options="majorOptions"/>
           </el-form-item>
@@ -120,9 +118,9 @@
           <el-form-item label="教学楼/教室" prop="building_classroom">
             <el-cascader  v-model="add_building_classroom" :options="classroomOptions"/>
           </el-form-item>
-<!--          <el-form-item label="教室">-->
-<!--            <el-input v-model="addCourse.classroom" />-->
-<!--          </el-form-item>-->
+          <!--          <el-form-item label="教室">-->
+          <!--            <el-input v-model="addCourse.classroom" />-->
+          <!--          </el-form-item>-->
           <el-form-item label="学时">
             <el-input v-model="addCourse.creditHours" />
           </el-form-item>
@@ -135,9 +133,9 @@
           <el-form-item label="介绍">
             <el-input v-model="addCourse.introduction" />
           </el-form-item>
-<!--          <el-form-item label="申请人">-->
-<!--            <el-input v-model="addCourse.applicant" />-->
-<!--          </el-form-item>-->
+          <!--          <el-form-item label="申请人">-->
+          <!--            <el-input v-model="addCourse.applicant" />-->
+          <!--          </el-form-item>-->
           <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="save">确认</el-button>
@@ -162,12 +160,12 @@
           <el-form-item label="教师工号">
             <el-input v-model="editCourse.teacherNum" disabled/>
           </el-form-item>
-<!--          <el-form-item label="开课专业">-->
-<!--            <el-input v-model="editCourse.major" disabled/>-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="开课院系">-->
-<!--            <el-input v-model="editCourse.school" disabled/>-->
-<!--          </el-form-item>-->
+          <!--          <el-form-item label="开课专业">-->
+          <!--            <el-input v-model="editCourse.major" disabled/>-->
+          <!--          </el-form-item>-->
+          <!--          <el-form-item label="开课院系">-->
+          <!--            <el-input v-model="editCourse.school" disabled/>-->
+          <!--          </el-form-item>-->
           <el-form-item label="院系/专业" prop="school_major">
             <el-cascader  v-model="edit_school_major" :options="majorOptions"/>
           </el-form-item>
@@ -189,9 +187,9 @@
           <el-form-item label="介绍">
             <el-input v-model="editCourse.introduction" />
           </el-form-item>
-<!--          <el-form-item label="申请人">-->
-<!--            <el-input v-model="editCourse.applicant" />-->
-<!--          </el-form-item>-->
+          <!--          <el-form-item label="申请人">-->
+          <!--            <el-input v-model="editCourse.applicant" />-->
+          <!--          </el-form-item>-->
           <span class="dialog-footer">
         <el-button @click="dialogVisible2 = false">取消</el-button>
         <el-button type="primary" @click="saveEdit">确认</el-button>
@@ -209,7 +207,7 @@ import request from "@/utils/request";
 import Papa from "papaparse";
 
 export default {
-  name: "CheckCourse",
+  name: "StudentCheckCourse",
   data(){
     return{
       semester:'',
@@ -302,7 +300,7 @@ export default {
       })
     },
     getOptionSemesters: function (){
-      request.post("/common/allSemesters").then(res => {
+      request.post("/admin/allSemesters").then(res => {
         if (!res.data) return
         this.semester = res.data.data.defaultSemester
         res.data.data.semesters.forEach ((item) => {
@@ -334,7 +332,7 @@ export default {
       let that = this//如果需要点击事件结束之后对DOM进行操作使用)_this.xx=xx进行操作
       Papa.parse(obj, {
         complete (results) {
-          
+
           let data = []
           //遍历csv文件中的数据，存放到data中 方法不唯一，可自己更改
           for (let i = 0; i < results.data.length-1; i++) {
@@ -356,7 +354,7 @@ export default {
           }
           data.splice(0, 1)//将数组第一位的表格名称去除
           let num = 0
-          
+
           // _this.tableData = data//将数据放入要展示的表格中
           request.post("/admin/csvAddCourse", data).then(res => {
             if(res.data.code!==200) {
@@ -379,7 +377,7 @@ export default {
               search: this.search
             }
         ).then(res=>{
-          
+
           if(res.data.code===200){
             this.tableData=res.data.data.records
             this.total=res.data.data.total
@@ -394,7 +392,8 @@ export default {
       }, 10)
     },
     add:function (){
-      this.$router.push("/admin/checkcourse/addcourse")
+      this.dialogVisible=true
+      this.buildingName=''
     },
     save:function (){
       this.addCourse.school = this.add_school_major[0]
@@ -429,7 +428,7 @@ export default {
       })
     },
     handleEdit(courseId,courseName,courseNumber,teacherNum,major,school,classPeriod,classroom,
-    creditHours,credits,capacity,introduction,applicant){
+               creditHours,credits,capacity,introduction,applicant){
       this.addCourse={}
       this.dialogVisible2=true
       this.editCourse.id=courseId
@@ -474,11 +473,11 @@ export default {
 </script>
 
 <style scoped>
-.checkschool{
-  margin-left: 100px;
-  display: flex;
-}
-.add{
-  text-align: left;
-}
+  .checkschool{
+    margin-left: 100px;
+    display: flex;
+  }
+  .add{
+    text-align: left;
+  }
 </style>

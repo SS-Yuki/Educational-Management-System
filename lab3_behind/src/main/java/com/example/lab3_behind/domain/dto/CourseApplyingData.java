@@ -39,8 +39,14 @@ public class CourseApplyingData {
     private String applicant;
 
     private String selectTypeString;
+
     private List<String> majorLimits;
-    private String openSemester;
+
+    private String year;
+
+    private String semester;
+
+    private List<List<Integer>> occupyTime;
 
     public CourseApplyingData(CourseApplying courseApplying){
         this.id = courseApplying.getCourseId();

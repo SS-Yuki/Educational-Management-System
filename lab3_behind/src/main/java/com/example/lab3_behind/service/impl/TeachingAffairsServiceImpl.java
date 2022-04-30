@@ -140,6 +140,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         for(SchoolYear schoolYear : SchoolYear.values()){
               YearAndSemestersData data = new YearAndSemestersData();
               data.setYear(EnumTool.transString(schoolYear));
+              data.setSemesters(new ArrayList<>());
               for(Semester semester : Semester.values()){
                   data.getSemesters().add(EnumTool.transString(semester));
               }

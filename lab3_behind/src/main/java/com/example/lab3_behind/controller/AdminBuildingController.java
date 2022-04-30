@@ -118,7 +118,6 @@ public class AdminBuildingController {
         }
     }
 
-    //伪接口
     @RequestMapping("allClassrooms")
     public Result allClassrooms(){
         Map<String,Object> map = new HashMap<>();
@@ -129,22 +128,15 @@ public class AdminBuildingController {
     //伪接口
     @RequestMapping("getClassroomSpareTime")
     public Result getClassroomSpareTime(@RequestBody String classroom){
-        Map<String,Object> map = new HashMap<>();
-        System.out.println(classroom);
-        List<Boolean> oneday = new ArrayList<>();
-        oneday.add(true);
-        oneday.add(true);
-        oneday.add(true);
-        List<List<Boolean>> days= new ArrayList<>();
-        days.add(oneday);
-        days.add(oneday);
-        days.add(oneday);
-        days.add(oneday);
-        days.add(oneday);
-        days.add(oneday);
-        days.add(oneday);
-        map.put("days",days);
-        return Result.succ(map);
+        try{
+            Map<String,Object> map = new HashMap<>();
+            List<List<Boolean>> days= teachingAffairsService.getClassroomTime(classroom);
+            map.put("days",days);
+            return Result.succ(map);
+        } catch (Exception e){
+            e.printStackTrace();
+            return Result.fail(888,e.getMessage());
+        }
     }
 
 

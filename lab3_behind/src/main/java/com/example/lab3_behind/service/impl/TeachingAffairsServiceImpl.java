@@ -1,16 +1,17 @@
 package com.example.lab3_behind.service.impl;
 
+import com.example.lab3_behind.common.Global;
+import com.example.lab3_behind.common.forDomain.SchoolYear;
+import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.domain.Classroom;
 import com.example.lab3_behind.domain.TeachingBuilding;
 import com.example.lab3_behind.domain.TimeTable;
-import com.example.lab3_behind.domain.dto.BuildingAndClassroomsData;
-import com.example.lab3_behind.domain.dto.ClassTimeData;
-import com.example.lab3_behind.domain.dto.ClassroomAddingData;
-import com.example.lab3_behind.domain.dto.ClassroomUpdatingData;
+import com.example.lab3_behind.domain.dto.*;
 import com.example.lab3_behind.repository.ClassroomRepository;
 import com.example.lab3_behind.repository.TeachingBuildingRepository;
 import com.example.lab3_behind.repository.TimeTableRepository;
 import com.example.lab3_behind.service.TeachingAffairsService;
+import com.example.lab3_behind.utils.EnumTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -33,16 +34,34 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     }
 
     @Override
-    public TimeTable addClassTime(ClassTimeData classTimeData) throws Exception {
-        Integer last = 0;
-        List<TimeTable> timeTables = timeTableRepository.findAll();
-        for(TimeTable timeTable : timeTables){
-            Integer temp = timeTable.getSection();
-            if(temp.compareTo(last) >= 0){
-                last = temp;
-            }
+    public List<List<Boolean>> getClassroomTime(String name) throws Exception {
+        Classroom classroom = classroomRepository.findByName(name);
+        if(classroom == null){
+            throw new Exception("教室不存在");
         }
-        last = last + 1;
+        List<List<Boolean>> result = new ArrayList<>();
+        for(int i = 0; i < Global.WEEKDAY; i++){
+            List<Boolean> buff = new ArrayList<>();
+            result.add(buff);
+        }
+        String schedule = classroom.getSchedule();
+        int index1 = 0;
+        int index2 = schedule.indexOf("\n") + 1;
+        while (index2 != 0){
+            String section = schedule.substring(index1, index2 - 1);
+            String[] sectionArr = section.split("-");
+            for(int i = 0; i < result.size(); i++){
+                result.get(i).add(Integer.parseInt(sectionArr[i]) != Global.CLASSROOM_TIME_IS_SPARE);
+            }
+            index1 = index2;
+            index2 = schedule.indexOf("\n", index1) + 1;
+        }
+        return result;
+    }
+
+    @Override
+    public TimeTable addClassTime(ClassTimeData classTimeData) throws Exception {
+        Integer last = getLastSection() + 1;
         TimeTable newTime = new TimeTable(null, last, classTimeData.getStartTime(), classTimeData.getEndTime());
         timeTableRepository.save(newTime);
         return newTime;
@@ -66,13 +85,21 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         if(timeTables.isEmpty()){
             throw new Exception("当前已无课程节次时间安排，无法删除");
         }
-        TimeTable last = new TimeTable(null, 0, null, null);
-        for(TimeTable timeTable : timeTables){
-            if(timeTable.getSection().compareTo(last.getSection()) >= 0){
-                last = timeTable;
-            }
-        }
+        TimeTable last = timeTableRepository.findBySection(getLastSection());
         timeTableRepository.delete(last);
+
+        List<Classroom> allClassrooms = classroomRepository.findAll();
+        for(Classroom classroom : allClassrooms){
+            int index1 = 0;
+            int index2 = classroom.getSchedule().indexOf("\n") + 1;
+            while (index2 != 0){
+                index1 = index2;
+                index2 = classroom.getSchedule().indexOf("\n", index1) + 1;
+            }
+            classroom.setSchedule(classroom.getSchedule().substring(0,index1));
+            classroomRepository.save(classroom);
+        }
+
         return last;
     }
 
@@ -100,6 +127,20 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             classroomNames.add(classroom.getName());
         }
         return classroomNames;
+    }
+
+    @Override
+    public List<YearAndSemestersData> getAllYearAndSemesters() {
+        List<YearAndSemestersData> result = new ArrayList<>();
+        for(SchoolYear schoolYear : SchoolYear.values()){
+              YearAndSemestersData data = new YearAndSemestersData();
+              data.setYear(EnumTool.transString(schoolYear));
+              for(Semester semester : Semester.values()){
+                  data.getSemesters().add(EnumTool.transString(semester));
+              }
+              result.add(data);
+        }
+        return result;
     }
 
     @Override
@@ -134,8 +175,12 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         if(teachingBuilding == null){
             throw new Exception("教室信息有误，教学楼不存在");
         }
+        String schedule = "";
+        for(int i = 0; i < getLastSection().intValue(); i++){
+            schedule = schedule + "0-0-0-0-0-0-0\n";
+        }
         Classroom newClassroom = new Classroom(null, classroomData.getClassroomName(), teachingBuilding,
-                classroomData.getCapacity(), null);
+                classroomData.getCapacity(), schedule);
         teachingBuilding.getClassrooms().add(newClassroom);
         teachingBuildingRepository.save(teachingBuilding);
         return newClassroom;
@@ -247,4 +292,17 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         }
         return result;
     }
+
+    private Integer getLastSection(){
+        Integer last = 0;
+        List<TimeTable> timeTables = timeTableRepository.findAll();
+        for(TimeTable timeTable : timeTables){
+            Integer temp = timeTable.getSection();
+            if(temp.compareTo(last) >= 0){
+                last = temp;
+            }
+        }
+        return last;
+    }
+
 }

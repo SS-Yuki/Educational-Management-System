@@ -1,6 +1,6 @@
 package com.example.lab3_behind.service.impl;
 
-import com.example.lab3_behind.utils.AccountFormatCheck;
+import com.example.lab3_behind.utils.FormatCheck;
 import com.example.lab3_behind.common.forDomain.TeacherStatus;
 import com.example.lab3_behind.domain.Major;
 import com.example.lab3_behind.domain.School;
@@ -44,7 +44,7 @@ public class TeacherServiceImpl implements TeacherService {
         }
         Teacher teacher = new Teacher(userData, schoolRepository.findByName(userData.getSchool()), majorRepository.findByName(userData.getMajor()));
         try {
-            AccountFormatCheck.userEnteringDataCheck(userData);
+            FormatCheck.userEnteringDataCheck(userData);
         } catch (Exception e){
             throw e;
         }

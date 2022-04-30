@@ -1,6 +1,9 @@
 package com.example.lab3_behind.domain;
 
 import com.example.lab3_behind.common.forDomain.CourseApplyingType;
+import com.example.lab3_behind.common.forDomain.CourseSelectType;
+import com.example.lab3_behind.common.forDomain.SchoolYear;
+import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -67,6 +70,18 @@ public class CourseApplying {
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private CourseApplyingType type;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "school_year")
+    private SchoolYear schoolYear;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "semester")
+    private Semester semester;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "course_select_type")
+    private CourseSelectType courseSelectType;
 
     public CourseApplying(CourseApplyingData courseApplyingData, School school, Major major){
         this.courseId = courseApplyingData.getId();

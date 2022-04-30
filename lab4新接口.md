@@ -150,7 +150,7 @@
 
 ==后端==，目前的打算是利用枚举类型写死，而不是写进数据库(理想的情况当然是写进去，并且可以维护，但是目前没有这个必要)。这个东西Service层和Controller层实现都可以。目前交给Service层实现。我的个人建议是：写两个小函数可以实现枚举类型和String的转换(从String)，写一个函数可以获得所有的学期的String的List，再写一个函数判断某个String是不是合法的可转换的。defaulSemester是根据当前**系统时间**得到的，上面这几个函数感觉可以重复利用，要不要**写成一个工具类**？
 
-![allSemesters.png](https://s2.loli.net/2022/04/28/7GpgyvDN9XFmOSt.png)
+![allSemesters.png](https://s2.loli.net/2022/04/30/clDFWgirSknf2sd.png)
 
 ****
 
@@ -158,7 +158,7 @@
 
 > /admin/addCourse
 
-相比以前，我们需要额外**添加**：开课学期（选择器）openSemester，选课类型selectTypeString，专业限制majorLimits,这是一个**List<String>**。
+相比以前，我们需要额外**添加**：开课学年year和学期semester（二级联级选择器），选课类型selectTypeString，专业限制majorLimits,这是一个**List<String>**，上课时间。
 
 选课类型有三种：通识课程，专业限制课程。
 

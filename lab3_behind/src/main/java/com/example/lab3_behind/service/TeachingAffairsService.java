@@ -16,6 +16,7 @@ public interface TeachingAffairsService {
     TimeTable addClassTime(ClassTimeData classTimeData) throws Exception;
     TimeTable updateClassTime(ClassTimeData classTimeData) throws Exception;
     TimeTable deleteClassTime() throws Exception;
+    List<TimeTable> findAllTimeTable();
     Page<TimeTable> findAPageTimeTable(Integer page, Integer size, String search);
     Page<TeachingBuilding> findAPageTeachingBuilding(Integer page, Integer size, String search);
     Page<Classroom> findAPageClassroom(Integer page, Integer size, String search);

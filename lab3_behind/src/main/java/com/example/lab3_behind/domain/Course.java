@@ -46,6 +46,7 @@ public class Course {
     @Column(name = "class_period")
     private String classPeriod ;
 
+
     @Column(name = "classroom")
     private String classroom ;
 

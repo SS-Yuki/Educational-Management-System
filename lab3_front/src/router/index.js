@@ -5,6 +5,7 @@ import Admin from "@/views/Admin";
 import Teacher from "@/views/Teacher";
 import Student from "@/views/Student";
 import CheckCourse from "@/views/CheckCourse";
+import AddCourse from "@/views/AddCourse";
 import CheckStudentInfo from "@/views/CheckStudentInfo";
 import CheckTeacherInfo from "@/views/CheckTeacherInfo";
 import CheckSchool from "@/views/CheckSchool";
@@ -83,7 +84,14 @@ export const admin_routes =
         {
             path: 'checkcourse',
             name: 'CheckCourse',
-            component: CheckCourse
+            component: CheckCourse,
+            children: [
+                {
+                    path: 'addcourse',
+                    name: 'AddCourse',
+                    component: AddCourse
+                }
+            ]
         },
         {
             path: 'checkapplication',

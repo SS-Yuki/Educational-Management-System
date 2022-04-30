@@ -3,7 +3,9 @@
     <div>
       <div class="add" style="margin: 10px 0">
         <div style="float: left">
-          <el-button size="large" @click="add" type="primary">新增</el-button>
+          <el-button size="large" @click="add" type="primary">
+            新增
+          </el-button>
         </div>
         <div style="float: left">
           <el-upload
@@ -300,7 +302,7 @@ export default {
       })
     },
     getOptionSemesters: function (){
-      request.post("/admin/allSemesters").then(res => {
+      request.post("/common/allSemesters").then(res => {
         if (!res.data) return
         this.semester = res.data.data.defaultSemester
         res.data.data.semesters.forEach ((item) => {
@@ -392,8 +394,7 @@ export default {
       }, 10)
     },
     add:function (){
-      this.dialogVisible=true
-      this.buildingName=''
+      this.$router.push("/admin/checkcourse/addcourse")
     },
     save:function (){
       this.addCourse.school = this.add_school_major[0]

@@ -50,7 +50,7 @@
 
             <el-checkbox-group v-model="day3" style="display: inline-block" size="small">
               <el-checkbox-button v-for="item in range" :key="item" :label=item+1
-                                  :disabled=spare[2][item]
+                                  :disabled=false
                                   style="display: block"
                                   value=item+1 >
                 {{ timeNames[item].label }}
@@ -214,6 +214,13 @@ export default {
     //标记
     this.getOptionSemesters()
     this.getTime()
+    for(let i = 0; i < 7; i++) {
+      let arr = []
+      for (let i = 0; i < this.length; i++) {
+        arr.push(false)
+      }
+      this.spare.push(arr)
+    }
   },
   computed: {
     day(){
@@ -244,10 +251,10 @@ export default {
     add_building_classroom:{
       deep: true,
       handler(new_) {
+        console.log("111111")
         request.post("/admin/getClassroomSpareTime",new_[1]).then(res=>{
           this.spare=res.data.data.days
-          console.log(res.data.data.days)
-          console.log(this.spare)
+
         })
 
         console.log(this.spare[0][0])

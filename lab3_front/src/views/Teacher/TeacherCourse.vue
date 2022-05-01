@@ -219,8 +219,7 @@ export default {
       }, 10)
     },
     add:function (){
-      this.dialogVisible=true
-      this.buildingName=''
+      this.$router.push("/teacher/teacheraddcourse")
     },
     save:function (){
       request.post("/teacher/addCourse", this.addCourse).then(res => {

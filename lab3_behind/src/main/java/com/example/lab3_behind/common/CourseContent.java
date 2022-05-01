@@ -38,6 +38,7 @@ public class CourseContent {
         for(Major major:course.getMajorsOptional()){
             majorLim= majorLim + major.getName() + ";";
         }
+        majorLim = majorLim.substring(0,majorLim.length()-1);
         return new CourseContent(course.getCourseId(),
                 course.getCourseNumber(),
                 course.getCourseName(),
@@ -55,16 +56,12 @@ public class CourseContent {
                 majorLim,
                 EnumTool.transString(course.getSchoolYear()),
                 EnumTool.transString(course.getSemester()),
-                course.getCourseName());
+                course.getClassTime());
     }
 
     public static List<CourseContent> getContent(List<Course> courses){
         List<CourseContent> courseContents = new ArrayList<>();
         for(Course course:courses){
-            String majorLim = "";
-            for(Major major:course.getMajorsOptional()){
-                majorLim= majorLim + major.getName() + ";";
-            }
             courseContents.add(CourseContent.oneContent(course));
         }
         return courseContents;

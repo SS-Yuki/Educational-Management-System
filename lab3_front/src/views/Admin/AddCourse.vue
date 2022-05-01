@@ -374,13 +374,10 @@ export default {
 
 <style scoped>
 .add_form {
-  width: 600px;
-  height: 600px;
-  position:relative;
+  width: 800px;
 }
 .form {
-  position:absolute;
-  left:400px;
-  width: 600px;
+  padding-top: 50px;
+  padding-left: 50px;
 }
 </style>

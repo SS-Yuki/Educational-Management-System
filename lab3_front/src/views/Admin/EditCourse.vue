@@ -232,7 +232,7 @@ export default {
         request.post("/common/findOneCourseInfo",this.$route.params.id
         ).then(res => {
           if(res.data.code===200){
-            let dataShow = res.data.data
+            let showData = res.data.data
             this.editCourse.id = showData.courseId
             this.editCourse.courseName = showData.courseName
             this.editCourse.courseNumber = showData.courseNumber
@@ -391,14 +391,10 @@ export default {
 
 <style scoped>
 .edit_form {
-  width: 600px;
-  height: 600px;
-  position:relative;
+  width: 800px;
 }
 .form {
-  position:absolute;
-  left:400px;
-  width: 600px;
+  padding-top: 50px;
+  padding-left: 50px;
 }
 </style>
-}

@@ -13,9 +13,6 @@
               class="upload-demo"
               action=""
               :on-change="handleChange"
-              :on-exceed="handleExceed"
-              :on-remove="handleRemove"
-              :file-list="fileListUpload"
               accept=".csv"
               :auto-upload="false">
             <el-button size="large" type="primary">导入</el-button>
@@ -27,14 +24,6 @@
         </div>
         <div>
           <el-cascader  v-model="select_year_semester" :options="semesterOptions" placeholder="请选择学期"/>
-<!--          <el-select v-model="semester" placeholder="请选择学期">-->
-<!--            <el-option-->
-<!--                v-for="item in semesterOptions"-->
-<!--                :key="item.value"-->
-<!--                :label="item.label"-->
-<!--                :value="item.value">-->
-<!--            </el-option>-->
-<!--          </el-select>-->
         </div>
 
       </div>
@@ -45,7 +34,7 @@
         <el-table-column prop="teacherNum" label="教师工号" width="150" />
         <el-table-column prop="major" label="开课专业" width="150" />
         <el-table-column prop="school" label="开课院系" width="150" />
-        <el-table-column prop="classPeriod" label="时间" width="0" v-if="false"  />
+<!--        <el-table-column prop="classPeriod" label="时间" width="0" v-if="false"  />-->
         <el-table-column prop="classroom" label="教室" width="0" v-if="false" />
         <el-table-column prop="creditHours" label="学时" width="0" v-if="false" />
         <el-table-column prop="credits" label="学分" width="0" v-if="false" />
@@ -54,21 +43,6 @@
         <el-table-column prop="applicant" label="申请人" width="0" v-if="false" />
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-<!--            <el-button type="text" size="small" @click="handleEdit(-->
-<!--                scope.row.courseId,-->
-<!--                scope.row.courseName,-->
-<!--                scope.row.courseNumber,-->
-<!--                scope.row.teacherNum,-->
-<!--                scope.row.major,-->
-<!--                scope.row.school,-->
-<!--                scope.row.classPeriod,-->
-<!--                scope.row.classroom,-->
-<!--                scope.row.creditHours,-->
-<!--                scope.row.credits,-->
-<!--                scope.row.capacity,-->
-<!--                scope.row.introduction,-->
-<!--                scope.row.applicant-->
-<!--                )">查看/编辑</el-button>-->
               <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
               <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.courseId)">
                 <template #reference>
@@ -91,51 +65,6 @@
             @current-change="handleCurrentChange"
         />
       </div>
-    </div>
-    <div>
-      <el-dialog v-model="dialogVisible2" title="编辑课程信息" width="30%">
-        <el-form :model="editCourse" label-width="120px">
-          <el-form-item label="id">
-            <el-input v-model="editCourse.id" />
-          </el-form-item>
-          <el-form-item label="课程名">
-            <el-input v-model="editCourse.courseName" />
-          </el-form-item>
-          <el-form-item label="课程编号">
-            <el-input v-model="editCourse.courseNumber" />
-          </el-form-item>
-          <el-form-item label="教师工号">
-            <el-input v-model="editCourse.teacherNum" disabled/>
-          </el-form-item>
-          <el-form-item label="院系/专业" prop="school_major">
-            <el-cascader  v-model="edit_school_major" :options="majorOptions"/>
-          </el-form-item>
-          <el-form-item label="上课时间">
-            <el-input v-model="editCourse.classPeriod" />
-          </el-form-item>
-          <el-form-item label="教学楼/教室" prop="building_classroom">
-            <el-cascader  v-model="edit_building_classroom" :options="classroomOptions"/>
-          </el-form-item>
-          <el-form-item label="学时">
-            <el-input v-model="editCourse.creditHours" />
-          </el-form-item>
-          <el-form-item label="学分">
-            <el-input v-model="editCourse.credits" />
-          </el-form-item>
-          <el-form-item label="容量">
-            <el-input v-model="editCourse.capacity" />
-          </el-form-item>
-          <el-form-item label="介绍">
-            <el-input v-model="editCourse.introduction" />
-          </el-form-item>
-          <span class="dialog-footer">
-        <el-button @click="dialogVisible2 = false">取消</el-button>
-        <el-button type="primary" @click="saveEdit">确认</el-button>
-      </span>
-        </el-form>
-        <template #footer>
-        </template>
-      </el-dialog>
     </div>
   </div>
 </template>
@@ -164,38 +93,6 @@ export default {
       classroomOptions:[],
       id:{
         id:0
-      },
-      addCourse:{
-        id:0,
-        courseName:'',
-        courseNumber:'',
-        teacherNum:'',
-        major:'',
-        school:'',
-        classPeriod:'',
-        building:'',
-        classroom:'',
-        creditHours:'',
-        credits:'',
-        capacity:'',
-        introduction:'',
-        applicant:''
-      },
-      editCourse:{
-        id:0,
-        courseName:'',
-        courseNumber:'',
-        teacherNum:'',
-        major:'',
-        school:'',
-        classPeriod:'',
-        building:'',
-        classroom:'',
-        creditHours:0,
-        credits:0,
-        capacity:0,
-        introduction:'',
-        applicant:''
       },
       tableData:[]
     }

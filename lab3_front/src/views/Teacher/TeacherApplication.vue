@@ -1,5 +1,5 @@
 <template>
-  <div class="checkschool">
+  <div class="main_part">
       <div class="add" style="margin: 10px 0">
         <div style="margin-bottom: 20px">
           <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>

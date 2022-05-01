@@ -1,5 +1,5 @@
 <template>
-  <div class="checkstudent">
+  <div class="main_part">
     <div class="add">
       <div style="margin: 10px 0">
         <div>

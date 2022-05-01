@@ -1,5 +1,5 @@
 <template>
-  <div  style="margin: 50px 400px ">
+  <div class="main_part">
       <div style="margin-top: 300px">
         <el-table :data="tableData" border :show-header="status" style="width: 100%"  stripe size="large">
           <el-table-column prop="key"  width="180" />

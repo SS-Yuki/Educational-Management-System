@@ -1,5 +1,5 @@
 <template>
-  <div class="add_form">
+  <div class="main_part">
     <el-form :model="addCourse" label-width="80px" size="default" class="form">
       <el-form-item label="课程id" v-if="false">
         <el-input v-model="addCourse.id"/>

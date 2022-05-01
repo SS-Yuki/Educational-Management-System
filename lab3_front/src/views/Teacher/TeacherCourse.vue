@@ -1,5 +1,5 @@
 <template>
-  <div class="checkschool">
+  <div class="main_part">
     <div>
       <div class="add" style="margin: 10px 0">
         <el-button size="large" @click="add" type="primary">新增申请</el-button>

@@ -1,5 +1,5 @@
 <template>
-  <div class="checkschool">
+  <div class="main_part">
     <div>
       <div>
         <el-table :data="tableData" border :show-header="status" style="width: 100%" size="large">

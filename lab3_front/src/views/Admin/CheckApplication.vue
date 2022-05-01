@@ -1,5 +1,5 @@
 <template>
-  <div class="checkschool">
+  <div class="main_part">
     <div>
       <div class="add" style="margin: 10px 0">
         <div style="float: left">

@@ -25,6 +25,7 @@ import TeacherApplication from "@/views/TeacherApplication";
 import StudentApply from "@/views/StudentApply";
 import StudentViewApplication from "@/views/StudentViewApplication";
 import StudentViewTable from "@/views/StudentViewTable";
+import TeacherAddCourse from "@/views/TeacherAddCourse";
 
 export const routes = [
   {
@@ -138,7 +139,12 @@ export const teacher_routes =
         path: 'teacherapplication',
         name: 'TeacherApplication',
         component: TeacherApplication
-      }
+      },
+        {
+            path: 'teacheraddcourse',
+            name: 'TeacherAddCourse',
+            component: TeacherAddCourse
+        }
     ]
   }
 

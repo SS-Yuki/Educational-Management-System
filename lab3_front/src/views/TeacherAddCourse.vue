@@ -1,129 +1,123 @@
 <template>
   <div class="add_form">
-      <el-form :model="addCourse" label-width="80px" size="default" class="form">
-        <el-form-item label="课程id" v-if="false">
-          <el-input v-model="addCourse.id"/>
-        </el-form-item>
-        <el-form-item label="课程编号">
-          <el-input v-model="addCourse.courseNumber" />
-        </el-form-item>
-        <el-form-item label="课程名">
-          <el-input v-model="addCourse.courseName"/>
-        </el-form-item>
-        <el-form-item label="教师工号">
-          <el-input v-model="addCourse.teacherNum" />
-        </el-form-item>
-        <el-form-item label="院系/专业">
-          <el-cascader v-model="add_school_major" :options="majorOptionsChoose"/>
-        </el-form-item>
-        <el-form-item label="教学楼/教室">
-          <el-cascader  v-model="add_building_classroom" :options="classroomOptions"/>
-        </el-form-item>
-<!--        time-->
-        <el-form-item label="上课时间">
-          <div>
-            <el-checkbox-group  style="display: inline-block" disabled size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
-                                  value=item  >
-                {{ startTimes[item].label + "-" + endTimes[item].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
+    <el-form :model="addCourse" label-width="80px" size="default" class="form">
+      <el-form-item label="课程id" v-if="false">
+        <el-input v-model="addCourse.id"/>
+      </el-form-item>
+      <el-form-item label="课程编号">
+        <el-input v-model="addCourse.courseNumber" />
+      </el-form-item>
+      <el-form-item label="课程名">
+        <el-input v-model="addCourse.courseName"/>
+      </el-form-item>
+      <el-form-item label="教学楼/教室">
+        <el-cascader  v-model="add_building_classroom" :options="classroomOptions"/>
+      </el-form-item>
+      <!--        time-->
+      <el-form-item label="上课时间">
+        <div>
+          <el-checkbox-group  style="display: inline-block" disabled size="small">
+            <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+                                value=item  >
+              {{ startTimes[item].label + "-" + endTimes[item].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
 
-            <el-checkbox-group v-model="day1" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
-                                  :disabled=spare[0][item]
-                                  style="display: block"
-                                  value=item+1
-              >
-                {{ timeNames[item].label}}
-              </el-checkbox-button>
-            </el-checkbox-group>
+          <el-checkbox-group v-model="day1" style="display: inline-block" size="small">
+            <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                :disabled=spare[0][item]
+                                style="display: block"
+                                value=item+1
+            >
+              {{ timeNames[item].label}}
+            </el-checkbox-button>
+          </el-checkbox-group>
 
-            <el-checkbox-group v-model="day2" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
-                                  :disabled=spare[1][item]
-                                  style="display: block"
-                                  value=item+1>
-                {{ timeNames[item].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
+          <el-checkbox-group v-model="day2" style="display: inline-block" size="small">
+            <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                :disabled=spare[1][item]
+                                style="display: block"
+                                value=item+1>
+              {{ timeNames[item].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
 
-            <el-checkbox-group v-model="day3" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
-                                  :disabled=false
-                                  style="display: block"
-                                  value=item+1 >
-                {{ timeNames[item].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
+          <el-checkbox-group v-model="day3" style="display: inline-block" size="small">
+            <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                :disabled=spare[2][item]
+                                style="display: block"
+                                value=item+1 >
+              {{ timeNames[item].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
 
-            <el-checkbox-group v-model="day4" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
-                                  :disabled=spare[3][item]
-                                  style="display: block"
-                                  value=item+1  >
-                {{ timeNames[item].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
+          <el-checkbox-group v-model="day4" style="display: inline-block" size="small">
+            <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                :disabled=spare[3][item]
+                                style="display: block"
+                                value=item+1  >
+              {{ timeNames[item].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
 
-            <el-checkbox-group v-model="day5" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
-                                  :disabled=spare[4][item]
-                                  style="display: block"
-                                  value=item+1 >
-                {{ timeNames[item].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
+          <el-checkbox-group v-model="day5" style="display: inline-block" size="small">
+            <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                :disabled=spare[4][item]
+                                style="display: block"
+                                value=item+1 >
+              {{ timeNames[item].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
 
-            <el-checkbox-group v-model="day6" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
-                                  :disabled=spare[5][item]
-                                  style="display: block"
-                                  value=item+1 >
-                {{ timeNames[item].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
+          <el-checkbox-group v-model="day6" style="display: inline-block" size="small">
+            <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                :disabled=spare[5][item]
+                                style="display: block"
+                                value=item+1 >
+              {{ timeNames[item].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
 
-            <el-checkbox-group v-model="day7" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
-                                  :disabled=spare[6][item]
-                                  style="display: block"
-                                  value=item+1 >
-                {{ timeNames[item].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
-          </div>
+          <el-checkbox-group v-model="day7" style="display: inline-block" size="small">
+            <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                :disabled=spare[6][item]
+                                style="display: block"
+                                value=item+1 >
+              {{ timeNames[item].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
+        </div>
 
-        </el-form-item>
-<!--        time-->
+      </el-form-item>
+      <!--        time-->
 
-        <el-form-item label="学时">
-          <el-input v-model="addCourse.creditHours" />
-        </el-form-item>
-        <el-form-item label="学分">
-          <el-input v-model="addCourse.credits" />
-        </el-form-item>
-        <el-form-item label="容量">
-          <el-input v-model="addCourse.capacity" />
-        </el-form-item>
-        <el-form-item label="介绍">
-          <el-input v-model="addCourse.introduction" />
-        </el-form-item>
-<!--        申请人-->
-        <el-form-item label="选课类型">
-          <el-select v-model="addCourse.selectTypeString">
-            <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="专业限制">
-          <el-cascader :placeholder="major_limit_show" v-model="limit_school_major" :options="majorOptionsLimit" :props="school_major_props" collapse-tags/>
-        </el-form-item>
-          <el-form-item label="学年/学期">
-            <el-cascader v-model="add_year_semester" :options="semesterOptions"/>
-          </el-form-item>
-<!--时间-->
-        <el-button type="primary" @click="save">确认</el-button>
-      </el-form>
+      <el-form-item label="学时">
+        <el-input v-model="addCourse.creditHours" />
+      </el-form-item>
+      <el-form-item label="学分">
+        <el-input v-model="addCourse.credits" />
+      </el-form-item>
+      <el-form-item label="容量">
+        <el-input v-model="addCourse.capacity" />
+      </el-form-item>
+      <el-form-item label="介绍">
+        <el-input v-model="addCourse.introduction" />
+      </el-form-item>
+      <!--        申请人-->
+      <el-form-item label="选课类型">
+        <el-select v-model="addCourse.selectTypeString">
+          <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="专业限制">
+        <el-cascader :placeholder="major_limit_show" v-model="limit_school_major" :options="majorOptionsLimit" :props="school_major_props" collapse-tags/>
+      </el-form-item>
+      <el-form-item label="学年/学期">
+        <el-cascader v-model="add_year_semester" :options="semesterOptions"/>
+      </el-form-item>
+      <!--时间-->
+      <el-button type="primary" @click="save">确认</el-button>
+    </el-form>
   </div>
 </template>
 
@@ -139,23 +133,19 @@ function index(num){
 }
 
 export default {
-  name: "AddCourse",
+  name: "TeacherAddCourse",
   data() {
     return {
+      clear:false,
       addCourse:{
         id:0,
         courseNumber:'',
         courseName:'',
-        teacherNum:'',
-        major:'',
-        school:'',
-        classPeriod:'',
         classroom:'',
         creditHours:'',
         credits:'',
         capacity:'',
         introduction:'',
-        applicant:'',
         selectTypeString:'',
 
         //一维数组赋值
@@ -261,6 +251,8 @@ export default {
         this.day7=[]
         request.post("/admin/getClassroomSpareTime",new_[1]).then(res=>{
           this.spare=res.data.data.days
+          console.log(res.data.data.days)
+          console.log(this.spare)
 
         })
 
@@ -363,7 +355,7 @@ export default {
       else {
         this.addCourse.majorLimits = []
       }
-      request.post("/admin/addCourse", this.addCourse).then(res => {
+      request.post("/teacher/addCourse", this.addCourse).then(res => {
         if(res.data.code!==200) {
           this.$message({
             type:"error",

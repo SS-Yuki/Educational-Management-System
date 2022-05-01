@@ -6,6 +6,7 @@ import com.example.lab3_behind.domain.*;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.repository.*;
 import com.example.lab3_behind.service.CourseService;
+import com.example.lab3_behind.utils.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -84,6 +85,15 @@ public class CourseServiceImpl implements CourseService {
                 , "courseNumber", "teacherName", "major", "school", "classroom", "introduction", "courseStatus");
         Example<Course> example = Example.of(course, matcher);
         return courseRepository.findAll(example, pageable);
+    }
+
+    @Override
+    public Course getCourse(Integer courseId) throws Exception {
+        Course course = courseRepository.findByCourseId(courseId);
+        if(course == null){
+            throw new Exception("该课程不存在");
+        }
+        return course;
     }
 
     @Override
@@ -266,6 +276,15 @@ public class CourseServiceImpl implements CourseService {
             throw new Exception("课程所属学院下不存在此专业");
         }
         Classroom classroom = classroomRepository.findByName(courseApplyingData.getClassroom());
+        List<List<Integer>> timeMatrix;
+        try {
+            timeMatrix = TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
+                    TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), courseApplyingData.getId()));
+        } catch (Exception e) {
+            throw e;
+        }
+        classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
+        classroomRepository.save(classroom);
         List<Major> majorsOptional = new ArrayList<>();
         for (String str : courseApplyingData.getMajorLimits()){
             majorsOptional.add(majorRepository.findByName(str));

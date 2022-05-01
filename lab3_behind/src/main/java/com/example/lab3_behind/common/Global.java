@@ -5,7 +5,7 @@ import org.springframework.data.util.Pair;
 public class Global {
     public static final int STU_NUMBER_LENGTH = 6;
     public static final int JOB_NUMBER_LENGTH = 8;
-    public static final int CLASSROOM_TIME_IS_SPARE = 0;
+    public static final int CLASSROOM_TIME_SPARE = 0;
     public static final int WEEKDAY = 7;
     public static final Pair<Integer, Integer> FIRST_SEMESTER_START_TIME = Pair.of(8,20);
     public static final Pair<Integer, Integer> SECOND_SEMESTER_START_TIME = Pair.of(2,20);

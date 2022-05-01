@@ -354,6 +354,33 @@
 
 验收管理员开课，改课，删课，老师开课，改课，删课，以及已完成的功能
 
+学生打申请的界面，可以利用courseId访问
+
+> /common/findOneCourseInfo
+
+这个端口或者这么课的所有信息,会有这些信息。现实出来就好，不用给学生修改，这是disable
+
+```java
+    private Integer courseId;
+    private String courseNumber;
+    private String courseName;
+    private String teacherNum;
+    private String teacherName;
+    private String school;
+    private String major;
+    private String building;
+    private String classroom ;
+    private Integer creditHours;
+    private Integer credits;
+    private Integer capacity;
+    private String introduction;
+    private String selectTypeString;
+    private String majorLimits;
+    private String year;
+    private String semester;
+    private String occupyTime;
+```
+
 
 
 ## 后端后期需要补上的检查

@@ -24,8 +24,6 @@ public class CourseApplyingData {
 
     private String school;
 
-    private String classPeriod ;
-
     private String classroom ;
 
     private Integer creditHours;
@@ -54,9 +52,8 @@ public class CourseApplyingData {
         this.capacity = courseApplying.getCapacity();
         this.courseName = courseApplying.getCourseName();
         this.courseNumber = courseApplying.getCourseNumber();
-        this.classroom = courseApplying.getClassroom();
+        this.classroom = courseApplying.getClassroom().getName();
         this.creditHours = courseApplying.getCreditHours();
-        this.classPeriod = courseApplying.getClassPeriod();
         this.credits = courseApplying.getCredits();
         this.major = courseApplying.getMajor().getName();
         this.school = courseApplying.getSchool().getName();

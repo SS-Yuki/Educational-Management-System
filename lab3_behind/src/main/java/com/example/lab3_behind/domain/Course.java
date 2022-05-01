@@ -5,6 +5,7 @@ import com.example.lab3_behind.common.forDomain.CourseStatus;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
+import com.example.lab3_behind.utils.EnumTool;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,12 +44,9 @@ public class Course {
     @JoinColumn(name = "major")
     private Major major;
 
-    @Column(name = "class_period")
-    private String classPeriod ;
-
-
-    @Column(name = "classroom")
-    private String classroom ;
+    @ManyToOne
+    @JoinColumn(name = "classroom")
+    private Classroom classroom;
 
     @Column(name = "credit_hours")
     private Integer creditHours;
@@ -79,42 +77,47 @@ public class Course {
     @Column(name = "course_select_type")
     private CourseSelectType courseSelectType;
 
-    @OneToMany
-    @JoinColumn(name = "majors_optional")
+    @ManyToMany
+    @JoinTable(
+            name = "course_optional_majors",
+            joinColumns = {@JoinColumn(name = "course_id")},
+            inverseJoinColumns = {@JoinColumn(name = "major_id")}
+    )
     List<Major> majorsOptional;
 
-    public Course(CourseApplyingData courseApplyingData, School school, Major major){
+    public Course(CourseApplyingData courseApplyingData, School school, Major major, Classroom classroom, List<Major> majorsOptional){
         this.teacherName = courseApplyingData.getApplicant();
         this.capacity = courseApplyingData.getCapacity();
         this.courseName = courseApplyingData.getCourseName();
         this.courseNumber = courseApplyingData.getCourseNumber();
-        this.classroom = courseApplyingData.getClassroom();
         this.creditHours = courseApplyingData.getCreditHours();
-        this.classPeriod = courseApplyingData.getClassPeriod();
         this.credits = courseApplyingData.getCredits();
         this.major = major;
         this.school = school;
         this.teacherNum = courseApplyingData.getTeacherNum();
         this.introduction = courseApplyingData.getIntroduction();
+        this.classroom = classroom;
+        this.schoolYear = EnumTool.transSchoolYear(courseApplyingData.getYear());
+        this.semester = EnumTool.transSemester(courseApplyingData.getSemester());
+        this.courseSelectType = EnumTool.transCourseSelectType(courseApplyingData.getSelectTypeString());
+        this.majorsOptional = majorsOptional;
     }
 
-//    public static Course getACourse(CourseApplyingData courseApplyingData){
-//        new Course(null,
-//                )
-//    }
-
-    public Course(CourseApplying courseApplying, School school, Major major){
+    public Course(CourseApplying courseApplying){
         this.capacity = courseApplying.getCapacity();
         this.courseName = courseApplying.getCourseName();
         this.courseNumber = courseApplying.getCourseNumber();
         this.classroom = courseApplying.getClassroom();
         this.creditHours = courseApplying.getCreditHours();
-        this.classPeriod = courseApplying.getClassPeriod();
         this.credits = courseApplying.getCredits();
-        this.major = major;
-        this.school = school;
+        this.major = courseApplying.getMajor();
+        this.school = courseApplying.getSchool();
         this.teacherNum = courseApplying.getTeacherNum();
         this.introduction = courseApplying.getIntroduction();
         this.teacherName = courseApplying.getTeacherName();
+        this.schoolYear = courseApplying.getSchoolYear();
+        this.semester = courseApplying.getSemester();
+        this.courseSelectType = courseApplying.getCourseSelectType();
+        this.majorsOptional = courseApplying.majorsOptional;
     }
 }

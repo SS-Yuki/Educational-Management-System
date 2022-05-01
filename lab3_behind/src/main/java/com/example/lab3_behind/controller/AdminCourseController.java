@@ -29,13 +29,12 @@ public class AdminCourseController {
 
     @PostMapping("/addCourse")
     public Result addCourse(@RequestBody CourseApplyingData courseApplyingData){
-        return Result.succ(null);
-//        try {
-//            courseService.insertCourse(courseApplyingData);
-//            return Result.succ(null);
-//        }catch (Exception e){
-//            return Result.fail(730,e.getMessage());
-//        }
+        try {
+            courseService.insertCourse(courseApplyingData);
+            return Result.succ(null);
+        }catch (Exception e){
+            return Result.fail(730,e.getMessage());
+        }
     }
 
     @PostMapping("/csvAddCourse")

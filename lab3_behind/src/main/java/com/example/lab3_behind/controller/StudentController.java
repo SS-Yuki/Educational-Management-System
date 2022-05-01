@@ -9,6 +9,7 @@ import com.example.lab3_behind.domain.dto.RevisableDataForUser;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.StudentService;
 import com.example.lab3_behind.service.UserAccountService;
+import com.example.lab3_behind.utils.EnumTool;
 import com.example.lab3_behind.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,10 @@ public class StudentController {
             map.put("email",student.getEmail());
             map.put("school",student.getSchool().getName());
             map.put("major",student.getMajor().getName());
+            if(student.getRegisterTime()!=null){
+                map.put("registerTime",student.getRegisterTime().toString());
+            }
+            map.put("grade", EnumTool.transString(student.getGrade()));
         }catch (Exception e){
             //e.printStackTrace();
             return Result.fail(660,e.getMessage());

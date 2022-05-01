@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -19,16 +22,19 @@ public class CourseServiceImpl implements CourseService {
     StudentRepository studentRepository;
     SchoolRepository schoolRepository;
     MajorRepository majorRepository;
+    ClassroomRepository classroomRepository;
     @Autowired
     public CourseServiceImpl(CourseRepository courseRepository, CourseApplyingRepository courseApplyingRepository,
                              TeacherRepository teacherRepository, StudentRepository studentRepository,
-                             SchoolRepository schoolRepository, MajorRepository majorRepository){
+                             SchoolRepository schoolRepository, MajorRepository majorRepository,
+                             ClassroomRepository classroomRepository ){
         this.schoolRepository = schoolRepository;
         this.majorRepository = majorRepository;
         this.courseRepository = courseRepository;
         this.courseApplyingRepository = courseApplyingRepository;
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
+        this.classroomRepository = classroomRepository;
     }
 
     @Override
@@ -175,7 +181,7 @@ public class CourseServiceImpl implements CourseService {
         }
         CourseApplyingData courseApplyingData = new CourseApplyingData(courseApplying);
         if(courseApplying.getType() == CourseApplyingType.Publish){
-            this.insertCourse(courseApplyingData);
+            this.insertCourse(courseApplying);
             teacher.getCoursesApplying().remove(courseApplying);
         } else if(courseApplying.getType() == CourseApplyingType.Change){
             this.updateCourse(courseApplyingData);
@@ -218,7 +224,12 @@ public class CourseServiceImpl implements CourseService {
         } catch (Exception e) {
             throw e;
         }
-        CourseApplying courseApplying = new CourseApplying((courseApplyingData), school, major);
+        Classroom classroom = classroomRepository.findByName(courseApplyingData.getClassroom());
+        List<Major> majorsOptional = new ArrayList<>();
+        for (String str : courseApplyingData.getMajorLimits()){
+            majorsOptional.add(majorRepository.findByName(str));
+        }
+        CourseApplying courseApplying = new CourseApplying((courseApplyingData), school, major, classroom, majorsOptional);
         courseApplying.setType(applyingType);
         Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
         if(teacher == null){
@@ -254,7 +265,20 @@ public class CourseServiceImpl implements CourseService {
         if(major == null){
             throw new Exception("课程所属学院下不存在此专业");
         }
-        Course course = new Course(courseApplyingData, school,major);
+        Classroom classroom = classroomRepository.findByName(courseApplyingData.getClassroom());
+        List<Major> majorsOptional = new ArrayList<>();
+        for (String str : courseApplyingData.getMajorLimits()){
+            majorsOptional.add(majorRepository.findByName(str));
+        }
+        Course course = new Course(courseApplyingData, school, major, classroom, majorsOptional);
+        teacher.getCourses().add(course);
+        teacherRepository.save(teacher);
+        return course;
+    }
+
+    private Course insertCourse(CourseApplying courseApplying) {
+        Teacher teacher = teacherRepository.findByJobNumber(courseApplying.getTeacherNum());
+        Course course = new Course(courseApplying);
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
         return course;
@@ -280,12 +304,11 @@ public class CourseServiceImpl implements CourseService {
         thisCourse.setCourseNumber(courseApplyingData.getCourseNumber());
         thisCourse.setIntroduction(courseApplyingData.getIntroduction());
         thisCourse.setCapacity(courseApplyingData.getCapacity());
-        thisCourse.setClassPeriod(courseApplyingData.getClassPeriod());
         thisCourse.setMajor(majorRepository.findByName(courseApplyingData.getMajor()));
         thisCourse.setSchool(schoolRepository.findByName(courseApplyingData.getSchool()));
         thisCourse.setCredits(courseApplyingData.getCredits());
         thisCourse.setCreditHours(courseApplyingData.getCreditHours());
-        thisCourse.setClassroom(courseApplyingData.getClassroom());
+        thisCourse.setClassroom(classroomRepository.findByName(courseApplyingData.getClassroom()));
         teacherRepository.save(teacher);
         return thisCourse;
     }

@@ -251,14 +251,7 @@ export default {
         this.day7=[]
         request.post("/common/getClassroomSpareTime",new_[1]).then(res=>{
           this.spare=res.data.data.days
-          console.log(res.data.data.days)
-          console.log(this.spare)
-
         })
-
-        console.log(this.spare[0][0])
-        console.log(this.spare[1][1])
-        console.log(this.spare[2][2])
       }
     }
   },
@@ -296,7 +289,7 @@ export default {
         let that = this
         if (!res.data) return
         res.data.data.buildings.forEach(function (item) {
-          let option = {value: item.buiding, label: item.building, children: []}
+          let option = {value: item.building, label: item.building, children: []}
           if (!item.classrooms) return
           item.classrooms.forEach(function (item) {
             let child = {value: item, label: item}

@@ -1,16 +1,16 @@
 <template>
   <div class="main_part">
     <div>
-      <div class="add" style="margin: 10px 0">
-        <div style="float: left">
+      <div class="add" style="margin-right: auto;margin-left: auto">
+        <div style="float: left;margin-left: 20px;margin-bottom: 15px">
           <el-button size="large" @click="add" type="primary">新增</el-button>
         </div>
-        <div style="float: left">
-          <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
+        <div style="float: left;margin-right: auto;margin-left: auto">
+          <el-input clearable v-model="search" placeholder="请输入关键字" style="width:400px;margin-left: 100px"></el-input>
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>
       </div>
-      <el-table :data="tableData" style="width: 100%" border stripe>
+      <el-table :data="tableData" style="width:1200px;margin-left: auto;margin-right: auto" border stripe>
         <el-table-column prop="classroomName" label="教室" width="300" />
         <el-table-column prop="buildingName" label="教学楼" width="300" />
         <el-table-column prop="capacity" label="教室容量" width="300" />

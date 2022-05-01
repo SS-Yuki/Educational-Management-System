@@ -10,10 +10,10 @@
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>
       </div>
-      <el-table :data="tableData" style="width: 100%" border stripe>
+      <el-table :data="tableData" style="width: 1200px" border stripe>
         <el-table-column prop="majorName" label="专业" width="120" />
         <el-table-column prop="schoolName" label="学院" width="120" />
-        <el-table-column prop="introduction" label="简介" width="600" />
+        <el-table-column prop="introduction" label="简介" width="840" />
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
             <el-button type="text" size="small" @click="handleEdit(scope.row.majorName,scope.row.schoolName, scope.row.introduction)">编辑</el-button>

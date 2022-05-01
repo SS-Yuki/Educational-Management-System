@@ -10,9 +10,9 @@
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>
       </div>
-      <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column prop="buildingName" label="教学楼" width="400" />
-        <el-table-column fixed="right" label="操作" width="400">
+      <el-table :data="tableData" style="width: 1200px" border stripe>
+        <el-table-column prop="buildingName" label="教学楼" width="600" />
+        <el-table-column fixed="right" label="操作" width="600">
           <template #default="scope">
             <el-button type="text" size="small" @click="handleEdit(scope.row.buildingName)">编辑</el-button>
             <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.buildingName)">

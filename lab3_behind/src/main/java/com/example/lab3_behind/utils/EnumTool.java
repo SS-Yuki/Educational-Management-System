@@ -73,7 +73,7 @@ public class EnumTool {
         switch (schoolYear){
             case _2019_2020:return "2019-2020";
             case _2020_2021:return "2020-2021";
-            case _2020_2022:return "2021-2022";
+            case _2021_2022:return "2021-2022";
             case _2022_2023:return "2022-2023";
             default:return "--";
         }
@@ -84,7 +84,7 @@ public class EnumTool {
         switch (str){
             case "2019-2020":return SchoolYear._2019_2020;
             case "2020-2021":return SchoolYear._2020_2021;
-            case "2021-2022":return SchoolYear._2020_2022;
+            case "2021-2022":return SchoolYear._2021_2022;
             case "2022-2023":return SchoolYear._2022_2023;
             default:return null;
         }

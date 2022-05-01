@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface TeachingAffairsService {
     List<List<Boolean>> getClassroomTime(String name) throws Exception;
+    List<List<Boolean>> getClassroomTime(String name, Integer excludedCourse) throws Exception;
+    List<List<Boolean>> getCourseTime(String name, Integer excludedCourse);
     List<String> findAllClassroom();
     List<YearAndSemestersData> getAllYearAndSemesters();
     List<String> findAllTeachingBuilding();

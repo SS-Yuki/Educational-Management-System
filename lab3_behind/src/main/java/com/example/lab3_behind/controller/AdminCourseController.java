@@ -33,20 +33,24 @@ public class AdminCourseController {
             courseService.insertCourse(courseApplyingData);
             return Result.succ(null);
         }catch (Exception e){
+            e.printStackTrace();
             return Result.fail(730,e.getMessage());
         }
     }
 
     @PostMapping("/csvAddCourse")
     public Result csvAddCourse(@RequestBody List<CourseApplyingData> courseApplyingDatas){
-        try {
-            for(CourseApplyingData courseApplyingData:courseApplyingDatas){
+        int failNum=0;
+        for(CourseApplyingData courseApplyingData:courseApplyingDatas){
+            try {
                 courseService.insertCourse(courseApplyingData);
+            }catch (Exception e){
+                e.printStackTrace();
+                failNum++;
             }
-            return Result.succ(null);
-        }catch (Exception e){
-            return Result.fail(730,e.getMessage());
         }
+        if(failNum==0) return Result.succ(null);
+        else return Result.fail(880,"部分信息不符合要求");
     }
 
 

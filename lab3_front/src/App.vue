@@ -11,16 +11,17 @@
   color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
+.title{
+  font-size: 50px;
+  color: transparent;
+  background-color : black;
+  text-shadow : rgba(255,255,255,0.5) 0 5px 6px, rgba(255,255,255,0.2) 1px 3px 3px;
+  -webkit-background-clip : text;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.main_part{
+  padding-top: 20px;
+  padding-left: 50px;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

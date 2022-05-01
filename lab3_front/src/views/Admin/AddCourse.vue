@@ -1,5 +1,5 @@
 <template>
-  <div class="add_form">
+  <div class="main_part">
       <el-form :model="addCourse" label-width="80px" size="default" class="form">
         <el-form-item label="课程id" v-if="false">
           <el-input v-model="addCourse.id"/>
@@ -252,7 +252,7 @@ export default {
         this.day5=[]
         this.day6=[]
         this.day7=[]
-        request.post("/admin/getClassroomSpareTime",new_[1]).then(res=>{
+        request.post("/common/getClassroomSpareTime",new_[1]).then(res=>{
           this.spare=res.data.data.days
 
         })
@@ -261,7 +261,7 @@ export default {
   },
   methods: {
     getOptionMajor: function () {
-      request.post("/admin/allMajors").then(res => {
+      request.post("/common/allMajors").then(res => {
         let that = this
         if (!res.data) return
         res.data.data.schools.forEach((item) => {
@@ -274,22 +274,9 @@ export default {
           that.majorOptionsChoose.push(option)
         })
       })
-      request.post("/admin/allMajors").then(res => {
-        let that = this
-        if (!res.data) return
-        res.data.data.schools.forEach((item) => {
-          let option = {value: item.school, label: item.school, disabled: true, children: []}
-          if (!item.majors) return
-          item.majors.forEach((item) => {
-            let child = {value: item, label: item}
-            option.children.push(child)
-          })
-          that.majorOptionsLimit.push(option)
-        })
-      })
     },
     getOptionClassroom: function () {
-      request.post("/admin/allClassrooms").then(res => {
+      request.post("/common/allClassrooms").then(res => {
         let that = this
         if (!res.data) return
         res.data.data.buildings.forEach(function (item) {
@@ -365,7 +352,7 @@ export default {
             message: res.data.msg
           })
         }
-        this.$router.push("/admin/checkcourse")
+        else this.$router.push("/admin/checkcourse")
       })
     },
   }
@@ -374,13 +361,10 @@ export default {
 
 <style scoped>
 .add_form {
-  width: 600px;
-  height: 600px;
-  position:relative;
+  width: 800px;
 }
 .form {
-  position:absolute;
-  left:400px;
-  width: 600px;
+  padding-top: 50px;
+  padding-left: 50px;
 }
 </style>

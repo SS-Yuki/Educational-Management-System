@@ -27,12 +27,7 @@ public class AdminSchoolController {
     @Autowired
     SchoolService schoolService;
 
-    @RequestMapping("/allMajors")
-    public Result allMajors(){
-        Map<String,Object> map = new HashMap<>();
-        map.put("schools",schoolService.getAllSchoolAndMajors());
-        return Result.succ(map);
-    }
+
     @RequestMapping("/addSchool")
     public Result addSchool(@RequestBody SchoolAddingData schoolAddingData){
         Map<String,Object> map = new HashMap<>();

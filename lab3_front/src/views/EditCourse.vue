@@ -1,20 +1,20 @@
 <template>
-  <div class="add_form">
-    <el-form :model="addCourse" label-width="80px" size="default" class="form">
+  <div class="edit_form">
+    <el-form :model="editCourse" label-width="80px" size="default" class="form">
       <el-form-item label="课程id" v-if="false">
-        <el-input v-model="addCourse.id"/>
+        <el-input v-model="editCourse.id"/>
       </el-form-item>
       <el-form-item label="课程编号">
-        <el-input v-model="addCourse.courseNumber" />
+        <el-input v-model="editCourse.courseNumber" />
       </el-form-item>
       <el-form-item label="课程名">
-        <el-input v-model="addCourse.courseName"/>
+        <el-input v-model="editCourse.courseName"/>
       </el-form-item>
       <el-form-item label="教师工号">
-        <el-input v-model="addCourse.teacherNum" />
+        <el-input v-model="editCourse.teacherNum" />
       </el-form-item>
       <el-form-item label="院系/专业">
-        <el-cascader v-model="add_school_major" :options="majorOptionsChoose"/>
+        <el-cascader v-model="edit_school_major" :options="majorOptionsChoose"/>
       </el-form-item>
       <!--        time-->
       <el-form-item label="上课时间">
@@ -79,23 +79,23 @@
       </el-form-item>
       <!--        time-->
       <el-form-item label="教学楼/教室">
-        <el-cascader  v-model="add_building_classroom" :options="classroomOptions"/>
+        <el-cascader  v-model="edit_building_classroom" :options="classroomOptions"/>
       </el-form-item>
       <el-form-item label="学时">
-        <el-input v-model="addCourse.creditHours" />
+        <el-input v-model="editCourse.creditHours" />
       </el-form-item>
       <el-form-item label="学分">
-        <el-input v-model="addCourse.credits" />
+        <el-input v-model="editCourse.credits" />
       </el-form-item>
       <el-form-item label="容量">
-        <el-input v-model="addCourse.capacity" />
+        <el-input v-model="editCourse.capacity" />
       </el-form-item>
       <el-form-item label="介绍">
-        <el-input v-model="addCourse.introduction" />
+        <el-input v-model="editCourse.introduction" />
       </el-form-item>
       <!--        申请人-->
       <el-form-item label="选课类型">
-        <el-select v-model="addCourse.selectTypeString">
+        <el-select v-model="editCourse.selectTypeString">
           <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
@@ -103,7 +103,7 @@
         <el-cascader :placeholder="major_limit_show" v-model="limit_school_major" :options="majorOptionsLimit" :props="school_major_props" collapse-tags/>
       </el-form-item>
       <el-form-item label="学年/学期">
-        <el-cascader v-model="add_year_semester" :options="semesterOptions"/>
+        <el-cascader v-model="edit_year_semester" :options="semesterOptions"/>
       </el-form-item>
       <!--时间-->
       <el-button type="primary" @click="save">确认</el-button>
@@ -126,7 +126,7 @@ export default {
   name: "EditCourse",
   data() {
     return {
-      addCourse:{
+      editCourse:{
         id:0,
         courseNumber:'',
         courseName:'',
@@ -165,10 +165,10 @@ export default {
       length:0,
       range:[],
 
-      add_school_major:[],
+      edit_school_major:[],
       limit_school_major:[],
-      add_building_classroom:[],
-      add_year_semester:[],
+      edit_building_classroom:[],
+      edit_year_semester:[],
 
       majorOptionsChoose:[],
       majorOptionsLimit:[],
@@ -176,11 +176,11 @@ export default {
       semesterOptions:[],
       typeOptions:[
         {
-          value: '0',
+          value: '通识课程',
           label: '通识课程',
         },
         {
-          value: '1',
+          value: '专业限制课程',
           label: '专业限制课程',
         }
       ],
@@ -191,14 +191,13 @@ export default {
 
     }
   },
-  props:["data","id"],
+  props:["showData","id"],
   mounted() {
     this.getOptionMajor()
     this.getOptionClassroom()
-
-    //标记
     this.getOptionSemesters()
     this.getTime()
+    this.show()
   },
   computed: {
     day(){
@@ -206,10 +205,10 @@ export default {
     }
   },
   watch: {
-    addCourse: {
+    editCourse: {
       deep: true,
       handler(new_) {
-        if (new_.selectTypeString === '0') {
+        if (new_.selectTypeString === '通识课程') {
           this.majorOptionsLimit.forEach((item) => {
             item.disabled = true
           })
@@ -217,7 +216,7 @@ export default {
           this.major_limit_show = "默认选择所有专业"
           this.limit_school_major = []
         }
-        else if (new_.selectTypeString === '1') {
+        else if (new_.selectTypeString === '专业限制课程') {
           this.majorOptionsLimit.forEach((item) => {
             item.disabled = false
           })
@@ -228,6 +227,46 @@ export default {
     }
   },
   methods: {
+    show: function () {
+      setTimeout(() => {
+        request.post("/common/findOneCourseInfo",this.$route.params.id
+        ).then(res => {
+          if(res.data.code===200){
+            let dataShow = res.data.data
+            this.editCourse.id = showData.courseId
+            this.editCourse.courseName = showData.courseName
+            this.editCourse.courseNumber = showData.courseNumber
+            this.editCourse.teacherNum = showData.teacherNum
+            this.editCourse.teacherName = showData.teacherName
+            this.editCourse.major = showData.major
+            this.editCourse.school = showData.school
+            this.editCourse.classroom = showData.classroom
+            //period
+            this.editCourse.classPeriod = showData.classPeriod
+            //period
+            this.editCourse.creditHours = showData.creditHours
+            this.editCourse.credits = showData.credits
+            this.editCourse.capacity = showData.capacity
+            this.editCourse.introduction = showData.introduction
+            this.editCourse.selectTypeString = showData.selectTypeString
+            //申请人
+            this.editCourse.majorLimits = showData.majorLimits
+            this.editCourse.year = showData.year
+            this.editCourse.semester = showData.semester
+            this.edit_school_major = [showData.school, showData.major]
+            this.limit_school_major = []
+            this.edit_building_classroom = [showData.building, showData.classroom]
+            this.edit_year_semester = [showData.year, showData.semester]
+          }
+          else{
+            this.$message({
+              type:"error",
+              message: res.data.msg
+            })
+          }
+        })
+      }, 10)
+    },
     getOptionMajor: function () {
       request.post("/admin/allMajors").then(res => {
         let that = this
@@ -313,30 +352,30 @@ export default {
           })
           that.semesterOptions.push(option)
         })
-        this.add_year_semester = [res.data.data.defaultYear, res.data.data.defaultSemester]
+        this.edit_year_semester = [res.data.data.defaultYear, res.data.data.defaultSemester]
       })
     },
     save:function (){
-      this.addCourse.school = this.add_school_major[0]
-      this.addCourse.major = this.add_school_major[1]
-      this.addCourse.classroom = this.add_building_classroom[1]
-      this.addCourse.year = this.add_year_semester[0]
-      this.addCourse.semester = this.add_year_semester[1]
-      this.addCourse.occupyTime = this.day
+      this.editCourse.school = this.edit_school_major[0]
+      this.editCourse.major = this.edit_school_major[1]
+      this.editCourse.classroom = this.edit_building_classroom[1]
+      this.editCourse.year = this.edit_year_semester[0]
+      this.editCourse.semester = this.edit_year_semester[1]
+      this.editCourse.occupyTime = this.day
 
       console.log(this.day1)
 
-      console.log(this.addCourse.occupyTime)
+      console.log(this.editCourse.occupyTime)
       if (this.limit_school_major !== []) {
         this.limit_school_major.forEach((item)=>{
-          this.addCourse.majorLimits.push(item[1])
+          this.editCourse.majorLimits.push(item[1])
         })
       }
       else {
-        this.addCourse.majorLimits = []
+        this.editCourse.majorLimits = []
       }
-      console.log(this.addCourse.majorLimits)
-      request.post("/admin/addCourse", this.addCourse).then(res => {
+      console.log(this.editCourse.majorLimits)
+      request.post("/admin/editCourse", this.editCourse).then(res => {
         if(res.data.code!==200) {
           this.$message({
             type:"error",
@@ -351,7 +390,7 @@ export default {
 </script>
 
 <style scoped>
-.add_form {
+.edit_form {
   width: 600px;
   height: 600px;
   position:relative;

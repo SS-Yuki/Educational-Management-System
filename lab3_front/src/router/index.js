@@ -101,7 +101,6 @@ export const admin_routes =
             component: EditCourse,
             props(params) {
                 return {
-                    data: params.data,
                     id: params.id
                 }
             }

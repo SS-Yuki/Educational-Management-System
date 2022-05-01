@@ -69,7 +69,7 @@
 <!--                scope.row.introduction,-->
 <!--                scope.row.applicant-->
 <!--                )">查看/编辑</el-button>-->
-              <el-button type="text" size="small" @click="edit(scope.row)">查看/编辑</el-button>
+              <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
               <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.courseId)">
                 <template #reference>
                   <el-button type="text">删除</el-button>
@@ -318,7 +318,9 @@ export default {
         request.post("/admin/findCoursePage",{
               pageNum: this.currentPage,
               pageSize: this.pageSize,
-              search: this.search
+              search: this.search,
+              year: this.select_year_semester[0],
+              semester: this.select_year_semester[1]
             }
         ).then(res=>{
           
@@ -338,10 +340,8 @@ export default {
     add:function (){
       this.$router.push("/admin/addcourse")
     },
-    edit:function (row) {
-      console.log(row)
-      console.log(this.tableData)
-      this.$router.push({ name: 'EditCourse', params: { data: row, id:row.courseId } })
+    edit:function (courseId) {
+      this.$router.push({ name: 'EditCourse', params: { id: courseId} })
     },
     handleDelete(courseId) {
       this.id.id=courseId

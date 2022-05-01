@@ -292,9 +292,12 @@ public class CourseServiceImpl implements CourseService {
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
 
+        Course newCourse = courseRepository.findByCourseNumberAndTeacherNumAndSchoolYearAndSemester(
+                course.getCourseNumber(), course.getTeacherNum(), course.getSchoolYear(), course.getSemester()
+        );
         try {
             timeMatrix = TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
-                    TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), course.getCourseId()));
+                    TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), newCourse.getCourseId()));
         } catch (Exception e) {
             throw e;
         }

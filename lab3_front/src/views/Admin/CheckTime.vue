@@ -13,10 +13,10 @@
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>
       </div>
-      <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column prop="timeName" label="事件" width="200" />
-        <el-table-column prop="startTime" label="开始时间" width="200" />
-        <el-table-column prop="endTime" label="结束时间" width="200" />
+      <el-table :data="tableData" style="width: 1200px" border stripe>
+        <el-table-column prop="timeName" label="事件" width="400" />
+        <el-table-column prop="startTime" label="开始时间" width="400" />
+        <el-table-column prop="endTime" label="结束时间" width="400" />
       </el-table>
       <div style="margin: 10px 0">
         <el-pagination

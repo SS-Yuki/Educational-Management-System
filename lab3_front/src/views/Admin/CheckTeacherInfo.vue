@@ -25,17 +25,17 @@
         </div>
 
       </div>
-      <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column fixed prop="number" label="工号" width="80" sortable/>
-        <el-table-column prop="name" label="姓名" width="80" />
-        <el-table-column prop="idNum" label="身份证号" width="80" />
-        <el-table-column prop="phoneNum" label="电话" width="80" />
-        <el-table-column prop="email" label="邮箱" width="80" />
-        <el-table-column prop="teaStatus" label="状态" width="80" />
-        <el-table-column prop="school" label="院系" width="80" />
-        <el-table-column prop="major" label="专业" width="80" />
-        <el-table-column prop="password" label="密码" width="80" />
-        <el-table-column fixed="right" label="操作" width="80">
+      <el-table :data="tableData" style="width: 1200px" border stripe>
+        <el-table-column fixed prop="number" label="工号" width="120" sortable/>
+        <el-table-column prop="name" label="姓名" width="120" />
+        <el-table-column prop="idNum" label="身份证号" width="120" />
+        <el-table-column prop="phoneNum" label="电话" width="120" />
+        <el-table-column prop="email" label="邮箱" width="120" />
+        <el-table-column prop="teaStatus" label="状态" width="120" />
+        <el-table-column prop="school" label="院系" width="120" />
+        <el-table-column prop="major" label="专业" width="120" />
+        <el-table-column prop="password" label="密码" width="120" />
+        <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
             <el-button type="text" size="small" @click="handleEdit(
                 scope.row.number,

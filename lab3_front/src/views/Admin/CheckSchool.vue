@@ -11,10 +11,10 @@
         </div>
       </div>
       <div>
-        <el-table :data="tableData" style="width: 100%" border stripe>
-          <el-table-column prop="schoolName" label="学院" width="120" />
-          <el-table-column prop="introduction" label="简介" width="600" />
-          <el-table-column fixed="right" label="操作" width="120">
+        <el-table :data="tableData" style="width: 1200px" border stripe>
+          <el-table-column prop="schoolName" label="学院" width="200" />
+          <el-table-column prop="introduction" label="简介" width="800" />
+          <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
               <el-button type="text" size="small" @click="handleEdit(scope.row.schoolName, scope.row.introduction)">编辑</el-button>
               <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.schoolName)">

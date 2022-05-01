@@ -7,7 +7,7 @@
           <el-table-column prop="value"  width="180" />
         </el-table>
       </div>
-      <div>
+      <div style="margin-left: auto;margin-right: auto">
         <div style="float: left">
           <el-button size="large" @click="open" type="primary">开启选课</el-button>
         </div>

@@ -64,6 +64,13 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         Integer last = getLastSection() + 1;
         TimeTable newTime = new TimeTable(null, last, classTimeData.getStartTime(), classTimeData.getEndTime());
         timeTableRepository.save(newTime);
+
+        List<Classroom> allClassrooms = classroomRepository.findAll();
+        for(Classroom classroom : allClassrooms){
+            classroom.setSchedule(classroom.getSchedule() + "0-0-0-0-0-0-0\n");
+            classroomRepository.save(classroom);
+        }
+
         return newTime;
     }
 

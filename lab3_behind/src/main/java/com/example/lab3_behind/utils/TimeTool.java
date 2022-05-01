@@ -124,7 +124,7 @@ public class TimeTool {
 
     public static Integer getSectionNum(String schedule){
         int result = 0;
-        int index1 = 0;
+        int index1;
         int index2 = schedule.indexOf("\n") + 1;
         while (index2 != 0){
             index1 = index2;

@@ -312,6 +312,7 @@ export default {
           })
           that.semesterOptions.push(option)
         })
+        this.add_year_semester = [res.data.data.defaultYear, res.data.data.defaultSemester]
       })
     },
     save:function (){

@@ -293,7 +293,7 @@ export default {
         let that = this
         if (!res.data) return
         res.data.data.buildings.forEach(function (item) {
-          let option = {value: item.buiding, label: item.building, children: []}
+          let option = {value: item.building, label: item.building, children: []}
           if (!item.classrooms) return
           item.classrooms.forEach(function (item) {
             let child = {value: item, label: item}

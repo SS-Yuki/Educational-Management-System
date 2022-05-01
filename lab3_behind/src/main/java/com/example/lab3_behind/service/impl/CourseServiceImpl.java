@@ -1,6 +1,8 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.common.forDomain.CourseApplyingType;
+import com.example.lab3_behind.common.forDomain.SchoolYear;
+import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.utils.FormatCheck;
 import com.example.lab3_behind.domain.*;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
@@ -97,7 +99,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<Course> findAPageCourse(Integer page, Integer size, String search){
+    public Page<Course> findAPageCourse(Integer page, Integer size, String search, SchoolYear schoolYear, Semester semester){
         Pageable pageable =  PageRequest.of(page - 1, size);
         if(search.isEmpty()){
             return courseRepository.findAll(pageable);

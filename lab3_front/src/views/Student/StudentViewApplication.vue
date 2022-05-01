@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main_part">
     <el-table :data="tableData" style="width: 50%;margin-right: auto;margin-left: auto" >
       <el-table-column prop="courseId" label="课程编号" width="180" />
       <el-table-column prop="Notes" label="审批意见" width="180"/>

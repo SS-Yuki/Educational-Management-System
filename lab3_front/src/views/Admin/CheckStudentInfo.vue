@@ -1,5 +1,5 @@
 <template>
-  <div class="checkstudent">
+  <div class="main_part">
     <div class="add">
       <div style="margin: 10px 0">
         <div>
@@ -434,10 +434,6 @@ export default {
 </script>
 
 <style scoped>
-.checkstudent{
-  display: flex;
-  margin-left: 100px;
-}
 .add{
   margin-left: auto;
   text-align: left;

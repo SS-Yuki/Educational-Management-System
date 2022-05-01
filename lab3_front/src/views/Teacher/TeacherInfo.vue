@@ -140,10 +140,6 @@ export default {
 </script>
 
 <style scoped>
-.personalinfo{
-  margin-left: 400px;
-  margin-right: 400px;
-}
 .display{
   margin-top: 300px;
 }

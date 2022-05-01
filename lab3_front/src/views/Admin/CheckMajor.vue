@@ -251,10 +251,6 @@ export default {
 </script>
 
 <style scoped>
-.checkmajor{
-  margin-left: 100px;
-  display: flex;
-}
 .add{
   text-align: left;
 }

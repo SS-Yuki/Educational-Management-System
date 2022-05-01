@@ -434,10 +434,6 @@ export default {
 </script>
 
 <style scoped>
-.checkstudent{
-  display: flex;
-  margin-left: 100px;
-}
 .add{
   margin-left: auto;
   text-align: left;

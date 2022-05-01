@@ -223,10 +223,6 @@ export default {
 </script>
 
 <style scoped>
-.checkclassroom{
-  margin-left: 100px;
-  display: flex;
-}
 .add{
   text-align: left;
 }

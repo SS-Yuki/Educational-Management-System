@@ -387,7 +387,6 @@ export default {
 </script>
 
 <style scoped>
-
 .add{
   text-align: left;
 }

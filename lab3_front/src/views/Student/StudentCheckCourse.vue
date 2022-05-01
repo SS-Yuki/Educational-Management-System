@@ -473,10 +473,6 @@ export default {
 </script>
 
 <style scoped>
-  .checkschool{
-    margin-left: 100px;
-    display: flex;
-  }
   .add{
     text-align: left;
   }

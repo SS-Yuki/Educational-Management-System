@@ -1,5 +1,6 @@
 package com.example.lab3_behind.controller;
 
+import com.example.lab3_behind.common.ClassroomAndCourseId;
 import com.example.lab3_behind.common.CourseContent;
 import com.example.lab3_behind.common.TimeData;
 import com.example.lab3_behind.common.addCourseForm;
@@ -8,6 +9,7 @@ import com.example.lab3_behind.domain.TimeTable;
 import com.example.lab3_behind.domain.dto.YearSemesterPair;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.CourseService;
+import com.example.lab3_behind.service.SchoolService;
 import com.example.lab3_behind.service.TeachingAffairsService;
 import com.example.lab3_behind.utils.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class CommonVisitComtroller {
     TeachingAffairsService teachingAffairsService;
     @Autowired
     CourseService courseService;
+    @Autowired
+    SchoolService schoolService;
     @RequestMapping("allSemesters")
     public Result allSemesters(){
         Map<String,Object> map = new HashMap<>();
@@ -59,5 +63,57 @@ public class CommonVisitComtroller {
             return Result.fail(900,e.getMessage());
         }
 
+    }
+
+    @RequestMapping("/getClassroomSpareTime")
+    public Result getClassroomSpareTime(@RequestBody String classroom){
+        try{
+            Map<String,Object> map = new HashMap<>();
+            List<List<Boolean>> days= teachingAffairsService.getClassroomTime(classroom);
+            map.put("days",days);
+            return Result.succ(map);
+        } catch (Exception e){
+            e.printStackTrace();
+            return Result.fail(888,e.getMessage());
+        }
+    }
+
+    @RequestMapping("/getClassroomSpareTimeExceptOneCourse")
+    public Result getClassroomSpareTimeExceptOneCourse(@RequestBody ClassroomAndCourseId classroomAndCourseId){
+        try{
+            Map<String,Object> map = new HashMap<>();
+            List<List<Boolean>> days = teachingAffairsService.getClassroomTime(classroomAndCourseId.getClassroom(), classroomAndCourseId.getCourseId());
+            map.put("days",days);
+            return Result.succ(map);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.fail(893,e.getMessage());
+        }
+    }
+//    @RequestMapping("/getClassroomOccupyByOneCourse")
+//    public Result getClassroomOccupyByOneCourse(@RequestBody ClassroomAndCourseId classroomAndCourseId){
+//        try{
+//            Map<String,Object> map = new HashMap<>();
+//            List<List<Boolean>> occupys = teachingAffairsService.getCourseTime();
+//            map.put("occupys",occupys);
+//            return Result.succ(map);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return Result.fail(894,e.getMessage());
+//        }
+//    }
+
+    @RequestMapping("/allMajors")
+    public Result allMajors(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("schools",schoolService.getAllSchoolAndMajors());
+        return Result.succ(map);
+    }
+
+    @RequestMapping("allClassrooms")
+    public Result allClassrooms(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("buildings",teachingAffairsService.getAllBuildingAndClassrooms());
+        return Result.succ(map);
     }
 }

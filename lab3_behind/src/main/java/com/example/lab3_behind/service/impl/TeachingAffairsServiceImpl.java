@@ -4,14 +4,17 @@ import com.example.lab3_behind.common.Global;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.domain.Classroom;
+import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.TeachingBuilding;
 import com.example.lab3_behind.domain.TimeTable;
 import com.example.lab3_behind.domain.dto.*;
 import com.example.lab3_behind.repository.ClassroomRepository;
+import com.example.lab3_behind.repository.CourseRepository;
 import com.example.lab3_behind.repository.TeachingBuildingRepository;
 import com.example.lab3_behind.repository.TimeTableRepository;
 import com.example.lab3_behind.service.TeachingAffairsService;
 import com.example.lab3_behind.utils.EnumTool;
+import com.example.lab3_behind.utils.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -24,13 +27,15 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     ClassroomRepository classroomRepository;
     TeachingBuildingRepository teachingBuildingRepository;
     TimeTableRepository timeTableRepository;
+    CourseRepository courseRepository;
     @Autowired
     public TeachingAffairsServiceImpl(ClassroomRepository classroomRepository,
                                       TeachingBuildingRepository teachingBuildingRepository,
-                                      TimeTableRepository timeTableRepository){
+                                      TimeTableRepository timeTableRepository,CourseRepository courseRepository){
         this.classroomRepository = classroomRepository;
         this.teachingBuildingRepository = teachingBuildingRepository;
         this.timeTableRepository = timeTableRepository;
+        this.courseRepository = courseRepository;
     }
 
     @Override
@@ -39,24 +44,24 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         if(classroom == null){
             throw new Exception("教室不存在");
         }
-        List<List<Boolean>> result = new ArrayList<>();
-        for(int i = 0; i < Global.WEEKDAY; i++){
-            List<Boolean> buff = new ArrayList<>();
-            result.add(buff);
-        }
         String schedule = classroom.getSchedule();
-        int index1 = 0;
-        int index2 = schedule.indexOf("\n") + 1;
-        while (index2 != 0){
-            String section = schedule.substring(index1, index2 - 1);
-            String[] sectionArr = section.split("-");
-            for(int i = 0; i < result.size(); i++){
-                result.get(i).add(Integer.parseInt(sectionArr[i]) != Global.CLASSROOM_TIME_SPARE);
-            }
-            index1 = index2;
-            index2 = schedule.indexOf("\n", index1) + 1;
+        return TimeTool.getBoolTime(schedule);
+    }
+
+    @Override
+    public List<List<Boolean>> getClassroomTime(String name, Integer excludedCourse) throws Exception {
+        Classroom classroom = classroomRepository.findByName(name);
+        if(classroom == null){
+            throw new Exception("教室不存在");
         }
-        return result;
+        Course course = courseRepository.findByCourseId(excludedCourse);
+        String schedule = classroom.getSchedule();
+        return TimeTool.getBoolTime(TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(schedule), excludedCourse));
+    }
+
+    @Override
+    public List<List<Boolean>> getCourseTime(String name, Integer excludedCourse) {
+        return null;
     }
 
     @Override
@@ -93,20 +98,23 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             throw new Exception("当前已无课程节次时间安排，无法删除");
         }
         TimeTable last = timeTableRepository.findBySection(getLastSection());
-        timeTableRepository.delete(last);
 
         List<Classroom> allClassrooms = classroomRepository.findAll();
         for(Classroom classroom : allClassrooms){
+            int index = 0;
             int index1 = 0;
             int index2 = classroom.getSchedule().indexOf("\n") + 1;
             while (index2 != 0){
+                index = index1;
+                //Todo :判断最后一行有没有课，有就不能删
                 index1 = index2;
                 index2 = classroom.getSchedule().indexOf("\n", index1) + 1;
             }
-            classroom.setSchedule(classroom.getSchedule().substring(0,index1));
+            classroom.setSchedule(classroom.getSchedule().substring(0,index));
             classroomRepository.save(classroom);
         }
 
+        timeTableRepository.delete(last);
         return last;
     }
 

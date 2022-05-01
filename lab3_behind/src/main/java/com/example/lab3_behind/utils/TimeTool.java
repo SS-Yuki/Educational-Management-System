@@ -28,6 +28,38 @@ public class TimeTool {
         return result;
     }
 
+    public static List<List<Boolean>> getBoolTime(String schedule){
+        List<List<Boolean>> result = new ArrayList<>();
+        for(int i = 0; i < Global.WEEKDAY; i++){
+            List<Boolean> buff = new ArrayList<>();
+            result.add(buff);
+        }
+        int index1 = 0;
+        int index2 = schedule.indexOf("\n") + 1;
+        while (index2 != 0){
+            String section = schedule.substring(index1, index2 - 1);
+            String[] sectionArr = section.split("-");
+            for(int i = 0; i < result.size(); i++){
+                result.get(i).add(Integer.parseInt(sectionArr[i]) != Global.CLASSROOM_TIME_SPARE);
+            }
+            index1 = index2;
+            index2 = schedule.indexOf("\n", index1) + 1;
+        }
+        return result;
+    }
+
+    public static List<List<Boolean>> getBoolTime(List<List<Integer>> timeMatrix){
+        List<List<Boolean>> result = new ArrayList<>();
+        for(int i = 0; i < Global.WEEKDAY; i++){
+            List<Boolean> buff = new ArrayList<>();
+            for(Integer course : timeMatrix.get(i)){
+                buff.add(!course.equals(Global.CLASSROOM_TIME_SPARE));
+            }
+            result.add(buff);
+        }
+        return result;
+    }
+
     public static List<List<Integer>> makeTimeMatrix(String schedule){
         List<List<Integer>> result = new ArrayList<>();
         for(int i = 0; i < Global.WEEKDAY; i++){

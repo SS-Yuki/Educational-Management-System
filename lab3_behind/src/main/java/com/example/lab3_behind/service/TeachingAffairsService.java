@@ -2,7 +2,6 @@ package com.example.lab3_behind.service;
 
 import com.example.lab3_behind.domain.*;
 import com.example.lab3_behind.domain.dto.*;
-import com.example.lab3_behind.service.impl.TeachingAffairsServiceImpl;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
 public interface TeachingAffairsService {
     List<List<Boolean>> getClassroomTime(String name) throws Exception;
     List<List<Boolean>> getClassroomTime(String name, Integer excludedCourse) throws Exception;
-    List<List<Boolean>> getCourseTime(String name, Integer excludedCourse);
+    List<List<Boolean>> getCourseTimeInClassroom(String name, Integer courseId) throws Exception;
     List<String> findAllClassroom();
     List<YearAndSemestersData> getAllYearAndSemesters();
     List<String> findAllTeachingBuilding();

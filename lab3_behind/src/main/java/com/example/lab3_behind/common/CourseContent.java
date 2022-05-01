@@ -19,7 +19,6 @@ public class CourseContent {
     private String teacherName;
     private String school;
     private String major;
-    private String classPeriod ;
     private String classroom ;
     private Integer creditHours;
     private Integer credits;
@@ -36,8 +35,7 @@ public class CourseContent {
                     course.getTeacherName(),
                     course.getSchool().getName(),
                     course.getMajor().getName(),
-                    course.getClassPeriod(),
-                    course.getClassroom(),
+                    course.getClassroom().getName(),
                     course.getCreditHours(),
                     course.getCourseId(),
                     course.getCourseId(),

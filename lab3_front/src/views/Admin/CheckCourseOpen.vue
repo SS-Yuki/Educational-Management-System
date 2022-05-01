@@ -7,17 +7,16 @@
           <el-table-column prop="value"  width="180" />
         </el-table>
       </div>
-      <div style="margin-left: auto;margin-right: auto">
-        <div style="float: left">
+      <div style="margin-left:300px;margin-right: 300px;margin-bottom: 5px;margin-top: 10px">
+        <div>
           <el-button size="large" @click="open" type="primary">开启选课</el-button>
-        </div>
-        <div style="float: left">
           <el-button size="large" @click="close" type="primary">关闭选课</el-button>
         </div>
-        <div style="float: left">
+      </div>
+
+      <div style="margin-left:300px;margin-right: 300px">
+        <div>
           <el-button size="large" @click="next" type="primary">下一轮选课</el-button>
-        </div>
-        <div style="float: left">
           <el-button size="large" @click="select" type="primary">随机筛选</el-button>
         </div>
       </div>

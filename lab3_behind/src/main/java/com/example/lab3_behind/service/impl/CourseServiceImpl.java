@@ -278,13 +278,12 @@ public class CourseServiceImpl implements CourseService {
         Classroom classroom = classroomRepository.findByName(courseApplyingData.getClassroom());
         List<List<Integer>> timeMatrix;
         try {
+            //此处检测时间冲突
             timeMatrix = TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
-                    TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), courseApplyingData.getId()));
+                    TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), -1));
         } catch (Exception e) {
             throw e;
         }
-        classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
-        classroomRepository.save(classroom);
         List<Major> majorsOptional = new ArrayList<>();
         for (String str : courseApplyingData.getMajorLimits()){
             majorsOptional.add(majorRepository.findByName(str));
@@ -292,6 +291,16 @@ public class CourseServiceImpl implements CourseService {
         Course course = new Course(courseApplyingData, school, major, classroom, majorsOptional);
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
+
+        try {
+            timeMatrix = TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
+                    TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), course.getCourseId()));
+        } catch (Exception e) {
+            throw e;
+        }
+        classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
+        classroomRepository.save(classroom);
+
         return course;
     }
 

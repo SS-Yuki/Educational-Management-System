@@ -50,6 +50,9 @@ public class TeacherController {
             map.put("email",teacher.getEmail());
             map.put("school",teacher.getSchool().getName());
             map.put("major",teacher.getMajor().getName());
+            if(teacher.getRegisterTime()!=null){
+                map.put("registerTime",teacher.getRegisterTime().toString());
+            }
         }catch (Exception e){
             //e.printStackTrace();
             return Result.fail(661,e.getMessage());

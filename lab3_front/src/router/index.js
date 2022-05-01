@@ -6,6 +6,7 @@ import Teacher from "@/views/Teacher";
 import Student from "@/views/Student";
 import CheckCourse from "@/views/CheckCourse";
 import AddCourse from "@/views/AddCourse";
+import EditCourse from "@/views/EditCourse";
 import CheckStudentInfo from "@/views/CheckStudentInfo";
 import CheckTeacherInfo from "@/views/CheckTeacherInfo";
 import CheckSchool from "@/views/CheckSchool";
@@ -93,6 +94,17 @@ export const admin_routes =
             path: 'addcourse',
             name: 'AddCourse',
             component: AddCourse
+        },
+        {
+            path: 'editcourse/:id',
+            name: 'EditCourse',
+            component: EditCourse,
+            props(params) {
+                return {
+                    data: params.data,
+                    id: params.id
+                }
+            }
         },
         {
             path: 'checkapplication',

@@ -54,26 +54,27 @@
         <el-table-column prop="applicant" label="申请人" width="0" v-if="false" />
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(
-                scope.row.courseId,
-                scope.row.courseName,
-                scope.row.courseNumber,
-                scope.row.teacherNum,
-                scope.row.major,
-                scope.row.school,
-                scope.row.classPeriod,
-                scope.row.classroom,
-                scope.row.creditHours,
-                scope.row.credits,
-                scope.row.capacity,
-                scope.row.introduction,
-                scope.row.applicant
-                )">查看/编辑</el-button>
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.courseId)">
-              <template #reference>
-                <el-button type="text">删除</el-button>
-              </template>
-            </el-popconfirm>
+<!--            <el-button type="text" size="small" @click="handleEdit(-->
+<!--                scope.row.courseId,-->
+<!--                scope.row.courseName,-->
+<!--                scope.row.courseNumber,-->
+<!--                scope.row.teacherNum,-->
+<!--                scope.row.major,-->
+<!--                scope.row.school,-->
+<!--                scope.row.classPeriod,-->
+<!--                scope.row.classroom,-->
+<!--                scope.row.creditHours,-->
+<!--                scope.row.credits,-->
+<!--                scope.row.capacity,-->
+<!--                scope.row.introduction,-->
+<!--                scope.row.applicant-->
+<!--                )">查看/编辑</el-button>-->
+              <el-button type="text" size="small" @click="edit(scope.row)">查看/编辑</el-button>
+              <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.courseId)">
+                <template #reference>
+                  <el-button type="text">删除</el-button>
+                </template>
+              </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -87,7 +88,6 @@
             :background="background"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
-            @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
         />
       </div>
@@ -338,56 +338,10 @@ export default {
     add:function (){
       this.$router.push("/admin/addcourse")
     },
-    save:function (){
-      this.addCourse.school = this.add_school_major[0]
-      this.addCourse.major = this.add_school_major[1]
-      this.addCourse.building = this.add_building_classroom[0]
-      this.addCourse.classroom = this.add_building_classroom[1]
-      request.post("/admin/addCourse", this.addCourse).then(res => {
-        if(res.data.code!==200) {
-          this.$message({
-            type:"error",
-            message: res.data.msg
-          })
-        }
-        this.load() // 刷新表格的数据
-        this.dialogVisible = false  // 关闭弹窗
-      })
-    },
-    saveEdit(){
-      this.editCourse.school = this.edit_school_major[0]
-      this.editCourse.major = this.edit_school_major[1]
-      this.editCourse.building = this.edit_building_classroom[0]
-      this.editCourse.classroom = this.edit_building_classroom[1]
-      request.post("/admin/updateCourseInfo",this.editCourse).then(res=>{
-        if(res.data.code!==200) {
-          this.$message({
-            type:"error",
-            message: res.data.msg
-          })
-        }
-        this.load()
-        this.dialogVisible2=false
-      })
-    },
-    handleEdit(courseId,courseName,courseNumber,teacherNum,major,school,classPeriod,classroom,
-    creditHours,credits,capacity,introduction,applicant){
-      this.addCourse={}
-      this.dialogVisible2=true
-      this.editCourse.id=courseId
-      this.editCourse.courseName=courseName
-      this.editCourse.courseNumber=courseNumber
-      this.editCourse.teacherNum=teacherNum
-      this.editCourse.major=major
-      this.editCourse.school=school
-      this.editCourse.classPeriod=classPeriod
-      this.editCourse.classroom=classroom
-      this.editCourse.creditHours=creditHours
-      this.editCourse.credits=credits
-      this.editCourse.capacity=capacity
-      this.editCourse.introduction=introduction
-      this.editCourse.applicant=applicant
-      this.edit_school_major = [school, major]
+    edit:function (row) {
+      console.log(row)
+      console.log(this.tableData)
+      this.$router.push({ name: 'EditCourse', params: { data: row, id:row.courseId } })
     },
     handleDelete(courseId) {
       this.id.id=courseId
@@ -400,12 +354,6 @@ export default {
         }
         this.load()  // 删除之后重新加载表格的数据
       })
-    },
-    handleClick:function (){
-
-    },
-    handleSizeChange:function (){
-
     },
     handleCurrentChange:function (pageNum){
       this.currentPage = pageNum

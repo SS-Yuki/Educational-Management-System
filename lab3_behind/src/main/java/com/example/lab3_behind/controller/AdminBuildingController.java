@@ -118,26 +118,10 @@ public class AdminBuildingController {
         }
     }
 
-    @RequestMapping("allClassrooms")
-    public Result allClassrooms(){
-        Map<String,Object> map = new HashMap<>();
-        map.put("buildings",teachingAffairsService.getAllBuildingAndClassrooms());
-        return Result.succ(map);
-    }
 
 
-    @RequestMapping("getClassroomSpareTime")
-    public Result getClassroomSpareTime(@RequestBody String classroom){
-        try{
-            Map<String,Object> map = new HashMap<>();
-            List<List<Boolean>> days= teachingAffairsService.getClassroomTime(classroom);
-            map.put("days",days);
-            return Result.succ(map);
-        } catch (Exception e){
-            e.printStackTrace();
-            return Result.fail(888,e.getMessage());
-        }
-    }
+
+
 
 
 }

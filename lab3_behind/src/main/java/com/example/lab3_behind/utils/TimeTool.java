@@ -143,7 +143,7 @@ public class TimeTool {
         int sectionNum = timeMatrix.get(0).size();
         for(int i = 0; i < sectionNum; i++){
             for(int j = 0; j < Global.WEEKDAY; j++){
-                result = result + timeMatrix.get(i).get(j);
+                result = result + timeMatrix.get(j).get(i);
                 if((j + 1) == Global.WEEKDAY){
                     result = result + "\n";
                 } else {

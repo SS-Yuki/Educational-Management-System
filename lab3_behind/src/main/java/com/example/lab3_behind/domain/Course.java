@@ -5,6 +5,7 @@ import com.example.lab3_behind.common.forDomain.CourseStatus;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
+import com.example.lab3_behind.utils.EnumTool;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -95,6 +96,11 @@ public class Course {
         this.school = school;
         this.teacherNum = courseApplyingData.getTeacherNum();
         this.introduction = courseApplyingData.getIntroduction();
+        this.classroom = classroom;
+        this.schoolYear = EnumTool.transSchoolYear(courseApplyingData.getYear());
+        this.semester = EnumTool.transSemester(courseApplyingData.getSemester());
+        this.courseSelectType = EnumTool.transCourseSelectType(courseApplyingData.getSelectTypeString());
+        this.majorsOptional = majorsOptional;
     }
 
     public Course(CourseApplying courseApplying){

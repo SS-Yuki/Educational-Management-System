@@ -21,7 +21,6 @@ public class ApplyContent {
     private String teacherName;
     private String major;
     private String school;
-    private String classPeriod ;
     private String classroom ;
     private Integer creditHours;
     private Integer credits;
@@ -50,8 +49,7 @@ public class ApplyContent {
                     courseApplying.getTeacherName(),
                     courseApplying.getMajor().getName(),
                     courseApplying.getSchool().getName(),
-                    courseApplying.getClassPeriod(),
-                    courseApplying.getClassroom(),
+                    courseApplying.getClassroom().getName(),
                     courseApplying.getCreditHours(),
                     courseApplying.getCredits(),
                     courseApplying.getCapacity(),

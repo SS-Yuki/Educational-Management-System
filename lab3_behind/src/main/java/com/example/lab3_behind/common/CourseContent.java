@@ -1,6 +1,8 @@
 package com.example.lab3_behind.common;
 
 import com.example.lab3_behind.domain.Course;
+import com.example.lab3_behind.domain.Major;
+import com.example.lab3_behind.utils.EnumTool;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,15 +21,25 @@ public class CourseContent {
     private String teacherName;
     private String school;
     private String major;
+    private String building;
     private String classroom ;
     private Integer creditHours;
     private Integer credits;
     private Integer capacity;
     private String introduction;
+    private String selectTypeString;
+    private String majorLimits;
+    private String year;
+    private String semester;
+    private String occupyTime;
 
     public static List<CourseContent> getContent(List<Course> courses){
         List<CourseContent> courseContents = new ArrayList<>();
         for(Course course:courses){
+            String majorLim = "";
+            for(Major major:course.getMajorsOptional()){
+                majorLim= majorLim + major.getName() + ";";
+            }
             courseContents.add(new CourseContent(course.getCourseId(),
                     course.getCourseNumber(),
                     course.getCourseName(),
@@ -35,11 +47,17 @@ public class CourseContent {
                     course.getTeacherName(),
                     course.getSchool().getName(),
                     course.getMajor().getName(),
+                    course.getClassroom().getTeachingBuilding().getName(),
                     course.getClassroom().getName(),
                     course.getCreditHours(),
                     course.getCourseId(),
                     course.getCourseId(),
-                    course.getIntroduction()));
+                    course.getIntroduction(),
+                    EnumTool.transString(course.getCourseSelectType()),
+                    majorLim,
+                    EnumTool.transString(course.getSchoolYear()),
+                    EnumTool.transString(course.getSemester()),
+                    course.getCourseName()));
         }
         return courseContents;
     }

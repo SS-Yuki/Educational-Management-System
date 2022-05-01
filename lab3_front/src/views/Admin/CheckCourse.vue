@@ -105,7 +105,7 @@ export default {
   },
   methods:{
     getOptionMajor: function () {
-      request.post("/admin/allMajors").then(res => {
+      request.post("/common/allMajors").then(res => {
         let that = this
         if (!res.data) return
         res.data.data.schools.forEach (function (item) {
@@ -120,7 +120,7 @@ export default {
       })
     },
     getOptionClassroom: function () {
-      request.post("/admin/allClassrooms").then(res => {
+      request.post("/common/allClassrooms").then(res => {
         let that = this
         if (!res.data) return
         res.data.data.buildings.forEach (function (item) {

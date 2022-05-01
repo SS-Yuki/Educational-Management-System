@@ -299,7 +299,7 @@ export default {
     },
 
     getOption: function () {
-      request.post("/admin/allMajors").then(res => {
+      request.post("/common/allMajors").then(res => {
         
         let that = this
         if (!res.data) return

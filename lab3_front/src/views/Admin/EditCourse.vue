@@ -268,7 +268,7 @@ export default {
       }, 10)
     },
     getOptionMajor: function () {
-      request.post("/admin/allMajors").then(res => {
+      request.post("/common/allMajors").then(res => {
         let that = this
         if (!res.data) return
         res.data.data.schools.forEach((item) => {
@@ -281,22 +281,10 @@ export default {
           that.majorOptionsChoose.push(option)
         })
       })
-      request.post("/admin/allMajors").then(res => {
-        let that = this
-        if (!res.data) return
-        res.data.data.schools.forEach((item) => {
-          let option = {value: item.school, label: item.school, disabled: true, children: []}
-          if (!item.majors) return
-          item.majors.forEach((item) => {
-            let child = {value: item, label: item}
-            option.children.push(child)
-          })
-          that.majorOptionsLimit.push(option)
-        })
-      })
+
     },
     getOptionClassroom: function () {
-      request.post("/admin/allClassrooms").then(res => {
+      request.post("/common/allClassrooms").then(res => {
         let that = this
         if (!res.data) return
         res.data.data.buildings.forEach(function (item) {

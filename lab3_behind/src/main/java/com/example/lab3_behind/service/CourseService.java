@@ -1,15 +1,18 @@
 package com.example.lab3_behind.service;
 
 import com.example.lab3_behind.common.forDomain.CourseApplyingType;
+import com.example.lab3_behind.common.forDomain.SchoolYear;
+import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.CourseApplying;
+import com.example.lab3_behind.domain.School;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import org.springframework.data.domain.Page;
 
 
 public interface CourseService {
     Course getCourse(Integer courseId) throws Exception;
-    Page<Course> findAPageCourse(Integer page, Integer size, String search);
+    Page<Course> findAPageCourse(Integer page, Integer size, String search, SchoolYear schoolYear, Semester semester);
     Page<Course> findAPageCourseForSelecting(Integer page, Integer size, String search, String stuNum) throws Exception;
     Page<Course> findAPageCourseOfTeacher(Integer page, Integer size, String search, String jobNum) throws Exception;
     Page<CourseApplying> findAPageCourseApplying(Integer page, Integer size, String search);

@@ -1,11 +1,13 @@
 package com.example.lab3_behind.domain;
 
+import com.example.lab3_behind.common.Global;
 import com.example.lab3_behind.common.forDomain.CourseSelectType;
 import com.example.lab3_behind.common.forDomain.CourseStatus;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.utils.EnumTool;
+import com.example.lab3_behind.utils.TimeTool;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -120,4 +122,33 @@ public class Course {
         this.courseSelectType = courseApplying.getCourseSelectType();
         this.majorsOptional = courseApplying.majorsOptional;
     }
+
+    public String getClassTime(){
+        String result = "";
+        List<List<Integer>> time = TimeTool.makeTimeMatrix(this.classroom.getSchedule());
+        for(int i = 0; i < Global.WEEKDAY; i ++){
+            String day = "周";
+            switch (i) {
+                case(0): day = day + "一："; break;
+                case(1): day = day + "二："; break;
+                case(2): day = day + "三："; break;
+                case(3): day = day + "四："; break;
+                case(4): day = day + "五："; break;
+                case(5): day = day + "六："; break;
+                case(6): day = day + "日："; break;
+            }
+            boolean isAdd = false;
+            int sections = time.get(0).size();
+            for(int k = 0; k < sections; k++){
+                if(time.get(i).get(k).equals(this.courseId)){
+                    isAdd = true;
+                    day = day + (k + 1) + " ";
+                }
+            }
+            day = day + "节\n";
+            if(isAdd) result = result + day;
+        }
+        return result;
+    }
+
 }

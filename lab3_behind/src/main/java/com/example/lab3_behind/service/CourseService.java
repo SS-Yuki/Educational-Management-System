@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 
 
 public interface CourseService {
+    Course getCourse(Integer courseId) throws Exception;
     Page<Course> findAPageCourse(Integer page, Integer size, String search);
     Page<Course> findAPageCourseForSelecting(Integer page, Integer size, String search, String stuNum) throws Exception;
     Page<Course> findAPageCourseOfTeacher(Integer page, Integer size, String search, String jobNum) throws Exception;

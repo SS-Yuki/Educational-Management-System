@@ -90,6 +90,18 @@ public class CommonVisitComtroller {
             return Result.fail(893,e.getMessage());
         }
     }
+//    @RequestMapping("/getClassroomOccupyByOneCourse")
+//    public Result getClassroomOccupyByOneCourse(@RequestBody ClassroomAndCourseId classroomAndCourseId){
+//        try{
+//            Map<String,Object> map = new HashMap<>();
+//            List<List<Boolean>> occupys = teachingAffairsService.getCourseTime();
+//            map.put("occupys",occupys);
+//            return Result.succ(map);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return Result.fail(894,e.getMessage());
+//        }
+//    }
 
     @RequestMapping("/allMajors")
     public Result allMajors(){

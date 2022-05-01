@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -45,11 +46,9 @@ public class CourseApplying {
     @JoinColumn(name = "major")
     private Major major;
 
-    @Column(name = "class_period")
-    private String classPeriod ;
-
-    @Column(name = "classroom")
-    private String classroom ;
+    @ManyToOne
+    @JoinColumn(name = "classroom")
+    private Classroom classroom;
 
     @Column(name = "credit_hours")
     private Integer creditHours;
@@ -83,16 +82,22 @@ public class CourseApplying {
     @Column(name = "course_select_type")
     private CourseSelectType courseSelectType;
 
-    public CourseApplying(CourseApplyingData courseApplyingData, School school, Major major){
+    @ManyToMany
+    @JoinTable(
+            name = "course_optional_majors",
+            joinColumns = {@JoinColumn(name = "course_id")},
+            inverseJoinColumns = {@JoinColumn(name = "major_id")}
+    )
+    List<Major> majorsOptional;
+
+    public CourseApplying(CourseApplyingData courseApplyingData, School school, Major major, Classroom classroom, List<Major> majorsOptional){
         this.courseId = courseApplyingData.getId();
         this.teacherName = courseApplyingData.getApplicant();
         this.applicant = courseApplyingData.getApplicant();
         this.capacity = courseApplyingData.getCapacity();
         this.courseName = courseApplyingData.getCourseName();
         this.courseNumber = courseApplyingData.getCourseNumber();
-        this.classroom = courseApplyingData.getClassroom();
         this.creditHours = courseApplyingData.getCreditHours();
-        this.classPeriod = courseApplyingData.getClassPeriod();
         this.credits = courseApplyingData.getCredits();
         this.major = major;
         this.school = school;

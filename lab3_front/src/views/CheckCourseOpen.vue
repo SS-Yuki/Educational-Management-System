@@ -14,6 +14,12 @@
         <div style="float: left">
           <el-button size="large" @click="close" type="primary">关闭选课</el-button>
         </div>
+        <div style="float: left">
+          <el-button size="large" @click="next" type="primary">下一轮选课</el-button>
+        </div>
+        <div style="float: left">
+          <el-button size="large" @click="select" type="primary">随机筛选</el-button>
+        </div>
       </div>
       <div style="margin: 10px 0">
         <el-pagination
@@ -42,12 +48,14 @@ export default {
     return{
       status:false,
       tableData:[
-        {key:'选课状态',value:''}
+        {key:'选课状态',value:''},
+        {key:'选课轮数',value:''}
       ]
     }
   },
   mounted() {
     this.load()
+    this.getTurn()
   },
   methods:{
     open:function(){
@@ -57,6 +65,13 @@ export default {
     close:function(){
       request.post("/admin/closeSelectCourse",)
       this.load()
+    },
+    next:function (){
+      request.post("/admin/nextTurn",)
+      this.load()
+    },
+    select:function (){
+      request.post("/admin/randomSelect",)
     },
     load(){
       setTimeout(() => {
@@ -68,7 +83,15 @@ export default {
           this.tableData[0].value=res.data.data;
         })
       }, 10)
-
+    },
+    getTurn:function (){
+      request.post("/admin/whichTurn").then(res=>{
+        this.$message({
+          type:"success",
+          message: res.data.msg
+        })
+        this.tableData[1].value=res.data.data;
+      })
     }
   }
 }

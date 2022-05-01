@@ -44,7 +44,9 @@ export default {
         phoneNum:'',
         email:'',
         school:'',
-        major:''
+        major:'',
+        grade:'',
+        registerTime:''
       },
       new_info:{
         number:'',
@@ -60,7 +62,9 @@ export default {
         {key: '专业', value: ''},
         {key: '身份证号', value: ''},
         {key: '电话', value: ''},
-        {key: '邮箱', value: ''}
+        {key: '邮箱', value: ''},
+        {key: '年级', value: ''},
+        {key: '注册时间', value: ''}
       ]
     }
   },
@@ -92,6 +96,8 @@ export default {
         this.tableData[5].value = this.info.idNum   //身份证号
         this.tableData[6].value = this.info.phoneNum  //电话
         this.tableData[7].value = this.info.email   //邮箱
+        this.tableData[8].value = this.info.grade
+        this.tableData[9].value = this.info.registerTime
       })
     }
   },

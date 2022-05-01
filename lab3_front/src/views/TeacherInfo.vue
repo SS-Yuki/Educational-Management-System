@@ -52,7 +52,8 @@ export default {
         phoneNum:'',
         email:'',
         school:'',
-        major:''
+        major:'',
+        registerTime: ''
       },
       new_info:{
         number:'',
@@ -92,6 +93,10 @@ export default {
         {
           key: '邮箱',
           value: ''
+        },
+        {
+          key: '注册时间',
+          value: ''
         }
       ]
     }
@@ -124,6 +129,7 @@ export default {
         this.tableData[5].value = this.info.idNum
         this.tableData[6].value = this.info.phoneNum
         this.tableData[7].value = this.info.email
+        this.tableData[8].value = this.info.registerTime
       })
     }
   },

@@ -8,6 +8,7 @@ import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.AuthorityService;
 import com.example.lab3_behind.service.CourseService;
+import com.example.lab3_behind.utils.EnumTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,14 +66,13 @@ public class AdminCourseController {
         }
     }
     @PostMapping("/deleteCourse")
-    public Result deleteCourse(@RequestBody Map<String,Object> map){
+    public Result deleteCourse(@RequestBody Integer courseId){
         try{
-            Integer courseId = (Integer) map.get("id");
             courseService.deleteCourse(courseId);
             return Result.succ(null);
         }
         catch (Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             return Result.fail(732,e.getMessage());
         }
     }
@@ -80,7 +80,13 @@ public class AdminCourseController {
     public Result findCoursePage(@RequestBody PageSearchWithYearAndSemester pageSearchData){
         try{
             Map<String,Object> map = new HashMap<>();
-            Page<Course> coursePage = courseService.findAPageCourse(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch());
+            Page<Course> coursePage = courseService.findAPageCourse(
+                    pageSearchData.getPageNum(),
+                    pageSearchData.getPageSize(),
+                    pageSearchData.getSearch(),
+                    EnumTool.transSchoolYear(pageSearchData.getYear()),
+                    EnumTool.transSemester(pageSearchData.getSemester())
+                    );
             List<CourseContent> courseContents = CourseContent.getContent(coursePage.getContent());
             map.put("records",courseContents);
             map.put("total",coursePage.getTotalElements());

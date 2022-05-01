@@ -281,7 +281,19 @@ export default {
           that.majorOptionsChoose.push(option)
         })
       })
-
+      request.post("/common/allMajors").then(res => {
+        let that = this
+        if (!res.data) return
+        res.data.data.schools.forEach((item) => {
+          let option = {value: item.school, label: item.school, disabled: false, children: []}
+          if (!item.majors) return
+          item.majors.forEach((item) => {
+            let child = {value: item, label: item}
+            option.children.push(child)
+          })
+          that.majorOptionsLimit.push(option)
+        })
+      })
     },
     getOptionClassroom: function () {
       request.post("/common/allClassrooms").then(res => {

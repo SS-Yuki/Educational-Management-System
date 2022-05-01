@@ -84,8 +84,8 @@ public class CourseApplying {
 
     @ManyToMany
     @JoinTable(
-            name = "course_optional_majors",
-            joinColumns = {@JoinColumn(name = "course_id")},
+            name = "course_applying_optional_majors",
+            joinColumns = {@JoinColumn(name = "course_applying_id")},
             inverseJoinColumns = {@JoinColumn(name = "major_id")}
     )
     List<Major> majorsOptional;

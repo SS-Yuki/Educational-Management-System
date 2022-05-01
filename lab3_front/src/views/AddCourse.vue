@@ -176,11 +176,11 @@ export default {
       semesterOptions:[],
       typeOptions:[
         {
-          value: '0',
+          value: '通识课程',
           label: '通识课程',
         },
         {
-          value: '1',
+          value: '专业限制课程',
           label: '专业限制课程',
         }
       ],
@@ -208,7 +208,7 @@ export default {
     addCourse: {
       deep: true,
       handler(new_) {
-        if (new_.selectTypeString === '0') {
+        if (new_.selectTypeString === '通识课程') {
           this.majorOptionsLimit.forEach((item) => {
             item.disabled = true
           })
@@ -216,7 +216,7 @@ export default {
           this.major_limit_show = "默认选择所有专业"
           this.limit_school_major = []
         }
-        else if (new_.selectTypeString === '1') {
+        else if (new_.selectTypeString === '专业限制课程') {
           this.majorOptionsLimit.forEach((item) => {
             item.disabled = false
           })

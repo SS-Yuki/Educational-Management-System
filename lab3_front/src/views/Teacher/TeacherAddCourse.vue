@@ -362,7 +362,7 @@ export default {
             message: res.data.msg
           })
         }
-        this.$router.push("/admin/checkcourse")
+        else this.$router.push("/admin/checkcourse")
       })
     },
   }

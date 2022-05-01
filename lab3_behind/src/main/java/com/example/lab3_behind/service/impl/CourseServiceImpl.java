@@ -357,6 +357,11 @@ public class CourseServiceImpl implements CourseService {
         }
         teacher.getCourses().remove(course);
         teacherRepository.save(teacher);
+
+        Classroom classroom = course.getClassroom();
+        List<List<Integer>> timeMatrix = TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()), courseId);
+        classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
+        classroomRepository.save(classroom);
         return course;
     }
 }

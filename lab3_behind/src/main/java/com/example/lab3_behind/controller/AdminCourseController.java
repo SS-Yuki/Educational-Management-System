@@ -33,6 +33,7 @@ public class AdminCourseController {
             courseService.insertCourse(courseApplyingData);
             return Result.succ(null);
         }catch (Exception e){
+            e.printStackTrace();
             return Result.fail(730,e.getMessage());
         }
     }

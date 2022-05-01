@@ -33,6 +33,31 @@ public class CourseContent {
     private String semester;
     private String occupyTime;
 
+    public static CourseContent oneContent(Course course){
+        String majorLim = "";
+        for(Major major:course.getMajorsOptional()){
+            majorLim= majorLim + major.getName() + ";";
+        }
+        return new CourseContent(course.getCourseId(),
+                course.getCourseNumber(),
+                course.getCourseName(),
+                course.getTeacherNum(),
+                course.getTeacherName(),
+                course.getSchool().getName(),
+                course.getMajor().getName(),
+                course.getClassroom().getTeachingBuilding().getName(),
+                course.getClassroom().getName(),
+                course.getCreditHours(),
+                course.getCourseId(),
+                course.getCourseId(),
+                course.getIntroduction(),
+                EnumTool.transString(course.getCourseSelectType()),
+                majorLim,
+                EnumTool.transString(course.getSchoolYear()),
+                EnumTool.transString(course.getSemester()),
+                course.getCourseName());
+    }
+
     public static List<CourseContent> getContent(List<Course> courses){
         List<CourseContent> courseContents = new ArrayList<>();
         for(Course course:courses){
@@ -40,24 +65,7 @@ public class CourseContent {
             for(Major major:course.getMajorsOptional()){
                 majorLim= majorLim + major.getName() + ";";
             }
-            courseContents.add(new CourseContent(course.getCourseId(),
-                    course.getCourseNumber(),
-                    course.getCourseName(),
-                    course.getTeacherNum(),
-                    course.getTeacherName(),
-                    course.getSchool().getName(),
-                    course.getMajor().getName(),
-                    course.getClassroom().getTeachingBuilding().getName(),
-                    course.getClassroom().getName(),
-                    course.getCreditHours(),
-                    course.getCourseId(),
-                    course.getCourseId(),
-                    course.getIntroduction(),
-                    EnumTool.transString(course.getCourseSelectType()),
-                    majorLim,
-                    EnumTool.transString(course.getSchoolYear()),
-                    EnumTool.transString(course.getSemester()),
-                    course.getCourseName()));
+            courseContents.add(CourseContent.oneContent(course));
         }
         return courseContents;
     }

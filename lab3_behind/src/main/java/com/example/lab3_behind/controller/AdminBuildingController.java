@@ -125,7 +125,7 @@ public class AdminBuildingController {
         return Result.succ(map);
     }
 
-    //伪接口
+
     @RequestMapping("getClassroomSpareTime")
     public Result getClassroomSpareTime(@RequestBody String classroom){
         try{

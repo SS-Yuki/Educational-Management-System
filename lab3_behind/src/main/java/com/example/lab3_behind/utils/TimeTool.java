@@ -51,14 +51,11 @@ public class TimeTool {
         List<List<Integer>> result = new ArrayList<>();
         for(int i = 0; i < Global.WEEKDAY; i++){
             List<Integer> temp = new ArrayList<>();
-            int j = 0;
             for(int section = 0; section < sections; section ++){
-                if(section == (occupyTime.get(i).get(j) - 1)){
-                    j += 1;
-                    temp.add(section, courseId);
-                } else {
-                    temp.add(section, Global.CLASSROOM_TIME_SPARE);
-                }
+                temp.add(Global.CLASSROOM_TIME_SPARE);
+            }
+            for(Integer j : occupyTime.get(i)){
+                temp.set(j-1,courseId);
             }
             result.add(temp);
         }

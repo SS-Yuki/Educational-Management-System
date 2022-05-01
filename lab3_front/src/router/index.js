@@ -1,31 +1,34 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from "@/views/Home";
 import Login from "@/views/Login";
-import Admin from "@/views/Admin";
-import Teacher from "@/views/Teacher";
-import Student from "@/views/Student";
-import CheckCourse from "@/views/CheckCourse";
-import AddCourse from "@/views/AddCourse";
-import EditCourse from "@/views/EditCourse";
-import CheckStudentInfo from "@/views/CheckStudentInfo";
-import CheckTeacherInfo from "@/views/CheckTeacherInfo";
-import CheckSchool from "@/views/CheckSchool";
-import CheckMajor from "@/views/CheckMajor";
-import CheckBuilding from "@/views/CheckBuilding";
-import CheckClassroom from "@/views/CheckClassroom";
-import CheckTime from "@/views/CheckTime";
-import CheckApplication from "@/views/CheckApplication";
-import TeacherInfo from "@/views/TeacherInfo";
-import StudentInfo from "@/views/StudentInfo";
-import TeacherCourse from "@/views/TeacherCourse";
-import StudentChooseCourse from "@/views/StudentChooseCourse";
-import StudentCheckCourse from "@/views/StudentCheckCourse";
-import CheckCourseOpen from "@/views/CheckCourseOpen";
-import TeacherApplication from "@/views/TeacherApplication";
-import StudentApply from "@/views/StudentApply";
-import StudentViewApplication from "@/views/StudentViewApplication";
-import StudentViewTable from "@/views/StudentViewTable";
-import TeacherAddCourse from "@/views/TeacherAddCourse";
+
+import Admin from "@/views/Admin/Admin";
+import CheckCourse from "@/views/Admin/CheckCourse";
+import AddCourse from "@/views/Admin/AddCourse";
+import EditCourse from "@/views/Admin/EditCourse";
+import CheckStudentInfo from "@/views/Admin/CheckStudentInfo";
+import CheckTeacherInfo from "@/views/Admin/CheckTeacherInfo";
+import CheckSchool from "@/views/Admin/CheckSchool";
+import CheckMajor from "@/views/Admin/CheckMajor";
+import CheckBuilding from "@/views/Admin/CheckBuilding";
+import CheckClassroom from "@/views/Admin/CheckClassroom";
+import CheckTime from "@/views/Admin/CheckTime";
+import CheckApplication from "@/views/Admin/CheckApplication";
+import CheckCourseOpen from "@/views/Admin/CheckCourseOpen";
+
+import Student from "@/views/Student/Student";
+import StudentChooseCourse from "@/views/Student/StudentChooseCourse";
+import StudentCheckCourse from "@/views/Student/StudentCheckCourse";
+import StudentInfo from "@/views/Student/StudentInfo";
+import StudentApply from "@/views/Student/StudentApply";
+import StudentViewApplication from "@/views/Student/StudentViewApplication";
+import StudentViewTable from "@/views/Student/StudentViewTable";
+
+import Teacher from "@/views/Teacher/Teacher";
+import TeacherInfo from "@/views/Teacher/TeacherInfo";
+import TeacherCourse from "@/views/Teacher/TeacherCourse";
+import TeacherApplication from "@/views/Teacher/TeacherApplication";
+import TeacherAddCourse from "@/views/Teacher/TeacherAddCourse";
 
 export const routes = [
   {

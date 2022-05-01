@@ -38,7 +38,9 @@ public class CourseContent {
         for(Major major:course.getMajorsOptional()){
             majorLim= majorLim + major.getName() + ";";
         }
-        majorLim = majorLim.substring(0,majorLim.length()-1);
+        if(majorLim.length()>0){
+            majorLim = majorLim.substring(0,majorLim.length()-1);
+        }
         return new CourseContent(course.getCourseId(),
                 course.getCourseNumber(),
                 course.getCourseName(),

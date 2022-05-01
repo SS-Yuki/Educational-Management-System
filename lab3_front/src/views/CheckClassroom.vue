@@ -12,14 +12,14 @@
       </div>
       <el-table :data="tableData" style="width: 100%" border stripe>
         <el-table-column prop="classroomName" label="教室" width="300" />
-        <el-table-column prop="teachingBuildingName" label="教学楼" width="300" />
+        <el-table-column prop="buildingName" label="教学楼" width="300" />
         <el-table-column prop="capacity" label="教室容量" width="300" />
         <el-table-column fixed="right" label="操作" width="300">
           <template #default="scope">
             <el-button type="text" size="small" @click="handleEdit(scope.row.classroomName, scope.row.teachingBuildingName, scope.row.capacity)">
               编辑
             </el-button>
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.teachingBuildingName,scope.row.classroomName)">
+            <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.buildingName,scope.row.classroomName,scope.row.capacity)">
               <template #reference>
                 <el-button type="text">删除</el-button>
               </template>
@@ -193,10 +193,11 @@ export default {
       this.editClassroom.TeachingBuilding=teachingBuildingName
       this.editClassroom.capacity=capacity
     },
-    handleDelete(teachingBuildingName,classroomName) {
+    handleDelete(buildingName,classroomName,capacity) {
       request.post("/admin/deleteClassroom", {
-        teachingBuildingName:teachingBuildingName,
-        classroomName:classroomName
+        buildingName:buildingName,
+        classroomName:classroomName,
+        capacity:capacity
       }).then(res => {
         if(res.data.code!==200) {
           this.$message({

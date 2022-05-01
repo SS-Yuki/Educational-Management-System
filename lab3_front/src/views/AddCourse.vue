@@ -16,60 +16,78 @@
         <el-form-item label="院系/专业">
           <el-cascader v-model="add_school_major" :options="majorOptionsChoose"/>
         </el-form-item>
+        <el-form-item label="教学楼/教室">
+          <el-cascader  v-model="add_building_classroom" :options="classroomOptions"/>
+        </el-form-item>
 <!--        time-->
         <el-form-item label="上课时间">
           <div>
             <el-checkbox-group  style="display: inline-block" disabled size="small">
               <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
-                                  value=item  disabled="spare[0][item]===true">
+                                  value=item  >
                 {{ startTimes[item].label + "-" + endTimes[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day1" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
-                                  value=item+1 >
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                  :disabled=spare[0][item]
+                                  style="display: block"
+                                  value=item+1
+              >
                 {{ timeNames[item].label}}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day2" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                  :disabled=spare[1][item]
+                                  style="display: block"
                                   value=item+1>
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day3" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                  :disabled=spare[2][item]
+                                  style="display: block"
                                   value=item+1 >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day4" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                  :disabled=spare[3][item]
+                                  style="display: block"
                                   value=item+1  >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day5" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                  :disabled=spare[4][item]
+                                  style="display: block"
                                   value=item+1 >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day6" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                  :disabled=spare[5][item]
+                                  style="display: block"
                                   value=item+1 >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
             <el-checkbox-group v-model="day7" style="display: inline-block" size="small">
-              <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+              <el-checkbox-button v-for="item in range" :key="item" :label=item+1
+                                  :disabled=spare[6][item]
+                                  style="display: block"
                                   value=item+1 >
                 {{ timeNames[item].label }}
               </el-checkbox-button>
@@ -78,9 +96,7 @@
 
         </el-form-item>
 <!--        time-->
-        <el-form-item label="教学楼/教室">
-          <el-cascader  v-model="add_building_classroom" :options="classroomOptions"/>
-        </el-form-item>
+
         <el-form-item label="学时">
           <el-input v-model="addCourse.creditHours" />
         </el-form-item>
@@ -224,6 +240,20 @@ export default {
           this.major_limit_show = "请选择专业"
         }
       }
+    },
+    add_building_classroom:{
+      deep: true,
+      handler(new_) {
+        request.post("/admin/getClassroomSpareTime",new_[1]).then(res=>{
+          this.spare=res.data.data.days
+          console.log(res.data.data.days)
+          console.log(this.spare)
+        })
+
+        console.log(this.spare[0][0])
+        console.log(this.spare[1][1])
+        console.log(this.spare[2][2])
+      }
     }
   },
   methods: {
@@ -283,18 +313,6 @@ export default {
         })
         this.length=this.timeNames.length
         this.range=index(this.length)
-        console.log(this.timeNames)
-        console.log(this.startTimes)
-        console.log((this.endTimes))
-      })
-    },
-    getSpare:function(){
-      request.post("/admin/getClassroomSpareTime").then(res=>{
-        if (!res.data) return
-        res.data.data.days.forEach ((item) => {
-          let option = {value: item, label: item}
-          this.spare.push(option)
-        })
       })
     },
 
@@ -323,9 +341,6 @@ export default {
       this.addCourse.semester = this.add_year_semester[1]
       this.addCourse.occupyTime = this.day
 
-      console.log(this.day1)
-
-      console.log(this.addCourse.occupyTime)
       if (this.limit_school_major !== []) {
         this.limit_school_major.forEach((item)=>{
           this.addCourse.majorLimits.push(item[1])
@@ -334,7 +349,6 @@ export default {
       else {
         this.addCourse.majorLimits = []
       }
-      console.log(this.addCourse.majorLimits)
       request.post("/admin/addCourse", this.addCourse).then(res => {
         if(res.data.code!==200) {
           this.$message({

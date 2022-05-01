@@ -5,6 +5,7 @@ import com.example.lab3_behind.common.forDomain.CourseSelectType;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
+import com.example.lab3_behind.utils.EnumTool;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -90,7 +91,10 @@ public class CourseApplying {
     )
     List<Major> majorsOptional;
 
-    public CourseApplying(CourseApplyingData courseApplyingData, School school, Major major, Classroom classroom, List<Major> majorsOptional){
+    @Column(name = "class_time")
+    private String classTime;
+
+    public CourseApplying(CourseApplyingData courseApplyingData, School school, Major major, Classroom classroom, List<Major> majorsOptional, String classTime){
         this.courseId = courseApplyingData.getId();
         this.teacherName = courseApplyingData.getApplicant();
         this.applicant = courseApplyingData.getApplicant();
@@ -103,5 +107,11 @@ public class CourseApplying {
         this.school = school;
         this.teacherNum = courseApplyingData.getTeacherNum();
         this.introduction = courseApplyingData.getIntroduction();
+        this.classroom = classroom;
+        this.schoolYear = EnumTool.transSchoolYear(courseApplyingData.getYear());
+        this.semester = EnumTool.transSemester(courseApplyingData.getSemester());
+        this.courseSelectType = EnumTool.transCourseSelectType(courseApplyingData.getSelectTypeString());
+        this.majorsOptional = majorsOptional;
+        this.classTime = classTime;
     }
 }

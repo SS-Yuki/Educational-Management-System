@@ -241,7 +241,9 @@ public class CourseServiceImpl implements CourseService {
         for (String str : courseApplyingData.getMajorLimits()){
             majorsOptional.add(majorRepository.findByName(str));
         }
-        CourseApplying courseApplying = new CourseApplying((courseApplyingData), school, major, classroom, majorsOptional);
+        String classTime = TimeTool.transSchedule(TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(),
+                TimeTool.getSectionNum(classroom.getSchedule()),courseApplyingData.getId()));
+        CourseApplying courseApplying = new CourseApplying((courseApplyingData), school, major, classroom, majorsOptional, classTime);
         courseApplying.setType(applyingType);
         Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
         if(teacher == null){
@@ -294,22 +296,35 @@ public class CourseServiceImpl implements CourseService {
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
 
+        //时间表处理：
         Course newCourse = courseRepository.findByCourseNumberAndTeacherNumAndSchoolYearAndSemester(
                 course.getCourseNumber(), course.getTeacherNum(), course.getSchoolYear(), course.getSemester()
         );
+        List<List<Integer>> classSchedule;
+        classSchedule = TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), newCourse.getCourseId());
+        newCourse.setClassTime(TimeTool.transSchedule(classSchedule));
+        courseRepository.save(newCourse);
         try {
-            timeMatrix = TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
-                    TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), newCourse.getCourseId()));
+            timeMatrix = TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()), classSchedule);
         } catch (Exception e) {
             throw e;
         }
         classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
         classroomRepository.save(classroom);
 
-        return course;
+        return newCourse;
     }
 
-    private Course insertCourse(CourseApplying courseApplying) {
+    private Course insertCourse(CourseApplying courseApplying) throws Exception {
+        Classroom classroom = classroomRepository.findByName(courseApplying.getClassroom().getName());
+        try {
+            classroom.setSchedule(TimeTool.transSchedule(
+                    TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
+                            TimeTool.makeTimeMatrix(courseApplying.getClassTime()))
+                    ));
+        } catch (Exception e) {
+            throw e;
+        }
         Teacher teacher = teacherRepository.findByJobNumber(courseApplying.getTeacherNum());
         Course course = new Course(courseApplying);
         teacher.getCourses().add(course);

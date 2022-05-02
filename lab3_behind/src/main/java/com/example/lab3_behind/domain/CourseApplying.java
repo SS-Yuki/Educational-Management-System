@@ -1,10 +1,13 @@
 package com.example.lab3_behind.domain;
 
+import com.example.lab3_behind.common.Global;
 import com.example.lab3_behind.common.forDomain.CourseApplyingType;
 import com.example.lab3_behind.common.forDomain.CourseSelectType;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
+import com.example.lab3_behind.utils.EnumTool;
+import com.example.lab3_behind.utils.TimeTool;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -90,7 +93,10 @@ public class CourseApplying {
     )
     List<Major> majorsOptional;
 
-    public CourseApplying(CourseApplyingData courseApplyingData, School school, Major major, Classroom classroom, List<Major> majorsOptional){
+    @Column(name = "class_time")
+    private String classTime;
+
+    public CourseApplying(CourseApplyingData courseApplyingData, School school, Major major, Classroom classroom, List<Major> majorsOptional, String classTime){
         this.courseId = courseApplyingData.getId();
         this.teacherName = courseApplyingData.getApplicant();
         this.applicant = courseApplyingData.getApplicant();
@@ -103,5 +109,39 @@ public class CourseApplying {
         this.school = school;
         this.teacherNum = courseApplyingData.getTeacherNum();
         this.introduction = courseApplyingData.getIntroduction();
+        this.classroom = classroom;
+        this.schoolYear = EnumTool.transSchoolYear(courseApplyingData.getYear());
+        this.semester = EnumTool.transSemester(courseApplyingData.getSemester());
+        this.courseSelectType = EnumTool.transCourseSelectType(courseApplyingData.getSelectTypeString());
+        this.majorsOptional = majorsOptional;
+        this.classTime = classTime;
+    }
+
+    public String getClassTime(){
+        String result = "";
+        List<List<Integer>> time = TimeTool.makeTimeMatrix(this.classTime);
+        for(int i = 0; i < Global.WEEKDAY; i ++){
+            String day = "周";
+            switch (i) {
+                case(0): day = day + "一："; break;
+                case(1): day = day + "二："; break;
+                case(2): day = day + "三："; break;
+                case(3): day = day + "四："; break;
+                case(4): day = day + "五："; break;
+                case(5): day = day + "六："; break;
+                case(6): day = day + "日："; break;
+            }
+            boolean isAdd = false;
+            int sections = time.get(0).size();
+            for(int k = 0; k < sections; k++){
+                if(time.get(i).get(k).equals(this.courseId)){
+                    isAdd = true;
+                    day = day + (k + 1) + " ";
+                }
+            }
+            day = day + "节\n";
+            if(isAdd) result = result + day;
+        }
+        return result;
     }
 }

@@ -111,7 +111,6 @@
       <!--时间-->
       <el-button type="primary" @click="save">确认</el-button>
     </el-form>
-    <el-button @click="fq">qqq</el-button>
   </div>
 </template>
 

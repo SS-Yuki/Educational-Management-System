@@ -218,6 +218,13 @@ export default {
   computed: {
     day(){
       return [this.day1,this.day2,this.day3,this.day4,this.day5,this.day6,this.day7]
+    },
+    spareJudge() {
+      return {
+        classroom: this.add_building_classroom[1],
+        year: this.add_year_semester[0],
+        semester: this.add_year_semester[1]
+      }
     }
   },
   watch: {
@@ -241,9 +248,8 @@ export default {
         }
       }
     },
-    add_building_classroom:{
+    spareJudge:{
       deep: true,
-
       handler(new_) {
         this.day1=[]
         this.day2=[]
@@ -252,9 +258,14 @@ export default {
         this.day5=[]
         this.day6=[]
         this.day7=[]
-        request.post("/common/getClassroomSpareTime",new_[1]).then(res=>{
+        console.log(this.spareJudge)
+        for (let key in new_) {
+          if (new_[key] === null || new_[key] === undefined) {
+            return;
+          }
+        }
+        request.post("/common/getClassroomSpareTime",new_).then(res=>{
           this.spare=res.data.data.days
-
         })
       }
     }

@@ -329,12 +329,27 @@ public class CourseServiceImpl implements CourseService {
     private Course insertCourse(CourseApplying courseApplying) throws Exception {
         Classroom classroom = classroomRepository.findByName(courseApplying.getClassroom().getName());
         try {
-            classroom.setSchedule(TimeTool.transSchedule(
-                    TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
-                            TimeTool.makeTimeMatrix(courseApplying.getClassTime()))
-                    ));
+            //此处检测时间冲突
+            TimeTool.addTimeMatrix(
+                    this.getClassroomTime(courseApplying.getClassroom().getName(),
+                            courseApplying.getSchoolYear(),
+                            courseApplying.getSemester()),
+                    TimeTool.makeTimeMatrix(courseApplying.getClassTime()));
         } catch (Exception e) {
             throw e;
+        }
+        YearSemesterPair yearAndSemester = TimeTool.getPresentYearAndSemester();
+        if((courseApplying.getSchoolYear() == EnumTool.transSchoolYear(yearAndSemester.getYear()))
+                &&(courseApplying.getSemester() == EnumTool.transSemester(yearAndSemester.getSemester()))){
+            try {
+                classroom.setSchedule(TimeTool.transSchedule(
+                        TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
+                                TimeTool.makeTimeMatrix(courseApplying.getClassTime()))
+                ));
+            } catch (Exception e) {
+                throw e;
+            }
+            classroomRepository.save(classroom);
         }
         Teacher teacher = teacherRepository.findByJobNumber(courseApplying.getTeacherNum());
         Course course = new Course(courseApplying);
@@ -358,6 +373,7 @@ public class CourseServiceImpl implements CourseService {
         if(teacher == null){
             throw new Exception("所修改课程的教师不存在");
         }
+        //TODO: 时间处理
         Course thisCourse = teacher.getCourses().get(teacher.getCourses().indexOf(course));
         thisCourse.setCourseName(courseApplyingData.getCourseName());
         thisCourse.setCourseNumber(courseApplyingData.getCourseNumber());
@@ -383,13 +399,18 @@ public class CourseServiceImpl implements CourseService {
         if(courseApplying!=null){
             teacher.getCoursesApplying().remove(courseApplying);
         }
+
+        YearSemesterPair yearAndSemester = TimeTool.getPresentYearAndSemester();
+        if((course.getSchoolYear() == EnumTool.transSchoolYear(yearAndSemester.getYear()))
+                &&(course.getSemester() == EnumTool.transSemester(yearAndSemester.getSemester()))){
+            Classroom classroom = course.getClassroom();
+            List<List<Integer>> timeMatrix = TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()), courseId);
+            classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
+            classroomRepository.save(classroom);
+        }
+
         teacher.getCourses().remove(course);
         teacherRepository.save(teacher);
-
-        Classroom classroom = course.getClassroom();
-        List<List<Integer>> timeMatrix = TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()), courseId);
-        classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
-        classroomRepository.save(classroom);
         return course;
     }
 

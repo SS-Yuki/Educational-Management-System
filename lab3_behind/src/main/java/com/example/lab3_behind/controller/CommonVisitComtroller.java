@@ -1,9 +1,6 @@
 package com.example.lab3_behind.controller;
 
-import com.example.lab3_behind.common.ClassroomAndCourseId;
-import com.example.lab3_behind.common.CourseContent;
-import com.example.lab3_behind.common.TimeData;
-import com.example.lab3_behind.common.addCourseForm;
+import com.example.lab3_behind.common.*;
 import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.TimeTable;
 import com.example.lab3_behind.domain.dto.YearSemesterPair;
@@ -11,6 +8,7 @@ import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.CourseService;
 import com.example.lab3_behind.service.SchoolService;
 import com.example.lab3_behind.service.TeachingAffairsService;
+import com.example.lab3_behind.utils.EnumTool;
 import com.example.lab3_behind.utils.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -66,10 +64,10 @@ public class CommonVisitComtroller {
     }
 
     @RequestMapping("/getClassroomSpareTime")
-    public Result getClassroomSpareTime(@RequestBody String classroom){
+    public Result getClassroomSpareTime(@RequestBody ClassroomAndYearAndSemester payloads){
         try{
             Map<String,Object> map = new HashMap<>();
-            List<List<Boolean>> days= teachingAffairsService.getClassroomTime(classroom);
+            List<List<Boolean>> days= teachingAffairsService.getClassroomTime(payloads.getClassroom(), EnumTool.transSchoolYear(payloads.getYear()),EnumTool.transSemester(payloads.getSemester()));
             map.put("days",days);
             return Result.succ(map);
         } catch (Exception e){

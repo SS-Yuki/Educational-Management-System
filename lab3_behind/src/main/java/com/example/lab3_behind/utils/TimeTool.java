@@ -28,6 +28,18 @@ public class TimeTool {
         return result;
     }
 
+    public static List<List<Integer>> getEmptyTimeMatrix(Integer sections){
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = 0; i < Global.WEEKDAY; i ++){
+            List<Integer> temp = new ArrayList<>();
+            for(int j = 0; j < sections; j ++){
+                temp.add(0);
+            }
+            result.add(temp);
+        }
+        return result;
+    }
+
     public static List<List<Boolean>> getBoolTime(String schedule){
         List<List<Boolean>> result = new ArrayList<>();
         for(int i = 0; i < Global.WEEKDAY; i++){

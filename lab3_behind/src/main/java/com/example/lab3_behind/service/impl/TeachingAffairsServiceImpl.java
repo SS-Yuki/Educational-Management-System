@@ -3,15 +3,9 @@ package com.example.lab3_behind.service.impl;
 import com.example.lab3_behind.common.Global;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
-import com.example.lab3_behind.domain.Classroom;
-import com.example.lab3_behind.domain.Course;
-import com.example.lab3_behind.domain.TeachingBuilding;
-import com.example.lab3_behind.domain.TimeTable;
+import com.example.lab3_behind.domain.*;
 import com.example.lab3_behind.domain.dto.*;
-import com.example.lab3_behind.repository.ClassroomRepository;
-import com.example.lab3_behind.repository.CourseRepository;
-import com.example.lab3_behind.repository.TeachingBuildingRepository;
-import com.example.lab3_behind.repository.TimeTableRepository;
+import com.example.lab3_behind.repository.*;
 import com.example.lab3_behind.service.TeachingAffairsService;
 import com.example.lab3_behind.utils.EnumTool;
 import com.example.lab3_behind.utils.TimeTool;
@@ -29,14 +23,16 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     TeachingBuildingRepository teachingBuildingRepository;
     TimeTableRepository timeTableRepository;
     CourseRepository courseRepository;
+    CourseApplyingRepository courseApplyingRepository;
     @Autowired
-    public TeachingAffairsServiceImpl(ClassroomRepository classroomRepository,
-                                      TeachingBuildingRepository teachingBuildingRepository,
-                                      TimeTableRepository timeTableRepository,CourseRepository courseRepository){
+    public TeachingAffairsServiceImpl(ClassroomRepository classroomRepository, TeachingBuildingRepository teachingBuildingRepository,
+                                      TimeTableRepository timeTableRepository,CourseRepository courseRepository,
+                                      CourseApplyingRepository courseApplyingRepository){
         this.classroomRepository = classroomRepository;
         this.teachingBuildingRepository = teachingBuildingRepository;
         this.timeTableRepository = timeTableRepository;
         this.courseRepository = courseRepository;
+        this.courseApplyingRepository = courseApplyingRepository;
     }
 
     @Override
@@ -85,7 +81,12 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             classroom.setSchedule(classroom.getSchedule() + "0-0-0-0-0-0-0\n");
             classroomRepository.save(classroom);
         }
-
+        for(Course course : courseRepository.findAll()){
+            course.setClassTime(course.getClassTime() + "0-0-0-0-0-0-0\n");
+        }
+        for(CourseApplying courseApplying : courseApplyingRepository.findAll()){
+            courseApplying.setClassTime(courseApplying.getClassTime() + "0-0-0-0-0-0-0\n");
+        }
         return newTime;
     }
 
@@ -108,22 +109,43 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             throw new Exception("当前已无课程节次时间安排，无法删除");
         }
         TimeTable last = timeTableRepository.findBySection(getLastSection());
-
+        boolean canDelete = true;
         List<Classroom> allClassrooms = classroomRepository.findAll();
+        List<Course> allCourse = courseRepository.findAll();
+        List<CourseApplying> allCourseApplying = courseApplyingRepository.findAll();
         for(Classroom classroom : allClassrooms){
-            int index = 0;
-            int index1 = 0;
-            int index2 = classroom.getSchedule().indexOf("\n") + 1;
-            while (index2 != 0){
-                index = index1;
-                //Todo :判断最后一行有没有课，有就不能删
-                index1 = index2;
-                index2 = classroom.getSchedule().indexOf("\n", index1) + 1;
+            int index = isDeleteOneTime(classroom.getSchedule());
+            if(index == -1){
+                canDelete = false;
+                break;
             }
             classroom.setSchedule(classroom.getSchedule().substring(0,index));
-            classroomRepository.save(classroom);
         }
-
+        if(canDelete){
+            for (Course course : allCourse){
+                int index = isDeleteOneTime(course.getClassTime());
+                if(index == -1){
+                    canDelete = false;
+                    break;
+                }
+                course.setClassTime(course.getClassTime().substring(0,index));
+            }
+        }
+        if(canDelete){
+            for (CourseApplying courseApplying : allCourseApplying){
+                int index = isDeleteOneTime(courseApplying.getClassTime());
+                if(index == -1){
+                    canDelete = false;
+                    break;
+                }
+                courseApplying.setClassTime(courseApplying.getClassTime().substring(0,index));
+            }
+        }
+        if (canDelete){
+            classroomRepository.saveAll(allClassrooms);
+            courseRepository.saveAll(allCourse);
+            courseApplyingRepository.saveAll(allCourseApplying);
+        }
         timeTableRepository.delete(last);
         return last;
     }
@@ -334,6 +356,26 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             }
         }
         return last;
+    }
+
+
+
+    private int isDeleteOneTime(String schedule){
+        int index = 0;
+        int index1 = 0;
+        int index2 = schedule.indexOf("\n") + 1;
+        while (index2 != 0) {
+            index = index1;
+            //Todo :判断最后一行有没有课，有就不能删
+            String section = schedule.substring(index1, index2 - 1);
+            String[] sectionArr = section.split("-");
+            for (String str : sectionArr) {
+                if (!Integer.valueOf(str).equals(0)) return -1;
+            }
+            index1 = index2;
+            index2 = schedule.indexOf("\n", index1) + 1;
+        }
+        return index;
     }
 
 }

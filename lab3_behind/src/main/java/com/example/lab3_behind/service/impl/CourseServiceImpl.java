@@ -318,7 +318,7 @@ public class CourseServiceImpl implements CourseService {
     private Course insertCourse(CourseApplying courseApplying) throws Exception {
         Classroom classroom = classroomRepository.findByName(courseApplying.getClassroom().getName());
         try {
-            classroom.setName(TimeTool.transSchedule(
+            classroom.setSchedule(TimeTool.transSchedule(
                     TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
                             TimeTool.makeTimeMatrix(courseApplying.getClassTime()))
                     ));

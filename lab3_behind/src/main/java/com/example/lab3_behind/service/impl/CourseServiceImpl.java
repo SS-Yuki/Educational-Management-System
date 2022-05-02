@@ -3,6 +3,8 @@ package com.example.lab3_behind.service.impl;
 import com.example.lab3_behind.common.forDomain.CourseApplyingType;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
+import com.example.lab3_behind.domain.dto.YearSemesterPair;
+import com.example.lab3_behind.utils.EnumTool;
 import com.example.lab3_behind.utils.FormatCheck;
 import com.example.lab3_behind.domain.*;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
@@ -26,11 +28,12 @@ public class CourseServiceImpl implements CourseService {
     SchoolRepository schoolRepository;
     MajorRepository majorRepository;
     ClassroomRepository classroomRepository;
+    TimeTableRepository timeTableRepository;
     @Autowired
     public CourseServiceImpl(CourseRepository courseRepository, CourseApplyingRepository courseApplyingRepository,
                              TeacherRepository teacherRepository, StudentRepository studentRepository,
                              SchoolRepository schoolRepository, MajorRepository majorRepository,
-                             ClassroomRepository classroomRepository ){
+                             ClassroomRepository classroomRepository, TimeTableRepository timeTableRepository){
         this.schoolRepository = schoolRepository;
         this.majorRepository = majorRepository;
         this.courseRepository = courseRepository;
@@ -38,6 +41,7 @@ public class CourseServiceImpl implements CourseService {
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
         this.classroomRepository = classroomRepository;
+        this.timeTableRepository = timeTableRepository;
     }
 
     @Override
@@ -280,10 +284,12 @@ public class CourseServiceImpl implements CourseService {
             throw new Exception("课程所属学院下不存在此专业");
         }
         Classroom classroom = classroomRepository.findByName(courseApplyingData.getClassroom());
-        List<List<Integer>> timeMatrix;
         try {
             //此处检测时间冲突
-            timeMatrix = TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
+            TimeTool.addTimeMatrix(
+                    this.getClassroomTime(courseApplyingData.getClassroom(),
+                            EnumTool.transSchoolYear(courseApplyingData.getYear()),
+                            EnumTool.transSemester(courseApplyingData.getSemester())),
                     TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), -1));
         } catch (Exception e) {
             throw e;
@@ -304,13 +310,18 @@ public class CourseServiceImpl implements CourseService {
         classSchedule = TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), newCourse.getCourseId());
         newCourse.setClassTime(TimeTool.transSchedule(classSchedule));
         courseRepository.save(newCourse);
-        try {
-            timeMatrix = TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()), classSchedule);
-        } catch (Exception e) {
-            throw e;
+        YearSemesterPair yearAndSemester = TimeTool.getPresentYearAndSemester();
+        List<List<Integer>> timeMatrix;
+        if((newCourse.getSchoolYear() == EnumTool.transSchoolYear(yearAndSemester.getYear()))
+                &&(newCourse.getSemester() == EnumTool.transSemester(yearAndSemester.getSemester()))){
+            try {
+                timeMatrix = TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()), classSchedule);
+            } catch (Exception e) {
+                throw e;
+            }
+            classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
+            classroomRepository.save(classroom);
         }
-        classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
-        classroomRepository.save(classroom);
 
         return newCourse;
     }
@@ -380,5 +391,34 @@ public class CourseServiceImpl implements CourseService {
         classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
         classroomRepository.save(classroom);
         return course;
+    }
+
+    private List<List<Integer>> getClassroomTime(String name, SchoolYear schoolYear, Semester semester) throws Exception {
+        Classroom classroom = classroomRepository.findByName(name);
+        if(classroom == null){
+            throw new Exception("教室不存在");
+        }
+        List<Course> allCourse = courseRepository.findByClassroomAndSchoolYearAndSemester(classroom, schoolYear, semester);
+        List<List<Integer>> scheduleList = TimeTool.getEmptyTimeMatrix(this.getLastSection());
+        for (int i = 0; i < allCourse.size(); i++){
+            try {
+                scheduleList = TimeTool.addTimeMatrix(scheduleList, TimeTool.makeTimeMatrix(allCourse.get(i).getClassTime()));
+            } catch (Exception e){
+                throw e;
+            }
+        }
+        return scheduleList;
+    }
+
+    private Integer getLastSection(){
+        Integer last = 0;
+        List<TimeTable> timeTables = timeTableRepository.findAll();
+        for(TimeTable timeTable : timeTables){
+            Integer temp = timeTable.getSection();
+            if(temp.compareTo(last) >= 0){
+                last = temp;
+            }
+        }
+        return last;
     }
 }

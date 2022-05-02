@@ -42,8 +42,9 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             throw new Exception("教室不存在");
         }
         List<Course> allCourse = courseRepository.findByClassroomAndSchoolYearAndSemester(classroom, schoolYear, semester);
-        List<List<Integer>> scheduleList = TimeTool.makeTimeMatrix(allCourse.get(0).getClassTime());
-        for (int i = 1; i < allCourse.size(); i++){
+
+        List<List<Integer>> scheduleList = TimeTool.getEmptyTimeMatrix(getLastSection());
+        for (int i = 0; i < allCourse.size(); i++){
             scheduleList = TimeTool.addTimeMatrix(scheduleList, TimeTool.makeTimeMatrix(allCourse.get(i).getClassTime()));
         }
         String schedule = TimeTool.transSchedule(scheduleList);

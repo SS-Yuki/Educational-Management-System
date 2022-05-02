@@ -180,7 +180,7 @@ export default {
             })
           }
         })
-      }, 10)
+      }, 500)
     },
     handleEdit(courseId,courseName,courseNumber,teacherNum,major,school,classPeriod,classroom,
                creditHours,credits,capacity,introduction,applicant){

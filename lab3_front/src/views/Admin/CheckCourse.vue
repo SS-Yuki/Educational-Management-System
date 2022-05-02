@@ -232,7 +232,7 @@ export default {
             })
           }
         })
-      }, 10)
+      }, 500)
     },
     add:function (){
       this.$router.push("/admin/addcourse")

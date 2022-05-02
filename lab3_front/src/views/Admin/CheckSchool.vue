@@ -128,7 +128,7 @@ export default {
             })
           }
         })
-      }, 10)
+      }, 500)
     },
     add:function (){
       this.dialogVisible=true

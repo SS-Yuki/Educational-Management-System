@@ -270,7 +270,7 @@ export default {
             })
           }
         })
-      }, 10)
+      }, 500)
     },
     getOptionMajor: function () {
       request.post("/common/allMajors").then(res => {

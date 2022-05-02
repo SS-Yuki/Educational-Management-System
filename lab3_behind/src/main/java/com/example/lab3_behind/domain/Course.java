@@ -127,7 +127,7 @@ public class Course {
         this.classTime = courseApplying.getClassTime();
     }
 
-    public String getClassTime(){
+    public String getClassTimeString(){
         String result = "";
         List<List<Integer>> time = TimeTool.makeTimeMatrix(this.classTime);
         for(int i = 0; i < Global.WEEKDAY; i ++){

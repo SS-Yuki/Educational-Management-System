@@ -310,6 +310,91 @@
 
 
 
+## 5.2任务
+
+张佳洵：
+
+完成PageTool类，实现一个MyPage类
+
+在工具类中完成学年学期之间的比较。
+
+杨添淇：
+
+1.删课，删除课程的时候顺带修改课程对应教室的课表
+
+2.改课信息，修改课程信息的时候，哪些可以改，哪些不能改可以参考这个
+
+>课程的信息有这些不可修改：开课院系，开课专业，任课老师,开课学年，开课学期，
+>
+>课程的可以修改信息：专业限制类型，可选专业(List)，注意，只有当这门课的开课学年和学期在当前学期之后的时候才可以修改这两个信息
+
+3.老师申请开课
+
+4.老师申请删课
+
+5.老师申请改课信息
+
+6.管理员拒绝老师的申请
+
+7.管理员通过老师的申请
+
+于康：
+
+进一步完成修改课程界面，用上那两个端口，
+
+> /common/getClassroomOccupyByOneCourse
+>
+> /common/getClassroomSpareTimeExceptOneCourse
+
+完成老师打申请的界面
+
+王骏飞：
+
+把所有的延迟改成1秒，也就是我们进行修改之后界面的更新的延迟。
+
+验收管理员开课，改课，删课，老师开课，改课，删课，以及已完成的功能
+
+学生打申请的界面，可以利用courseId访问
+
+> /common/findOneCourseInfo
+
+这个端口或者这么课的所有信息,会有这些信息。现实出来就好，不用给学生修改，这是disable
+
+```java
+    private Integer courseId;
+    private String courseNumber;
+    private String courseName;
+    private String teacherNum;
+    private String teacherName;
+    private String school;
+    private String major;
+    private String building;
+    private String classroom ;
+    private Integer creditHours;
+    private Integer credits;
+    private Integer capacity;
+    private String introduction;
+    private String selectTypeString;
+    private String majorLimits;
+    private String year;
+    private String semester;
+    private String occupyTime;
+```
+
+
+
+## 后端后期需要补上的检查
+
+添加新时间段的时候，检查和上一个时间段的关系
+
+
+
+添加课程的时候，检查课程容量和教室容量的关系
+
+修改教室容量的时候，检查所有在这个教室上课的课程的容量，保证大于这些课程的容量。
+
+
+
 
 
 

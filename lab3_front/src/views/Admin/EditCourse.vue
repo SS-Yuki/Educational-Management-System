@@ -24,20 +24,25 @@
         <div>
           <el-checkbox-group  style="display: inline-block" disabled size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
-                                value=item  disabled="spare[0][item]===true">
+                                value=item>
               {{ startTimes[item].label + "-" + endTimes[item].label }}
             </el-checkbox-button>
           </el-checkbox-group>
 
           <el-checkbox-group v-model="day1" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
-                                value=item+1 >
+                                :disabled=spare[0][item]
+                                :checked=occupy[0][item]
+                                value=item+1
+            >
               {{ timeNames[item].label}}
             </el-checkbox-button>
           </el-checkbox-group>
 
           <el-checkbox-group v-model="day2" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+                                :disabled=spare[1][item]
+                                :checked=occupy[1][item]
                                 value=item+1>
               {{ timeNames[item].label }}
             </el-checkbox-button>
@@ -45,6 +50,8 @@
 
           <el-checkbox-group v-model="day3" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+                                :disabled=spare[2][item]
+                                :checked=occupy[2][item]
                                 value=item+1 >
               {{ timeNames[item].label }}
             </el-checkbox-button>
@@ -52,6 +59,8 @@
 
           <el-checkbox-group v-model="day4" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+                                :disabled=spare[3][item]
+                                :checked=occupy[3][item]
                                 value=item+1  >
               {{ timeNames[item].label }}
             </el-checkbox-button>
@@ -59,6 +68,8 @@
 
           <el-checkbox-group v-model="day5" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+                                :disabled=spare[4][item]
+                                :checked=occupy[4][item]
                                 value=item+1 >
               {{ timeNames[item].label }}
             </el-checkbox-button>
@@ -66,6 +77,8 @@
 
           <el-checkbox-group v-model="day6" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+                                :disabled=spare[5][item]
+                                :checked=occupy[5][item]
                                 value=item+1 >
               {{ timeNames[item].label }}
             </el-checkbox-button>
@@ -73,6 +86,8 @@
 
           <el-checkbox-group v-model="day7" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
+                                :disabled=spare[6][item]
+                                :checked=occupy[6][item]
                                 value=item+1 >
               {{ timeNames[item].label }}
             </el-checkbox-button>
@@ -158,6 +173,7 @@ export default {
       startTimes:[],
       endTimes:[],
       spare:[],
+      occupy:[],
       day1:[],
       day2:[],
       day3:[],
@@ -197,15 +213,21 @@ export default {
   },
   props:["showData","id"],
   mounted() {
+    this.getTime()
     this.getOptionMajor()
     this.getOptionClassroom()
     this.getOptionSemesters()
-    this.getTime()
     this.show()
   },
   computed: {
     day(){
       return [this.day1,this.day2,this.day3,this.day4,this.day5,this.day6,this.day7]
+    },
+    spare_occupyJudge() {
+      return {
+        courseId: this.editCourse.id,
+        classroom: this.edit_building_classroom[1],
+      }
     }
   },
   watch: {
@@ -228,6 +250,30 @@ export default {
           this.major_limit_show = "请选择专业"
         }
       }
+    },
+    spare_occupyJudge: {
+      deep: true,
+      handler(new_) {
+        this.day1 = []
+        this.day2 = []
+        this.day3 = []
+        this.day4 = []
+        this.day5 = []
+        this.day6 = []
+        this.day7 = []
+        console.log(this.spareJudge)
+        for (let key in new_) {
+          if (new_[key] === null || new_[key] === undefined) {
+            return;
+          }
+        }
+        request.post("/common/getClassroomSpareTimeExceptOneCourse", new_).then(res => {
+          this.spare = res.data.data.days
+        })
+        request.post("/common/getClassroomOccupyByOneCourse", new_).then(res => {
+          this.occupy = res.data.data.occupys
+        })
+      }
     }
   },
   methods: {
@@ -241,7 +287,6 @@ export default {
             this.editCourse.courseName = showData.courseName
             this.editCourse.courseNumber = showData.courseNumber
             this.editCourse.teacherNum = showData.teacherNum
-            this.editCourse.teacherName = showData.teacherName
             this.editCourse.major = showData.major
             this.editCourse.school = showData.school
             this.editCourse.classroom = showData.classroom
@@ -254,7 +299,7 @@ export default {
             this.editCourse.introduction = showData.introduction
             this.editCourse.selectTypeString = showData.selectTypeString
             //申请人
-            this.editCourse.majorLimits = showData.majorLimits
+            // this.editCourse.majorLimits = showData.majorLimits
             this.editCourse.year = showData.year
             this.editCourse.semester = showData.semester
             this.edit_school_major = [showData.school, showData.major]
@@ -271,6 +316,12 @@ export default {
           }
         })
       }, 500)
+    },
+    getChecked:function () {
+      request.post("/common/getClassroomOccupyByOneCourse").then(res => {
+        let that = this
+        if (!res.data) return})
+
     },
     getOptionMajor: function () {
       request.post("/common/allMajors").then(res => {
@@ -329,15 +380,12 @@ export default {
         this.length=this.timeNames.length
         this.range=index(this.length)
       })
-    },
-    getSpare:function(){
-      request.post("/admin/getClassroomSpareTime").then(res=>{
-        if (!res.data) return
-        res.data.data.days.forEach ((item) => {
-          let option = {value: item, label: item}
-          this.spare.push(option)
-        })
-      })
+
+      let arr = new Array(this.length).fill(true);
+      for(let i = 0; i < 7; i++) {
+        this.spare.push(arr)
+        this.occupy.push(arr)
+      }
     },
 
     //标记
@@ -373,7 +421,7 @@ export default {
       else {
         this.editCourse.majorLimits = []
       }
-      request.post("/admin/editCourse", this.editCourse).then(res => {
+      request.post("/admin/updateCourseInfo", this.editCourse).then(res => {
         if(res.data.code!==200) {
           this.$message({
             type:"error",

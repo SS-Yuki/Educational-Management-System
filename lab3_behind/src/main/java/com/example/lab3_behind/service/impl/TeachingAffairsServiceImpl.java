@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +40,17 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     }
 
     @Override
-    public List<List<Boolean>> getClassroomTime(String name) throws Exception {
+    public List<List<Boolean>> getClassroomTime(String name, SchoolYear schoolYear, Semester semester) throws Exception {
         Classroom classroom = classroomRepository.findByName(name);
         if(classroom == null){
             throw new Exception("教室不存在");
         }
-        String schedule = classroom.getSchedule();
+        List<Course> allCourse = courseRepository.findByClassroomAndSchoolYearAndSemester(classroom, schoolYear, semester);
+        List<List<Integer>> scheduleList = TimeTool.makeTimeMatrix(allCourse.get(0).getClassTime());
+        for (int i = 1; i < allCourse.size(); i++){
+            scheduleList = TimeTool.addTimeMatrix(scheduleList, TimeTool.makeTimeMatrix(allCourse.get(i).getClassTime()));
+        }
+        String schedule = TimeTool.transSchedule(scheduleList);
         return TimeTool.getBoolTime(schedule);
     }
 

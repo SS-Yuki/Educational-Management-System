@@ -87,6 +87,9 @@ public class Course {
     )
     List<Major> majorsOptional;
 
+    @Column(name = "class_time")
+    private String classTime;
+
     public Course(CourseApplyingData courseApplyingData, School school, Major major, Classroom classroom, List<Major> majorsOptional){
         this.teacherName = courseApplyingData.getApplicant();
         this.capacity = courseApplyingData.getCapacity();
@@ -121,11 +124,12 @@ public class Course {
         this.semester = courseApplying.getSemester();
         this.courseSelectType = courseApplying.getCourseSelectType();
         this.majorsOptional = courseApplying.majorsOptional;
+        this.classTime = courseApplying.getClassTime();
     }
 
     public String getClassTime(){
         String result = "";
-        List<List<Integer>> time = TimeTool.makeTimeMatrix(this.classroom.getSchedule());
+        List<List<Integer>> time = TimeTool.makeTimeMatrix(this.classTime);
         for(int i = 0; i < Global.WEEKDAY; i ++){
             String day = "周";
             switch (i) {

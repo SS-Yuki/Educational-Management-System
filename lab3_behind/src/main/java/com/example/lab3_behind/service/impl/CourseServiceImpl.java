@@ -296,28 +296,32 @@ public class CourseServiceImpl implements CourseService {
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
 
+        //时间表处理：
         Course newCourse = courseRepository.findByCourseNumberAndTeacherNumAndSchoolYearAndSemester(
                 course.getCourseNumber(), course.getTeacherNum(), course.getSchoolYear(), course.getSemester()
         );
+        List<List<Integer>> classSchedule;
+        classSchedule = TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), newCourse.getCourseId());
+        newCourse.setClassTime(TimeTool.transSchedule(classSchedule));
+        courseRepository.save(newCourse);
         try {
-            timeMatrix = TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
-                    TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), newCourse.getCourseId()));
+            timeMatrix = TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()), classSchedule);
         } catch (Exception e) {
             throw e;
         }
         classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
         classroomRepository.save(classroom);
 
-        return course;
+        return newCourse;
     }
 
     private Course insertCourse(CourseApplying courseApplying) throws Exception {
         Classroom classroom = classroomRepository.findByName(courseApplying.getClassroom().getName());
         try {
-            classroom.setName(
-                    TimeTool.transSchedule(TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
-                            TimeTool.makeTimeMatrix(courseApplying.getClassTime())))
-            );
+            classroom.setName(TimeTool.transSchedule(
+                    TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
+                            TimeTool.makeTimeMatrix(courseApplying.getClassTime()))
+                    ));
         } catch (Exception e) {
             throw e;
         }

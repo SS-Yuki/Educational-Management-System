@@ -7,28 +7,17 @@
           <el-table-column prop="value"  width="180" />
         </el-table>
       </div>
-      <div style="margin-left:300px;margin-right: 300px;margin-bottom: 5px;margin-top: 10px">
-        <div>
-          <el-button size="large" @click="open" type="primary">开启选课</el-button>
-          <el-button size="large" @click="close" type="primary">关闭选课</el-button>
-        </div>
+      <div style="margin:10px 300px">
+        <el-button size="large" @click="openPermission" type="primary" :round="true">开放学生选课权限</el-button>
+        <el-button size="large" @click="closePermission" type="primary" :round="true">关闭学生选课权限</el-button>
       </div>
-
-      <div style="margin-left:300px;margin-right: 300px">
-        <div>
-          <el-button size="large" @click="next" type="primary">下一轮选课</el-button>
-          <el-button size="large" @click="select" type="primary">随机筛选</el-button>
-        </div>
+      <div style="margin:10px 300px">
+        <el-button size="large" @click="nextSelect" type="primary" :round="true">下一轮选课</el-button>
+        <el-button size="large" @click="randomSelect" type="primary" :round="true">随机筛选</el-button>
       </div>
-      <div style="margin: 10px 0">
-        <el-pagination
-            v-model:currentPage="currentPage"
-            v-model:page-size="pageSize"
-            :page-sizes="[5,10,20]"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-            @current-change="handleCurrentChange"
-        />
+      <div style="margin:10px 300px">
+        <el-button size="large" @click="startSelect" type="primary" :round="true">开始本学期选课</el-button>
+        <el-button size="large" @click="endSelect" type="primary" :round="true">结束本学期选课</el-button>
       </div>
     </div>
   </div>
@@ -43,48 +32,60 @@ export default {
     return{
       status:false,
       tableData:[
-        {key:'选课状态',value:''},
+        {key:'学生选课权限',value:''},
         {key:'选课轮数',value:''}
       ]
     }
   },
   mounted() {
-    this.load()
+    this.getIfSelect()
     this.getTurn()
   },
   methods:{
-    open:function(){
+    openPermission:function(){
       request.post("/admin/openSelectCourse",)
-      this.load()
+      this.getIfSelect()
     },
-    close:function(){
+    closePermission:function(){
       request.post("/admin/closeSelectCourse",)
-      this.load()
+      this.getIfSelect()
     },
-    next:function (){
+    nextSelect:function (){
       request.post("/admin/nextTurn",)
-      this.load()
+      this.getTurn()
     },
-    select:function (){
+    randomSelect:function (){
       request.post("/admin/randomSelect",)
     },
-    load(){
+    startSelect:function (){
+      request.post("/admin/startThisSemesterSelectCourse",)
+      this.getIfSelect()
+    },
+    endSelect:function (){
+      request.post("/admin/endThisSemesterSelectCourse",)
+      this.getIfSelect()
+    },
+    getIfSelect(){
       setTimeout(() => {
         request.post("/admin/isSelectCourseOpen").then(res=>{
-          this.$message({
-            type:"success",
-            message: res.data.msg
-          })
+          if (res.data.code !== 200) {
+            this.$message({
+              type:"error",
+              message: res.data.msg
+            })
+          }
           this.tableData[0].value=res.data.data;
         })
       }, 500)
     },
     getTurn:function (){
       request.post("/admin/whichTurn").then(res=>{
-        this.$message({
-          type:"success",
-          message: res.data.msg
-        })
+        if (res.data.code !== 200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
         this.tableData[1].value=res.data.data;
       })
     }

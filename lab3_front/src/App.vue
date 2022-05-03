@@ -9,6 +9,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-width: 1000px;
 }
 
 .title{
@@ -22,7 +23,6 @@
 .main_part{
   padding-top: 20px;
   padding-left: 50px;
-  min-width: 800px;
 }
 
 </style>

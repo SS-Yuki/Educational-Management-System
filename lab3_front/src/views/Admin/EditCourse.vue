@@ -144,7 +144,6 @@ export default {
         teacherNum:'',
         major:'',
         school:'',
-        classPeriod:'',
         classroom:'',
         creditHours:'',
         credits:'',
@@ -290,9 +289,6 @@ export default {
             this.editCourse.major = showData.major
             this.editCourse.school = showData.school
             this.editCourse.classroom = showData.classroom
-            //period
-            this.editCourse.classPeriod = showData.classPeriod
-            //period
             this.editCourse.creditHours = showData.creditHours
             this.editCourse.credits = showData.credits
             this.editCourse.capacity = showData.capacity

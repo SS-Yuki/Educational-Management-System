@@ -149,7 +149,7 @@ export default {
         teacherNum:'',
         major:'',
         school:'',
-        classPeriod:'',
+
         classroom:'',
         creditHours:'',
         credits:'',

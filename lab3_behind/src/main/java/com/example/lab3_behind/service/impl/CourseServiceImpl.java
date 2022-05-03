@@ -105,6 +105,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Page<Course> findAPageCourse(Integer page, Integer size, String search, SchoolYear schoolYear, Semester semester){
+        List<Course> allCourses = courseRepository.findAll();
 
         Pageable pageable =  PageRequest.of(page - 1, size);
         if(search.isEmpty()){

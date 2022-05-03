@@ -32,12 +32,8 @@
             v-model:currentPage="currentPage"
             v-model:page-size="pageSize"
             :page-sizes="[5,10,20]"
-            :small="small"
-            :disabled="disabled"
-            :background="background"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
-            @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
         />
       </div>
@@ -207,12 +203,6 @@ export default {
         }
         this.load()  // 删除之后重新加载表格的数据
       })
-    },
-    handleClick:function (){
-
-    },
-    handleSizeChange:function (){
-
     },
     handleCurrentChange:function (pageNum){
       this.currentPage = pageNum

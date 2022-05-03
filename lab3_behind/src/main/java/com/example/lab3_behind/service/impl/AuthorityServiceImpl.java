@@ -24,21 +24,18 @@ public class AuthorityServiceImpl implements AuthorityService {
             authorityRepository.save(courseSelectingAuthority);
             return false;
         }
-        if (authority.getAuthorityValue().equals("true")){
-            return true;
-        }
-        return false;
+        return authority.getAuthorityValue().equals("true");
     }
 
     @Override
     public Integer getPresentCourseSelectingRound() {
-        Authority authority = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
-        if (authority == null){
+        Authority round = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
+        if (round == null){
             Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, "0");
             authorityRepository.save(courseSelectingAuthority);
             return 0;
         }
-        switch (authority.getAuthorityValue()){
+        switch (round.getAuthorityValue()){
             case "1": return 1;
             case "2": return 2;
             case "0":
@@ -47,24 +44,44 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public void courseSelectingStart() {
-
+    public void courseSelectingStart() throws Exception {
+        Authority round = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
+        if (round == null){
+            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, Global.NOT_IN_COURSE_SELECTING_ROUND);
+            authorityRepository.save(courseSelectingAuthority);
+            return;
+        }
+        if (!round.getAuthorityValue().equals(Global.NOT_IN_COURSE_SELECTING_ROUND)){
+            throw new Exception("现已处于选课阶段");
+        }
+        round.setAuthorityValue(Global.FIRST_COURSE_SELECTING_ROUND);
+        authorityRepository.save(round);
     }
 
     @Override
-    public void courseSelectingEnd() {
-
+    public void courseSelectingEnd() throws Exception {
+        Authority round = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
+        if (round == null){
+            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, Global.NOT_IN_COURSE_SELECTING_ROUND);
+            authorityRepository.save(courseSelectingAuthority);
+            return;
+        }
+        if (round.getAuthorityValue().equals(Global.NOT_IN_COURSE_SELECTING_ROUND)){
+            throw new Exception("现已不处于选课阶段");
+        }
+        round.setAuthorityValue(Global.NOT_IN_COURSE_SELECTING_ROUND);
+        authorityRepository.save(round);
     }
 
     @Override
     public void toNextCourseSelectingRound() throws Exception {
-        Authority authority = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
-        if (authority == null){
-            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, "0");
+        Authority round = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
+        if (round == null){
+            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, Global.NOT_IN_COURSE_SELECTING_ROUND);
             authorityRepository.save(courseSelectingAuthority);
+            return;
         }
-        assert authority != null;
-        String authorityValue = authority.getAuthorityValue();
+        String authorityValue = round.getAuthorityValue();
         if(authorityValue.equals(Global.NOT_IN_COURSE_SELECTING_ROUND)){
             throw new Exception("还未开始选课轮次");
         }
@@ -72,8 +89,11 @@ public class AuthorityServiceImpl implements AuthorityService {
             throw new Exception("已无下一轮选课");
         }
         switch (authorityValue) {
-            
+            case "1": round.setAuthorityValue("2"); break;
+            //...
+            default:
         }
+        authorityRepository.save(round);
     }
 
     @Override

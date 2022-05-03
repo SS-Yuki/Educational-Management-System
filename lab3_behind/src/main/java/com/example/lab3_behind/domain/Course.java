@@ -59,6 +59,9 @@ public class Course {
     @Column(name = "capacity")
     private Integer capacity;
 
+    @Column(name = "students_num")
+    private Integer studentsNum;
+
     @Lob
     @Column(name = "introduction", columnDefinition="TEXT")
     private String introduction;
@@ -106,6 +109,7 @@ public class Course {
         this.semester = EnumTool.transSemester(courseApplyingData.getSemester());
         this.courseSelectType = EnumTool.transCourseSelectType(courseApplyingData.getSelectTypeString());
         this.majorsOptional = majorsOptional;
+        this.studentsNum = 0;
     }
 
     public Course(CourseApplying courseApplying){
@@ -125,6 +129,7 @@ public class Course {
         this.courseSelectType = courseApplying.getCourseSelectType();
         this.majorsOptional = courseApplying.majorsOptional;
         this.classTime = courseApplying.getClassTime();
+        this.studentsNum = 0;
     }
 
     public String getClassTimeString(){

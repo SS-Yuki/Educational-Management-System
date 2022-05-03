@@ -68,10 +68,8 @@ public class StudentController {
             if(number.equals(jwtUserData.getNumber())){
                 throw new Exception("请求与账号不匹配");
             }
-
             studentService.maintainStudentInfo(new RevisableDataForUser(phoneNum,email),number);
             Student student = studentService.getByStuNumber(number);
-
             map.put("number",student.getStuNumber());
             map.put("name",student.getName());
             map.put("idNum",student.getIdNum());

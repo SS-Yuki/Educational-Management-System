@@ -4,9 +4,11 @@ import com.example.lab3_behind.common.*;
 import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.AuthorityService;
+import com.example.lab3_behind.service.CourseSelectingService;
 import com.example.lab3_behind.service.CourseService;
 import com.example.lab3_behind.utils.EnumTool;
 import com.example.lab3_behind.utils.JwtUtil;
+import com.example.lab3_behind.utils.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +27,12 @@ public class StudentSelectCourseController {
     AuthorityService authorityService;
     @Autowired
     CourseService courseService;
+    @Autowired
+    CourseSelectingService courseSelectService;
 
-    @RequestMapping("/findCoursePage")
+
+
+    @RequestMapping("/findSelectCoursePage")
     public Result findCoursePage(@RequestBody FullCoursePageSearch pageSearchData,
                                  HttpServletRequest request){
         String token = request.getHeader("token");
@@ -43,8 +49,8 @@ public class StudentSelectCourseController {
                     pageSearchData.getPageSize(),
                     pageSearchData.getSearch(),
                     number,
-                    EnumTool.transSchoolYear(pageSearchData.getYear()),
-                    EnumTool.transSemester(pageSearchData.getSemester()),
+                    EnumTool.transSchoolYear(TimeTool.getPresentYearAndSemester().getYear()),
+                    EnumTool.transSemester(TimeTool.getPresentYearAndSemester().getSemester()),
                     pageSearchData.getClassroom(),
                     pageSearchData.getSelectTime()
                     );
@@ -58,13 +64,49 @@ public class StudentSelectCourseController {
         }
     }
 
-    @RequestMapping("/applyForSelectCourse")
-    public Result applyForSelectCourse(@RequestBody StudentApplyForSelectCourse apply){
+    @RequestMapping("/selectCourse")
+    public Result selectCourse(@RequestBody Integer courseId,HttpServletRequest request){
+        String token = request.getHeader("token");
+        JwtUserData jwtUserData = JwtUtil.getToken(token);
+        String number = jwtUserData.getNumber().replace("\"", "");
+        try{
+            courseSelectService.selectCourse(number,courseId,
+                    EnumTool.transSchoolYear(TimeTool.getPresentYearAndSemester().getYear()),
+                    EnumTool.transSemester(TimeTool.getPresentYearAndSemester().getSemester()));
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.fail(910,e.getMessage());
+        }
         return Result.succ(null);
     }
 
-    @RequestMapping("/selectCourse")
-    public Result selectCourse(@RequestBody Integer courseId){
+    @RequestMapping("/applyForSelectCourse")
+    public Result applyForSelectCourse(@RequestBody StudentApplyForSelectCourse apply,HttpServletRequest request){
+        String token = request.getHeader("token");
+        JwtUserData jwtUserData = JwtUtil.getToken(token);
+        String number = jwtUserData.getNumber().replace("\"", "");
+        try{
+            //courseSelectService.selectCourse(number,);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.fail(910,e.getMessage());
+        }
+        return Result.succ(null);
+    }
+
+    @RequestMapping("/dropCourse")
+    public Result dropCourse(@RequestBody Integer courseId,HttpServletRequest request){
+        String token = request.getHeader("token");
+        JwtUserData jwtUserData = JwtUtil.getToken(token);
+        String number = jwtUserData.getNumber().replace("\"", "");
+        try{
+            courseSelectService.dropCourse(number,courseId,
+                    EnumTool.transSchoolYear(TimeTool.getPresentYearAndSemester().getYear()),
+                    EnumTool.transSemester(TimeTool.getPresentYearAndSemester().getSemester()));
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.fail(911,e.getMessage());
+        }
         return Result.succ(null);
     }
 

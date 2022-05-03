@@ -3,6 +3,7 @@ package com.example.lab3_behind.controller;
 
 import com.example.lab3_behind.common.*;
 import com.example.lab3_behind.domain.Course;
+import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.TeachingBuilding;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.domain.resp.Result;
@@ -85,8 +86,8 @@ public class AdminCourseController {
                     pageSearchData.getPageNum(),
                     pageSearchData.getPageSize(),
                     pageSearchData.getSearch(),
-                    EnumTool.transSchoolYear(TimeTool.getPresentYearAndSemester().getYear()),
-                    EnumTool.transSemester(TimeTool.getPresentYearAndSemester().getSemester()),
+                    EnumTool.transSchoolYear(pageSearchData.getYear()),
+                    EnumTool.transSemester(pageSearchData.getSemester()),
                     pageSearchData.getClassroom(),
                     pageSearchData.getSelectTime()
                     );
@@ -98,8 +99,9 @@ public class AdminCourseController {
             e.printStackTrace();
             return Result.fail(889,e.getMessage());
         }
-
     }
+
+
 
 
 }

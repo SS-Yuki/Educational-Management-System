@@ -314,6 +314,12 @@
 
 
 
+#### 6.老师和管理员查看某门课的名单
+
+> /common/getStudentListOfOneCourse 给我一个courseId
+
+返回的结果适合用来分页显示，有res.data.data.records和res.data.data.total
+
 ## 5.2任务
 
 张佳洵：

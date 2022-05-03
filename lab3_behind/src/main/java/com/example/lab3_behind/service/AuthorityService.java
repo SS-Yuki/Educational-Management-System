@@ -4,7 +4,7 @@ public interface AuthorityService {
     Boolean checkCourseSelectingAuthority();
     Integer getPresentCourseSelectingRound();
     void toNextCourseSelectingRound() throws Exception;
-    void courseSelectingStart();
-    void courseSelectingEnd();
+    void courseSelectingStart() throws Exception;
+    void courseSelectingEnd() throws Exception;
     void changeCourseSelectingAuthority(boolean status) throws Exception;
 }

@@ -32,6 +32,7 @@ public class CourseContent {
     private String year;
     private String semester;
     private String occupyTime;
+    private Integer selectNumber;
 
     public static CourseContent oneContent(Course course){
         String majorLim = "";
@@ -58,7 +59,8 @@ public class CourseContent {
                 majorLim,
                 EnumTool.transString(course.getSchoolYear()),
                 EnumTool.transString(course.getSemester()),
-                course.getClassTimeString());
+                course.getClassTimeString(),
+                course.getStudentsNum());
     }
 
     public static List<CourseContent> getContent(List<Course> courses){

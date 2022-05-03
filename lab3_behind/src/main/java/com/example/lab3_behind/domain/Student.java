@@ -68,6 +68,9 @@ public class Student {
     @Column(name = "gpa")
     private Double gpa;
 
+    @Column(name = "credits")
+    private Integer credits;
+
     @CreatedDate
     @Column(name = "register_time")
     private Date registerTime;
@@ -85,6 +88,7 @@ public class Student {
             this.grade = grade;
         }
         this.gpa = 0.0;
+        this.credits = 0;
         UserAccount account = new UserAccount();
         account.setAccount(user.getNumber());
         account.setPassword("fDu" + this.stuNumber);

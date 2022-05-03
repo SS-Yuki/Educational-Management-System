@@ -1,5 +1,11 @@
 package com.example.lab3_behind.service.impl;
 
+import com.example.lab3_behind.common.CourseNameString;
+import com.example.lab3_behind.common.Global;
+import com.example.lab3_behind.common.forDomain.SchoolYear;
+import com.example.lab3_behind.common.forDomain.Semester;
+import com.example.lab3_behind.domain.Course;
+import com.example.lab3_behind.repository.*;
 import com.example.lab3_behind.utils.FormatCheck;
 import com.example.lab3_behind.common.forDomain.StudentStatus;
 import com.example.lab3_behind.domain.Major;
@@ -8,24 +14,33 @@ import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.dto.RevisableDataForAdmin;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
-import com.example.lab3_behind.repository.MajorRepository;
-import com.example.lab3_behind.repository.SchoolRepository;
-import com.example.lab3_behind.repository.StudentRepository;
 import com.example.lab3_behind.service.StudentService;
+import com.example.lab3_behind.utils.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.lab3_behind.service.impl.TeachingAffairsServiceImpl.getSections;
 
 @Service
 public class StudentServiceImpl implements StudentService {
     StudentRepository studentRepository;
     SchoolRepository schoolRepository;
     MajorRepository majorRepository;
+    CourseRepository courseRepository;
+    TimeTableRepository timeTableRepository;
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository, SchoolRepository schoolRepository, MajorRepository majorRepository){
+    public StudentServiceImpl(StudentRepository studentRepository, SchoolRepository schoolRepository,
+                              MajorRepository majorRepository, CourseRepository courseRepository,
+                              TimeTableRepository timeTableRepository){
         this.studentRepository = studentRepository;
         this.schoolRepository = schoolRepository;
         this.majorRepository = majorRepository;
+        this.courseRepository = courseRepository;
+        this.timeTableRepository = timeTableRepository;
     }
 
     @Override
@@ -60,6 +75,27 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<Course> findCourseInSemester(String stuNum, SchoolYear schoolYear, Semester semester) throws Exception {
+        Student student = studentRepository.findByStuNumber(stuNum);
+        if(student == null){
+            throw new Exception("学生不存在");
+        }
+        List<Course> result = new ArrayList<>();
+        for(Course course : student.getCourses()){
+            if(course.getSchoolYear().equals(schoolYear) && course.getSemester().equals(semester)){
+                result.add(course);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<List<CourseNameString>> getClassScheduleInSemester(String stuNum, SchoolYear schoolYear, Semester semester) throws Exception {
+        return transCourseNameString(getSchedule(studentRepository, timeTableRepository, stuNum, schoolYear, semester));
+    }
+
+
+    @Override
     public Student insertStudent(UserEnteringData userData) throws Exception {
         if(studentRepository.findByStuNumber(userData.getNumber()) != null){
             throw new Exception("工号已注册");
@@ -75,11 +111,7 @@ public class StudentServiceImpl implements StudentService {
             throw new Exception("教师所属学院下不存在此专业");
         }
         Student student = new Student(userData, schoolRepository.findByName(userData.getSchool()), majorRepository.findByName(userData.getMajor()));
-        try {
-            FormatCheck.userEnteringDataCheck(userData);
-        } catch (Exception e){
-            throw e;
-        }
+        FormatCheck.userEnteringDataCheck(userData);
         studentRepository.save(student);
         return student;
     }
@@ -127,6 +159,30 @@ public class StudentServiceImpl implements StudentService {
             throw new Exception("该用户不存在");
         }
         return student;
+    }
+
+    private List<List<CourseNameString>> transCourseNameString(List<List<Integer>> timeMatrix){
+        List<List<CourseNameString>> result = new ArrayList<>();
+        for(int i = 0; i < Global.WEEKDAY; i++){
+            List<CourseNameString> buff = new ArrayList<>();
+            for(Integer courseId : timeMatrix.get(i)){
+                Course course = courseRepository.findByCourseId(courseId);
+                buff.add(new CourseNameString(course.getCourseName()));
+            }
+            result.add(buff);
+        }
+        return result;
+    }
+
+    static List<List<Integer>> getSchedule(StudentRepository studentRepository, TimeTableRepository timeTableRepository,
+                                           String stuNum, SchoolYear schoolYear, Semester semester) throws Exception {
+        List<List<Integer>> result = TimeTool.getEmptyTimeMatrix(getSections(timeTableRepository));
+        for(Course course : studentRepository.findByStuNumber(stuNum).getCourses()){
+            if(course.getSchoolYear().equals(schoolYear) && course.getSemester().equals(semester)){
+                result = TimeTool.addTimeMatrix(result, TimeTool.makeTimeMatrix(course.getClassTime()));
+            }
+        }
+        return result;
     }
 
 }

@@ -43,12 +43,9 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
 
     @Override
     public List<List<Boolean>> getClassroomTime(String name, Integer excludedCourse) throws Exception {
-        Classroom classroom = classroomRepository.findByName(name);
-        if(classroom == null){
-            throw new Exception("教室不存在");
-        }
-        String schedule = classroom.getSchedule();
-        return TimeTool.getBoolTime(TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(schedule), excludedCourse));
+        Course course = courseRepository.findByCourseId(excludedCourse);
+        List<List<Integer>> time = this.getClassroomTimeIn(name, course.getSchoolYear(), course.getSemester());
+        return TimeTool.getBoolTime(TimeTool.subTimeMatrix(time, excludedCourse));
     }
 
     @Override
@@ -71,14 +68,18 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         List<Classroom> allClassrooms = classroomRepository.findAll();
         for(Classroom classroom : allClassrooms){
             classroom.setSchedule(classroom.getSchedule() + "0-0-0-0-0-0-0\n");
-            classroomRepository.save(classroom);
         }
-        for(Course course : courseRepository.findAll()){
+        classroomRepository.saveAll(allClassrooms);
+        List<Course> allCourses = courseRepository.findAll();
+        for(Course course : allCourses){
             course.setClassTime(course.getClassTime() + "0-0-0-0-0-0-0\n");
         }
-        for(CourseApplying courseApplying : courseApplyingRepository.findAll()){
+        courseRepository.saveAll(allCourses);
+        List<CourseApplying> allCourseApplying = courseApplyingRepository.findAll();
+        for(CourseApplying courseApplying : allCourseApplying){
             courseApplying.setClassTime(courseApplying.getClassTime() + "0-0-0-0-0-0-0\n");
         }
+        courseApplyingRepository.saveAll(allCourseApplying);
         return newTime;
     }
 
@@ -243,7 +244,26 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         Classroom classroom = classroomRepository.findByName(classroomData.getOldClassroomName());
         Classroom thisClassroom = teachingBuilding.getClassrooms().get(teachingBuilding.getClassrooms().indexOf(classroom));
         thisClassroom.setName(classroomData.getNewClassroomName());
-        thisClassroom.setCapacity(classroomData.getCapacity());
+        boolean canSetCapacity = true;
+        for(Course course : courseRepository.findAll()){
+            if(course.getCapacity().compareTo(classroomData.getCapacity()) > 0){
+                canSetCapacity = false;
+                break;
+            }
+        }
+        if(canSetCapacity){
+            for (CourseApplying courseApplying : courseApplyingRepository.findAll()){
+                if(courseApplying.getCapacity().compareTo(classroomData.getCapacity()) > 0){
+                    canSetCapacity = false;
+                    break;
+                }
+            }
+        }
+        if(canSetCapacity){
+            thisClassroom.setCapacity(classroomData.getCapacity());
+        } else {
+            throw new Exception("有课程或相关申请容量高于所修改容量");
+        }
         thisClassroom.setSchedule(classroomData.getSchedule());
         teachingBuildingRepository.save(teachingBuilding);
         return thisClassroom;
@@ -258,6 +278,10 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         Classroom classroom = classroomRepository.findByName(classroomName);
         if(classroom == null){
             throw new Exception("该教室不存在");
+        }
+        if(!courseRepository.findByClassroom(classroom).isEmpty()
+        || !courseApplyingRepository.findByClassroom(classroom).isEmpty()){
+            throw new Exception("教室中有课程或相关的课程申请");
         }
         Classroom thisClassroom = teachingBuilding.getClassrooms().get(teachingBuilding.getClassrooms().indexOf(classroom));
         teachingBuilding.getClassrooms().remove(thisClassroom);
@@ -358,10 +382,10 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         int index2 = schedule.indexOf("\n") + 1;
         while (index2 != 0) {
             index = index1;
-            //Todo :判断最后一行有没有课，有就不能删
             String section = schedule.substring(index1, index2 - 1);
             String[] sectionArr = section.split("-");
             for (String str : sectionArr) {
+                //会判断最后一行有没有课，有就不能删
                 if (!Integer.valueOf(str).equals(0)) return -1;
             }
             index1 = index2;

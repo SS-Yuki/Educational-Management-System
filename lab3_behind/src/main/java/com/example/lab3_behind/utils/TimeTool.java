@@ -72,6 +72,19 @@ public class TimeTool {
         return result;
     }
 
+    public static List<List<Integer>> transMaxInSchedule(String schedule, Integer courseId){
+        List<List<Integer>> result = makeTimeMatrix(schedule);
+        for(int i = 0; i < Global.WEEKDAY; i++){
+            for(int j = 0; j < getSectionNum(schedule); j ++){
+                if(result.get(i).get(j).equals(Global.COURSE_MAX)){
+                    result.get(i).set(j, courseId);
+                }
+            }
+        }
+        return result;
+    }
+
+
     public static List<List<Integer>> makeTimeMatrix(String schedule){
         List<List<Integer>> result = new ArrayList<>();
         for(int i = 0; i < Global.WEEKDAY; i++){

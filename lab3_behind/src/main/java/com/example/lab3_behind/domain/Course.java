@@ -90,8 +90,8 @@ public class Course {
     @Column(name = "class_time")
     private String classTime;
 
-    public Course(CourseApplyingData courseApplyingData, School school, Major major, Classroom classroom, List<Major> majorsOptional){
-        this.teacherName = courseApplyingData.getApplicant();
+    public Course(CourseApplyingData courseApplyingData, School school, Major major, Classroom classroom, List<Major> majorsOptional, String teacherName){
+        this.teacherName = teacherName;
         this.capacity = courseApplyingData.getCapacity();
         this.courseName = courseApplyingData.getCourseName();
         this.courseNumber = courseApplyingData.getCourseNumber();

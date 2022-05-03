@@ -6,17 +6,17 @@
         <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
         <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
       </div>
-      <el-table :data="tableData" style="width: 100%" border stripe>
+      <el-table :data="tableData" style="width: 1200px" border stripe>
         <el-table-column prop="courseId" label="courseId" width="0" v-if="false" />
-        <el-table-column prop="courseName" label="课程名" width="150" />
-        <el-table-column prop="courseNumber" label="课程编号" width="150" />
+        <el-table-column prop="courseName" label="课程名" width="400" />
+        <el-table-column prop="courseNumber" label="课程编号" width="400" />
         <el-table-column prop="classPeriod" label="时间" width="0" v-if="false"  />
         <el-table-column prop="classroom" label="教室" width="0" v-if="false" />
         <el-table-column prop="creditHours" label="学时" width="0" v-if="false" />
         <el-table-column prop="credits" label="学分" width="0" v-if="false" />
         <el-table-column prop="capacity" label="容量" width="0" v-if="false" />
         <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
-        <el-table-column fixed="right" label="操作" width="200">
+        <el-table-column fixed="right" label="操作" width="400">
           <template #default="scope">
             <el-button type="text" size="small" @click="handleEdit(
                 scope.row.courseId,

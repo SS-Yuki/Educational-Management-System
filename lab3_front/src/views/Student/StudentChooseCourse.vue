@@ -4,13 +4,13 @@
         <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
         <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
       </div>
-      <el-table :data="tableData" style="width: 100%" border stripe>
+      <el-table :data="tableData" style="width: 1200px" border stripe>
         <el-table-column prop="courseId" label="courseId" width="0" v-if="false" />
-        <el-table-column prop="courseName" label="课程名" width="150" />
-        <el-table-column prop="courseNumber" label="课程编号" width="150" />
+        <el-table-column prop="courseName" label="课程名" width="250" />
+        <el-table-column prop="courseNumber" label="课程编号" width="250" />
 <!--        <el-table-column prop="teacherNum" label="教师工号" width="150" v-if="false"/>-->
-        <el-table-column prop="major" label="开课专业" width="150" />
-        <el-table-column prop="school" label="开课院系" width="150" />
+        <el-table-column prop="major" label="开课专业" width="250" />
+        <el-table-column prop="school" label="开课院系" width="250" />
         <el-table-column prop="classPeriod" label="时间" width="0" v-if="false"  />
         <el-table-column prop="classroom" label="教室" width="0" v-if="false" />
         <el-table-column prop="creditHours" label="学时" width="0" v-if="false" />

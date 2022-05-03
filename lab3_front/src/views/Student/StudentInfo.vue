@@ -1,11 +1,11 @@
 <template>
   <div class="main_part">
-      <div style="margin-top: 300px">
-        <el-table :data="tableData" border :show-header="status" style="width: 100%"  stripe size="large">
+      <div style="margin-right: auto;margin-left: auto">
+        <el-table :data="tableData" border :show-header="status" style="width: 360px;margin-right: auto;margin-left: auto"  stripe size="large">
           <el-table-column prop="key"  width="180" />
           <el-table-column prop="value"  width="180" />
         </el-table>
-        <el-button size="small" @click="input_newinfo">
+        <el-button size="small" @click="input_newinfo" style="margin-top: 5px">
           编辑
         </el-button>
       </div>

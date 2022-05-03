@@ -1,7 +1,7 @@
 <template>
   <div class="main_part">
-      <div style="margin-top: 300px">
-        <el-table :data="tableData" border :show-header="status" style="width: 100%"  stripe size="large">
+      <div>
+        <el-table :data="tableData" border :show-header="status" style="width: 360px;margin-left: auto;margin-right: auto"  stripe size="large">
           <el-table-column prop="key"  width="180" />
           <el-table-column prop="value"  width="180" />
         </el-table>
@@ -13,7 +13,7 @@
 <!--        <div>邮箱为:{{info.email}}</div>-->
 <!--        <div>院系为:{{info.school}}</div>-->
 <!--        <div>专业为:{{info.major}}</div>-->
-        <el-button size="small" @click="input_newinfo">
+        <el-button size="small" @click="input_newinfo" style="margin-top: 5px">
           编辑
         </el-button>
       </div>

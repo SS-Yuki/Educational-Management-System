@@ -32,18 +32,15 @@
           <el-checkbox-group v-model="day1" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                 :disabled=spare[0][item]
-                                :checked=occupy[0][item]
                                 value=item+1
             >
               {{ timeNames[item].label}}
-              {{occupy[0][item]}}
             </el-checkbox-button>
           </el-checkbox-group>
 
           <el-checkbox-group v-model="day2" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                 :disabled=spare[1][item]
-                                :checked=occupy[1][item]
                                 value=item+1>
               {{ timeNames[item].label }}
             </el-checkbox-button>
@@ -52,7 +49,6 @@
           <el-checkbox-group v-model="day3" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                 :disabled=spare[2][item]
-                                :checked=occupy[2][item]
                                 value=item+1 >
               {{ timeNames[item].label }}
             </el-checkbox-button>
@@ -61,7 +57,6 @@
           <el-checkbox-group v-model="day4" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                 :disabled=spare[3][item]
-                                :checked=occupy[3][item]
                                 value=item+1  >
               {{ timeNames[item].label }}
             </el-checkbox-button>
@@ -70,7 +65,6 @@
           <el-checkbox-group v-model="day5" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                 :disabled=spare[4][item]
-                                :checked=occupy[4][item]
                                 value=item+1 >
               {{ timeNames[item].label }}
             </el-checkbox-button>
@@ -79,7 +73,6 @@
           <el-checkbox-group v-model="day6" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                 :disabled=spare[5][item]
-                                :checked=occupy[5][item]
                                 value=item+1 >
               {{ timeNames[item].label }}
             </el-checkbox-button>
@@ -88,7 +81,6 @@
           <el-checkbox-group v-model="day7" style="display: inline-block" size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                 :disabled=spare[6][item]
-                                :checked=occupy[6][item]
                                 value=item+1 >
               {{ timeNames[item].label }}
             </el-checkbox-button>

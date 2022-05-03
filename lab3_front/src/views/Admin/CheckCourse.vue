@@ -103,6 +103,14 @@ export default {
     this.getOptionClassroom()
     this.getOptionSemesters()
   },
+  watch: {
+    select_year_semester: {
+      deep: true,
+      handler(new_) {
+        this.load()
+      }
+    }
+  },
   methods:{
     getOptionMajor: function () {
       request.post("/common/allMajors").then(res => {

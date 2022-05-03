@@ -28,7 +28,7 @@
           <el-button  @click="getTime(); timeShow = true">按上课时间筛选</el-button>
         </div>
 
-        <el-dialog v-model="timeShow" title="进行时间选择" center>
+        <el-dialog v-model="timeShow" title="进行时间选择" :show-close="false" center>
           <div>
             <el-checkbox-group  style="display: inline-block" disabled >
               <el-checkbox-button v-for="item of length" :key="item" :label=item+1 style="display: block"
@@ -95,8 +95,8 @@
           </div>
           <template #footer>
             <span class="dialog-footer">
-              <el-button @click="timeShow = false">取消</el-button>
-              <el-button type="primary" @click="timeShow = false; load()">确认</el-button>
+              <el-button @click="cancelTime">取消</el-button>
+              <el-button type="primary" @click="ensureTime">确认</el-button>
             </span>
           </template>
         </el-dialog>
@@ -118,12 +118,13 @@
         <el-table-column prop="applicant" label="申请人" width="200"  />
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-              <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
-              <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
-                <template #reference>
-                  <el-button type="text">删除</el-button>
-                </template>
-              </el-popconfirm>
+            <el-button type="text" size="small" @click="">查看选课名单</el-button>
+            <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
+            <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
+              <template #reference>
+                <el-button type="text">删除</el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -186,6 +187,14 @@ export default {
         year: this.select_year_semester[0],
         semester: this.select_year_semester[1],
         classroom: this.select_building_classroom[1]
+      }
+    },
+    day: {
+      get() {
+        return [this.day1,this.day2,this.day3,this.day4,this.day5,this.day6,this.day7]
+      },
+      set(newValue) {
+        [this.day1,this.day2,this.day3,this.day4,this.day5,this.day6,this.day7] = newValue
       }
     }
   },
@@ -313,7 +322,7 @@ export default {
               year: this.select_year_semester[0],
               semester: this.select_year_semester[1],
               classroom:this.select_building_classroom[1],
-              selectTime:[this.day1, this.day2, this.day3, this.day4, this.day5, this.day6, this.day7]
+              selectTime:this.day
             }
         ).then(res=>{
           
@@ -371,6 +380,21 @@ export default {
           this.load()  // 删除之后重新加载表格的数据
         }
       })
+    },
+    cancelTime:function () {
+      this.timeShow = false
+      if(sessionStorage.getItem('day') !== null) {
+        this.day = JSON.parse(sessionStorage.getItem('day'))
+      }
+      else {
+        this.day.splice(0)
+      }
+      console.log(this.day)
+    },
+    ensureTime: function () {
+      this.timeShow = false
+      sessionStorage.setItem('day', JSON.stringify(this.day))
+      this.load()
     },
     handleCurrentChange:function (pageNum){
       this.currentPage = pageNum

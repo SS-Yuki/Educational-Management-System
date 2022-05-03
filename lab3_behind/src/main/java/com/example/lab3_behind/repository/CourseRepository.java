@@ -14,6 +14,7 @@ import java.util.List;
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
     Course findByCourseId(Integer courseId);
+    List<Course> findByClassroom(Classroom classroom);
     Course findByCourseNumberAndTeacherNumAndSchoolYearAndSemester(String courseNumber, String teacherNum, SchoolYear schoolYear, Semester semester);
     List<Course> findByClassroomAndSchoolYearAndSemester(Classroom classroom, SchoolYear schoolYear, Semester semester);
     Page<Course> findAllByMajor(String major, Pageable pageable);

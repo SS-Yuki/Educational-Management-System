@@ -10,7 +10,7 @@
         <el-aside width="200px">
           <el-row class="tac" style="width: 400px">
             <el-col :span="12">
-              <el-menu default-active="2" class="el-menu-vertical-demo">
+              <el-menu default-active="2" class="el-menu-vertical-demo"  >
                 <el-sub-menu index="1">
                   <template #title>
                     <el-icon><location /></el-icon>

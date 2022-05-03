@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface CourseSelectingRecordRepository extends JpaRepository<CourseSelectingRecord, Long> {
-    List<CourseSelectingRecord> findByStudent(Student student);
+    List<CourseSelectingRecord> findByCourse(Course course);
     CourseSelectingRecord findByStudentAndCourse(Student student, Course course);
 }

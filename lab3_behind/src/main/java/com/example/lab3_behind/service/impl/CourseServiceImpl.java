@@ -38,11 +38,13 @@ public class CourseServiceImpl implements CourseService {
     MajorRepository majorRepository;
     ClassroomRepository classroomRepository;
     TimeTableRepository timeTableRepository;
+    CourseSelectingRecordRepository courseSelectingRecordRepository;
     @Autowired
     public CourseServiceImpl(CourseRepository courseRepository, CourseApplyingRepository courseApplyingRepository,
                              TeacherRepository teacherRepository, StudentRepository studentRepository,
                              SchoolRepository schoolRepository, MajorRepository majorRepository,
-                             ClassroomRepository classroomRepository, TimeTableRepository timeTableRepository){
+                             ClassroomRepository classroomRepository, TimeTableRepository timeTableRepository,
+                             CourseSelectingRecordRepository courseSelectingRecordRepository){
         this.schoolRepository = schoolRepository;
         this.majorRepository = majorRepository;
         this.courseRepository = courseRepository;
@@ -51,6 +53,7 @@ public class CourseServiceImpl implements CourseService {
         this.studentRepository = studentRepository;
         this.classroomRepository = classroomRepository;
         this.timeTableRepository = timeTableRepository;
+        this.courseSelectingRecordRepository = courseSelectingRecordRepository;
     }
 
     @Override
@@ -177,8 +180,17 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Student> getStudentListOfOneCourse(Integer courseId) {
-        return null;
+    public List<Student> getStudentListOfOneCourse(Integer courseId) throws Exception {
+        Course course = courseRepository.findByCourseId(courseId);
+        if(course == null){
+            throw new Exception("课程不存在");
+        }
+        List<CourseSelectingRecord> courseSelectingRecords = courseSelectingRecordRepository.findByCourse(course);
+        List<Student> result = new ArrayList<>();
+        for(CourseSelectingRecord courseSelectingRecord : courseSelectingRecords){
+            result.add(courseSelectingRecord.getStudent());
+        }
+        return result;
     }
 
     @Override

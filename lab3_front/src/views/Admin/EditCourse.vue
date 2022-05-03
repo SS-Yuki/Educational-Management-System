@@ -36,7 +36,6 @@
                                 value=item+1
             >
               {{ timeNames[item].label}}
-              {{occupy[0][item]}}
             </el-checkbox-button>
           </el-checkbox-group>
 

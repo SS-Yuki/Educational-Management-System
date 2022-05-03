@@ -22,14 +22,14 @@
 <!--        time-->
         <el-form-item label="上课时间">
           <div>
-            <el-checkbox-group  style="display: inline-block" disabled size="small">
+            <el-checkbox-group  style="display: inline-block" disabled >
               <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
                                   value=item>
                 {{ startTimes[item].label + "-" + endTimes[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>
 
-            <el-checkbox-group v-model="day1" style="display: inline-block" size="small">
+            <el-checkbox-group v-model="day1" style="display: inline-block" >
               <el-checkbox-button v-for="item in range" :key="item" :label=item+1
                                   :disabled=spare[0][item]
                                   style="display: block"
@@ -39,7 +39,7 @@
               </el-checkbox-button>
             </el-checkbox-group>
 
-            <el-checkbox-group v-model="day2" style="display: inline-block" size="small">
+            <el-checkbox-group v-model="day2" style="display: inline-block" >
               <el-checkbox-button v-for="item in range" :key="item" :label=item+1
                                   :disabled=spare[1][item]
                                   style="display: block"
@@ -48,7 +48,7 @@
               </el-checkbox-button>
             </el-checkbox-group>
 
-            <el-checkbox-group v-model="day3" style="display: inline-block" size="small">
+            <el-checkbox-group v-model="day3" style="display: inline-block" >
               <el-checkbox-button v-for="item in range" :key="item" :label=item+1
                                   :disabled=spare[2][item]
                                   style="display: block"
@@ -57,7 +57,7 @@
               </el-checkbox-button>
             </el-checkbox-group>
 
-            <el-checkbox-group v-model="day4" style="display: inline-block" size="small">
+            <el-checkbox-group v-model="day4" style="display: inline-block" >
               <el-checkbox-button v-for="item in range" :key="item" :label=item+1
                                   :disabled=spare[3][item]
                                   style="display: block"
@@ -66,7 +66,7 @@
               </el-checkbox-button>
             </el-checkbox-group>
 
-            <el-checkbox-group v-model="day5" style="display: inline-block" size="small">
+            <el-checkbox-group v-model="day5" style="display: inline-block" >
               <el-checkbox-button v-for="item in range" :key="item" :label=item+1
                                   :disabled=spare[4][item]
                                   style="display: block"
@@ -75,7 +75,7 @@
               </el-checkbox-button>
             </el-checkbox-group>
 
-            <el-checkbox-group v-model="day6" style="display: inline-block" size="small">
+            <el-checkbox-group v-model="day6" style="display: inline-block">
               <el-checkbox-button v-for="item in range" :key="item" :label=item+1
                                   :disabled=spare[5][item]
                                   style="display: block"
@@ -84,7 +84,7 @@
               </el-checkbox-button>
             </el-checkbox-group>
 
-            <el-checkbox-group v-model="day7" style="display: inline-block" size="small">
+            <el-checkbox-group v-model="day7" style="display: inline-block" >
               <el-checkbox-button v-for="item in range" :key="item" :label=item+1
                                   :disabled=spare[6][item]
                                   style="display: block"

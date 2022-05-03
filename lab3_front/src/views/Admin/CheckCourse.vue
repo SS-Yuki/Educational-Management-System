@@ -24,6 +24,7 @@
         </div>
         <div>
           <el-cascader  v-model="select_year_semester" :options="semesterOptions" placeholder="请选择学期"/>
+          <el-cascader  v-model="add_building_classroom" :options="classroomOptions"/>
         </div>
 
       </div>

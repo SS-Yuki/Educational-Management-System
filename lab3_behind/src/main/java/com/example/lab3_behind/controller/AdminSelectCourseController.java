@@ -45,35 +45,58 @@ public class AdminSelectCourseController {
 
     @RequestMapping("/whichTurn")
     public Result whichTurn(){
-//        try {
-//            authorityService.changeCourseSelectingAuthority(false);
-//            return Result.succ(null);
-//        }catch (Exception e){
-//            return Result.fail(841,e.getMessage());
-//        }
-        return Result.succ("一轮选课");
+        try {
+            String ans;
+            Integer round = authorityService.getPresentCourseSelectingRound();
+            if(round == 1)ans = "一轮选课";
+            else if(round == 2)ans = "二轮选课";
+            else ans = "无法选课轮次";
+            return Result.succ(ans);
+        }catch (Exception e){
+            return Result.fail(841,e.getMessage());
+        }
     }
 
     @RequestMapping("/nextTurn")
     public Result nextTurn(){
-//        try {
-//            authorityService.changeCourseSelectingAuthority(false);
-//            return Result.succ(null);
-//        }catch (Exception e){
-//            return Result.fail(841,e.getMessage());
-//        }
-        return Result.succ(null);
+        try {
+            authorityService.toNextCourseSelectingRound();
+            return Result.succ(null);
+        }catch (Exception e){
+            return Result.fail(841,e.getMessage());
+        }
     }
 
     @RequestMapping("/randomSelect")
     public Result randomSelect(){
 //        try {
-//            authorityService.changeCourseSelectingAuthority(false);
+//            authorityService(false);
 //            return Result.succ(null);
 //        }catch (Exception e){
 //            return Result.fail(841,e.getMessage());
 //        }
         return Result.succ(null);
+
+    }
+
+    @RequestMapping("/startThisSemesterSelectCourse")
+    public Result startThisSemesterSelectCourse(){
+        try {
+            authorityService.courseSelectingStart();
+            return Result.succ(null);
+        }catch (Exception e){
+            return Result.fail(841,e.getMessage());
+        }
+    }
+
+    @RequestMapping("/endThisSemesterSelectCourse")
+    public Result endThisSemesterSelectCourse(){
+        try {
+            authorityService.courseSelectingEnd();
+            return Result.succ(null);
+        }catch (Exception e){
+            return Result.fail(841,e.getMessage());
+        }
     }
 
 

@@ -28,18 +28,18 @@
 
       </div>
       <el-table :data="tableData" style="width: 1200px" border stripe>
-        <el-table-column prop="courseId" label="courseId" width="0" v-if="false" />
+        <el-table-column prop="courseId" label="courseId" width="200" v-if="false" />
         <el-table-column prop="courseName" label="课程名" width="200" />
         <el-table-column prop="courseNumber" label="课程编号" width="200" />
         <el-table-column prop="teacherNum" label="教师工号" width="200" />
         <el-table-column prop="major" label="开课专业" width="200" />
         <el-table-column prop="school" label="开课院系" width="200" />
-        <el-table-column prop="classroom" label="教室" width="0" v-if="false" />
-        <el-table-column prop="creditHours" label="学时" width="0" v-if="false" />
-        <el-table-column prop="credits" label="学分" width="0" v-if="false" />
-        <el-table-column prop="capacity" label="容量" width="0" v-if="false" />
-        <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
-        <el-table-column prop="applicant" label="申请人" width="0" v-if="false" />
+        <el-table-column prop="classroom" label="教室" width="200"  />
+        <el-table-column prop="creditHours" label="学时" width="200"  />
+        <el-table-column prop="credits" label="学分" width="200"  />
+        <el-table-column prop="capacity" label="容量" width="200"  />
+        <el-table-column prop="introduction" label="介绍" width="200"  />
+        <el-table-column prop="applicant" label="申请人" width="200"  />
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
               <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
@@ -90,9 +90,7 @@ export default {
       edit_building_classroom:'',
       majorOptions:[],
       classroomOptions:[],
-      id:{
-        id:0
-      },
+      courseId:0,
       tableData:[]
     }
   },
@@ -248,8 +246,8 @@ export default {
       this.$router.push({ name: 'EditCourse', params: { id: courseId} })
     },
     handleDelete(courseId) {
-      this.id.id=courseId
-      request.post("/admin/deleteCourse",this.id).then(res => {
+      this.courseId=courseId
+      request.post("/admin/deleteCourse",this.courseId).then(res => {
         if(res.data.code!==200) {
           this.$message({
             type:"error",

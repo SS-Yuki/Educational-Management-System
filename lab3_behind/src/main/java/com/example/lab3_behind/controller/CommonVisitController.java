@@ -2,6 +2,7 @@ package com.example.lab3_behind.controller;
 
 import com.example.lab3_behind.common.*;
 import com.example.lab3_behind.domain.Course;
+import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.TimeTable;
 import com.example.lab3_behind.domain.dto.YearSemesterPair;
 import com.example.lab3_behind.domain.resp.Result;
@@ -111,6 +112,16 @@ public class CommonVisitController {
     public Result allClassrooms(){
         Map<String,Object> map = new HashMap<>();
         map.put("buildings",teachingAffairsService.getAllBuildingAndClassrooms());
+        return Result.succ(map);
+    }
+
+    @RequestMapping("/getStudentListOfOneCourse")
+    public Result getStudentListOfOneCourse(@RequestBody Integer courseId){
+        Map<String,Object> map = new HashMap<>();
+        MyPage<Student> studentList = courseService.getStudentListOfOneCourse(courseId);
+        List<StudentListContent> studentListContent = StudentListContent.getContents(studentList.getRecords());
+        map.put("records",studentListContent);
+        map.put("total",studentList.getTotal());
         return Result.succ(map);
     }
 }

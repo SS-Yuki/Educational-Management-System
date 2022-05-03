@@ -216,13 +216,17 @@
 >
 > /admin/whichTurn 获得当前是第几轮选课，一个String
 >
-> /admin/openSelectCourse  开放选课
+> /admin/openSelectCourse  继续选课
 >
-> /admin/closeSelectCourse  关闭选课
+> /admin/closeSelectCourse  暂停选课
 >
 > /admin/nextTurn  下一轮选课
 >
 > /admin/randomSelect  随机筛选
+>
+> /admin/startThisSemesterSelectCourse 开始本学期的选课
+>
+> /admin/ednThisSemesterSelectCourse 结束本学期的选课
 
 **一个想法**，点击随机筛选后，我们可以用同步的方式等待筛选结束给一个反馈。
 
@@ -309,6 +313,12 @@
 其实这个端口难度还好
 
 
+
+#### 6.老师和管理员查看某门课的名单
+
+> /common/getStudentListOfOneCourse 给我一个courseId
+
+返回的结果适合用来分页显示，有res.data.data.records和res.data.data.total
 
 ## 5.2任务
 

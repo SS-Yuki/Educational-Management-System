@@ -36,6 +36,7 @@
                                 value=item+1
             >
               {{ timeNames[item].label}}
+              {{occupy[0][item]}}
             </el-checkbox-button>
           </el-checkbox-group>
 
@@ -220,8 +221,13 @@ export default {
     this.show()
   },
   computed: {
-    day(){
-      return [this.day1,this.day2,this.day3,this.day4,this.day5,this.day6,this.day7]
+    day: {
+      get() {
+        return [this.day1,this.day2,this.day3,this.day4,this.day5,this.day6,this.day7]
+      },
+      set(newValue) {
+        [this.day1,this.day2,this.day3,this.day4,this.day5,this.day6,this.day7] = newValue
+      }
     },
     spare_occupyJudge() {
       return {
@@ -254,14 +260,13 @@ export default {
     spare_occupyJudge: {
       deep: true,
       handler(new_) {
-        this.day1 = []
-        this.day2 = []
-        this.day3 = []
-        this.day4 = []
-        this.day5 = []
-        this.day6 = []
-        this.day7 = []
-        console.log(this.spareJudge)
+        // this.day1 = []
+        // this.day2 = []
+        // this.day3 = []
+        // this.day4 = []
+        // this.day5 = []
+        // this.day6 = []
+        // this.day7 = []
         for (let key in new_) {
           if (new_[key] === null || new_[key] === undefined) {
             return;
@@ -272,6 +277,15 @@ export default {
         })
         request.post("/common/getClassroomOccupyByOneCourse", new_).then(res => {
           this.occupy = res.data.data.occupys
+          for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < this.length; j++) {
+              if (this.occupy[i][j]) {
+                this.day[i].push(j+1)
+              }
+            }
+          }
+          console.log(this.day)
+
         })
       }
     }
@@ -306,7 +320,6 @@ export default {
             this.limit_majors = showData.majorLimits
             this.edit_building_classroom = [showData.building, showData.classroom]
             this.edit_year_semester = [showData.year, showData.semester]
-            console.log(showData.occupyTime)
           }
           else{
             this.$message({

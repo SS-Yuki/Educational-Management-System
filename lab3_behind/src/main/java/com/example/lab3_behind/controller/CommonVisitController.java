@@ -118,10 +118,9 @@ public class CommonVisitController {
     @RequestMapping("/getStudentListOfOneCourse")
     public Result getStudentListOfOneCourse(@RequestBody Integer courseId){
         Map<String,Object> map = new HashMap<>();
-        MyPage<Student> studentList = courseService.getStudentListOfOneCourse(courseId);
-        List<StudentListContent> studentListContent = StudentListContent.getContents(studentList.getRecords());
+        List<Student> studentList = courseService.getStudentListOfOneCourse(courseId);
+        List<StudentListContent> studentListContent = StudentListContent.getContents(studentList);
         map.put("records",studentListContent);
-        map.put("total",studentList.getTotal());
         return Result.succ(map);
     }
 }

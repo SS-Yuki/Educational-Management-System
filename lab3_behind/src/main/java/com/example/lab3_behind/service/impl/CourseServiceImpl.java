@@ -490,17 +490,25 @@ public class CourseServiceImpl implements CourseService {
                 }
             }
         }
-
-        for(Course course : allCourses){
-            if( (classroomName == null) || classroomName.equals("") || course.getClassroom().getName().equals(classroomName)){
-                List<List<Integer>> selectTimeMatrix = TimeTool.makeTimeMatrix(selectTime, this.getLastSection(), Global.COURSE_MAX);
-                List<List<Integer>> courseTimeMatrix = TimeTool.makeTimeMatrix(course.getClassTime());
-
-                if(isEmptyTime || TimeTool.isContainTimeMatrix(courseTimeMatrix, selectTimeMatrix)){
-                    CourseMatchItem courseMatchItem = approximateMatchingSearch(course, search);
-                    if(search.isEmpty() || !courseMatchItem.equals(CourseMatchItem.NONE)) result.add(new CourseInMatching(course, courseMatchItem));
-                }
+        for(Course course : allCourses) {
+            if (!(classroomName == null) && !classroomName.equals("") && !course.getClassroom().getName().equals(classroomName)) {
+                continue;
             }
+            List<List<Integer>> courseTimeMatrix = null;
+            List<List<Integer>> selectTimeMatrix = null;
+            if (!isEmptyTime) {
+                selectTimeMatrix = TimeTool.makeTimeMatrix(selectTime, this.getLastSection(), Global.COURSE_MAX);
+                courseTimeMatrix = TimeTool.makeTimeMatrix(course.getClassTime());
+            }
+
+            if (!isEmptyTime && !TimeTool.isContainTimeMatrix(courseTimeMatrix, selectTimeMatrix)) {
+                continue;
+            }
+            CourseMatchItem courseMatchItem = approximateMatchingSearch(course, search);
+            if (!search.isEmpty() && courseMatchItem.equals(CourseMatchItem.NONE)){
+                continue;
+            }
+            result.add(new CourseInMatching(course, courseMatchItem));
         }
 
         sortCourseByRelevance(result, search);

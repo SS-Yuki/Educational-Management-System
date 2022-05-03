@@ -1,5 +1,6 @@
 package com.example.lab3_behind.service.impl;
 
+import com.example.lab3_behind.common.Global;
 import com.example.lab3_behind.common.forDomain.AuthorityName;
 import com.example.lab3_behind.domain.Authority;
 import com.example.lab3_behind.repository.AuthorityRepository;
@@ -30,20 +31,69 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public Boolean changeCourseSelectingAuthority(boolean status){
+    public Integer getPresentCourseSelectingRound() {
+        Authority authority = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
+        if (authority == null){
+            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, "0");
+            authorityRepository.save(courseSelectingAuthority);
+            return 0;
+        }
+        switch (authority.getAuthorityValue()){
+            case "1": return 1;
+            case "2": return 2;
+            case "0":
+            default: return 0;
+        }
+    }
+
+    @Override
+    public void courseSelectingStart() {
+
+    }
+
+    @Override
+    public void courseSelectingEnd() {
+
+    }
+
+    @Override
+    public void toNextCourseSelectingRound() throws Exception {
+        Authority authority = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
+        if (authority == null){
+            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, "0");
+            authorityRepository.save(courseSelectingAuthority);
+        }
+        assert authority != null;
+        String authorityValue = authority.getAuthorityValue();
+        if(authorityValue.equals(Global.NOT_IN_COURSE_SELECTING_ROUND)){
+            throw new Exception("还未开始选课轮次");
+        }
+        if(authorityValue.equals(Global.LAST_COURSE_SELECTING_ROUND)){
+            throw new Exception("已无下一轮选课");
+        }
+        switch (authorityValue) {
+            
+        }
+    }
+
+    @Override
+    public void changeCourseSelectingAuthority(boolean status) throws Exception {
         Authority authority = authorityRepository.findByAuthorityName(AuthorityName.CourseSelecting);
         if (authority == null){
             Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, "false");
             authorityRepository.save(courseSelectingAuthority);
-            return false;
+            return;
         }
         if(status){
+            Authority round = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
+            if(round.getAuthorityValue().equals(Global.NOT_IN_COURSE_SELECTING_ROUND)){
+                throw new Exception("当前不是选课阶段");
+            }
             authority.setAuthorityValue("true");
             authorityRepository.save(authority);
-            return true;
+            return;
         }
         authority.setAuthorityValue("false");
         authorityRepository.save(authority);
-        return false;
     }
 }

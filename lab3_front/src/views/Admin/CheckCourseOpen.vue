@@ -81,7 +81,7 @@ export default {
           })
           this.tableData[0].value=res.data.data;
         })
-      }, 10)
+      }, 500)
     },
     getTurn:function (){
       request.post("/admin/whichTurn").then(res=>{

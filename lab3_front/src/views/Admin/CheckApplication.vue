@@ -212,7 +212,7 @@ export default {
             })
           }
         })
-      }, 50);
+      }, 500);
     },
     add:function (){
       this.dialogVisible=true

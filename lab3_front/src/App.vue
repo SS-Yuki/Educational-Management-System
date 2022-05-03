@@ -22,6 +22,7 @@
 .main_part{
   padding-top: 20px;
   padding-left: 50px;
+  min-width: 800px;
 }
 
 </style>

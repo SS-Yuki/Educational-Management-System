@@ -96,7 +96,7 @@
           <template #footer>
             <span class="dialog-footer">
               <el-button @click="timeShow = false">取消</el-button>
-              <el-button type="primary" @click="timeShow = false; load">确认</el-button>
+              <el-button type="primary" @click="timeShow = false; load()">确认</el-button>
             </span>
           </template>
         </el-dialog>
@@ -333,6 +333,9 @@ export default {
     getTime:function (){
       request.post("/common/allTime").then(res=>{
         if (!res.data) return
+        this.timeNames.splice(0)
+        this.startTimes.splice(0)
+        this.endTimes.splice(0)
         res.data.data.times.forEach ((item) => {
           let option1 = {value: item.timeName, label: item.timeName}
           this.timeNames.push(option1)

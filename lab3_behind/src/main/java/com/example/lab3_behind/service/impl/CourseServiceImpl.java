@@ -249,6 +249,23 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseApplying pushCourseApplying(CourseApplyingData courseApplyingData, CourseApplyingType applyingType) throws Exception {
         School school = schoolRepository.findByName(courseApplyingData.getSchool());
+        if(!applyingType.equals(CourseApplyingType.Publish)){
+            if(courseRepository.findByCourseId(courseApplyingData.getId()) == null){
+                throw new Exception("所申请课程不存在");
+            }
+            CourseApplying oldCourseApplying = courseApplyingRepository.findByCourseId(courseApplyingData.getId());
+            if(oldCourseApplying != null){
+                throw new Exception("该课程已有申请正在审核");
+            }
+        }
+        if(applyingType.equals(CourseApplyingType.Delete)){
+            //此处有return
+            CourseApplying courseApplying = new CourseApplying(courseRepository.findByCourseId(courseApplyingData.getId()));
+            courseApplyingRepository.save(courseApplying);
+            return courseApplying;
+        }
+
+
         if(school == null){
             throw new Exception("申请对应课程所属学院不存在");
         }
@@ -265,16 +282,11 @@ public class CourseServiceImpl implements CourseService {
         String classTime = TimeTool.transSchedule(TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(),
                 TimeTool.getSectionNum(classroom.getSchedule()), Global.COURSE_MAX));
         CourseApplying courseApplying = new CourseApplying((courseApplyingData), school, major, classroom, majorsOptional, classTime);
+
         courseApplying.setType(applyingType);
         Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
         if(teacher == null){
             throw new Exception("该教师不存在");
-        }
-        if(applyingType != CourseApplyingType.Publish){
-            CourseApplying oldCourseApplying = courseApplyingRepository.findByCourseId(courseApplyingData.getId());
-            if(oldCourseApplying != null){
-                throw new Exception("该课程已有申请正在审核");
-            }
         }
         teacher.getCoursesApplying().add(courseApplying);
         teacherRepository.save(teacher);
@@ -470,15 +482,17 @@ public class CourseServiceImpl implements CourseService {
         List<CourseInMatching> result = new ArrayList<>();
 
         boolean isEmptyTime = true;
-        for(List<Integer> i : selectTime){
-            if (!i.isEmpty()) {
-                isEmptyTime = false;
-                break;
+        if(!(selectTime == null)){
+            for(List<Integer> i : selectTime){
+                if (!i.isEmpty()) {
+                    isEmptyTime = false;
+                    break;
+                }
             }
         }
 
         for(Course course : allCourses){
-            if(classroomName.equals("") || course.getClassroom().getName().equals(classroomName)){
+            if( (classroomName == null) || classroomName.equals("") || course.getClassroom().getName().equals(classroomName)){
                 List<List<Integer>> selectTimeMatrix = TimeTool.makeTimeMatrix(selectTime, this.getLastSection(), Global.COURSE_MAX);
                 List<List<Integer>> courseTimeMatrix = TimeTool.makeTimeMatrix(course.getClassTime());
 

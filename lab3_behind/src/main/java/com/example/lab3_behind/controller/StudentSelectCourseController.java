@@ -7,6 +7,7 @@ import com.example.lab3_behind.service.AuthorityService;
 import com.example.lab3_behind.service.CourseService;
 import com.example.lab3_behind.utils.EnumTool;
 import com.example.lab3_behind.utils.JwtUtil;
+import com.example.lab3_behind.utils.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,8 +44,8 @@ public class StudentSelectCourseController {
                     pageSearchData.getPageSize(),
                     pageSearchData.getSearch(),
                     number,
-                    EnumTool.transSchoolYear(pageSearchData.getYear()),
-                    EnumTool.transSemester(pageSearchData.getSemester()),
+                    EnumTool.transSchoolYear(TimeTool.getPresentYearAndSemester().getYear()),
+                    EnumTool.transSemester(TimeTool.getPresentYearAndSemester().getSemester()),
                     pageSearchData.getClassroom(),
                     pageSearchData.getSelectTime()
                     );

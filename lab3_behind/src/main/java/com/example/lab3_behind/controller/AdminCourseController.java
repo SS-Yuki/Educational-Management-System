@@ -85,8 +85,8 @@ public class AdminCourseController {
                     pageSearchData.getPageNum(),
                     pageSearchData.getPageSize(),
                     pageSearchData.getSearch(),
-                    EnumTool.transSchoolYear(TimeTool.getPresentYearAndSemester().getYear()),
-                    EnumTool.transSemester(TimeTool.getPresentYearAndSemester().getSemester()),
+                    EnumTool.transSchoolYear(pageSearchData.getYear()),
+                    EnumTool.transSemester(pageSearchData.getSemester()),
                     pageSearchData.getClassroom(),
                     pageSearchData.getSelectTime()
                     );

@@ -18,17 +18,18 @@
         <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
         <el-table-column fixed="right" label="操作" width="400">
           <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(
-                scope.row.courseId,
-                scope.row.courseName,
-                scope.row.courseNumber,
-                scope.row.classPeriod,
-                scope.row.classroom,
-                scope.row.creditHours,
-                scope.row.credits,
-                scope.row.capacity,
-                scope.row.introduction
-                )">查看/修改申请</el-button>
+            <el-button type="text" size="small" @click="edit()">查看/修改申请</el-button>
+<!--            <el-button type="text" size="small" @click="handleEdit(-->
+<!--                scope.row.courseId,-->
+<!--                scope.row.courseName,-->
+<!--                scope.row.courseNumber,-->
+<!--                scope.row.classPeriod,-->
+<!--                scope.row.classroom,-->
+<!--                scope.row.creditHours,-->
+<!--                scope.row.credits,-->
+<!--                scope.row.capacity,-->
+<!--                scope.row.introduction-->
+<!--                )">查看/修改申请</el-button>-->
             <el-popconfirm title="确认删除?" @confirm="handleDelete(
                 scope.row.courseId,
                 scope.row.courseName,
@@ -220,6 +221,9 @@ export default {
     },
     add:function (){
       this.$router.push("/teacher/teacheraddcourse")
+    },
+    edit:function () {
+      this.$router.push("/teacher/teachereditcourse")
     },
     save:function (){
       request.post("/teacher/addCourse", this.addCourse).then(res => {

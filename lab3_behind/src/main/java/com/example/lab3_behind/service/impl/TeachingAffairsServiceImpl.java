@@ -37,19 +37,9 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
 
     @Override
     public List<List<Boolean>> getClassroomTime(String name, SchoolYear schoolYear, Semester semester) throws Exception {
-        Classroom classroom = classroomRepository.findByName(name);
-        if(classroom == null){
-            throw new Exception("教室不存在");
-        }
-        List<Course> allCourse = courseRepository.findByClassroomAndSchoolYearAndSemester(classroom, schoolYear, semester);
-
-        List<List<Integer>> scheduleList = TimeTool.getEmptyTimeMatrix(getLastSection());
-        for (int i = 0; i < allCourse.size(); i++){
-            scheduleList = TimeTool.addTimeMatrix(scheduleList, TimeTool.makeTimeMatrix(allCourse.get(i).getClassTime()));
-        }
-        String schedule = TimeTool.transSchedule(scheduleList);
-        return TimeTool.getBoolTime(schedule);
+        return TimeTool.getBoolTime(this.getClassroomTimeIn(name, schoolYear, semester));
     }
+
 
     @Override
     public List<List<Boolean>> getClassroomTime(String name, Integer excludedCourse) throws Exception {
@@ -67,7 +57,8 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         if(classroom == null){
             throw new Exception("教室不存在");
         }
-        String schedule = classroom.getSchedule();
+        Course course = courseRepository.findByCourseId(courseId);
+        String schedule = TimeTool.transSchedule(this.getClassroomTimeIn(name, course.getSchoolYear(), course.getSemester()));
         return TimeTool.getBoolTime(TimeTool.extractTimeMatrix(TimeTool.makeTimeMatrix(schedule), courseId));
     }
 
@@ -377,6 +368,23 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             index2 = schedule.indexOf("\n", index1) + 1;
         }
         return index;
+    }
+
+    private List<List<Integer>> getClassroomTimeIn(String name, SchoolYear schoolYear, Semester semester) throws Exception {
+        Classroom classroom = classroomRepository.findByName(name);
+        if(classroom == null){
+            throw new Exception("教室不存在");
+        }
+        List<Course> allCourse = courseRepository.findByClassroomAndSchoolYearAndSemester(classroom, schoolYear, semester);
+        List<List<Integer>> scheduleList = TimeTool.getEmptyTimeMatrix(this.getLastSection());
+        for (int i = 0; i < allCourse.size(); i++){
+            try {
+                scheduleList = TimeTool.addTimeMatrix(scheduleList, TimeTool.makeTimeMatrix(allCourse.get(i).getClassTime()));
+            } catch (Exception e){
+                throw e;
+            }
+        }
+        return scheduleList;
     }
 
 }

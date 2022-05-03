@@ -329,12 +329,27 @@ public class CourseServiceImpl implements CourseService {
     private Course insertCourse(CourseApplying courseApplying) throws Exception {
         Classroom classroom = classroomRepository.findByName(courseApplying.getClassroom().getName());
         try {
-            classroom.setSchedule(TimeTool.transSchedule(
-                    TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
-                            TimeTool.makeTimeMatrix(courseApplying.getClassTime()))
-                    ));
+            //此处检测时间冲突
+            TimeTool.addTimeMatrix(
+                    this.getClassroomTime(courseApplying.getClassroom().getName(),
+                            courseApplying.getSchoolYear(),
+                            courseApplying.getSemester()),
+                    TimeTool.makeTimeMatrix(courseApplying.getClassTime()));
         } catch (Exception e) {
             throw e;
+        }
+        YearSemesterPair yearAndSemester = TimeTool.getPresentYearAndSemester();
+        if((courseApplying.getSchoolYear() == EnumTool.transSchoolYear(yearAndSemester.getYear()))
+                &&(courseApplying.getSemester() == EnumTool.transSemester(yearAndSemester.getSemester()))){
+            try {
+                classroom.setSchedule(TimeTool.transSchedule(
+                        TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
+                                TimeTool.makeTimeMatrix(courseApplying.getClassTime()))
+                ));
+            } catch (Exception e) {
+                throw e;
+            }
+            classroomRepository.save(classroom);
         }
         Teacher teacher = teacherRepository.findByJobNumber(courseApplying.getTeacherNum());
         Course course = new Course(courseApplying);
@@ -357,6 +372,33 @@ public class CourseServiceImpl implements CourseService {
         Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
         if(teacher == null){
             throw new Exception("所修改课程的教师不存在");
+        }
+        Classroom classroom = classroomRepository.findByName(courseApplyingData.getClassroom());
+        YearSemesterPair yearAndSemester = TimeTool.getPresentYearAndSemester();
+        List<List<Integer>> thisCourseSchedule = TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), this.getLastSection(), course.getCourseId());
+        if((course.getSchoolYear() == EnumTool.transSchoolYear(yearAndSemester.getYear()))
+                &&(course.getSemester() == EnumTool.transSemester(yearAndSemester.getSemester()))){
+            List<List<Integer>> timeMatrix =  TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()), course.getCourseId());
+            try {
+                //此处检测时间冲突
+                timeMatrix = TimeTool.addTimeMatrix(timeMatrix, thisCourseSchedule);
+            } catch (Exception e) {
+                throw e;
+            }
+            classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
+            classroomRepository.save(classroom);
+        } else {
+            try {
+                List<List<Integer>> otherTimeMatrix = TimeTool.subTimeMatrix(
+                        this.getClassroomTime(courseApplyingData.getClassroom(),
+                                EnumTool.transSchoolYear(courseApplyingData.getYear()),
+                                EnumTool.transSemester(courseApplyingData.getSemester())),
+                        course.getCourseId());
+                //此处检测时间冲突
+                 TimeTool.addTimeMatrix(otherTimeMatrix, thisCourseSchedule);
+            } catch (Exception e) {
+                throw e;
+            }
         }
         Course thisCourse = teacher.getCourses().get(teacher.getCourses().indexOf(course));
         thisCourse.setCourseName(courseApplyingData.getCourseName());
@@ -383,13 +425,18 @@ public class CourseServiceImpl implements CourseService {
         if(courseApplying!=null){
             teacher.getCoursesApplying().remove(courseApplying);
         }
+
+        YearSemesterPair yearAndSemester = TimeTool.getPresentYearAndSemester();
+        if((course.getSchoolYear() == EnumTool.transSchoolYear(yearAndSemester.getYear()))
+                &&(course.getSemester() == EnumTool.transSemester(yearAndSemester.getSemester()))){
+            Classroom classroom = course.getClassroom();
+            List<List<Integer>> timeMatrix = TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()), courseId);
+            classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
+            classroomRepository.save(classroom);
+        }
+
         teacher.getCourses().remove(course);
         teacherRepository.save(teacher);
-
-        Classroom classroom = course.getClassroom();
-        List<List<Integer>> timeMatrix = TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()), courseId);
-        classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
-        classroomRepository.save(classroom);
         return course;
     }
 

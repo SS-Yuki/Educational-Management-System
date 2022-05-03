@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyPageTool {
-    public static MyPage<Object> getPage(List<Object> allDatas,Integer size,Integer pageNum){
+    public static MyPage<Object> getPage(List<Object> allData,Integer size,Integer pageNum){
         MyPage<Object> ans = new MyPage<>();
-        ans.setTotal(allDatas.size());
+        ans.setTotal(allData.size());
         ans.setRecords(new ArrayList<>());
         for(int i=(pageNum-1)*size; i<pageNum*size && i<ans.getTotal() && i>=0;i++){
-            ans.getRecords().add(allDatas.get(i));
+            ans.getRecords().add(allData.get(i));
         }
         return ans;
     }

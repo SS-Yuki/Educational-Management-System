@@ -105,6 +105,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Page<Course> findAPageCourse(Integer page, Integer size, String search, SchoolYear schoolYear, Semester semester){
+
         Pageable pageable =  PageRequest.of(page - 1, size);
         if(search.isEmpty()){
             return courseRepository.findAll(pageable);
@@ -356,6 +357,11 @@ public class CourseServiceImpl implements CourseService {
         Course course = new Course(courseApplying);
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
+        Course newCourse = courseRepository.findByCourseNumberAndTeacherNumAndSchoolYearAndSemester(
+                course.getCourseNumber(), course.getTeacherNum(), course.getSchoolYear(), course.getSemester()
+        );
+        newCourse.setClassTime(TimeTool.transSchedule(TimeTool.transMaxInSchedule(newCourse.getClassTime(), newCourse.getCourseId())));
+        courseRepository.save(newCourse);
         return course;
     }
 

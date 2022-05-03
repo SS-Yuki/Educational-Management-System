@@ -29,6 +29,7 @@ import TeacherInfo from "@/views/Teacher/TeacherInfo";
 import TeacherCourse from "@/views/Teacher/TeacherCourse";
 import TeacherApplication from "@/views/Teacher/TeacherApplication";
 import TeacherAddCourse from "@/views/Teacher/TeacherAddCourse";
+import TeacherEditCourse from "@/views/Teacher/TeacherEditCourse";
 
 export const routes = [
   {
@@ -147,6 +148,11 @@ export const teacher_routes =
             path: 'teacheraddcourse',
             name: 'TeacherAddCourse',
             component: TeacherAddCourse
+        },
+        {
+            path: 'teachereditcourse',
+            name: 'TeacherEditCourse',
+            component: TeacherEditCourse
         }
     ]
   }

@@ -9,6 +9,7 @@ import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.AuthorityService;
 import com.example.lab3_behind.service.CourseService;
 import com.example.lab3_behind.utils.EnumTool;
+import com.example.lab3_behind.utils.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,19 +78,21 @@ public class AdminCourseController {
         }
     }
     @RequestMapping("/findCoursePage")
-    public Result findCoursePage(@RequestBody PageSearchWithYearAndSemester pageSearchData){
+    public Result findCoursePage(@RequestBody FullCoursePageSearch pageSearchData){
         try{
             Map<String,Object> map = new HashMap<>();
-            Page<Course> coursePage = courseService.findAPageCourse(
+            MyPage<Course> coursePage = courseService.findAPageCourse(
                     pageSearchData.getPageNum(),
                     pageSearchData.getPageSize(),
                     pageSearchData.getSearch(),
-                    EnumTool.transSchoolYear(pageSearchData.getYear()),
-                    EnumTool.transSemester(pageSearchData.getSemester())
+                    EnumTool.transSchoolYear(TimeTool.getPresentYearAndSemester().getYear()),
+                    EnumTool.transSemester(TimeTool.getPresentYearAndSemester().getSemester()),
+                    pageSearchData.getClassroom(),
+                    pageSearchData.getSelectTime()
                     );
-            List<CourseContent> courseContents = CourseContent.getContent(coursePage.getContent());
+            List<CourseContent> courseContents = CourseContent.getContent(coursePage.getRecords());
             map.put("records",courseContents);
-            map.put("total",coursePage.getTotalElements());
+            map.put("total",coursePage.getTotal());
             return Result.succ(map);
         }catch (Exception e){
             e.printStackTrace();

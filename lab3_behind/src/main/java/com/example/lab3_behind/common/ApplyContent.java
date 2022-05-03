@@ -2,6 +2,8 @@ package com.example.lab3_behind.common;
 
 
 import com.example.lab3_behind.domain.CourseApplying;
+import com.example.lab3_behind.domain.Major;
+import com.example.lab3_behind.utils.EnumTool;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +31,12 @@ public class ApplyContent {
     private String applicant;
     private String applyType;
 
+    private String selectTypeString;
+    private String majorLimits;
+    private String year;
+    private String semester;
+    private String occupyTime;
+
     public static List<ApplyContent> getContents(List<CourseApplying> courseApplyings){
         List<ApplyContent> applyContents = new ArrayList<>();
         for(CourseApplying courseApplying:courseApplyings){
@@ -38,6 +46,14 @@ public class ApplyContent {
                 case Change:myApplyType = "修改信息";break;
                 case Publish:myApplyType = "新增课程";break;
                 default: myApplyType = "未声明";
+            }
+
+            String majorLim = "";
+            for(Major major:courseApplying.getMajorsOptional()){
+                majorLim= majorLim + major.getName() + ";";
+            }
+            if(majorLim.length()>0){
+                majorLim = majorLim.substring(0,majorLim.length()-1);
             }
 
             ApplyContent temp = new ApplyContent(
@@ -55,7 +71,12 @@ public class ApplyContent {
                     courseApplying.getCapacity(),
                     courseApplying.getIntroduction(),
                     courseApplying.getApplicant(),
-                    myApplyType
+                    myApplyType,
+                    EnumTool.transString(courseApplying.getCourseSelectType()),
+                    majorLim,
+                    EnumTool.transString(courseApplying.getSchoolYear()),
+                    EnumTool.transString(courseApplying.getSemester()),
+                    courseApplying.getClassTimeString()
                     );
             applyContents.add(temp);
         }

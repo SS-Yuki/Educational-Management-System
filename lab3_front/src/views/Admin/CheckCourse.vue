@@ -118,12 +118,13 @@
         <el-table-column prop="applicant" label="申请人" width="200"  />
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-              <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
-              <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
-                <template #reference>
-                  <el-button type="text">删除</el-button>
-                </template>
-              </el-popconfirm>
+            <el-button type="text" size="small" @click="">查看选课名单</el-button>
+            <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
+            <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
+              <template #reference>
+                <el-button type="text">删除</el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>

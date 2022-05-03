@@ -373,20 +373,23 @@ public class CourseServiceImpl implements CourseService {
         if(teacher == null){
             throw new Exception("所修改课程的教师不存在");
         }
-        Classroom classroom = classroomRepository.findByName(courseApplyingData.getClassroom());
+        Classroom oldClassroom = course.getClassroom();
+        Classroom newClassroom = classroomRepository.findByName(courseApplyingData.getClassroom());
         YearSemesterPair yearAndSemester = TimeTool.getPresentYearAndSemester();
         List<List<Integer>> thisCourseSchedule = TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), this.getLastSection(), course.getCourseId());
         if((course.getSchoolYear() == EnumTool.transSchoolYear(yearAndSemester.getYear()))
                 &&(course.getSemester() == EnumTool.transSemester(yearAndSemester.getSemester()))){
-            List<List<Integer>> timeMatrix =  TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()), course.getCourseId());
+            List<List<Integer>> timeMatrix =  TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(oldClassroom.getSchedule()), course.getCourseId());
+            oldClassroom.setSchedule(TimeTool.transSchedule(timeMatrix));
+            classroomRepository.save(oldClassroom);
             try {
                 //此处检测时间冲突
                 timeMatrix = TimeTool.addTimeMatrix(timeMatrix, thisCourseSchedule);
             } catch (Exception e) {
                 throw e;
             }
-            classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
-            classroomRepository.save(classroom);
+            newClassroom.setSchedule(TimeTool.transSchedule(timeMatrix));
+            classroomRepository.save(newClassroom);
         } else {
             try {
                 List<List<Integer>> otherTimeMatrix = TimeTool.subTimeMatrix(
@@ -401,6 +404,7 @@ public class CourseServiceImpl implements CourseService {
             }
         }
         Course thisCourse = teacher.getCourses().get(teacher.getCourses().indexOf(course));
+        thisCourse.setClassTime(TimeTool.transSchedule(thisCourseSchedule));
         thisCourse.setCourseName(courseApplyingData.getCourseName());
         thisCourse.setCourseNumber(courseApplyingData.getCourseNumber());
         thisCourse.setIntroduction(courseApplyingData.getIntroduction());

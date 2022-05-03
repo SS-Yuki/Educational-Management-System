@@ -82,9 +82,16 @@ export default {
       })
     },
     submit:function (){
-      request.post("/student/selectCourseApply",
-          {courseId:this.courseId,applyReason:this.applyReason}).then(res=>{
-
+      request.post("/student/applyForSelectCourse", {
+            courseId:this.courseId,
+            description:this.applyReason
+          }).then(res=>{
+        if(res.data.code!==200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
       })
     }
   }

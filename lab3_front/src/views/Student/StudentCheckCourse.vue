@@ -38,17 +38,17 @@
         <el-table-column prop="courseId" label="courseId" width="0" v-if="false" />
         <el-table-column prop="courseName" label="课程名" width="200" />
         <el-table-column prop="courseNumber" label="课程编号" width="200" />
-        <el-table-column prop="teacherNum" label="教师工号" width="200" />
-        <el-table-column prop="major" label="开课专业" width="200" />
-        <el-table-column prop="school" label="开课院系" width="200" />
-        <el-table-column prop="classPeriod" label="时间" width="0" v-if="false"  />
-        <el-table-column prop="classroom" label="教室" width="0" v-if="false" />
-        <el-table-column prop="creditHours" label="学时" width="0" v-if="false" />
-        <el-table-column prop="credits" label="学分" width="0" v-if="false" />
-        <el-table-column prop="capacity" label="容量" width="0" v-if="false" />
-        <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
+        <el-table-column prop="teacherNum" label="教师工号" width="200" v-if="false"/>
+        <el-table-column prop="major" label="开课专业" width="150" />
+        <el-table-column prop="school" label="开课院系" width="150" />
+        <el-table-column prop="classPeriod" label="时间" width="200"   />
+        <el-table-column prop="classroom" label="教室" width="100"  />
+        <el-table-column prop="creditHours" label="学时" width="100"  />
+        <el-table-column prop="credits" label="学分" width="100"  />
+        <el-table-column prop="capacity" label="容量" width="200" />
+        <el-table-column prop="introduction" label="介绍" width="200"  />
         <el-table-column prop="applicant" label="申请人" width="0" v-if="false" />
-        <el-table-column fixed="right" label="操作" width="200">
+        <el-table-column fixed="right" label="操作" width="200" v-if="false">
           <template #default="scope">
             <el-button type="text" size="small" @click="handleEdit(
                 scope.row.courseId,

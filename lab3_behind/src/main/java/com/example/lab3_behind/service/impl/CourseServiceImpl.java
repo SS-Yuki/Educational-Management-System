@@ -373,7 +373,33 @@ public class CourseServiceImpl implements CourseService {
         if(teacher == null){
             throw new Exception("所修改课程的教师不存在");
         }
-        //TODO: 时间处理
+        Classroom classroom = classroomRepository.findByName(courseApplyingData.getClassroom());
+        YearSemesterPair yearAndSemester = TimeTool.getPresentYearAndSemester();
+        List<List<Integer>> thisCourseSchedule = TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), this.getLastSection(), course.getCourseId());
+        if((course.getSchoolYear() == EnumTool.transSchoolYear(yearAndSemester.getYear()))
+                &&(course.getSemester() == EnumTool.transSemester(yearAndSemester.getSemester()))){
+            List<List<Integer>> timeMatrix =  TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()), course.getCourseId());
+            try {
+                //此处检测时间冲突
+                timeMatrix = TimeTool.addTimeMatrix(timeMatrix, thisCourseSchedule);
+            } catch (Exception e) {
+                throw e;
+            }
+            classroom.setSchedule(TimeTool.transSchedule(timeMatrix));
+            classroomRepository.save(classroom);
+        } else {
+            try {
+                List<List<Integer>> otherTimeMatrix = TimeTool.subTimeMatrix(
+                        this.getClassroomTime(courseApplyingData.getClassroom(),
+                                EnumTool.transSchoolYear(courseApplyingData.getYear()),
+                                EnumTool.transSemester(courseApplyingData.getSemester())),
+                        course.getCourseId());
+                //此处检测时间冲突
+                 TimeTool.addTimeMatrix(otherTimeMatrix, thisCourseSchedule);
+            } catch (Exception e) {
+                throw e;
+            }
+        }
         Course thisCourse = teacher.getCourses().get(teacher.getCourses().indexOf(course));
         thisCourse.setCourseName(courseApplyingData.getCourseName());
         thisCourse.setCourseNumber(courseApplyingData.getCourseNumber());

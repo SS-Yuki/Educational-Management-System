@@ -10,4 +10,6 @@ public class Global {
     public static final Pair<Integer, Integer> FIRST_SEMESTER_START_TIME = Pair.of(8,20);
     public static final Pair<Integer, Integer> SECOND_SEMESTER_START_TIME = Pair.of(2,20);
     public static final int COURSE_MAX = 9999999;
+    public static final String NOT_IN_COURSE_SELECTING_ROUND = "0";
+    public static final String LAST_COURSE_SELECTING_ROUND = "2";
 }

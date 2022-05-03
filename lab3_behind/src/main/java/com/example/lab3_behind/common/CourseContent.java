@@ -58,7 +58,7 @@ public class CourseContent {
                 majorLim,
                 EnumTool.transString(course.getSchoolYear()),
                 EnumTool.transString(course.getSemester()),
-                course.getClassTime());
+                course.getClassTimeString());
     }
 
     public static List<CourseContent> getContent(List<Course> courses){

@@ -24,7 +24,7 @@
           <div>
             <el-checkbox-group  style="display: inline-block" disabled size="small">
               <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
-                                  value=item  >
+                                  value=item>
                 {{ startTimes[item].label + "-" + endTimes[item].label }}
               </el-checkbox-button>
             </el-checkbox-group>

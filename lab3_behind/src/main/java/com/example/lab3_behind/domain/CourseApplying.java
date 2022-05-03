@@ -117,6 +117,27 @@ public class CourseApplying {
         this.classTime = classTime;
     }
 
+    public CourseApplying(Course course){
+        this.courseId = course.getCourseId();
+        this.capacity = course.getCapacity();
+        this.courseName = course.getCourseName();
+        this.courseNumber = course.getCourseNumber();
+        this.classroom = course.getClassroom();
+        this.creditHours = course.getCreditHours();
+        this.credits = course.getCredits();
+        this.major = course.getMajor();
+        this.school = course.getSchool();
+        this.teacherNum = course.getTeacherNum();
+        this.introduction = course.getIntroduction();
+        this.teacherName = course.getTeacherName();
+        this.schoolYear = course.getSchoolYear();
+        this.semester = course.getSemester();
+        this.courseSelectType = course.getCourseSelectType();
+        this.majorsOptional = course.majorsOptional;
+        this.classTime = course.getClassTime();
+    }
+
+
     public String getClassTimeString(){
         String result = "";
         List<List<Integer>> time = TimeTool.makeTimeMatrix(this.classTime);

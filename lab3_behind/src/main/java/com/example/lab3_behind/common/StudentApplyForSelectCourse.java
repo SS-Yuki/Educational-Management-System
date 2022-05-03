@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentApplyForSelectCourse {
-    String stuNumber;
     String courseId;
     String description;
 }

@@ -17,6 +17,8 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.lab3_behind.service.impl.CourseServiceImpl.getInteger;
+
 @Service
 public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     ClassroomRepository classroomRepository;
@@ -363,15 +365,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     }
 
     private Integer getLastSection(){
-        Integer last = 0;
-        List<TimeTable> timeTables = timeTableRepository.findAll();
-        for(TimeTable timeTable : timeTables){
-            Integer temp = timeTable.getSection();
-            if(temp.compareTo(last) >= 0){
-                last = temp;
-            }
-        }
-        return last;
+        return getInteger(timeTableRepository);
     }
 
 

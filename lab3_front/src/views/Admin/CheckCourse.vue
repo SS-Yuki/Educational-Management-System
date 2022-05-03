@@ -44,7 +44,7 @@
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
               <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
-              <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.courseId)">
+              <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
                 <template #reference>
                   <el-button type="text">删除</el-button>
                 </template>
@@ -57,9 +57,6 @@
             v-model:currentPage="currentPage"
             v-model:page-size="pageSize"
             :page-sizes="[5,10,20]"
-            :small="small"
-            :disabled="disabled"
-            :background="background"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
             @current-change="handleCurrentChange"
@@ -83,12 +80,6 @@ export default {
       pageSize:10,
       currentPage:1,
       search:'',
-      dialogVisible:false,
-      dialogVisible2:false,
-      add_school_major:'',
-      add_building_classroom:'',
-      edit_school_major:'',
-      edit_building_classroom:'',
       majorOptions:[],
       classroomOptions:[],
       courseId:0,
@@ -246,7 +237,7 @@ export default {
     edit:function (courseId) {
       this.$router.push({ name: 'EditCourse', params: { id: courseId} })
     },
-    handleDelete(courseId) {
+    delete(courseId) {
       this.courseId=courseId
       request.post("/admin/deleteCourse",this.courseId).then(res => {
         if(res.data.code!==200) {
@@ -255,7 +246,13 @@ export default {
             message: res.data.msg
           })
         }
-        this.load()  // 删除之后重新加载表格的数据
+        else {
+          this.$message({
+            type:"success",
+            message: res.data.msg
+          })
+          this.load()  // 删除之后重新加载表格的数据
+        }
       })
     },
     handleCurrentChange:function (pageNum){

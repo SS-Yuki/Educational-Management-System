@@ -203,7 +203,7 @@ export default {
 
     }
   },
-  props:["showData","id"],
+  props:["id"],
   mounted() {
     this.getTime()
     this.getOptionMajor()
@@ -423,7 +423,13 @@ export default {
             message: res.data.msg
           })
         }
-        this.$router.push("/admin/checkcourse")
+        else {
+          this.$message({
+            type:"success",
+            message: res.data.msg
+          })
+          this.$router.push("/admin/checkcourse")
+        }
       })
     },
   }

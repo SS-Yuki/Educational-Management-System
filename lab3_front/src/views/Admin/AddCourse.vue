@@ -19,7 +19,6 @@
         <el-form-item label="教学楼/教室">
           <el-cascader  v-model="add_building_classroom" :options="classroomOptions"/>
         </el-form-item>
-<!--        time-->
         <el-form-item label="上课时间">
           <div>
             <el-checkbox-group  style="display: inline-block" disabled >
@@ -95,8 +94,6 @@
           </div>
 
         </el-form-item>
-<!--        time-->
-
         <el-form-item label="学时">
           <el-input v-model="addCourse.creditHours" />
         </el-form-item>
@@ -109,7 +106,6 @@
         <el-form-item label="介绍">
           <el-input v-model="addCourse.introduction" />
         </el-form-item>
-<!--        申请人-->
         <el-form-item label="选课类型">
           <el-select v-model="addCourse.selectTypeString">
             <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -121,7 +117,6 @@
           <el-form-item label="学年/学期">
             <el-cascader v-model="add_year_semester" :options="semesterOptions"/>
           </el-form-item>
-<!--时间-->
         <el-button type="primary" @click="save">确认</el-button>
       </el-form>
   </div>
@@ -130,6 +125,7 @@
 <script>
 import request from "@/utils/request";
 
+//生成数组函数
 function index(num){
   var arr=[];
   for(var i = 0;i<num;i++){
@@ -142,6 +138,8 @@ export default {
   name: "AddCourse",
   data() {
     return {
+
+      //返回后端的数据
       addCourse:{
         id:0,
         courseNumber:'',
@@ -164,7 +162,6 @@ export default {
         year: '',
         semester: '',
 
-        //时间！！！！
         occupyTime: '',
       },
       timeNames:[],
@@ -211,7 +208,6 @@ export default {
     this.getOptionMajor()
     this.getOptionClassroom()
 
-    //标记
     this.getOptionSemesters()
     this.getTime()
   },
@@ -289,7 +285,7 @@ export default {
         let that = this
         if (!res.data) return
         res.data.data.schools.forEach((item) => {
-          let option = {value: item.school, label: item.school, disabled: false, children: []}
+          let option = {value: item.school, label: item.school, disabled: true, children: []}
           if (!item.majors) return
           item.majors.forEach((item) => {
             let child = {value: item, label: item}
@@ -314,6 +310,22 @@ export default {
         })
       })
     },
+    getOptionSemesters: function (){
+      request.post("/common/allSemesters").then(res => {
+        let that = this
+        if (!res.data) return
+        res.data.data.yearAndSemesters.forEach (function (item) {
+          let option = {value: item.year, label: item.year, children: []}
+          if (!item.semesters) return
+          item.semesters.forEach (function (item) {
+            let child = {value: item, label: item}
+            option.children.push(child)
+          })
+          that.semesterOptions.push(option)
+        })
+        this.add_year_semester = [res.data.data.defaultYear, res.data.data.defaultSemester]
+      })
+    },
     getTime:function (){
       request.post("/common/allTime").then(res=>{
         if (!res.data) return
@@ -333,24 +345,6 @@ export default {
           this.spare.push(arr)
         }
 
-      })
-    },
-
-    //标记
-    getOptionSemesters: function (){
-      request.post("/common/allSemesters").then(res => {
-        let that = this
-        if (!res.data) return
-        res.data.data.yearAndSemesters.forEach (function (item) {
-          let option = {value: item.year, label: item.year, children: []}
-          if (!item.semesters) return
-          item.semesters.forEach (function (item) {
-            let child = {value: item, label: item}
-            option.children.push(child)
-          })
-          that.semesterOptions.push(option)
-        })
-        this.add_year_semester = [res.data.data.defaultYear, res.data.data.defaultSemester]
       })
     },
     save:function (){
@@ -376,7 +370,13 @@ export default {
             message: res.data.msg
           })
         }
-        else this.$router.push("/admin/checkcourse")
+        else {
+          this.$message({
+            type:"success",
+            message: res.data.msg
+          })
+          this.$router.push("/admin/checkcourse")
+        }
       })
     },
   }

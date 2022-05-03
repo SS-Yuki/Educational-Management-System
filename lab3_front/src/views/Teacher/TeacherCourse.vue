@@ -1,145 +1,40 @@
 <template>
   <div class="main_part">
-    <div>
-      <div class="add" style="margin: 10px 0">
-        <el-button size="large" @click="add" type="primary">新增申请</el-button>
-        <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
-        <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
-      </div>
-      <el-table :data="tableData" style="width: 1200px" border stripe>
-        <el-table-column prop="courseId" label="courseId" width="200" v-if="false"  />
-        <el-table-column prop="courseName" label="课程名" width="200" />
-        <el-table-column prop="courseNumber" label="课程编号" width="200" />
-        <el-table-column prop="classPeriod" label="时间" width="150"   />
-        <el-table-column prop="classroom" label="教室" width="150" />
-        <el-table-column prop="creditHours" label="学时"  width="100" />
-        <el-table-column prop="credits" label="学分" width="100"  />
-        <el-table-column prop="capacity" label="容量" width="100" />
-        <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
-        <el-table-column fixed="right" label="操作" width="200">
-          <template #default="scope">
-            <el-button type="text" size="small" @click="edit()">查看/修改申请</el-button>
-<!--            <el-button type="text" size="small" @click="handleEdit(-->
-<!--                scope.row.courseId,-->
-<!--                scope.row.courseName,-->
-<!--                scope.row.courseNumber,-->
-<!--                scope.row.classPeriod,-->
-<!--                scope.row.classroom,-->
-<!--                scope.row.creditHours,-->
-<!--                scope.row.credits,-->
-<!--                scope.row.capacity,-->
-<!--                scope.row.introduction-->
-<!--                )">查看/修改申请</el-button>-->
-            <el-popconfirm title="确认删除?" @confirm="handleDelete(
-                scope.row.courseId,
-                scope.row.courseName,
-                scope.row.courseNumber,
-                scope.row.classPeriod,
-                scope.row.classroom,
-                scope.row.creditHours,
-                scope.row.credits,
-                scope.row.capacity,
-                scope.row.introduction
-            )">
-              <template #reference>
-                <el-button type="text">申请删除</el-button>
-              </template>
-            </el-popconfirm>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div style="margin: 10px 0">
-        <el-pagination
-            v-model:currentPage="currentPage"
-            v-model:page-size="pageSize"
-            :page-sizes="[5,10,20]"
-            :small="small"
-            :disabled="disabled"
-            :background="background"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-        />
-      </div>
+    <div class="add" style="margin: 10px 0">
+      <el-button size="large" @click="add" type="primary">申请新增课程</el-button>
+      <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
+      <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
     </div>
-    <div>
-      <el-dialog v-model="dialogVisible" title="添加新课程" width="30%">
-        <el-form :model="addCourse" label-width="120px">
-          <el-form-item label="课程id">
-            <el-input v-model="addCourse.id" disabled/>
-          </el-form-item>
-          <el-form-item label="新课程名">
-            <el-input v-model="addCourse.courseName"/>
-          </el-form-item>
-          <el-form-item label="新课程编号">
-            <el-input v-model="addCourse.courseNumber" />
-          </el-form-item>
-          <el-form-item label="新上课时间">
-            <el-input v-model="addCourse.classPeriod" />
-          </el-form-item>
-          <el-form-item label="新教室">
-            <el-input v-model="addCourse.classroom" />
-          </el-form-item>
-          <el-form-item label="新学时">
-            <el-input v-model="addCourse.creditHours" />
-          </el-form-item>
-          <el-form-item label="新学分">
-            <el-input v-model="addCourse.credits" />
-          </el-form-item>
-          <el-form-item label="新容量">
-            <el-input v-model="addCourse.capacity" />
-          </el-form-item>
-          <el-form-item label="新介绍">
-            <el-input v-model="addCourse.introduction" />
-          </el-form-item>
-          <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="save">确认</el-button>
-      </span>
-        </el-form>
-        <template #footer>
+    <el-table :data="tableData" style="width: 1200px" border stripe>
+      <el-table-column prop="courseId" label="courseId" width="200" v-if="false"  />
+      <el-table-column prop="courseName" label="课程名" width="200" />
+      <el-table-column prop="courseNumber" label="课程编号" width="200" />
+      <el-table-column prop="occupyTime" label="时间" width="150"   />
+      <el-table-column prop="classroom" label="教室" width="150" />
+      <el-table-column prop="creditHours" label="学时"  width="100" />
+      <el-table-column prop="credits" label="学分" width="100"  />
+      <el-table-column prop="capacity" label="容量" width="100" />
+      <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
+      <el-table-column fixed="right" label="操作" width="200">
+        <template #default="scope">
+          <el-button type="text" size="small" @click="edit(scope.row.courseId)">申请修改信息</el-button>
+          <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
+            <template #reference>
+              <el-button type="text">申请删除</el-button>
+            </template>
+          </el-popconfirm>
         </template>
-      </el-dialog>
-    </div>
-    <div>
-      <el-dialog v-model="dialogVisible2" title="查看编辑信息" width="30%">
-        <el-form :model="editCourse" label-width="120px">
-          <el-form-item label="新id">
-            <el-input v-model="editCourse.id" />
-          </el-form-item>
-          <el-form-item label="新课程名">
-            <el-input v-model="editCourse.courseName" />
-          </el-form-item>
-          <el-form-item label="新课程编号">
-            <el-input v-model="editCourse.courseNumber" />
-          </el-form-item>
-          <el-form-item label="新上课时间">
-            <el-input v-model="editCourse.classPeriod" />
-          </el-form-item>
-          <el-form-item label="新教室">
-            <el-input v-model="editCourse.classroom" />
-          </el-form-item>
-          <el-form-item label="新学时">
-            <el-input v-model="editCourse.creditHours" />
-          </el-form-item>
-          <el-form-item label="新学分">
-            <el-input v-model="editCourse.credits" />
-          </el-form-item>
-          <el-form-item label="新容量">
-            <el-input v-model="editCourse.capacity" />
-          </el-form-item>
-          <el-form-item label="新介绍">
-            <el-input v-model="editCourse.introduction" />
-          </el-form-item>
-          <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="saveEdit">确认</el-button>
-      </span>
-        </el-form>
-        <template #footer>
-        </template>
-      </el-dialog>
+      </el-table-column>
+    </el-table>
+    <div style="margin: 10px 0">
+      <el-pagination
+          v-model:currentPage="currentPage"
+          v-model:page-size="pageSize"
+          :page-sizes="[5,10,20]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          @current-change="handleCurrentChange"
+      />
     </div>
   </div>
 </template>
@@ -155,41 +50,6 @@ export default {
       pageSize:10,
       currentPage:1,
       search:'',
-      dialogVisible:false,
-      dialogVisible2:false,
-      deleteApplycation:{
-        id:0,
-        courseName:'',
-        courseNumber:'',
-        classPeriod:'',
-        classroom:'',
-        creditHours:'',
-        credits:'',
-        capacity:'',
-        introduction:''
-      },
-      addCourse:{
-        id:0,
-        courseName:'',
-        courseNumber:'',
-        classPeriod:'',
-        classroom:'',
-        creditHours:'',
-        credits:'',
-        capacity:'',
-        introduction:''
-      },
-      editCourse:{
-        id:0,
-        courseName:'',
-        courseNumber:'',
-        classPeriod:'',
-        classroom:'',
-        creditHours:0,
-        credits:0,
-        capacity:0,
-        introduction:''
-      },
       tableData:[]
     }
   },
@@ -205,14 +65,13 @@ export default {
               search: this.search
             }
         ).then(res=>{
-          
           if(res.data.code===200){
             this.tableData=res.data.data.records
             this.total=res.data.data.total
           }
           else{
             this.$message({
-              type:"fail",
+              type:"error",
               message: res.data.msg
             })
           }
@@ -222,57 +81,14 @@ export default {
     add:function (){
       this.$router.push("/teacher/teacheraddcourse")
     },
-    edit:function () {
-      this.$router.push("/teacher/teachereditcourse")
+    edit:function (courseId) {
+      this.$router.push({ name: 'TeacherEditCourse', params: { id: courseId} })
+      console.log(courseId)
     },
-    save:function (){
-      request.post("/teacher/addCourse", this.addCourse).then(res => {
-        
-        this.load() // 刷新表格的数据
-        this.dialogVisible = false  // 关闭弹窗
-      })
-    },
-    saveEdit(){
-      
-      request.post("/teacher/updateCourseInfo",this.editCourse).then(res=>{
-        
+    delete(courseId) {
+      request.post("/teacher/deleteCourse", {courseId: courseId}).then(res => {
         this.load()
-        this.dialogVisible2=false
       })
-    },
-    handleEdit(courseId,courseName,courseNumber,classPeriod,classroom,
-               creditHours,credits,capacity,introduction){
-      this.dialogVisible2=true
-      this.editCourse.id=courseId
-      this.editCourse.courseName=courseName
-      this.editCourse.courseNumber=courseNumber
-      this.editCourse.classPeriod=classPeriod
-      this.editCourse.classroom=classroom
-      this.editCourse.creditHours=creditHours
-      this.editCourse.credits=credits
-      this.editCourse.capacity=capacity
-      this.editCourse.introduction=introduction
-    },
-    handleDelete(courseId,courseName,courseNumber,classPeriod,classroom,
-                 creditHours,credits,capacity,introduction) {
-      this.deleteApplycation.id=courseId
-      this.deleteApplycation.courseName=courseName
-      this.deleteApplycation.courseNumber=courseNumber
-      this.deleteApplycation.classPeriod=classPeriod
-      this.deleteApplycation.classroom=classroom
-      this.deleteApplycation.creditHours=creditHours
-      this.deleteApplycation.credits=credits
-      this.deleteApplycation.capacity=capacity
-      this.deleteApplycation.introduction=introduction
-      request.post("/teacher/deleteCourse",this.deleteApplycation).then(res => {
-        this.load()  // 删除之后重新加载表格的数据
-      })
-    },
-    handleClick:function (){
-
-    },
-    handleSizeChange:function (){
-
     },
     handleCurrentChange:function (pageNum){
       this.currentPage = pageNum

@@ -252,13 +252,6 @@ export default {
     spare_occupyJudge: {
       deep: true,
       handler(new_) {
-        // this.day1 = []
-        // this.day2 = []
-        // this.day3 = []
-        // this.day4 = []
-        // this.day5 = []
-        // this.day6 = []
-        // this.day7 = []
         for (let key in new_) {
           if (new_[key] === null || new_[key] === undefined) {
             return;

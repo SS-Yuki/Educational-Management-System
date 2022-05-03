@@ -90,8 +90,8 @@ public class Course {
     @Column(name = "class_time")
     private String classTime;
 
-    public Course(CourseApplyingData courseApplyingData, School school, Major major, Classroom classroom, List<Major> majorsOptional){
-        this.teacherName = courseApplyingData.getApplicant();
+    public Course(CourseApplyingData courseApplyingData, School school, Major major, Classroom classroom, List<Major> majorsOptional, String teacherName){
+        this.teacherName = teacherName;
         this.capacity = courseApplyingData.getCapacity();
         this.courseName = courseApplyingData.getCourseName();
         this.courseNumber = courseApplyingData.getCourseNumber();
@@ -124,7 +124,7 @@ public class Course {
         this.semester = courseApplying.getSemester();
         this.courseSelectType = courseApplying.getCourseSelectType();
         this.majorsOptional = courseApplying.majorsOptional;
-        this.classTime = courseApplying.getClassTime();
+        this.classTime = TimeTool.transSchedule(TimeTool.transMaxInSchedule(courseApplying.getClassTime(), this.courseId));
     }
 
     public String getClassTimeString(){

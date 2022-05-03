@@ -1,5 +1,6 @@
 package com.example.lab3_behind.service.impl;
 
+import com.example.lab3_behind.common.Global;
 import com.example.lab3_behind.common.forDomain.CourseApplyingType;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
@@ -246,7 +247,7 @@ public class CourseServiceImpl implements CourseService {
             majorsOptional.add(majorRepository.findByName(str));
         }
         String classTime = TimeTool.transSchedule(TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(),
-                TimeTool.getSectionNum(classroom.getSchedule()),courseApplyingData.getId()));
+                TimeTool.getSectionNum(classroom.getSchedule()), Global.COURSE_MAX));
         CourseApplying courseApplying = new CourseApplying((courseApplyingData), school, major, classroom, majorsOptional, classTime);
         courseApplying.setType(applyingType);
         Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
@@ -298,7 +299,7 @@ public class CourseServiceImpl implements CourseService {
         for (String str : courseApplyingData.getMajorLimits()){
             majorsOptional.add(majorRepository.findByName(str));
         }
-        Course course = new Course(courseApplyingData, school, major, classroom, majorsOptional);
+        Course course = new Course(courseApplyingData, school, major, classroom, majorsOptional, teacher.getName());
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
 

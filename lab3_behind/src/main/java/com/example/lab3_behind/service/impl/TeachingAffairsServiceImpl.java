@@ -43,12 +43,9 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
 
     @Override
     public List<List<Boolean>> getClassroomTime(String name, Integer excludedCourse) throws Exception {
-        Classroom classroom = classroomRepository.findByName(name);
-        if(classroom == null){
-            throw new Exception("教室不存在");
-        }
-        String schedule = classroom.getSchedule();
-        return TimeTool.getBoolTime(TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(schedule), excludedCourse));
+        Course course = courseRepository.findByCourseId(excludedCourse);
+        List<List<Integer>> time = this.getClassroomTimeIn(name, course.getSchoolYear(), course.getSemester());
+        return TimeTool.getBoolTime(TimeTool.subTimeMatrix(time, excludedCourse));
     }
 
     @Override

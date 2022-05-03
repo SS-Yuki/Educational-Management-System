@@ -1,13 +1,11 @@
 package com.example.lab3_behind.controller;
 
-import com.example.lab3_behind.common.CourseContent;
-import com.example.lab3_behind.common.JwtUserData;
-import com.example.lab3_behind.common.PageSearchData;
-import com.example.lab3_behind.common.StudentApplyForSelectCourse;
+import com.example.lab3_behind.common.*;
 import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.AuthorityService;
 import com.example.lab3_behind.service.CourseService;
+import com.example.lab3_behind.utils.EnumTool;
 import com.example.lab3_behind.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,7 +27,7 @@ public class StudentSelectCourseController {
     CourseService courseService;
 
     @RequestMapping("/findCoursePage")
-    public Result findCoursePage(@RequestBody PageSearchData pageSearchData,
+    public Result findCoursePage(@RequestBody FullCoursePageSearch pageSearchData,
                                  HttpServletRequest request){
         String token = request.getHeader("token");
         JwtUserData jwtUserData = JwtUtil.getToken(token);
@@ -40,10 +38,19 @@ public class StudentSelectCourseController {
                 throw new Exception("当前选课未开放");
             }
             Map<String,Object> map = new HashMap<>();
-            Page<Course> coursePage = courseService.findAPageCourseForSelecting(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch(),number);
-            List<CourseContent> courseContents = CourseContent.getContent(coursePage.getContent());
+            MyPage<Course> coursePage = courseService.findAPageCourseForSelecting(
+                    pageSearchData.getPageNum(),
+                    pageSearchData.getPageSize(),
+                    pageSearchData.getSearch(),
+                    number,
+                    EnumTool.transSchoolYear(pageSearchData.getYear()),
+                    EnumTool.transSemester(pageSearchData.getSemester()),
+                    pageSearchData.getClassroom(),
+                    pageSearchData.getSelectTime()
+                    );
+            List<CourseContent> courseContents = CourseContent.getContent(coursePage.getRecords());
             map.put("records",courseContents);
-            map.put("total",coursePage.getTotalElements());
+            map.put("total",coursePage.getTotal());
             return Result.succ(map);
         }catch (Exception e){
             //e.printStackTrace();
@@ -53,6 +60,12 @@ public class StudentSelectCourseController {
 
     @RequestMapping("/applyForSelectCourse")
     public Result applyForSelectCourse(@RequestBody StudentApplyForSelectCourse apply){
+        return Result.succ(null);
+    }
+
+    @RequestMapping("/selectCourse")
+    public Result selectCourse(@RequestBody Integer courseId){
+
         return Result.succ(null);
     }
 }

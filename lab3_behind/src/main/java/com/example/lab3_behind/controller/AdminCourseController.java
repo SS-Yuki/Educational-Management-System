@@ -77,19 +77,21 @@ public class AdminCourseController {
         }
     }
     @RequestMapping("/findCoursePage")
-    public Result findCoursePage(@RequestBody PageSearchWithYearAndSemester pageSearchData){
+    public Result findCoursePage(@RequestBody FullCoursePageSearch pageSearchData){
         try{
             Map<String,Object> map = new HashMap<>();
-            Page<Course> coursePage = courseService.findAPageCourse(
+            MyPage<Course> coursePage = courseService.findAPageCourse(
                     pageSearchData.getPageNum(),
                     pageSearchData.getPageSize(),
                     pageSearchData.getSearch(),
                     EnumTool.transSchoolYear(pageSearchData.getYear()),
-                    EnumTool.transSemester(pageSearchData.getSemester())
+                    EnumTool.transSemester(pageSearchData.getSemester()),
+                    pageSearchData.getClassroom(),
+                    pageSearchData.getSelectTime()
                     );
-            List<CourseContent> courseContents = CourseContent.getContent(coursePage.getContent());
+            List<CourseContent> courseContents = CourseContent.getContent(coursePage.getRecords());
             map.put("records",courseContents);
-            map.put("total",coursePage.getTotalElements());
+            map.put("total",coursePage.getTotal());
             return Result.succ(map);
         }catch (Exception e){
             e.printStackTrace();

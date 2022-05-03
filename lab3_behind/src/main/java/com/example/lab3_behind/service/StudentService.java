@@ -15,8 +15,8 @@ import java.util.List;
 
 public interface StudentService {
     Page<Student> findAPageStudent(Integer page, Integer size, String search);
-    List<Course> findAPageCourseInSemester(String stuNum, SchoolYear schoolYear, Semester semester);
-    List<List<CourseNameString>> getClassScheduleInSemester(String stuNum, SchoolYear schoolYear, Semester semester);
+    List<Course> findCourseInSemester(String stuNum, SchoolYear schoolYear, Semester semester) throws Exception;
+    List<List<CourseNameString>> getClassScheduleInSemester(String stuNum, SchoolYear schoolYear, Semester semester) throws Exception;
     Student insertStudent(UserEnteringData userData) throws Exception;
     Student updateStudentInfo(RevisableDataForAdmin userData, String stuNumber) throws Exception;
     Student maintainStudentInfo(RevisableDataForUser userData, String stuNumber) throws Exception;

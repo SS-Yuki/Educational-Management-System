@@ -177,7 +177,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public MyPage<Student> getStudentListOfOneCourse(Integer courseId) {
+    public List<Student> getStudentListOfOneCourse(Integer courseId) {
         return null;
     }
 

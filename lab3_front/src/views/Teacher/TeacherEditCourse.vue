@@ -10,16 +10,9 @@
       <el-form-item label="课程名">
         <el-input v-model="editCourse.courseName"/>
       </el-form-item>
-      <el-form-item label="教师工号">
-        <el-input v-model="editCourse.teacherNum" disabled/>
-      </el-form-item>
-      <el-form-item label="院系/专业">
-        <el-cascader v-model="edit_school_major" :options="majorOptionsChoose" disabled/>
-      </el-form-item>
       <el-form-item label="教学楼/教室">
         <el-cascader v-model="edit_building_classroom" :options="classroomOptions"/>
       </el-form-item>
-      <!--        time-->
       <el-form-item label="上课时间">
         <div>
           <el-checkbox-group  style="display: inline-block" disabled size="small">
@@ -110,13 +103,9 @@
       <el-form-item label="专业限制">
         <el-input v-model="limit_majors" disabled/>
       </el-form-item>
-<!--      <el-form-item label="专业限制">-->
-<!--        <el-cascader :placeholder="major_limit_show" v-model="limit_school_major" :options="majorOptionsLimit" :props="school_major_props" disabled collapse-tags/>-->
-<!--      </el-form-item>-->
       <el-form-item label="学年/学期" disabled>
         <el-cascader v-model="edit_year_semester" :options="semesterOptions" disabled/>
       </el-form-item>
-      <!--时间-->
       <el-button type="primary" @click="save">确认</el-button>
     </el-form>
   </div>
@@ -134,31 +123,22 @@ function index(num){
 }
 
 export default {
-  name: "EditCourse",
+  name: "TeacherEditCourse",
   data() {
     return {
       editCourse:{
         id:0,
         courseNumber:'',
         courseName:'',
-        teacherNum:'',
-        major:'',
-        school:'',
         classroom:'',
         creditHours:'',
         credits:'',
         capacity:'',
         introduction:'',
-        applicant:'',
         selectTypeString:'',
-
-        //一维数组赋值
         majorLimits:[],
-
         year: '',
         semester: '',
-
-        //时间！！！！
         occupyTime: '',
       },
       timeNames:[],
@@ -401,8 +381,8 @@ export default {
       })
     },
     save:function (){
-      this.editCourse.school = this.edit_school_major[0]
-      this.editCourse.major = this.edit_school_major[1]
+      // this.editCourse.school = this.edit_school_major[0]
+      // this.editCourse.major = this.edit_school_major[1]
       this.editCourse.classroom = this.edit_building_classroom[1]
       this.editCourse.year = this.edit_year_semester[0]
       this.editCourse.semester = this.edit_year_semester[1]
@@ -416,7 +396,7 @@ export default {
       else {
         this.editCourse.majorLimits = []
       }
-      request.post("/admin/updateCourseInfo", this.editCourse).then(res => {
+      request.post("/teacher/updateCourseInfo", this.editCourse).then(res => {
         if(res.data.code!==200) {
           this.$message({
             type:"error",
@@ -428,7 +408,7 @@ export default {
             type:"success",
             message: res.data.msg
           })
-          this.$router.push("/admin/checkcourse")
+          this.$router.push("/teacher/teachercourse")
         }
       })
     },

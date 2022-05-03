@@ -10,15 +10,20 @@
       <el-form-item label="课程名">
         <el-input v-model="addCourse.courseName"/>
       </el-form-item>
+<!--      <el-form-item label="教师工号">-->
+<!--        <el-input v-model="addCourse.teacherNum" />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="院系/专业">-->
+<!--        <el-cascader v-model="add_school_major" :options="majorOptionsChoose"/>-->
+<!--      </el-form-item>-->
       <el-form-item label="教学楼/教室">
         <el-cascader  v-model="add_building_classroom" :options="classroomOptions"/>
       </el-form-item>
-      <!--        time-->
       <el-form-item label="上课时间">
         <div>
           <el-checkbox-group  style="display: inline-block" disabled size="small">
             <el-checkbox-button v-for="item in range" :key="item" :label=item+1 style="display: block"
-                                value=item  >
+                                value=item>
               {{ startTimes[item].label + "-" + endTimes[item].label }}
             </el-checkbox-button>
           </el-checkbox-group>
@@ -89,8 +94,6 @@
         </div>
 
       </el-form-item>
-      <!--        time-->
-
       <el-form-item label="学时">
         <el-input v-model="addCourse.creditHours" />
       </el-form-item>
@@ -103,7 +106,6 @@
       <el-form-item label="介绍">
         <el-input v-model="addCourse.introduction" />
       </el-form-item>
-      <!--        申请人-->
       <el-form-item label="选课类型">
         <el-select v-model="addCourse.selectTypeString">
           <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -115,7 +117,6 @@
       <el-form-item label="学年/学期">
         <el-cascader v-model="add_year_semester" :options="semesterOptions"/>
       </el-form-item>
-      <!--时间-->
       <el-button type="primary" @click="save">确认</el-button>
     </el-form>
   </div>
@@ -124,6 +125,7 @@
 <script>
 import request from "@/utils/request";
 
+//生成数组函数
 function index(num){
   var arr=[];
   for(var i = 0;i<num;i++){
@@ -136,11 +138,13 @@ export default {
   name: "TeacherAddCourse",
   data() {
     return {
-      clear:false,
+
+      //返回后端的数据
       addCourse:{
         id:0,
         courseNumber:'',
         courseName:'',
+
         classroom:'',
         creditHours:'',
         credits:'',
@@ -154,7 +158,6 @@ export default {
         year: '',
         semester: '',
 
-        //时间！！！！
         occupyTime: '',
       },
       timeNames:[],
@@ -201,20 +204,19 @@ export default {
     this.getOptionMajor()
     this.getOptionClassroom()
 
-    //标记
     this.getOptionSemesters()
     this.getTime()
-    for(let i = 0; i < 7; i++) {
-      let arr = []
-      for (let i = 0; i < this.length; i++) {
-        arr.push(false)
-      }
-      this.spare.push(arr)
-    }
   },
   computed: {
     day(){
       return [this.day1,this.day2,this.day3,this.day4,this.day5,this.day6,this.day7]
+    },
+    spareJudge() {
+      return {
+        classroom: this.add_building_classroom[1],
+        year: this.add_year_semester[0],
+        semester: this.add_year_semester[1]
+      }
     }
   },
   watch: {
@@ -238,9 +240,8 @@ export default {
         }
       }
     },
-    add_building_classroom:{
+    spareJudge:{
       deep: true,
-
       handler(new_) {
         this.day1=[]
         this.day2=[]
@@ -249,7 +250,13 @@ export default {
         this.day5=[]
         this.day6=[]
         this.day7=[]
-        request.post("/common/getClassroomSpareTime",new_[1]).then(res=>{
+        console.log(this.spareJudge)
+        for (let key in new_) {
+          if (new_[key] === null || new_[key] === undefined) {
+            return;
+          }
+        }
+        request.post("/common/getClassroomSpareTime",new_).then(res=>{
           this.spare=res.data.data.days
         })
       }
@@ -274,7 +281,7 @@ export default {
         let that = this
         if (!res.data) return
         res.data.data.schools.forEach((item) => {
-          let option = {value: item.school, label: item.school, disabled: false, children: []}
+          let option = {value: item.school, label: item.school, disabled: true, children: []}
           if (!item.majors) return
           item.majors.forEach((item) => {
             let child = {value: item, label: item}
@@ -299,23 +306,6 @@ export default {
         })
       })
     },
-    getTime:function (){
-      request.post("/common/allTime").then(res=>{
-        if (!res.data) return
-        res.data.data.times.forEach ((item) => {
-          let option1 = {value: item.timeName, label: item.timeName}
-          this.timeNames.push(option1)
-          let option2 = {value: item.startTime, label: item.startTime}
-          this.startTimes.push(option2)
-          let option3 = {value: item.endTime, label: item.endTime}
-          this.endTimes.push(option3)
-        })
-        this.length=this.timeNames.length
-        this.range=index(this.length)
-      })
-    },
-
-    //标记
     getOptionSemesters: function (){
       request.post("/common/allSemesters").then(res => {
         let that = this
@@ -330,6 +320,27 @@ export default {
           that.semesterOptions.push(option)
         })
         this.add_year_semester = [res.data.data.defaultYear, res.data.data.defaultSemester]
+      })
+    },
+    getTime:function (){
+      request.post("/common/allTime").then(res=>{
+        if (!res.data) return
+        res.data.data.times.forEach ((item) => {
+          let option1 = {value: item.timeName, label: item.timeName}
+          this.timeNames.push(option1)
+          let option2 = {value: item.startTime, label: item.startTime}
+          this.startTimes.push(option2)
+          let option3 = {value: item.endTime, label: item.endTime}
+          this.endTimes.push(option3)
+        })
+        this.length=this.timeNames.length
+        this.range=index(this.length)
+
+        let arr = new Array(this.length).fill(true);
+        for(let i = 0; i < 7; i++) {
+          this.spare.push(arr)
+        }
+
       })
     },
     save:function (){
@@ -355,7 +366,13 @@ export default {
             message: res.data.msg
           })
         }
-        else this.$router.push("/teacher/teachercourse")
+        else {
+          this.$message({
+            type:"success",
+            message: res.data.msg
+          })
+          this.$router.push("/teacher/teachercourse")
+        }
       })
     },
   }
@@ -364,13 +381,10 @@ export default {
 
 <style scoped>
 .add_form {
-  width: 600px;
-  height: 600px;
-  position:relative;
+  width: 800px;
 }
 .form {
-  position:absolute;
-  left:400px;
-  width: 600px;
+  padding-top: 50px;
+  padding-left: 50px;
 }
 </style>

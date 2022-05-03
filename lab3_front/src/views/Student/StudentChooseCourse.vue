@@ -37,7 +37,7 @@
                 )">查看</el-button>
             <el-popconfirm title="确认选课?" @confirm="this.load()">
               <template #reference>
-                <el-button type="text">选课</el-button>
+                <el-button type="text" @click="chooseCourse(scope.row.courseId)">选课</el-button>
               </template>
             </el-popconfirm>
           </template>
@@ -48,12 +48,8 @@
             v-model:currentPage="currentPage"
             v-model:page-size="pageSize"
             :page-sizes="[5,10,20]"
-            :small="small"
-            :disabled="disabled"
-            :background="background"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
-            @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
         />
       </div>
@@ -201,7 +197,19 @@ export default {
     handleCurrentChange:function (pageNum){
       this.currentPage = pageNum
       this.load()
+    },
+    chooseCourse:function (courseId){
+      request.post("/student/selectCourse",courseId).then(res => {
+        if(res.data.code!==200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
+        this.load()  // 删除之后重新加载表格的数据
+      })
     }
+
   }
 }
 </script>

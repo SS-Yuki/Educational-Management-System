@@ -1,14 +1,7 @@
 <template>
   <div>
     <div>
-      <el-select v-model="semester" placeholder="请选择学期">
-        <el-option
-            v-for="item in semesterOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-        </el-option>
-      </el-select>
+        <el-cascader v-model="add_year_semester" placeholder="学年/学期" :options="semesterOptions"/>
     </div>
     <div>
       <el-table :data="tableData1" style="width: 80%;margin-right: auto;margin-left: auto" >
@@ -23,12 +16,28 @@
       </el-table>
     </div>
     <div>
-      <el-table :data="tableData2" style="width: 50%;margin-right: auto;margin-left: auto" >
-        <el-table-column prop="courseId" label="编号" width="120" />
-        <el-table-column prop="teacher" label="任课教师" width="120"/>
-        <el-table-column prop="teacher" label="任课时间" width="120"/>
-        <el-table-column prop="teacher" label="任课时间" width="120"/>
-        <el-table-column prop="teacher" label="任课时间" width="120"/>
+      <el-table :data="tableData2" style="width:1200px;margin-right: auto;margin-left: auto" >
+        <el-table-column prop="courseId" label="courseId" width="200" v-if="false" />
+        <el-table-column prop="courseName" label="课程名" width="200" />
+        <el-table-column prop="courseNumber" label="课程编号" width="200" />
+        <el-table-column prop="teacherNum" label="教师工号" width="200" v-if="false"/>
+        <el-table-column prop="major" label="开课专业" width="200" />
+        <el-table-column prop="school" label="开课院系" width="200" />
+        <el-table-column prop="classroom" label="教室" width="200"  />
+        <el-table-column prop="creditHours" label="学时" width="200"  />
+        <el-table-column prop="credits" label="学分" width="200"  />
+        <el-table-column prop="capacity" label="容量" width="200"  />
+        <el-table-column prop="introduction" label="介绍" width="200"  />
+        <el-table-column prop="applicant" label="申请人" width="200" v-if="false" />
+        <el-table-column fixed="right" label="操作" width="200">
+          <template #default="scope">
+            <el-popconfirm title="确认退课?" @confirm="handleDelete(scope.row.courseId)">
+              <template #reference>
+                <el-button type="text">退课</el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -42,19 +51,38 @@ export default {
     return{
       semester:'',
       semesterOptions:[],
+      add_year_semester:[],
       tableData1:[],
       tableData2:[]
     }
   },
   methods:{
+    handleDelete(courseId) {
+      this.courseId=courseId
+      request.post("/admin/deleteCourse",this.courseId).then(res => {
+        if(res.data.code!==200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
+        this.load()  // 删除之后重新加载表格的数据
+      })
+    },
     getOptionSemesters: function (){
-      request.post("/admin/allSemesters").then(res => {
+      request.post("/common/allSemesters").then(res => {
+        let that = this
         if (!res.data) return
-        this.semester = res.data.data.defaultSemester
-        res.data.data.semesters.forEach ((item) => {
-          let option = {value: item, label: item}
-          this.semesterOptions.push(option)
+        res.data.data.yearAndSemesters.forEach (function (item) {
+          let option = {value: item.year, label: item.year, children: []}
+          if (!item.semesters) return
+          item.semesters.forEach (function (item) {
+            let child = {value: item, label: item}
+            option.children.push(child)
+          })
+          that.semesterOptions.push(option)
         })
+        this.add_year_semester = [res.data.data.defaultYear, res.data.data.defaultSemester]
       })
     },
     getTable1:function (){

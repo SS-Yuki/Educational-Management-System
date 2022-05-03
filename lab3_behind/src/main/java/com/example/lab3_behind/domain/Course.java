@@ -124,7 +124,6 @@ public class Course {
         this.semester = courseApplying.getSemester();
         this.courseSelectType = courseApplying.getCourseSelectType();
         this.majorsOptional = courseApplying.majorsOptional;
-        this.classTime = TimeTool.transSchedule(TimeTool.transMaxInSchedule(courseApplying.getClassTime(), this.courseId));
     }
 
     public String getClassTimeString(){

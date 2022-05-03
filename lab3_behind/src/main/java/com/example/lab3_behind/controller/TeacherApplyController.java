@@ -51,7 +51,7 @@ public class TeacherApplyController {
             courseService.pushCourseApplying(courseApplyingData, CourseApplyingType.Publish);
             return Result.succ(null);
         }catch (Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             return Result.fail(740,e.getMessage());
         }
     }

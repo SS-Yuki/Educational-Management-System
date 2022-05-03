@@ -23,9 +23,84 @@
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>
         <div>
-          <el-cascader  v-model="select_year_semester" :options="semesterOptions" placeholder="请选择学期"/>
-          <el-cascader  v-model="add_building_classroom" :options="classroomOptions"/>
+          <el-cascader v-model="select_year_semester" :options="semesterOptions" placeholder="按学年/学期筛选"/>
+          <el-cascader v-model="select_building_classroom" :options="classroomOptions" placeholder="按教学楼/教室筛选"/>
+          <el-button  @click="getTime(); timeShow = true">按上课时间筛选</el-button>
         </div>
+
+        <el-dialog v-model="timeShow" title="进行时间选择" center>
+          <div>
+            <el-checkbox-group  style="display: inline-block" disabled >
+              <el-checkbox-button v-for="item of length" :key="item" :label=item+1 style="display: block"
+                                  value=item>
+                {{ startTimes[item-1].label + "-" + endTimes[item-1].label }}
+              </el-checkbox-button>
+            </el-checkbox-group>
+
+            <el-checkbox-group v-model="day1" style="display: inline-block" >
+              <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                  style="display: block"
+                                  value=item>
+                {{ timeNames[item-1].label}}
+              </el-checkbox-button>
+            </el-checkbox-group>
+
+            <el-checkbox-group v-model="day2" style="display: inline-block" >
+              <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                  style="display: block"
+                                  value=item>
+                {{ timeNames[item-1].label }}
+              </el-checkbox-button>
+            </el-checkbox-group>
+
+            <el-checkbox-group v-model="day3" style="display: inline-block" >
+              <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                  style="display: block"
+                                  value=item>
+                {{ timeNames[item-1].label }}
+              </el-checkbox-button>
+            </el-checkbox-group>
+
+            <el-checkbox-group v-model="day4" style="display: inline-block" >
+              <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                  style="display: block"
+                                  value=item>
+                {{ timeNames[item-1].label }}
+              </el-checkbox-button>
+            </el-checkbox-group>
+
+            <el-checkbox-group v-model="day5" style="display: inline-block" >
+              <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                  style="display: block"
+                                  value=item >
+                {{ timeNames[item-1].label }}
+              </el-checkbox-button>
+            </el-checkbox-group>
+
+            <el-checkbox-group v-model="day6" style="display: inline-block">
+              <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                  style="display: block"
+                                  value=item >
+                {{ timeNames[item-1].label }}
+              </el-checkbox-button>
+            </el-checkbox-group>
+
+            <el-checkbox-group v-model="day7" style="display: inline-block" >
+              <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                  style="display: block"
+                                  value=item >
+                {{ timeNames[item-1].label }}
+              </el-checkbox-button>
+            </el-checkbox-group>
+          </div>
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="timeShow = false">取消</el-button>
+              <el-button type="primary" @click="timeShow = false; load">确认</el-button>
+            </span>
+          </template>
+        </el-dialog>
+
 
       </div>
       <el-table :data="tableData" style="width: 1200px" border stripe>
@@ -75,15 +150,28 @@ export default {
   data(){
     return{
       select_year_semester:[],
+      select_building_classroom:[],
       semesterOptions:[],
+      classroomOptions:[],
       total:0,
       pageSize:10,
       currentPage:1,
       search:'',
       majorOptions:[],
-      classroomOptions:[],
       courseId:0,
-      tableData:[]
+      tableData:[],
+      timeShow: false,
+      length: 0,
+      day1:[],
+      day2:[],
+      day3:[],
+      day4:[],
+      day5:[],
+      day6:[],
+      day7:[],
+      timeNames:[],
+      startTimes:[],
+      endTimes:[]
     }
   },
   mounted() {
@@ -92,10 +180,19 @@ export default {
     this.getOptionClassroom()
     this.getOptionSemesters()
   },
+  computed: {
+    selectJudge() {
+      return {
+        year: this.select_year_semester[0],
+        semester: this.select_year_semester[1],
+        classroom: this.select_building_classroom[1]
+      }
+    }
+  },
   watch: {
-    select_year_semester: {
+    selectJudge: {
       deep: true,
-      handler(new_) {
+      handler() {
         this.load()
       }
     }
@@ -214,7 +311,9 @@ export default {
               pageSize: this.pageSize,
               search: this.search,
               year: this.select_year_semester[0],
-              semester: this.select_year_semester[1]
+              semester: this.select_year_semester[1],
+              classroom:this.select_building_classroom[1],
+              selectTime:[this.day1, this.day2, this.day3, this.day4, this.day5, this.day6, this.day7]
             }
         ).then(res=>{
           
@@ -230,6 +329,21 @@ export default {
           }
         })
       }, 500)
+    },
+    getTime:function (){
+      request.post("/common/allTime").then(res=>{
+        if (!res.data) return
+        res.data.data.times.forEach ((item) => {
+          let option1 = {value: item.timeName, label: item.timeName}
+          this.timeNames.push(option1)
+          let option2 = {value: item.startTime, label: item.startTime}
+          this.startTimes.push(option2)
+          let option3 = {value: item.endTime, label: item.endTime}
+          this.endTimes.push(option3)
+        })
+        this.length=this.timeNames.length
+        console.log(this.timeNames, this.startTimes, this.endTimes)
+      })
     },
     add:function (){
       this.$router.push("/admin/addcourse")

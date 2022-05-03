@@ -270,7 +270,7 @@ export default {
         request.post("/common/getClassroomOccupyByOneCourse", new_).then(res => {
           this.occupy = res.data.data.occupys
           for (let i = 0; i < 7; i++) {
-            this.day[i] = []
+            this.day[i].splice(0)
             for (let j = 0; j < this.length; j++) {
               if (this.occupy[i][j]) {
                 this.day[i].push(j+1)

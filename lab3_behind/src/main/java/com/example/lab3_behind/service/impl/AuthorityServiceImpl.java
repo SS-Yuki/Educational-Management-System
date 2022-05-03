@@ -31,7 +31,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     public Integer getPresentCourseSelectingRound() {
         Authority round = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
         if (round == null){
-            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, "0");
+            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelectingRound, "0");
             authorityRepository.save(courseSelectingAuthority);
             return 0;
         }
@@ -47,7 +47,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     public void courseSelectingStart() throws Exception {
         Authority round = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
         if (round == null){
-            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, Global.NOT_IN_COURSE_SELECTING_ROUND);
+            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelectingRound, Global.NOT_IN_COURSE_SELECTING_ROUND);
             authorityRepository.save(courseSelectingAuthority);
             return;
         }
@@ -62,7 +62,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     public void courseSelectingEnd() throws Exception {
         Authority round = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
         if (round == null){
-            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, Global.NOT_IN_COURSE_SELECTING_ROUND);
+            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelectingRound, Global.NOT_IN_COURSE_SELECTING_ROUND);
             authorityRepository.save(courseSelectingAuthority);
             return;
         }
@@ -77,7 +77,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     public void toNextCourseSelectingRound() throws Exception {
         Authority round = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
         if (round == null){
-            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelecting, Global.NOT_IN_COURSE_SELECTING_ROUND);
+            Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelectingRound, Global.NOT_IN_COURSE_SELECTING_ROUND);
             authorityRepository.save(courseSelectingAuthority);
             return;
         }

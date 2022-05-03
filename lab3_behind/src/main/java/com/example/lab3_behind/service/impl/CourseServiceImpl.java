@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.lab3_behind.common.CourseInMatching.toCourseList;
+import static com.example.lab3_behind.service.impl.TeachingAffairsServiceImpl.getSections;
 
 
 @Service
@@ -173,6 +174,11 @@ public class CourseServiceImpl implements CourseService {
                         , "courseNumber", "teacherName", "major", "school", "classroom", "introduction");
         Example<CourseApplying> example = Example.of(courseApplying, matcher);
         return courseApplyingRepository.findAll(example, pageable);
+    }
+
+    @Override
+    public MyPage<Student> getStudentListOfOneCourse(Integer courseId) {
+        return null;
     }
 
     @Override
@@ -461,20 +467,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     private Integer getLastSection(){
-        return getInteger(timeTableRepository);
+        return getSections(timeTableRepository);
     }
 
-    static Integer getInteger(TimeTableRepository timeTableRepository) {
-        Integer last = 0;
-        List<TimeTable> timeTables = timeTableRepository.findAll();
-        for(TimeTable timeTable : timeTables){
-            Integer temp = timeTable.getSection();
-            if(temp.compareTo(last) >= 0){
-                last = temp;
-            }
-        }
-        return last;
-    }
 
     private List<Course> findAPageCourseIn(String search, SchoolYear schoolYear, Semester semester
             , String classroomName, List<List<Integer>> selectTime){

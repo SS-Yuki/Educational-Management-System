@@ -1,5 +1,7 @@
 package com.example.lab3_behind.domain;
 
+import com.example.lab3_behind.common.forDomain.CourseSelectType;
+import com.example.lab3_behind.common.forDomain.StudyStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,5 +29,9 @@ public class CourseSelectingRecord {
 
     @Column(name = "score")
     private double score;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "study_status")
+    private StudyStatus studyStatus;
 
 }

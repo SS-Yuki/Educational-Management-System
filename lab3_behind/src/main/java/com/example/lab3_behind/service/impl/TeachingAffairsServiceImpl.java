@@ -1,6 +1,5 @@
 package com.example.lab3_behind.service.impl;
 
-import com.example.lab3_behind.common.Global;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.domain.*;
@@ -13,11 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.lab3_behind.service.impl.CourseServiceImpl.getInteger;
 
 @Service
 public class TeachingAffairsServiceImpl implements TeachingAffairsService {
@@ -224,7 +221,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             throw new Exception("教室信息有误，教学楼不存在");
         }
         String schedule = "";
-        for(int i = 0; i < getLastSection().intValue(); i++){
+        for(int i = 0; i < getLastSection(); i++){
             schedule = schedule + "0-0-0-0-0-0-0\n";
         }
         Classroom newClassroom = new Classroom(null, classroomData.getClassroomName(), teachingBuilding,
@@ -365,7 +362,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     }
 
     private Integer getLastSection(){
-        return getInteger(timeTableRepository);
+        return getSections(timeTableRepository);
     }
 
 
@@ -395,14 +392,22 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         }
         List<Course> allCourse = courseRepository.findByClassroomAndSchoolYearAndSemester(classroom, schoolYear, semester);
         List<List<Integer>> scheduleList = TimeTool.getEmptyTimeMatrix(this.getLastSection());
-        for (int i = 0; i < allCourse.size(); i++){
-            try {
-                scheduleList = TimeTool.addTimeMatrix(scheduleList, TimeTool.makeTimeMatrix(allCourse.get(i).getClassTime()));
-            } catch (Exception e){
-                throw e;
-            }
+        for (Course course : allCourse) {
+            scheduleList = TimeTool.addTimeMatrix(scheduleList, TimeTool.makeTimeMatrix(course.getClassTime()));
         }
         return scheduleList;
+    }
+
+    static Integer getSections(TimeTableRepository timeTableRepository) {
+        Integer last = 0;
+        List<TimeTable> timeTables = timeTableRepository.findAll();
+        for(TimeTable timeTable : timeTables){
+            Integer temp = timeTable.getSection();
+            if(temp.compareTo(last) >= 0){
+                last = temp;
+            }
+        }
+        return last;
     }
 
 }

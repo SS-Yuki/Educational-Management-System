@@ -65,7 +65,8 @@ public class StudentSelectCourseController {
 
     @RequestMapping("/selectCourse")
     public Result selectCourse(@RequestBody Integer courseId){
-
         return Result.succ(null);
     }
+
+
 }

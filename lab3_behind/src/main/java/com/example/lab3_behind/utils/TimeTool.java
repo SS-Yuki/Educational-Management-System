@@ -163,6 +163,20 @@ public class TimeTool {
         return result;
     }
 
+    public static boolean isContainTimeMatrix(List<List<Integer>> a, List<List<Integer>> b){
+        boolean isContain = true;
+        int sections = a.get(0).size();
+        for(int i = 0; i < Global.WEEKDAY; i++){
+            for(int j = 0; j < sections; j ++){
+                if (!(b.get(i).get(j).equals(Global.COURSE_MAX) && !a.get(i).get(j).equals(Global.CLASSROOM_TIME_SPARE))) {
+                    isContain = false;
+                    break;
+                }
+            }
+        }
+        return isContain;
+    }
+
     public static String transSchedule(List<List<Integer>> timeMatrix){
         String result = "";
         int sectionNum = timeMatrix.get(0).size();

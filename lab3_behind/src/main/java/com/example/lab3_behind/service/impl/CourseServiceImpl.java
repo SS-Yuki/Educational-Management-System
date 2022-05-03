@@ -1,6 +1,7 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.common.Global;
+import com.example.lab3_behind.common.MyPage;
 import com.example.lab3_behind.common.forDomain.CourseApplyingType;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
@@ -11,6 +12,7 @@ import com.example.lab3_behind.domain.*;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.repository.*;
 import com.example.lab3_behind.service.CourseService;
+import com.example.lab3_behind.utils.MyPageTool;
 import com.example.lab3_behind.utils.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -46,29 +48,32 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<Course> findAPageCourseForSelecting(Integer page, Integer size, String search, String stuNum) throws Exception {
+    public MyPage<Course> findAPageCourseForSelecting(Integer page, Integer size, String search, String stuNum,
+                                                    SchoolYear schoolYear, Semester semester,
+                                                    String classroomName, List<List<Integer>> selectTime) throws Exception {
 
-        Student student = studentRepository.findByStuNumber(stuNum);
-        if(student == null){
-            throw new Exception("学生不存在");
-        }
-        String major = student.getMajor().getName();
-        Pageable pageable =  PageRequest.of(page - 1, size);
-        if(search.isEmpty()){
-            return courseRepository.findAllByMajor(major, pageable);
-        }
-        Course course = new Course();
-        course.setCourseName(search);
-        Major major1 = new Major();
-        major1.setName(search);
-        course.setMajor(major1);
-        ExampleMatcher matcher = ExampleMatcher.matchingAll()
-                .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::exact)
-                .withIgnorePaths("courseId", "classPeriod", "creditHours", "credits", "capacity", "type", "teacherNum"
-                        , "courseNumber", "teacherName", "school", "classroom", "introduction", "courseStatus");
-        Example<Course> example = Example.of(course, matcher);
-        return courseRepository.findAll(example, pageable);
+//        Student student = studentRepository.findByStuNumber(stuNum);
+//        if(student == null){
+//            throw new Exception("学生不存在");
+//        }
+//        String major = student.getMajor().getName();
+//        Pageable pageable =  PageRequest.of(page - 1, size);
+//        if(search.isEmpty()){
+//            return courseRepository.findAllByMajor(major, pageable);
+//        }
+//        Course course = new Course();
+//        course.setCourseName(search);
+//        Major major1 = new Major();
+//        major1.setName(search);
+//        course.setMajor(major1);
+//        ExampleMatcher matcher = ExampleMatcher.matchingAll()
+//                .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
+//                .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::exact)
+//                .withIgnorePaths("courseId", "classPeriod", "creditHours", "credits", "capacity", "type", "teacherNum"
+//                        , "courseNumber", "teacherName", "school", "classroom", "introduction", "courseStatus");
+//        Example<Course> example = Example.of(course, matcher);
+//        return courseRepository.findAll(example, pageable);
+        return null;
     }
 
     @Override
@@ -104,35 +109,52 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<Course> findAPageCourse(Integer page, Integer size, String search, SchoolYear schoolYear, Semester semester){
-        List<Course> allCourses = courseRepository.findAll();
-
-        Pageable pageable =  PageRequest.of(page - 1, size);
-        if(search.isEmpty()){
-            return courseRepository.findAll(pageable);
+    public MyPage<Course> findAPageCourse(Integer page, Integer size, String search, SchoolYear schoolYear, Semester semester
+                                        , String classroomName, List<List<Integer>> selectTime){
+        List<Course> allCourses = courseRepository.findBySchoolYearAndSemester(schoolYear, semester);
+        List<Course> result = new ArrayList<>();
+        for(Course course : allCourses){
+            if(classroomName.equals("") || course.getClassroom().getName().equals(classroomName)){
+                List<List<Integer>> selectTimeMatrix = TimeTool.makeTimeMatrix(selectTime, this.getLastSection(), Global.COURSE_MAX);
+                List<List<Integer>> courseTimeMatrix = TimeTool.makeTimeMatrix(course.getClassTime());
+                boolean isEmptyTime = true;
+                for(List<Integer> i : selectTime){
+                    if(!i.isEmpty()){
+                        isEmptyTime = false;
+                    }
+                }
+                if(isEmptyTime || TimeTool.isContainTimeMatrix(courseTimeMatrix, selectTimeMatrix)){
+                    result.add(course);
+                }
+            }
         }
-        Course course = new Course();
-        course.setCourseName(search);
-        course.setTeacherNum(search);
-        course.setCourseNumber(search);
-        course.setIntroduction(search);
-        Major major = new Major();
-        course.setMajor(major);
-        course.setTeacherName(search);
-        School school = new School();
-        school.setName(search);
-        course.setSchool(school);
-        ExampleMatcher matcher = ExampleMatcher.matchingAny()
-                .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("courseNumber", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("teacherName", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withMatcher("teacherName", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("id", "classPeriod", "creditHours", "credits", "capacity", "type");
-        Example<Course> example = Example.of(course, matcher);
-        return courseRepository.findAll(example,pageable);
+        return MyPageTool.getPage(result, size, page);
+//        Pageable pageable =  PageRequest.of(page - 1, size);
+//        if(search.isEmpty()){
+//            return courseRepository.findAll(pageable);
+//        }
+//        Course course = new Course();
+//        course.setCourseName(search);
+//        course.setTeacherNum(search);
+//        course.setCourseNumber(search);
+//        course.setIntroduction(search);
+//        Major major = new Major();
+//        course.setMajor(major);
+//        course.setTeacherName(search);
+//        School school = new School();
+//        school.setName(search);
+//        course.setSchool(school);
+//        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+//                .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
+//                .withMatcher("courseNumber", ExampleMatcher.GenericPropertyMatcher::contains)
+//                .withMatcher("teacherName", ExampleMatcher.GenericPropertyMatcher::contains)
+//                .withMatcher("introduction", ExampleMatcher.GenericPropertyMatcher::contains)
+//                .withMatcher("major", ExampleMatcher.GenericPropertyMatcher::contains)
+//                .withMatcher("school", ExampleMatcher.GenericPropertyMatcher::contains)
+//                .withMatcher("teacherName", ExampleMatcher.GenericPropertyMatcher::contains)
+//                .withIgnorePaths("id", "classPeriod", "creditHours", "credits", "capacity", "type");
+//        Example<Course> example = Example.of(course, matcher);
+//        return courseRepository.findAll(example,pageable);
     }
 
     @Override
@@ -362,10 +384,11 @@ public class CourseServiceImpl implements CourseService {
                 &&(course.getSemester() == EnumTool.transSemester(yearAndSemester.getSemester()))){
             List<List<Integer>> timeMatrix =  TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(oldClassroom.getSchedule()), course.getCourseId());
             oldClassroom.setSchedule(TimeTool.transSchedule(timeMatrix));
-            classroomRepository.save(oldClassroom);
-            //此处检测时间冲突
+            //此处检测新教室时间冲突
+            timeMatrix = TimeTool.subTimeMatrix(TimeTool.makeTimeMatrix(newClassroom.getSchedule()), course.getCourseId());
             timeMatrix = TimeTool.addTimeMatrix(timeMatrix, thisCourseSchedule);
             newClassroom.setSchedule(TimeTool.transSchedule(timeMatrix));
+            classroomRepository.save(oldClassroom);
             classroomRepository.save(newClassroom);
         } else {
             List<List<Integer>> otherTimeMatrix = TimeTool.subTimeMatrix(

@@ -340,19 +340,6 @@ public class CourseServiceImpl implements CourseService {
         } catch (Exception e) {
             throw e;
         }
-        YearSemesterPair yearAndSemester = TimeTool.getPresentYearAndSemester();
-        if((courseApplying.getSchoolYear() == EnumTool.transSchoolYear(yearAndSemester.getYear()))
-                &&(courseApplying.getSemester() == EnumTool.transSemester(yearAndSemester.getSemester()))){
-            try {
-                classroom.setSchedule(TimeTool.transSchedule(
-                        TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
-                                TimeTool.makeTimeMatrix(courseApplying.getClassTime()))
-                ));
-            } catch (Exception e) {
-                throw e;
-            }
-            classroomRepository.save(classroom);
-        }
         Teacher teacher = teacherRepository.findByJobNumber(courseApplying.getTeacherNum());
         Course course = new Course(courseApplying);
         teacher.getCourses().add(course);
@@ -362,6 +349,20 @@ public class CourseServiceImpl implements CourseService {
         );
         newCourse.setClassTime(TimeTool.transSchedule(TimeTool.transMaxInSchedule(newCourse.getClassTime(), newCourse.getCourseId())));
         courseRepository.save(newCourse);
+
+        YearSemesterPair yearAndSemester = TimeTool.getPresentYearAndSemester();
+        if((newCourse.getSchoolYear() == EnumTool.transSchoolYear(yearAndSemester.getYear()))
+                &&(newCourse.getSemester() == EnumTool.transSemester(yearAndSemester.getSemester()))){
+            try {
+                classroom.setSchedule(TimeTool.transSchedule(
+                        TimeTool.addTimeMatrix(TimeTool.makeTimeMatrix(classroom.getSchedule()),
+                                TimeTool.makeTimeMatrix(newCourse.getClassTime()))
+                ));
+            } catch (Exception e) {
+                throw e;
+            }
+            classroomRepository.save(classroom);
+        }
         return course;
     }
 

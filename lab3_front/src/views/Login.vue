@@ -98,18 +98,6 @@ export default {
       })
     }
   },
-
-
-  // mounted() {
-  //   router.addRoute(admin_routes)
-  //   router.addRoute(teacher_routes)
-  //   router.addRoute(student_routes)
-  //
-  //   //
-  //   //
-  //   //
-  //
-  // }
 }
 
 

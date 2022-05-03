@@ -1,8 +1,11 @@
 package com.example.lab3_behind.service.impl;
 
+import com.example.lab3_behind.common.CourseInMatching;
+import com.example.lab3_behind.common.CourseMatchItem;
 import com.example.lab3_behind.common.Global;
 import com.example.lab3_behind.common.MyPage;
 import com.example.lab3_behind.common.forDomain.CourseApplyingType;
+import com.example.lab3_behind.common.forDomain.CourseSelectType;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
 import com.example.lab3_behind.domain.dto.YearSemesterPair;
@@ -20,6 +23,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.lab3_behind.common.CourseInMatching.toCourseList;
 
 
 @Service
@@ -51,11 +56,19 @@ public class CourseServiceImpl implements CourseService {
     public MyPage<Course> findAPageCourseForSelecting(Integer page, Integer size, String search, String stuNum,
                                                     SchoolYear schoolYear, Semester semester,
                                                     String classroomName, List<List<Integer>> selectTime) throws Exception {
-
-//        Student student = studentRepository.findByStuNumber(stuNum);
-//        if(student == null){
-//            throw new Exception("学生不存在");
-//        }
+        Student student = studentRepository.findByStuNumber(stuNum);
+        if(student == null){
+            throw new Exception("学生不存在");
+        }
+        List<Course> temp = findAPageCourseIn(search, schoolYear, semester, classroomName, selectTime);
+        List<Course> result = new ArrayList<>();
+        for(Course course : temp){
+            if(course.getCourseSelectType().equals(CourseSelectType.common)
+                    || course.getMajorsOptional().contains(student.getMajor())){
+                result.add(course);
+            }
+        }
+        return MyPageTool.getPage(result, size, page);
 //        String major = student.getMajor().getName();
 //        Pageable pageable =  PageRequest.of(page - 1, size);
 //        if(search.isEmpty()){
@@ -73,7 +86,6 @@ public class CourseServiceImpl implements CourseService {
 //                        , "courseNumber", "teacherName", "school", "classroom", "introduction", "courseStatus");
 //        Example<Course> example = Example.of(course, matcher);
 //        return courseRepository.findAll(example, pageable);
-        return null;
     }
 
     @Override
@@ -111,23 +123,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public MyPage<Course> findAPageCourse(Integer page, Integer size, String search, SchoolYear schoolYear, Semester semester
                                         , String classroomName, List<List<Integer>> selectTime){
-        List<Course> allCourses = courseRepository.findBySchoolYearAndSemester(schoolYear, semester);
-        List<Course> result = new ArrayList<>();
-        for(Course course : allCourses){
-            if(classroomName.equals("") || course.getClassroom().getName().equals(classroomName)){
-                List<List<Integer>> selectTimeMatrix = TimeTool.makeTimeMatrix(selectTime, this.getLastSection(), Global.COURSE_MAX);
-                List<List<Integer>> courseTimeMatrix = TimeTool.makeTimeMatrix(course.getClassTime());
-                boolean isEmptyTime = true;
-                for(List<Integer> i : selectTime){
-                    if(!i.isEmpty()){
-                        isEmptyTime = false;
-                    }
-                }
-                if(isEmptyTime || TimeTool.isContainTimeMatrix(courseTimeMatrix, selectTimeMatrix)){
-                    result.add(course);
-                }
-            }
-        }
+        List<Course> result = findAPageCourseIn(search, schoolYear, semester, classroomName, selectTime);
         return MyPageTool.getPage(result, size, page);
 //        Pageable pageable =  PageRequest.of(page - 1, size);
 //        if(search.isEmpty()){
@@ -335,7 +331,7 @@ public class CourseServiceImpl implements CourseService {
         return newCourse;
     }
 
-    private Course insertCourse(CourseApplying courseApplying) throws Exception {
+    private void insertCourse(CourseApplying courseApplying) throws Exception {
         Classroom classroom = classroomRepository.findByName(courseApplying.getClassroom().getName());
         //此处检测时间冲突
         TimeTool.addTimeMatrix(
@@ -362,7 +358,6 @@ public class CourseServiceImpl implements CourseService {
             ));
             classroomRepository.save(classroom);
         }
-        return course;
     }
 
     @Override
@@ -454,6 +449,10 @@ public class CourseServiceImpl implements CourseService {
     }
 
     private Integer getLastSection(){
+        return getInteger(timeTableRepository);
+    }
+
+    static Integer getInteger(TimeTableRepository timeTableRepository) {
         Integer last = 0;
         List<TimeTable> timeTables = timeTableRepository.findAll();
         for(TimeTable timeTable : timeTables){
@@ -464,4 +463,67 @@ public class CourseServiceImpl implements CourseService {
         }
         return last;
     }
+
+    private List<Course> findAPageCourseIn(String search, SchoolYear schoolYear, Semester semester
+            , String classroomName, List<List<Integer>> selectTime){
+        List<Course> allCourses = courseRepository.findBySchoolYearAndSemester(schoolYear, semester);
+        List<CourseInMatching> result = new ArrayList<>();
+
+        boolean isEmptyTime = true;
+        for(List<Integer> i : selectTime){
+            if (!i.isEmpty()) {
+                isEmptyTime = false;
+                break;
+            }
+        }
+
+        for(Course course : allCourses){
+            if(classroomName.equals("") || course.getClassroom().getName().equals(classroomName)){
+                List<List<Integer>> selectTimeMatrix = TimeTool.makeTimeMatrix(selectTime, this.getLastSection(), Global.COURSE_MAX);
+                List<List<Integer>> courseTimeMatrix = TimeTool.makeTimeMatrix(course.getClassTime());
+
+                if(isEmptyTime || TimeTool.isContainTimeMatrix(courseTimeMatrix, selectTimeMatrix)){
+                    CourseMatchItem courseMatchItem = approximateMatchingSearch(course, search);
+                    if(search.isEmpty() || !courseMatchItem.equals(CourseMatchItem.NONE)) result.add(new CourseInMatching(course, courseMatchItem));
+                }
+            }
+        }
+
+        sortCourseByRelevance(result, search);
+        return toCourseList(result);
+    }
+
+    //根据课程代码、课程名称、教师模糊搜索课程
+    private CourseMatchItem approximateMatchingSearch(Course course, String search){
+        CourseMatchItem isMatching = CourseMatchItem.NONE;
+        if(!course.getCourseNumber().contains(search)){
+            isMatching = CourseMatchItem.COURSE_NUMBER;
+        }
+        if(course.getCourseName().contains(search)){
+            isMatching = CourseMatchItem.COURSE_NAME;
+        }
+        if(course.getTeacherName().contains(search)){
+            isMatching = CourseMatchItem.TEACHER_NAME;
+        }
+        return isMatching;
+    }
+
+    //根据相关性对搜索结果排序（插入排序）
+    private void sortCourseByRelevance(List<CourseInMatching> allCourseInMatching, String search){
+        for (int i = 1; i < allCourseInMatching.size(); i ++) {
+            // 记录要插入的数据
+            CourseInMatching temp = allCourseInMatching.get(i);
+            // 从已经排序的序列最右边的开始比较，找到比其相关性大的
+            int j = i;
+            while (j > 0 && temp.moreRelevanceThan(allCourseInMatching.get(j - 1), search)) {
+                allCourseInMatching.set(j, allCourseInMatching.get(j - 1)) ;
+                j --;
+            }
+            // 存在比其相关性大的，插入
+            if (j != i) {
+                allCourseInMatching.set(j, temp);
+            }
+        }
+    }
+
 }

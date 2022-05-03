@@ -33,30 +33,30 @@
                   </el-menu-item-group>
                 </el-sub-menu>
 
-                <el-sub-menu index="1">
+                <el-sub-menu index="2">
                   <template #title>
                     <el-icon><location /></el-icon>
                     <span>选课申请</span>
                   </template>
                   <el-menu-item-group>
-                    <el-menu-item index="1-1">
+                    <el-menu-item index="2-1">
                       <router-link to="/student/studentapply">提交选课申请</router-link>
                     </el-menu-item>
                   </el-menu-item-group>
                   <el-menu-item-group>
-                    <el-menu-item index="1-2">
+                    <el-menu-item index="2-2">
                       <router-link to="/student/studentviewapplication">查看选课申请</router-link>
                     </el-menu-item>
                   </el-menu-item-group>
                 </el-sub-menu>
 
-                <el-sub-menu index="1">
+                <el-sub-menu index="3">
                   <template #title>
                     <el-icon><location /></el-icon>
                     <span>查看课程</span>
                   </template>
                   <el-menu-item-group>
-                    <el-menu-item index="1-1">
+                    <el-menu-item index="3-1">
                       <router-link to="/student/studentviewtable">查看课表</router-link>
                     </el-menu-item>
                   </el-menu-item-group>

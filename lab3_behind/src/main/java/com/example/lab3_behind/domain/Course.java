@@ -124,6 +124,7 @@ public class Course {
         this.semester = courseApplying.getSemester();
         this.courseSelectType = courseApplying.getCourseSelectType();
         this.majorsOptional = courseApplying.majorsOptional;
+        this.classTime = courseApplying.getClassTime();
     }
 
     public String getClassTimeString(){

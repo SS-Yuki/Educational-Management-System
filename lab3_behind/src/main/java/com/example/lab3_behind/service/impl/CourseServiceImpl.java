@@ -518,7 +518,7 @@ public class CourseServiceImpl implements CourseService {
     //根据课程代码、课程名称、教师模糊搜索课程
     private CourseMatchItem approximateMatchingSearch(Course course, String search){
         CourseMatchItem isMatching = CourseMatchItem.NONE;
-        if(!course.getCourseNumber().contains(search)){
+        if(course.getCourseNumber().contains(search)){
             isMatching = CourseMatchItem.COURSE_NUMBER;
         }
         if(course.getCourseName().contains(search)){

@@ -44,25 +44,61 @@ export default {
   methods:{
     openPermission:function(){
       request.post("/admin/openSelectCourse",)
+      if (res.data.code !== 200) {
+        this.$message({
+          type:"error",
+          message: res.data.msg
+        })
+      }
       this.getIfSelect()
     },
     closePermission:function(){
       request.post("/admin/closeSelectCourse",)
+      if (res.data.code !== 200) {
+        this.$message({
+          type:"error",
+          message: res.data.msg
+        })
+      }
       this.getIfSelect()
     },
     nextSelect:function (){
       request.post("/admin/nextTurn",)
+      if (res.data.code !== 200) {
+        this.$message({
+          type:"error",
+          message: res.data.msg
+        })
+      }
       this.getTurn()
     },
     randomSelect:function (){
       request.post("/admin/randomSelect",)
+      if (res.data.code !== 200) {
+        this.$message({
+          type:"error",
+          message: res.data.msg
+        })
+      }
     },
     startSelect:function (){
       request.post("/admin/startThisSemesterSelectCourse",)
+      if (res.data.code !== 200) {
+        this.$message({
+          type:"error",
+          message: res.data.msg
+        })
+      }
       this.getIfSelect()
     },
     endSelect:function (){
       request.post("/admin/endThisSemesterSelectCourse",)
+      if (res.data.code !== 200) {
+        this.$message({
+          type:"error",
+          message: res.data.msg
+        })
+      }
       this.getIfSelect()
     },
     getIfSelect(){

@@ -118,8 +118,8 @@
         <el-table-column prop="majorLimits" label="专业限制" width="200"  />
         <el-table-column prop="selectTypeString" label="选课类型" width="200"  />
         <el-table-column prop="introduction" label="介绍" width="200"  />
-        <el-table-column fixed="right" prop="selectNumber" label="选课人数" width="100"  />
-        <el-table-column fixed="right" prop="capacity" label="容量" width="100"  />
+        <el-table-column prop="selectNumber" label="选课人数" width="100"  />
+        <el-table-column prop="capacity" label="容量" width="100"  />
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
             <el-button type="text" size="small" @click="checkList(scope.row.courseId)">查看选课名单</el-button>

@@ -30,6 +30,7 @@ import TeacherCourse from "@/views/Teacher/TeacherCourse";
 import TeacherApplication from "@/views/Teacher/TeacherApplication";
 import TeacherAddCourse from "@/views/Teacher/TeacherAddCourse";
 import TeacherEditCourse from "@/views/Teacher/TeacherEditCourse";
+import StudentDropCourse from "@/views/Student/StudentDropCourse";
 
 export const routes = [
   {
@@ -192,7 +193,12 @@ export const student_routes =
         path: 'studentviewtable',
         name: 'StudentViewTable',
         component: StudentViewTable
-    }
+    },
+        {
+            path: 'studentdropcourse',
+            name: 'StudentDropCourse',
+            component: StudentDropCourse
+        }
     ]
   }
 

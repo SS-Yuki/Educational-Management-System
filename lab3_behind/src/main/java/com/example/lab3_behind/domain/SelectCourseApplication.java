@@ -1,5 +1,7 @@
 package com.example.lab3_behind.domain;
 
+import com.example.lab3_behind.common.forDomain.Grade;
+import com.example.lab3_behind.common.forDomain.SelectCourseApplicationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,4 +26,13 @@ public class SelectCourseApplication {
     @Lob
     @Column(name = "reason", columnDefinition="TEXT")
     private String reason;
+
+    @Lob
+    @Column(name = "feed_back", columnDefinition="TEXT")
+    private String feedBack;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private SelectCourseApplicationStatus status;
+
 }

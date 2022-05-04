@@ -1,7 +1,7 @@
 <template>
   <div class="main_part">
     <div style="margin-right: auto;margin-left: auto">
-      <el-input clearable v-model="courseId" placeholder="请输入课程编号" style="width:20%;"></el-input>
+      <el-input clearable v-model="courseId" placeholder="请输入课程编号" style="width:20%;" type="number"></el-input>
       <el-button type="primary" @click="search">确认</el-button>
     </div>
     <div style="margin-left: auto;margin-right: auto;margin-top: 10px">
@@ -17,7 +17,7 @@
 
     <div style="margin-left: auto;margin-right: auto;margin-top: 10px">
       <el-input v-model="applyReason"
-
+                :rows="5"
                 placeholder="请输入申请理由"
                 style="width:40%"
                 clearable ></el-input>

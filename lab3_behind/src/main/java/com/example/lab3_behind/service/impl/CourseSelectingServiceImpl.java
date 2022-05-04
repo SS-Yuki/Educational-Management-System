@@ -57,7 +57,7 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
         }
         Authority selectRound = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
         if(!selectRound.getAuthorityValue().equals(Global.FIRST_COURSE_SELECTING_ROUND)){
-            if(course.getCapacity().compareTo(course.getStudentsNum()) < 0){
+            if(course.getCapacity().compareTo(course.getStudentsNum()) <= 0){
                 throw new Exception("该课程容量已满");
             }
         }

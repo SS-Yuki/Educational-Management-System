@@ -102,6 +102,7 @@
         </el-dialog>
 
 
+
       </div>
       <el-table :data="tableData" style="width: 1200px" border stripe>
         <el-table-column prop="courseId" label="courseId" width="200" v-if="false" />
@@ -122,7 +123,7 @@
         <el-table-column prop="applicant" label="申请人" width="200"  />
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-            <el-button type="text" size="small" @click="checkList">查看选课名单</el-button>
+            <el-button type="text" size="small" @click="checkList(scope.row.courseId)">查看选课名单</el-button>
             <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
             <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
               <template #reference>
@@ -132,6 +133,23 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <div>
+        <el-dialog v-model="check" title="选课名单" width="650px">
+
+          <el-table :data="studentList" style="width: 600px" height="400" border stripe>
+            <el-table-column prop="stuNumber" label="学号" width="150"  />
+            <el-table-column prop="name" label="姓名" width="150" />
+            <el-table-column prop="grade" label="年级" width="150" />
+            <el-table-column prop="major" label="专业" width="150"  />
+          </el-table>
+
+          <template #footer>
+          </template>
+        </el-dialog>
+
+      </div>
+
       <div style="margin: 10px 0">
         <el-pagination
             v-model:currentPage="currentPage"
@@ -154,6 +172,8 @@ export default {
   name: "CheckCourse",
   data(){
     return{
+      check:false,
+      studentList:[],
       select_year_semester:[],
       select_building_classroom:[],
       semesterOptions:[],
@@ -211,8 +231,12 @@ export default {
     }
   },
   methods:{
-    checkList:function (){
-
+    checkList:function (courseId){
+      this.check=true;
+      request.post("common/getStudentListOfOneCourse",courseId).then(res=>{
+        if(!res.data) return
+        this.studentList=res.data.data.records
+      })
     },
 
     getOptionMajor: function () {

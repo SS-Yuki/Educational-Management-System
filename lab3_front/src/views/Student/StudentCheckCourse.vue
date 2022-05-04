@@ -2,22 +2,7 @@
   <div class="main_part">
     <div>
       <div class="add" style="margin: 10px 0">
-        <div style="float: left">
-          <el-button size="large" @click="add" type="primary">新增</el-button>
-        </div>
-        <div style="float: left">
-          <el-upload
-              class="upload-demo"
-              action=""
-              :on-change="handleChange"
-              :on-exceed="handleExceed"
-              :on-remove="handleRemove"
-              :file-list="fileListUpload"
-              accept=".csv"
-              :auto-upload="false">
-            <el-button size="large" type="primary">导入</el-button>
-          </el-upload>
-        </div>
+
         <div style="float: left">
           <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
@@ -50,21 +35,21 @@
         <el-table-column prop="applicant" label="申请人" width="0" v-if="false" />
         <el-table-column fixed="right" label="操作" width="200" v-if="false">
           <template #default="scope">
-            <el-button type="text" size="small" @click="handleEdit(
-                scope.row.courseId,
-                scope.row.courseName,
-                scope.row.courseNumber,
-                scope.row.teacherNum,
-                scope.row.major,
-                scope.row.school,
-                scope.row.classPeriod,
-                scope.row.classroom,
-                scope.row.creditHours,
-                scope.row.credits,
-                scope.row.capacity,
-                scope.row.introduction,
-                scope.row.applicant
-                )">查看/编辑</el-button>
+<!--            <el-button type="text" size="small" @click="handleEdit(-->
+<!--                scope.row.courseId,-->
+<!--                scope.row.courseName,-->
+<!--                scope.row.courseNumber,-->
+<!--                scope.row.teacherNum,-->
+<!--                scope.row.major,-->
+<!--                scope.row.school,-->
+<!--                scope.row.classPeriod,-->
+<!--                scope.row.classroom,-->
+<!--                scope.row.creditHours,-->
+<!--                scope.row.credits,-->
+<!--                scope.row.capacity,-->
+<!--                scope.row.introduction,-->
+<!--                scope.row.applicant-->
+<!--                )">查看/编辑</el-button>-->
             <el-popconfirm title="确认删除?" @confirm="handleDelete(scope.row.courseId)">
               <template #reference>
                 <el-button type="text">删除</el-button>

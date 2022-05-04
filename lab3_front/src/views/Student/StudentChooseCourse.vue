@@ -277,6 +277,12 @@ export default {
     },
     chooseCourse:function (courseId){
       request.post("/student/selectCourse",courseId).then(res => {
+        if(res.data.code===200) {
+          this.$message({
+            type:"success",
+            message: res.data.msg
+          })
+        }
         if(res.data.code!==200) {
           this.$message({
             type:"error",

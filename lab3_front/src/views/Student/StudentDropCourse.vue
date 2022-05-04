@@ -58,7 +58,11 @@ export default {
       request.post("/student/dropCourse",courseId).then(res=>{
         if (res.data.code === 200) {
           this.tableData = res.data.data.records
-          this.total = res.data.data.total
+          this.$message({
+            type: "success",
+            message: res.data.msg
+          })
+
         } else {
           this.$message({
             type: "error",

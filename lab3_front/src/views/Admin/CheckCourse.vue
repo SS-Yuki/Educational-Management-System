@@ -1,165 +1,160 @@
 <template>
   <div class="main_part">
-    <div>
-      <div class="add" style="margin: 10px 0">
-        <div style="float: left">
-          <el-button size="large" @click="add" type="primary">
-            新增
-          </el-button>
-          <router-view></router-view>
-        </div>
-        <div style="float: left">
-          <el-upload
-              class="upload-demo"
-              action=""
-              :on-change="handleChange"
-              accept=".csv"
-              :auto-upload="false">
-            <el-button size="large" type="primary">导入</el-button>
-          </el-upload>
-        </div>
-        <div style="float: left">
-          <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
-          <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
-        </div>
-        <div>
-          <el-cascader v-model="select_year_semester" :options="semesterOptions" placeholder="按学年/学期筛选"/>
-          <el-cascader v-model="select_building_classroom" :options="classroomOptions" placeholder="按教学楼/教室筛选"/>
-          <el-button  @click="getTime(); timeShow = true">按上课时间筛选</el-button>
-        </div>
-
-        <el-dialog v-model="timeShow" title="进行时间选择" :show-close="false" center>
-          <div>
-            <el-checkbox-group  style="display: inline-block" disabled >
-              <el-checkbox-button v-for="item of length" :key="item" :label=item+1 style="display: block"
-                                  value=item>
-                {{ startTimes[item-1].label + "-" + endTimes[item-1].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
-
-            <el-checkbox-group v-model="day1" style="display: inline-block" >
-              <el-checkbox-button v-for="item of length" :key="item" :label=item
-                                  style="display: block"
-                                  value=item>
-                {{ timeNames[item-1].label}}
-              </el-checkbox-button>
-            </el-checkbox-group>
-
-            <el-checkbox-group v-model="day2" style="display: inline-block" >
-              <el-checkbox-button v-for="item of length" :key="item" :label=item
-                                  style="display: block"
-                                  value=item>
-                {{ timeNames[item-1].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
-
-            <el-checkbox-group v-model="day3" style="display: inline-block" >
-              <el-checkbox-button v-for="item of length" :key="item" :label=item
-                                  style="display: block"
-                                  value=item>
-                {{ timeNames[item-1].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
-
-            <el-checkbox-group v-model="day4" style="display: inline-block" >
-              <el-checkbox-button v-for="item of length" :key="item" :label=item
-                                  style="display: block"
-                                  value=item>
-                {{ timeNames[item-1].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
-
-            <el-checkbox-group v-model="day5" style="display: inline-block" >
-              <el-checkbox-button v-for="item of length" :key="item" :label=item
-                                  style="display: block"
-                                  value=item >
-                {{ timeNames[item-1].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
-
-            <el-checkbox-group v-model="day6" style="display: inline-block">
-              <el-checkbox-button v-for="item of length" :key="item" :label=item
-                                  style="display: block"
-                                  value=item >
-                {{ timeNames[item-1].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
-
-            <el-checkbox-group v-model="day7" style="display: inline-block" >
-              <el-checkbox-button v-for="item of length" :key="item" :label=item
-                                  style="display: block"
-                                  value=item >
-                {{ timeNames[item-1].label }}
-              </el-checkbox-button>
-            </el-checkbox-group>
-          </div>
-          <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="cancelTime">取消</el-button>
-              <el-button type="primary" @click="ensureTime">确认</el-button>
-            </span>
-          </template>
-        </el-dialog>
-
-
-
+    <div class="add" style="margin: 10px 0">
+      <div style="float: left">
+        <el-button size="large" @click="add" type="primary">
+          新增
+        </el-button>
+        <router-view></router-view>
       </div>
-      <el-table :data="tableData" style="width: 1200px" border stripe>
-        <el-table-column prop="courseId" label="courseId" width="200" v-if="false" />
-        <el-table-column prop="courseName" label="课程名" width="200" />
-        <el-table-column prop="courseNumber" label="课程编号" width="200" />
-        <el-table-column prop="teacherName" label="任课教师" width="200"  />
-        <el-table-column prop="teacherNum" label="教师工号" width="200" />
-        <el-table-column prop="occupyTime" label="上课时间" width="200"  />
-        <el-table-column prop="major" label="开课专业" width="200" />
-        <el-table-column prop="school" label="开课院系" width="200" />
-        <el-table-column prop="classroom" label="教室" width="200"  />
-        <el-table-column prop="creditHours" label="学时" width="200"  />
-        <el-table-column prop="credits" label="学分" width="200"  />
-        <el-table-column prop="capacity" label="容量" width="200"  />
-        <el-table-column prop="majorLimits" label="专业限制" width="200"  />
-        <el-table-column prop="selectTypeString" label="选课类型" width="200"  />
-        <el-table-column prop="introduction" label="介绍" width="200"  />
-        <el-table-column prop="applicant" label="申请人" width="200"  />
-        <el-table-column fixed="right" label="操作" width="200">
-          <template #default="scope">
-            <el-button type="text" size="small" @click="checkList(scope.row.courseId)">查看选课名单</el-button>
-            <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
-            <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
-              <template #reference>
-                <el-button type="text">删除</el-button>
-              </template>
-            </el-popconfirm>
-          </template>
-        </el-table-column>
-      </el-table>
-
+      <div style="float: left">
+        <el-upload
+            class="upload-demo"
+            action=""
+            :on-change="handleChange"
+            accept=".csv"
+            :auto-upload="false">
+          <el-button size="large" type="primary">导入</el-button>
+        </el-upload>
+      </div>
+      <div style="float: left">
+        <el-input clearable v-model="search" placeholder="请输入关键字" style="width:50%;margin-left: 100px"></el-input>
+        <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
+      </div>
       <div>
-        <el-dialog v-model="check" title="选课名单" width="650px">
-
-          <el-table :data="studentList" style="width: 600px" height="400" border stripe>
-            <el-table-column prop="stuNumber" label="学号" width="150"  />
-            <el-table-column prop="name" label="姓名" width="150" />
-            <el-table-column prop="grade" label="年级" width="150" />
-            <el-table-column prop="major" label="专业" width="150"  />
-          </el-table>
-
-          <template #footer>
-          </template>
-        </el-dialog>
-
+        <el-cascader v-model="select_year_semester" :options="semesterOptions" placeholder="按学年/学期筛选"/>
+        <el-cascader v-model="select_building_classroom" :options="classroomOptions" placeholder="按教学楼/教室筛选"/>
+        <el-button  @click="getTime(); timeShow = true">按上课时间筛选</el-button>
       </div>
 
-      <div style="margin: 10px 0">
-        <el-pagination
-            v-model:currentPage="currentPage"
-            v-model:page-size="pageSize"
-            :page-sizes="[5,10,20]"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-            @current-change="handleCurrentChange"
-        />
-      </div>
+      <el-dialog v-model="timeShow" title="进行时间选择" :show-close="false" center>
+        <div>
+          <el-checkbox-group  style="display: inline-block" disabled >
+            <el-checkbox-button v-for="item of length" :key="item" :label=item+1 style="display: block"
+                                value=item>
+              {{ startTimes[item-1].label + "-" + endTimes[item-1].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
+
+          <el-checkbox-group v-model="day1" style="display: inline-block" >
+            <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                style="display: block"
+                                value=item>
+              {{ timeNames[item-1].label}}
+            </el-checkbox-button>
+          </el-checkbox-group>
+
+          <el-checkbox-group v-model="day2" style="display: inline-block" >
+            <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                style="display: block"
+                                value=item>
+              {{ timeNames[item-1].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
+
+          <el-checkbox-group v-model="day3" style="display: inline-block" >
+            <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                style="display: block"
+                                value=item>
+              {{ timeNames[item-1].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
+
+          <el-checkbox-group v-model="day4" style="display: inline-block" >
+            <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                style="display: block"
+                                value=item>
+              {{ timeNames[item-1].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
+
+          <el-checkbox-group v-model="day5" style="display: inline-block" >
+            <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                style="display: block"
+                                value=item >
+              {{ timeNames[item-1].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
+
+          <el-checkbox-group v-model="day6" style="display: inline-block">
+            <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                style="display: block"
+                                value=item >
+              {{ timeNames[item-1].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
+
+          <el-checkbox-group v-model="day7" style="display: inline-block" >
+            <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                style="display: block"
+                                value=item >
+              {{ timeNames[item-1].label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
+        </div>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="cancelTime">取消</el-button>
+            <el-button type="primary" @click="ensureTime">确认</el-button>
+          </span>
+        </template>
+      </el-dialog>
+    </div>
+    <el-table :data="tableData" style="width: 1200px" border stripe>
+      <el-table-column prop="courseId" label="courseId" width="200" v-if="false" />
+      <el-table-column prop="courseName" label="课程名" width="200" />
+      <el-table-column prop="courseNumber" label="课程编号" width="200" />
+      <el-table-column prop="teacherName" label="任课教师" width="200"  />
+      <el-table-column prop="teacherNum" label="教师工号" width="200" />
+      <el-table-column prop="occupyTime" label="上课时间" width="200"  />
+      <el-table-column prop="major" label="开课专业" width="200" />
+      <el-table-column prop="school" label="开课院系" width="200" />
+      <el-table-column prop="classroom" label="教室" width="200"  />
+      <el-table-column prop="creditHours" label="学时" width="200"  />
+      <el-table-column prop="credits" label="学分" width="200"  />
+      <el-table-column prop="capacity" label="容量" width="200"  />
+      <el-table-column prop="majorLimits" label="专业限制" width="200"  />
+      <el-table-column prop="selectTypeString" label="选课类型" width="200"  />
+      <el-table-column prop="introduction" label="介绍" width="200"  />
+      <el-table-column prop="applicant" label="申请人" width="200"  />
+      <el-table-column fixed="right" label="操作" width="200">
+        <template #default="scope">
+          <el-button type="text" size="small" @click="checkList(scope.row.courseId)">查看选课名单</el-button>
+          <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
+          <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
+            <template #reference>
+              <el-button type="text">删除</el-button>
+            </template>
+          </el-popconfirm>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <div>
+      <el-dialog v-model="check" title="选课名单" width="650px">
+
+        <el-table :data="studentList" style="width: 600px" height="400" border stripe>
+          <el-table-column prop="stuNumber" label="学号" width="150"  />
+          <el-table-column prop="name" label="姓名" width="150" />
+          <el-table-column prop="grade" label="年级" width="150" />
+          <el-table-column prop="major" label="专业" width="150"  />
+        </el-table>
+
+        <template #footer>
+        </template>
+      </el-dialog>
+
+    </div>
+
+    <div style="margin: 10px 0">
+      <el-pagination
+          v-model:currentPage="currentPage"
+          v-model:page-size="pageSize"
+          :page-sizes="[5,10,20]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          @current-change="handleCurrentChange"
+      />
     </div>
   </div>
 </template>
@@ -183,7 +178,6 @@ export default {
       currentPage:1,
       search:'',
       majorOptions:[],
-      courseId:0,
       tableData:[],
       timeShow: false,
       length: 0,
@@ -386,7 +380,7 @@ export default {
           this.endTimes.push(option3)
         })
         this.length=this.timeNames.length
-        console.log(this.timeNames, this.startTimes, this.endTimes)
+        console.log(this.day1, this.day2, this.day3, this.day4, this.day5, this.day6, this.day7)
       })
     },
     add:function (){
@@ -396,8 +390,7 @@ export default {
       this.$router.push({ name: 'EditCourse', params: { id: courseId} })
     },
     delete(courseId) {
-      this.courseId=courseId
-      request.post("/admin/deleteCourse",this.courseId).then(res => {
+      request.post("/admin/deleteCourse",courseId).then(res => {
         if(res.data.code!==200) {
           this.$message({
             type:"error",
@@ -419,7 +412,7 @@ export default {
         this.day = JSON.parse(sessionStorage.getItem('day'))
       }
       else {
-        this.day.splice(0)
+        this.day.forEach(item => {item.splice(0)})
       }
       console.log(this.day)
     },

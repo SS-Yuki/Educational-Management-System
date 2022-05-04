@@ -5,6 +5,8 @@ import com.example.lab3_behind.common.forDomain.Grade;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
 
+import java.util.List;
+
 public class EnumTool {
     public static String transString(CourseSelectType courseSelectType){
         if(courseSelectType==null) return null;
@@ -89,6 +91,5 @@ public class EnumTool {
             default:return null;
         }
     }
-
 
 }

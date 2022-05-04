@@ -6,12 +6,15 @@ import com.example.lab3_behind.common.forDomain.*;
 import com.example.lab3_behind.domain.*;
 import com.example.lab3_behind.repository.*;
 import com.example.lab3_behind.service.CourseSelectingService;
+import com.example.lab3_behind.utils.MyPageTool;
 import com.example.lab3_behind.utils.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.lab3_behind.service.impl.StudentServiceImpl.getCourses;
 import static com.example.lab3_behind.service.impl.StudentServiceImpl.getSchedule;
 
 @Service
@@ -20,26 +23,31 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
     StudentRepository studentRepository;
     TimeTableRepository timeTableRepository;
     AuthorityRepository authorityRepository;
+    ClassroomRepository classroomRepository;
     CourseSelectingRecordRepository courseSelectingRecordRepository;
+    SelectCourseApplicationRepository selectCourseApplicationRepository;
     @Autowired
     CourseSelectingServiceImpl(CourseRepository courseRepository, StudentRepository studentRepository,
                                TimeTableRepository timeTableRepository, AuthorityRepository authorityRepository,
-                               CourseSelectingRecordRepository courseSelectingRecordRepository){
+                               CourseSelectingRecordRepository courseSelectingRecordRepository, SelectCourseApplicationRepository selectCourseApplicationRepository,
+                               ClassroomRepository classroomRepository){
         this.courseRepository = courseRepository;
         this.studentRepository = studentRepository;
         this.timeTableRepository = timeTableRepository;
         this.authorityRepository = authorityRepository;
         this.courseSelectingRecordRepository = courseSelectingRecordRepository;
+        this.selectCourseApplicationRepository = selectCourseApplicationRepository;
+        this.classroomRepository = classroomRepository;
     }
 
     @Override
-    public void selectCourse(String sutNum, Integer courseId, SchoolYear openYear, Semester openSemester) throws Exception {
+    public void selectCourse(String stuNum, Integer courseId, SchoolYear openYear, Semester openSemester) throws Exception {
         //检查course是否为open学期；如果不是一轮选课，容量是否已满；选课权限；专业限制；同类课程（课程代码和课程名称相同的课程）同⼀个学⽣只能选⼀⻔,学⽣选课时已经修过的课程不可再选
         Course course = courseRepository.findByCourseId(courseId);
         if(course == null){
             throw new Exception("课程不存在");
         }
-        Student student = studentRepository.findByStuNumber(sutNum);
+        Student student = studentRepository.findByStuNumber(stuNum);
         if(student == null){
             throw new Exception("学生不存在");
         }
@@ -59,7 +67,7 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
         if(!course.getCourseSelectType().equals(CourseSelectType.common) && !course.getMajorsOptional().contains(student.getMajor())){
             throw new Exception("由于专业限制无法选择此门课程");
         }
-        List<Course> allCourse = student.getCourses();
+        List<Course> allCourse = getCourses(student);
         for (Course tempCourse : allCourse){
             if(tempCourse.getCourseId().equals(courseId)){
                 throw new Exception("无法选择已经选过的课程");
@@ -74,15 +82,17 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
         courseRepository.save(course);
         student.setCredits(student.getCredits() + course.getCredits());
         //时间冲突
-        TimeTool.addTimeMatrix(getSchedule(studentRepository, timeTableRepository, sutNum, openYear, openSemester),
+        TimeTool.addTimeMatrix(getSchedule(studentRepository, timeTableRepository, stuNum, openYear, openSemester),
                 TimeTool.makeTimeMatrix(course.getClassTime()));
-
-        student.getCourses().add(course);
-        studentRepository.save(student);
-
-        CourseSelectingRecord courseSelectingRecord = courseSelectingRecordRepository.findByStudentAndCourse(student, course);
-        courseSelectingRecord.setStudyStatus(StudyStatus.ToStudy);
+        CourseSelectingRecord courseSelectingRecord = new CourseSelectingRecord(null , course, student, 0,StudyStatus.ToStudy );
         courseSelectingRecordRepository.save(courseSelectingRecord);
+
+//        student.getCourses().add(course);
+//        studentRepository.save(student);
+//
+//        CourseSelectingRecord courseSelectingRecord = courseSelectingRecordRepository.findByStudentAndCourse(student, course);
+//        courseSelectingRecord.setStudyStatus(StudyStatus.ToStudy);
+//        courseSelectingRecordRepository.save(courseSelectingRecord);
     }
 
     @Override
@@ -100,7 +110,7 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
         if(selectRound.getAuthorityValue().equals(Global.NOT_IN_COURSE_SELECTING_ROUND)){
             throw new Exception("当前不可退课");
         }
-        if(!student.getCourses().contains(course)){
+        if(!getCourses(student).contains(course)){
             throw new Exception("无法退掉未选上的课程");
         }
         //课程人数,学生学分
@@ -108,32 +118,86 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
         courseRepository.save(course);
         student.setCredits(student.getCredits() - course.getCredits());
 
-        student.getCourses().remove(course);
-        studentRepository.save(student);
+        CourseSelectingRecord record = courseSelectingRecordRepository.findByStudentAndCourse(student, course);
+        courseSelectingRecordRepository.delete(record);
     }
 
     @Override
-    public void pushCourseSelectingApplication(String stuNum, Integer courseId) {
-
+    public void pushCourseSelectingApplication(String stuNum, Integer courseId, String reason) throws Exception {
+        Course course = courseRepository.findByCourseId(courseId);
+        if(course == null){
+            throw new Exception("课程不存在");
+        }
+        Student student = studentRepository.findByStuNumber(stuNum);
+        if(student == null){
+            throw new Exception("学生不存在");
+        }
+        boolean isMajor = course.getCourseSelectType().equals(CourseSelectType.common) || course.getMajorsOptional().contains(student.getMajor());
+        if((course.getCapacity().compareTo(course.getStudentsNum()) > 0) && isMajor){
+            throw new Exception("该门课程容量未满，不必打申请");
+        }
+        SelectCourseApplication application = new SelectCourseApplication(null, stuNum, courseId, reason, null, SelectCourseApplicationStatus.ToDeal);
+        selectCourseApplicationRepository.save(application);
     }
 
     @Override
-    public void approveSelectCourseApplication(Integer applicationId, String commends) {
+    public void approveSelectCourseApplication(Integer applicationId, String commends) throws Exception {
+        SelectCourseApplication application = selectCourseApplicationRepository.findById(applicationId);
+        if(application == null){
+            throw new Exception("该申请不存在");
+        }
+        Student student = studentRepository.findByStuNumber(application.getStuNumber());
+        if(student == null){
+            throw new Exception("学生不存在");
+        }
+        Course course = courseRepository.findByCourseId(application.getCourseId());
+        if(course == null){
+            throw new Exception("课程不存在");
+        }
+        Classroom classroom = course.getClassroom();
+        if(course.getCapacity().compareTo(classroom.getCapacity()) == 0){
+            throw new Exception("教室容量已满，无法再为此课程增加学生");
+        } else {
+            course.setCapacity(course.getCapacity() + 1);
+            course.setStudentsNum(course.getStudentsNum() + 1);
+        }
+        //时间冲突
+        TimeTool.addTimeMatrix(getSchedule(studentRepository, timeTableRepository, student.getStuNumber(), course.getSchoolYear(), course.getSemester()),
+                TimeTool.makeTimeMatrix(course.getClassTime()));
 
+        courseRepository.save(course);
+        CourseSelectingRecord courseSelectingRecord = new CourseSelectingRecord(null , course, student, 0,StudyStatus.ToStudy);
+        courseSelectingRecordRepository.save(courseSelectingRecord);
+
+        application.setStatus(SelectCourseApplicationStatus.Approved);
+        selectCourseApplicationRepository.save(application);
     }
 
     @Override
-    public void rejectSelectCourseApplication(Integer applicationId, String commends) {
-
+    public void rejectSelectCourseApplication(Integer applicationId, String commends) throws Exception {
+        SelectCourseApplication application = selectCourseApplicationRepository.findById(applicationId);
+        if(application == null){
+            throw new Exception("该申请不存在");
+        }
+        application.setStatus(SelectCourseApplicationStatus.Rejected);
+        selectCourseApplicationRepository.save(application);
     }
 
     @Override
-    public MyPage<SelectCourseApplication> findAPageSelectCourseApplicationToDeal() {
-        return null;
+    public MyPage<SelectCourseApplication> findAPageSelectCourseApplicationToDeal(Integer page, Integer size) {
+        List<SelectCourseApplication> allApplication = selectCourseApplicationRepository.findAll();
+        List<SelectCourseApplication> result = new ArrayList<>();
+        for (SelectCourseApplication application : allApplication){
+            if (application.getStatus().equals(SelectCourseApplicationStatus.ToDeal)){
+                result.add(application);
+            }
+        }
+        return MyPageTool.getPage(result, size, page);
     }
 
     @Override
     public List<SelectCourseApplication> findMySelectCourseApplication(String stuNum) {
-        return null;
+        return selectCourseApplicationRepository.findByStuNumber(stuNum);
     }
+
 }

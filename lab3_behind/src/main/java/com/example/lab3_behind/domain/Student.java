@@ -41,13 +41,13 @@ public class Student {
     @JoinColumn(name = "account")
     private UserAccount userAccount;
 
-    @ManyToMany
-    @JoinTable(
-            name = "course_selecting_record",
-            joinColumns = {@JoinColumn(name = "student_id")},
-            inverseJoinColumns = {@JoinColumn(name = "course_id")}
+
+    @OneToMany(
+            mappedBy = "student",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    private List<Course> courses;
+    private List<CourseSelectingRecord> records;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

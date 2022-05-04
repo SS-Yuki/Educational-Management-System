@@ -4,13 +4,10 @@ import com.example.lab3_behind.common.CourseNameString;
 import com.example.lab3_behind.common.Global;
 import com.example.lab3_behind.common.forDomain.SchoolYear;
 import com.example.lab3_behind.common.forDomain.Semester;
-import com.example.lab3_behind.domain.Course;
+import com.example.lab3_behind.domain.*;
 import com.example.lab3_behind.repository.*;
 import com.example.lab3_behind.utils.FormatCheck;
 import com.example.lab3_behind.common.forDomain.StudentStatus;
-import com.example.lab3_behind.domain.Major;
-import com.example.lab3_behind.domain.School;
-import com.example.lab3_behind.domain.Student;
 import com.example.lab3_behind.domain.dto.RevisableDataForAdmin;
 import com.example.lab3_behind.domain.dto.RevisableDataForUser;
 import com.example.lab3_behind.domain.dto.UserEnteringData;
@@ -81,7 +78,7 @@ public class StudentServiceImpl implements StudentService {
             throw new Exception("学生不存在");
         }
         List<Course> result = new ArrayList<>();
-        for(Course course : student.getCourses()){
+        for(Course course : getCourses(student)){
             if(course.getSchoolYear().equals(schoolYear) && course.getSemester().equals(semester)){
                 result.add(course);
             }
@@ -177,7 +174,7 @@ public class StudentServiceImpl implements StudentService {
     static List<List<Integer>> getSchedule(StudentRepository studentRepository, TimeTableRepository timeTableRepository,
                                            String stuNum, SchoolYear schoolYear, Semester semester) throws Exception {
         List<List<Integer>> result = TimeTool.getEmptyTimeMatrix(getSections(timeTableRepository));
-        for(Course course : studentRepository.findByStuNumber(stuNum).getCourses()){
+        for(Course course : getCourses(studentRepository.findByStuNumber(stuNum))){
             if(course.getSchoolYear().equals(schoolYear) && course.getSemester().equals(semester)){
                 result = TimeTool.addTimeMatrix(result, TimeTool.makeTimeMatrix(course.getClassTime()));
             }
@@ -185,4 +182,11 @@ public class StudentServiceImpl implements StudentService {
         return result;
     }
 
+    static List<Course> getCourses(Student student){
+        List<Course> result = new ArrayList<>();
+        for(CourseSelectingRecord record : student.getRecords()){
+            result.add(record.getCourse());
+        }
+        return result;
+    }
 }

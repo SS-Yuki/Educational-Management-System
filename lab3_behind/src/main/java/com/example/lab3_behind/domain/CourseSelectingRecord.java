@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -33,5 +34,38 @@ public class CourseSelectingRecord {
     @Enumerated(EnumType.STRING)
     @Column(name = "study_status")
     private StudyStatus studyStatus;
-
+//    @EmbeddedId
+//    private CourseSelectingRecordId id;
+//
+//    @ManyToOne
+//    @MapsId("course_id")
+//    private Course course;
+//
+//    @ManyToOne
+//    @MapsId("student_id")
+//    private Student student;
+//
+//    @Column(name = "score")
+//    private double score;
+//
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "study_status")
+//    private StudyStatus studyStatus;
+//
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//
+//        if (o == null || getClass() != o.getClass())
+//            return false;
+//
+//        CourseSelectingRecord that = (CourseSelectingRecord) o;
+//        return Objects.equals(course, that.course) &&
+//                Objects.equals(student, that.student);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(course, student);
+//    }
 }

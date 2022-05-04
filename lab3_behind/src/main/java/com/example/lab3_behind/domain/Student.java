@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "students")
 public class Student {
     @Id
@@ -41,13 +43,13 @@ public class Student {
     @JoinColumn(name = "account")
     private UserAccount userAccount;
 
-    @ManyToMany
-    @JoinTable(
-            name = "course_selecting_record",
-            joinColumns = {@JoinColumn(name = "student_id")},
-            inverseJoinColumns = {@JoinColumn(name = "course_id")}
+
+    @OneToMany(
+            mappedBy = "student",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    private List<Course> courses;
+    private List<CourseSelectingRecord> records;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

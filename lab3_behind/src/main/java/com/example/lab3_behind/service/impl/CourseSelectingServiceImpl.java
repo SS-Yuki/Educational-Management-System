@@ -1,11 +1,9 @@
 package com.example.lab3_behind.service.impl;
 
 import com.example.lab3_behind.common.Global;
+import com.example.lab3_behind.common.MyPage;
 import com.example.lab3_behind.common.forDomain.*;
-import com.example.lab3_behind.domain.Authority;
-import com.example.lab3_behind.domain.Course;
-import com.example.lab3_behind.domain.CourseSelectingRecord;
-import com.example.lab3_behind.domain.Student;
+import com.example.lab3_behind.domain.*;
 import com.example.lab3_behind.repository.*;
 import com.example.lab3_behind.service.CourseSelectingService;
 import com.example.lab3_behind.utils.TimeTool;
@@ -112,5 +110,30 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
 
         student.getCourses().remove(course);
         studentRepository.save(student);
+    }
+
+    @Override
+    public void pushCourseSelectingApplication(String stuNum, Integer courseId) {
+
+    }
+
+    @Override
+    public void approveSelectCourseApplication(Integer applicationId, String commends) {
+
+    }
+
+    @Override
+    public void rejectSelectCourseApplication(Integer applicationId, String commends) {
+
+    }
+
+    @Override
+    public MyPage<SelectCourseApplication> findAPageSelectCourseApplicationToDeal() {
+        return null;
+    }
+
+    @Override
+    public List<SelectCourseApplication> findMySelectCourseApplication(String stuNum) {
+        return null;
     }
 }

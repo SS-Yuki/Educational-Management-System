@@ -43,63 +43,71 @@ export default {
   },
   methods:{
     openPermission:function(){
-      request.post("/admin/openSelectCourse",)
-      if (res.data.code !== 200) {
-        this.$message({
-          type:"error",
-          message: res.data.msg
-        })
-      }
+      request.post("/admin/openSelectCourse").then(res=>{
+        if (res.data.code !== 200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
+      })
       this.getIfSelect()
     },
     closePermission:function(){
-      request.post("/admin/closeSelectCourse",)
-      if (res.data.code !== 200) {
-        this.$message({
-          type:"error",
-          message: res.data.msg
-        })
-      }
+      request.post("/admin/closeSelectCourse").then(res=>{
+        if (res.data.code !== 200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
+      })
       this.getIfSelect()
     },
     nextSelect:function (){
-      request.post("/admin/nextTurn",)
-      if (res.data.code !== 200) {
-        this.$message({
-          type:"error",
-          message: res.data.msg
-        })
-      }
+      request.post("/admin/nextTurn").then(res=>{
+        if (res.data.code !== 200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
+      })
       this.getTurn()
     },
     randomSelect:function (){
-      request.post("/admin/randomSelect",)
-      if (res.data.code !== 200) {
-        this.$message({
-          type:"error",
-          message: res.data.msg
-        })
-      }
+      request.post("/admin/randomSelect").then(res=>{
+        if (res.data.code !== 200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
+      })
     },
     startSelect:function (){
-      request.post("/admin/startThisSemesterSelectCourse",)
-      if (res.data.code !== 200) {
-        this.$message({
-          type:"error",
-          message: res.data.msg
-        })
-      }
+      request.post("/admin/startThisSemesterSelectCourse").then(res=>{
+        if (res.data.code !== 200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
+      })
       this.getIfSelect()
+      this.getTurn()
     },
     endSelect:function (){
-      request.post("/admin/endThisSemesterSelectCourse",)
-      if (res.data.code !== 200) {
-        this.$message({
-          type:"error",
-          message: res.data.msg
-        })
-      }
+      request.post("/admin/endThisSemesterSelectCourse").then(res=>{
+        if (res.data.code !== 200) {
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
+      })
       this.getIfSelect()
+      this.getTurn()
     },
     getIfSelect(){
       setTimeout(() => {

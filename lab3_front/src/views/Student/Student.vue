@@ -21,30 +21,30 @@
                       <router-link to="/student/studentinfo">个人信息维护</router-link>
                     </el-menu-item>
                   </el-menu-item-group>
-                  <el-menu-item-group>
-                    <el-menu-item index="1-2">
-                      <router-link to="/student/studentchoosecourse">选课</router-link>
-                    </el-menu-item>
-                  </el-menu-item-group>
-                  <el-menu-item-group>
-                    <el-menu-item index="1-2">
-                      <router-link to="/student/studentcheckcourse">查看课程</router-link>
-                    </el-menu-item>
-                  </el-menu-item-group>
                 </el-sub-menu>
 
                 <el-sub-menu index="2">
                   <template #title>
                     <el-icon><location /></el-icon>
-                    <span>选课申请</span>
+                    <span>选课相关</span>
                   </template>
                   <el-menu-item-group>
                     <el-menu-item index="2-1">
-                      <router-link to="/student/studentapply">提交选课申请</router-link>
+                      <router-link to="/student/studentcheckcourse">查看所有课程</router-link>
                     </el-menu-item>
                   </el-menu-item-group>
                   <el-menu-item-group>
                     <el-menu-item index="2-2">
+                      <router-link to="/student/studentchoosecourse">选课</router-link>
+                    </el-menu-item>
+                  </el-menu-item-group>
+                  <el-menu-item-group>
+                    <el-menu-item index="2-3">
+                      <router-link to="/student/studentapply">提交选课申请</router-link>
+                    </el-menu-item>
+                  </el-menu-item-group>
+                  <el-menu-item-group>
+                    <el-menu-item index="2-4">
                       <router-link to="/student/studentviewapplication">查看选课申请</router-link>
                     </el-menu-item>
                   </el-menu-item-group>
@@ -61,8 +61,6 @@
                     </el-menu-item>
                   </el-menu-item-group>
                 </el-sub-menu>
-
-
               </el-menu>
             </el-col>
           </el-row>

@@ -15,8 +15,9 @@
       </el-table>
     </div>
 
-    <div style="margin-left: auto;margin-right: auto;margin-top: 10px">
+    <div style="margin:10px auto">
       <el-input v-model="applyReason"
+                type="textarea"
                 :rows="5"
                 placeholder="请输入申请理由"
                 style="width:40%"

@@ -100,9 +100,9 @@
         <el-table-column fixed="right" prop="capacity" label="容量" width="100"/>
       <el-table-column fixed="right" label="操作" width="70">
         <template #default="scope">
-          <el-popconfirm title="确认选课?" @confirm="this.load()">
+          <el-popconfirm title="确认选课?" @confirm="this.chooseCourse(scope.row.courseId)">
             <template #reference>
-              <el-button type="text" @click="chooseCourse(scope.row.courseId)">选课</el-button>
+              <el-button type="text" >选课</el-button>
             </template>
           </el-popconfirm>
         </template>

@@ -36,9 +36,9 @@
 <!--                scope.row.introduction,-->
 <!--                scope.row.applicant-->
 <!--                )">查看</el-button>-->
-            <el-popconfirm title="确认选课?" @confirm="this.load()">
+            <el-popconfirm title="确认选课?" @confirm="this.chooseCourse(scope.row.courseId)">
               <template #reference>
-                <el-button type="text" @click="chooseCourse(scope.row.courseId)">选课</el-button>
+                <el-button type="text" >选课</el-button>
               </template>
             </el-popconfirm>
           </template>

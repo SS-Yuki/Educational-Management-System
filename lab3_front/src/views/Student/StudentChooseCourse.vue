@@ -136,7 +136,7 @@ export default {
     }
   },
   mounted() {
-    request.post("/student/findCoursePage", {
+    request.post("/student/findSelectCoursePage", {
       pageNum: this.currentPage,
       pageSize: this.pageSize,
       search: this.search
@@ -159,7 +159,7 @@ export default {
   methods:{
     load(){
       setTimeout(() => {
-        request.post("/student/findCoursePage", {
+        request.post("/student/findSelectCoursePage", {
               pageNum: this.currentPage,
               pageSize: this.pageSize,
               search: this.search

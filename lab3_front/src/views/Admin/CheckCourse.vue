@@ -107,18 +107,22 @@
         <el-table-column prop="courseId" label="courseId" width="200" v-if="false" />
         <el-table-column prop="courseName" label="课程名" width="200" />
         <el-table-column prop="courseNumber" label="课程编号" width="200" />
+        <el-table-column prop="teacherName" label="任课教师" width="200"  />
         <el-table-column prop="teacherNum" label="教师工号" width="200" />
+        <el-table-column prop="occupyTime" label="上课时间" width="200"  />
         <el-table-column prop="major" label="开课专业" width="200" />
         <el-table-column prop="school" label="开课院系" width="200" />
         <el-table-column prop="classroom" label="教室" width="200"  />
         <el-table-column prop="creditHours" label="学时" width="200"  />
         <el-table-column prop="credits" label="学分" width="200"  />
         <el-table-column prop="capacity" label="容量" width="200"  />
+        <el-table-column prop="majorLimits" label="专业限制" width="200"  />
+        <el-table-column prop="selectTypeString" label="选课类型" width="200"  />
         <el-table-column prop="introduction" label="介绍" width="200"  />
         <el-table-column prop="applicant" label="申请人" width="200"  />
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-            <el-button type="text" size="small" @click="">查看选课名单</el-button>
+            <el-button type="text" size="small" @click="checkList">查看选课名单</el-button>
             <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
             <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
               <template #reference>
@@ -207,6 +211,10 @@ export default {
     }
   },
   methods:{
+    checkList:function (){
+
+    },
+
     getOptionMajor: function () {
       request.post("/common/allMajors").then(res => {
         let that = this

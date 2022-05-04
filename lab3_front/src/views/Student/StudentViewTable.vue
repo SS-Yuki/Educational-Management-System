@@ -3,20 +3,52 @@
     <div>
         <el-cascader v-model="add_year_semester" placeholder="学年/学期" :options="semesterOptions"/>
     </div>
+<!--    <div>-->
+<!--      <el-table :data="tableData1" style="width: 80%;margin-right: auto;margin-left: auto" >-->
+<!--        <el-table-column prop="timeName" label="节次" width="120" />-->
+<!--        <el-table-column prop="day1" label="星期一" width="120"/>-->
+<!--        <el-table-column prop="day2" label="星期二" width="120"/>-->
+<!--        <el-table-column prop="day3" label="星期三" width="120"/>-->
+<!--        <el-table-column prop="day4" label="星期四" width="120"/>-->
+<!--        <el-table-column prop="day5" label="星期五" width="120"/>-->
+<!--        <el-table-column prop="day6" label="星期六" width="120"/>-->
+<!--        <el-table-column prop="day7" label="星期日" width="120"/>-->
+<!--      </el-table>-->
+<!--    </div>-->
+
     <div>
-      <el-table :data="tableData1" style="width: 80%;margin-right: auto;margin-left: auto" >
-        <el-table-column prop="timeName" label="节次" width="120" />
-        <el-table-column prop="day1" label="星期一" width="120"/>
-        <el-table-column prop="day2" label="星期二" width="120"/>
-        <el-table-column prop="day3" label="星期三" width="120"/>
-        <el-table-column prop="day4" label="星期四" width="120"/>
-        <el-table-column prop="day5" label="星期五" width="120"/>
-        <el-table-column prop="day6" label="星期六" width="120"/>
-        <el-table-column prop="day7" label="星期日" width="120"/>
+      <el-table :data="timeTable" style="width: 210px;display: inline-block" border stripe >
+        <el-table-column fixed prop="timeName" label="节次" width="70" />
+        <el-table-column fixed prop="startTime" label="开始" width="70" />
+        <el-table-column fixed prop="endTime" label="结束" width="70" />
+      </el-table>
+      <el-table :data="courseData[0]" style="width: 150px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期一" width="150" />
+      </el-table>
+      <el-table :data="courseData[1]" style="width: 150px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期二" width="150"/>
+      </el-table>
+      <el-table :data="courseData[2]" style="width: 150px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期三" width="150"/>
+      </el-table>
+      <el-table :data="courseData[3]" style="width: 150px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期四" width="150"/>
+      </el-table>
+      <el-table :data="courseData[4]" style="width: 150px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期五" width="150" />
+      </el-table>
+      <el-table :data="courseData[5]" style="width: 150px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期六" width="150" />
+      </el-table>
+      <el-table :data="courseData[6]" style="width: 150px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期日" width="150" />
       </el-table>
     </div>
+
+
+
     <div>
-      <el-table :data="tableData2" style="width:1200px;margin-right: auto;margin-left: auto" >
+      <el-table :data="tableData" style="width:1200px;margin-right: auto;margin-left: auto" >
         <el-table-column prop="courseId" label="courseId" width="200" v-if="false" />
         <el-table-column prop="courseName" label="课程名" width="200" />
         <el-table-column prop="courseNumber" label="课程编号" width="200" />
@@ -45,6 +77,15 @@
 
 <script>
 import request from "@/utils/request";
+
+function index(num){
+  var arr=[];
+  for(var i = 0;i<num;i++){
+    arr.push(i);
+  }
+  return arr;
+}
+
 export default {
   name: "StudentViewTable",
   data(){
@@ -52,8 +93,10 @@ export default {
       semester:'',
       semesterOptions:[],
       add_year_semester:[],
-      tableData1:[],
-      tableData2:[]
+      courseData:[[],[],[],[],[],[],[]],
+      tableData:[],
+      timeTable:[],
+      length:0
     }
   },
   methods:{
@@ -85,21 +128,47 @@ export default {
         this.add_year_semester = [res.data.data.defaultYear, res.data.data.defaultSemester]
       })
     },
-    getTable1:function (){
+    getTable:function (){
       request.post("/commom/courseInfo").then(res=>{
-        this.tableData1=res.data.data.courseInfo
+        this.tableData=res.data.data.courseInfo
       })
     },
-    getTable2:function (){
-      request.post("/commom/courseInfo").then(res=>{
-        this.tableData2=res.data.data.courseInfo
+    getTime:function (){
+      request.post("/common/allTime").then(res=>{
+        if (!res.data) return
+        this.length=res.data.data.length;
+
+        let arr = new Array(this.length).fill("");
+        for(let i = 0; i < this.length; i++) {
+          this.timeTable.push(arr)
+        }
+
+        for(let i = 0; i < 7; i++) {
+          this.courseData.push(arr)
+        }
+
+        res.data.data.times.forEach ((item) => {
+          this.timeTable.push(item);
+        })
+
       })
-    }
+    },
+    getCourse:function (){
+      request.post("/student/allTime").then(res=>{
+        if (!res.data) return
+
+        res.data.data.times.forEach ((item) => {
+          this.courseData.push(item);
+        })
+
+      })
+    },
   },
+
   mounted() {
     this.getOptionSemesters()
-    this.getTable1()
-    this.getTable2()
+    this.getTable()
+    this.getTime()
   }
 
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-        <el-cascader v-model="add_year_semester" placeholder="学年/学期" :options="semesterOptions"/>
+        <el-cascader v-model="select_year_semester" placeholder="学年/学期" :options="semesterOptions"/>
     </div>
 <!--    <div>-->
 <!--      <el-table :data="tableData1" style="width: 80%;margin-right: auto;margin-left: auto" >-->
@@ -44,9 +44,6 @@
         <el-table-column fixed prop="courseName" label="星期日" width="150" />
       </el-table>
     </div>
-
-
-
     <div>
       <el-table :data="tableData" style="width:1200px;margin-right: auto;margin-left: auto" >
         <el-table-column prop="courseId" label="courseId" width="200" v-if="false" />
@@ -92,7 +89,7 @@ export default {
     return{
       semester:'',
       semesterOptions:[],
-      add_year_semester:[],
+      select_year_semester:[],
       courseData:[[],[],[],[],[],[],[]],
       tableData:[],
       timeTable:[],
@@ -100,6 +97,41 @@ export default {
     }
   },
   methods:{
+    load(){
+      setTimeout(() => {
+        console.log(this.select_year_semester)
+        request.post("/student/getMyCourseInSemester",{
+              year: this.select_year_semester[0],
+              semester: this.select_year_semester[1],
+            }
+        ).then(res=>{
+          if(res.data.code===200){
+            this.tableData=res.data.data
+          }
+          else{
+            this.$message({
+              type:"error",
+              message: res.data.msg
+            })
+          }
+        })
+        request.post("/student/getMyCourseTableInSemester ",{
+              year: this.select_year_semester[0],
+              semester: this.select_year_semester[1],
+            }
+        ).then(res=>{
+          if(res.data.code===200){
+            this.courseData=res.data.data
+          }
+          else{
+            this.$message({
+              type:"error",
+              message: res.data.msg
+            })
+          }
+        })
+      }, 500)
+    },
     handleDelete(courseId) {
       this.courseId=courseId
       request.post("/admin/deleteCourse",this.courseId).then(res => {
@@ -125,12 +157,8 @@ export default {
           })
           that.semesterOptions.push(option)
         })
-        this.add_year_semester = [res.data.data.defaultYear, res.data.data.defaultSemester]
-      })
-    },
-    getTable:function (){
-      request.post("/commom/courseInfo").then(res=>{
-        this.tableData=res.data.data.courseInfo
+        this.select_year_semester = [res.data.data.defaultYear, res.data.data.defaultSemester]
+        console.log(this.select_year_semester)
       })
     },
     getTime:function (){
@@ -164,10 +192,16 @@ export default {
       })
     },
   },
-
+  watch: {
+    select_year_semester: {
+      deep: true,
+      handler() {
+        this.load()
+      }
+    }
+  },
   mounted() {
     this.getOptionSemesters()
-    this.getTable()
     this.getTime()
   }
 

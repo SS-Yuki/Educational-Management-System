@@ -28,16 +28,16 @@
                     <el-icon><location /></el-icon>
                     <span>选课相关</span>
                   </template>
+
                   <el-menu-item-group>
                     <el-menu-item index="2-1">
-                      <router-link to="/student/studentcheckcourse">查看所有课程</router-link>
+                      <router-link to="/student/studentchoosecourse">选课</router-link>
                     </el-menu-item>
                   </el-menu-item-group>
                   <el-menu-item-group>
                     <el-menu-item index="2-2">
-                      <router-link to="/student/studentchoosecourse">选课</router-link>
+                      <router-link to="/student/studentdropcourse">退课申请</router-link>
                     </el-menu-item>
-                  </el-menu-item-group>
                   <el-menu-item-group>
                     <el-menu-item index="2-3">
                       <router-link to="/student/studentapply">提交选课申请</router-link>
@@ -48,10 +48,7 @@
                       <router-link to="/student/studentviewapplication">查看选课申请</router-link>
                     </el-menu-item>
                   </el-menu-item-group>
-                  <el-menu-item-group>
-                    <el-menu-item index="2-5">
-                      <router-link to="/student/studentdropcourse">退课申请</router-link>
-                    </el-menu-item>
+
                   </el-menu-item-group>
                 </el-sub-menu>
 

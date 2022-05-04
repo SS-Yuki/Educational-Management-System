@@ -187,6 +187,48 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
     }
 
     @Override
+    public void RandomSelectFirstRound() throws Exception {
+        Authority select = authorityRepository.findByAuthorityName(AuthorityName.CourseSelecting);
+        if(select.getAuthorityValue().equals("true")){
+            throw new Exception("请先关闭学生选课权限");
+        }
+        Authority round = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
+        if(!round.getAuthorityValue().equals(Global.FIRST_COURSE_SELECTING_ROUND)){
+            throw new Exception("只能在一轮选课进行此操作");
+        }
+        List<Course> allCourse = courseRepository.findByCourseStatus(CourseStatus.Published);
+        for (Course course : allCourse){
+            List<CourseSelectingRecord> records = courseSelectingRecordRepository.findByCourse(course);
+            Integer nowNumber = 0;
+            boolean isFull = false;
+            for (Grade grade : Grade.values()){
+                for (CourseSelectingRecord record : records){
+                    if(isFull){
+                        course.getRecords().remove(record);
+                        courseRepository.save(course);
+                        Student student =  record.getStudent();
+                        student.getRecords().remove(record);
+                        studentRepository.save(student);
+                        courseSelectingRecordRepository.delete(record);
+                        continue;
+                    }
+                    Student student = record.getStudent();
+                    if(student.getGrade().equals(grade)){
+                        nowNumber += 1;
+                    }
+                    if(nowNumber.compareTo(course.getCapacity()) == 0){
+                        isFull = true;
+                    }
+                }
+            }
+            if(isFull){
+                course.setStudentsNum(course.getCapacity());
+                courseRepository.save(course);
+            }
+        }
+    }
+
+    @Override
     public MyPage<SelectCourseApplication> findAPageSelectCourseApplicationToDeal(Integer page, Integer size) {
         List<SelectCourseApplication> allApplication = selectCourseApplicationRepository.findAll();
         List<SelectCourseApplication> result = new ArrayList<>();

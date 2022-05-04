@@ -13,6 +13,7 @@ public interface CourseSelectingService {
     void pushCourseSelectingApplication(String stuNum, Integer courseId, String reason) throws Exception;
     void approveSelectCourseApplication(Integer applicationId, String commends) throws Exception;
     void rejectSelectCourseApplication(Integer applicationId, String commends) throws Exception;
+    void RandomSelectFirstRound() throws Exception;
     MyPage<SelectCourseApplication> findAPageSelectCourseApplicationToDeal(Integer page, Integer size);
     List<SelectCourseApplication> findMySelectCourseApplication(String stuNum);
 }

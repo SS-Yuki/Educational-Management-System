@@ -168,7 +168,7 @@ public class TimeTool {
         int sections = a.get(0).size();
         for(int i = 0; i < Global.WEEKDAY; i++){
             for(int j = 0; j < sections; j ++){
-                if (!(b.get(i).get(j).equals(Global.COURSE_MAX) && !a.get(i).get(j).equals(Global.CLASSROOM_TIME_SPARE))) {
+                if ((b.get(i).get(j).equals(Global.COURSE_MAX) && a.get(i).get(j).equals(Global.CLASSROOM_TIME_SPARE))) {
                     isContain = false;
                     break;
                 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-        <el-cascader v-model="select_year_semester" placeholder="学年/学期" :options="semesterOptions"/>
+        <el-cascader v-model="select_year_semester" placeholder="学年/学期" :options="semesterOptions" clearable/>
     </div>
 <!--    <div>-->
 <!--      <el-table :data="tableData1" style="width: 80%;margin-right: auto;margin-left: auto" >-->

@@ -93,6 +93,13 @@ export default {
             message: res.data.msg
           })
         }
+        if(res.data.code ===200) {
+          this.$message({
+            type:"success",
+            message: res.data.msg
+          })
+          this.$router.push("/student/studentviewapplication")
+        }
       })
     }
   }

@@ -91,7 +91,7 @@ public class StudentSelectCourseController {
         JwtUserData jwtUserData = JwtUtil.getToken(token);
         String number = jwtUserData.getNumber().replace("\"", "");
         try{
-            //courseSelectService.selectCourse(number,);
+            courseSelectService.pushCourseSelectingApplication(number,apply.getCourseId(),apply.getDescription());
         }catch (Exception e){
             e.printStackTrace();
             return Result.fail(910,e.getMessage());

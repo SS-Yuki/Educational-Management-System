@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentApplyForSelectCourse {
-    Integer courseId;
-    String description;
+public class AdminDealApplyData {
+    Integer applyId;
+    String advice;
 }

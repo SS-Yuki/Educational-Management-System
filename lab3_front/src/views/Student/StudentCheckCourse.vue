@@ -23,8 +23,8 @@
           <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
         </div>
         <div>
-          <el-cascader v-model="select_year_semester" :options="semesterOptions" placeholder="按学年/学期筛选"/>
-          <el-cascader v-model="select_building_classroom" :options="classroomOptions" placeholder="按教学楼/教室筛选"/>
+          <el-cascader v-model="select_year_semester" :options="semesterOptions" placeholder="按学年/学期筛选" clearable/>
+          <el-cascader v-model="select_building_classroom" :options="classroomOptions" placeholder="按教学楼/教室筛选" clearable/>
           <el-button  @click="getTime(); timeShow = true">按上课时间筛选</el-button>
         </div>
 

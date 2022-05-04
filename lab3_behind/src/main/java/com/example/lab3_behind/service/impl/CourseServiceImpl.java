@@ -177,7 +177,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Student> getStudentListOfOneCourse(Integer courseId) throws Exception {
+    public List<Student>  getStudentListOfOneCourse(Integer courseId) throws Exception {
         Course course = courseRepository.findByCourseId(courseId);
         if(course == null){
             throw new Exception("课程不存在");

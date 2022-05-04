@@ -164,7 +164,8 @@ public class StudentServiceImpl implements StudentService {
             List<CourseNameString> buff = new ArrayList<>();
             for(Integer courseId : timeMatrix.get(i)){
                 Course course = courseRepository.findByCourseId(courseId);
-                buff.add(new CourseNameString(course.getCourseName()));
+                String str = course == null ? "" :  course.getCourseName();
+                buff.add(new CourseNameString(str));
             }
             result.add(buff);
         }

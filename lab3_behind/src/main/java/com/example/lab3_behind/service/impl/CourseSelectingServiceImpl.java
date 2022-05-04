@@ -57,7 +57,7 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
         }
         Authority selectRound = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
         if(!selectRound.getAuthorityValue().equals(Global.FIRST_COURSE_SELECTING_ROUND)){
-            if(course.getCapacity().compareTo(course.getStudentsNum()) <= 0){
+            if(course.getCapacity().compareTo(course.getStudentsNum()) < 0){
                 throw new Exception("该课程容量已满");
             }
         }
@@ -79,11 +79,11 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
         }
         //课程人数,学生学分
         course.setStudentsNum(course.getStudentsNum() + 1);
-        courseRepository.save(course);
         student.setCredits(student.getCredits() + course.getCredits());
         //时间冲突
         TimeTool.addTimeMatrix(getSchedule(studentRepository, timeTableRepository, stuNum, openYear, openSemester),
                 TimeTool.makeTimeMatrix(course.getClassTime()));
+        courseRepository.save(course);
         CourseSelectingRecord courseSelectingRecord = new CourseSelectingRecord(null , course, student, 0,StudyStatus.ToStudy );
         courseSelectingRecordRepository.save(courseSelectingRecord);
 
@@ -115,10 +115,13 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
         }
         //课程人数,学生学分
         course.setStudentsNum(course.getStudentsNum() - 1);
-        courseRepository.save(course);
         student.setCredits(student.getCredits() - course.getCredits());
-
+        courseRepository.save(course);
         CourseSelectingRecord record = courseSelectingRecordRepository.findByStudentAndCourse(student, course);
+        student.getRecords().remove(record);
+        studentRepository.save(student);
+        course.getRecords().remove(record);
+        courseRepository.save(course);
         courseSelectingRecordRepository.delete(record);
     }
 

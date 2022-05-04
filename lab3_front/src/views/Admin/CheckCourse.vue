@@ -84,51 +84,54 @@
             </el-checkbox-button>
           </el-checkbox-group>
 
-          <el-checkbox-group v-model="day7" style="display: inline-block" >
-            <el-checkbox-button v-for="item of length" :key="item" :label=item
-                                style="display: block"
-                                value=item >
-              {{ timeNames[item-1].label }}
-            </el-checkbox-button>
-          </el-checkbox-group>
-        </div>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="cancelTime">取消</el-button>
-            <el-button type="primary" @click="ensureTime">确认</el-button>
-          </span>
-        </template>
-      </el-dialog>
-    </div>
-    <el-table :data="tableData" style="width: 1200px" border stripe>
-      <el-table-column prop="courseId" label="courseId" width="200" v-if="false" />
-      <el-table-column prop="courseName" label="课程名" width="200" />
-      <el-table-column prop="courseNumber" label="课程编号" width="200" />
-      <el-table-column prop="teacherName" label="任课教师" width="200"  />
-      <el-table-column prop="teacherNum" label="教师工号" width="200" />
-      <el-table-column prop="occupyTime" label="上课时间" width="200"  />
-      <el-table-column prop="major" label="开课专业" width="200" />
-      <el-table-column prop="school" label="开课院系" width="200" />
-      <el-table-column prop="classroom" label="教室" width="200"  />
-      <el-table-column prop="creditHours" label="学时" width="200"  />
-      <el-table-column prop="credits" label="学分" width="200"  />
-      <el-table-column prop="capacity" label="容量" width="200"  />
-      <el-table-column prop="majorLimits" label="专业限制" width="200"  />
-      <el-table-column prop="selectTypeString" label="选课类型" width="200"  />
-      <el-table-column prop="introduction" label="介绍" width="200"  />
-      <el-table-column prop="applicant" label="申请人" width="200"  />
-      <el-table-column fixed="right" label="操作" width="200">
-        <template #default="scope">
-          <el-button type="text" size="small" @click="checkList(scope.row.courseId)">查看选课名单</el-button>
-          <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
-          <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
-            <template #reference>
-              <el-button type="text">删除</el-button>
-            </template>
-          </el-popconfirm>
-        </template>
-      </el-table-column>
-    </el-table>
+            <el-checkbox-group v-model="day7" style="display: inline-block" >
+              <el-checkbox-button v-for="item of length" :key="item" :label=item
+                                  style="display: block"
+                                  value=item >
+                {{ timeNames[item-1].label }}
+              </el-checkbox-button>
+            </el-checkbox-group>
+          </div>
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="cancelTime">取消</el-button>
+              <el-button type="primary" @click="ensureTime">确认</el-button>
+            </span>
+          </template>
+        </el-dialog>
+
+
+
+      </div>
+      <el-table :data="tableData" style="width: 1200px" border stripe>
+        <el-table-column prop="courseId" label="courseId" width="200" v-if="false" />
+        <el-table-column prop="courseName" label="课程名" width="200" />
+        <el-table-column prop="courseNumber" label="课程编号" width="200" />
+        <el-table-column prop="teacherName" label="任课教师" width="200"  />
+        <el-table-column prop="teacherNum" label="教师工号" width="200" />
+        <el-table-column prop="occupyTime" label="上课时间" width="200"  />
+        <el-table-column prop="major" label="开课专业" width="200" />
+        <el-table-column prop="school" label="开课院系" width="200" />
+        <el-table-column prop="classroom" label="教室" width="200"  />
+        <el-table-column prop="creditHours" label="学时" width="200"  />
+        <el-table-column prop="credits" label="学分" width="200"  />
+        <el-table-column prop="majorLimits" label="专业限制" width="200"  />
+        <el-table-column prop="selectTypeString" label="选课类型" width="200"  />
+        <el-table-column prop="introduction" label="介绍" width="200"  />
+        <el-table-column fixed="right" prop="selectNumber" label="选课人数" width="100"  />
+        <el-table-column fixed="right" prop="capacity" label="容量" width="100"  />
+        <el-table-column fixed="right" label="操作" width="200">
+          <template #default="scope">
+            <el-button type="text" size="small" @click="checkList(scope.row.courseId)">查看选课名单</el-button>
+            <el-button type="text" size="small" @click="edit(scope.row.courseId)">查看/编辑</el-button>
+            <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
+              <template #reference>
+                <el-button type="text">删除</el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </el-table>
 
     <div>
       <el-dialog v-model="check" title="选课名单" width="650px">

@@ -48,6 +48,11 @@
                       <router-link to="/student/studentviewapplication">查看选课申请</router-link>
                     </el-menu-item>
                   </el-menu-item-group>
+                  <el-menu-item-group>
+                    <el-menu-item index="2-5">
+                      <router-link to="/student/studentdropcourse">退课申请</router-link>
+                    </el-menu-item>
+                  </el-menu-item-group>
                 </el-sub-menu>
 
                 <el-sub-menu index="3">

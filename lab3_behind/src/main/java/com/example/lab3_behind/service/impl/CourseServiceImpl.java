@@ -4,10 +4,7 @@ import com.example.lab3_behind.common.CourseInMatching;
 import com.example.lab3_behind.common.CourseMatchItem;
 import com.example.lab3_behind.common.Global;
 import com.example.lab3_behind.common.MyPage;
-import com.example.lab3_behind.common.forDomain.CourseApplyingType;
-import com.example.lab3_behind.common.forDomain.CourseSelectType;
-import com.example.lab3_behind.common.forDomain.SchoolYear;
-import com.example.lab3_behind.common.forDomain.Semester;
+import com.example.lab3_behind.common.forDomain.*;
 import com.example.lab3_behind.domain.dto.YearSemesterPair;
 import com.example.lab3_behind.utils.EnumTool;
 import com.example.lab3_behind.utils.FormatCheck;
@@ -444,6 +441,9 @@ public class CourseServiceImpl implements CourseService {
         Course course = courseRepository.findByCourseId(courseId);
         if(course == null){
             throw new Exception("所删除课程不存在，或已被删除");
+        }
+        if(!course.getCourseStatus().equals(CourseStatus.Published)){
+            throw new Exception("无法删除已经结课或正在开展的课程");
         }
         CourseApplying courseApplying = courseApplyingRepository.findByCourseId(courseId);
         Teacher teacher = teacherRepository.findByJobNumber(course.getTeacherNum());

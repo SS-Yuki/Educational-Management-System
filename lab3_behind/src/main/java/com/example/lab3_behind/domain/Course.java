@@ -90,6 +90,13 @@ public class Course {
     )
     List<Major> majorsOptional;
 
+    @OneToMany(
+            mappedBy = "course",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<CourseSelectingRecord> records;
+
     @Column(name = "class_time")
     private String classTime;
 
@@ -110,6 +117,7 @@ public class Course {
         this.courseSelectType = EnumTool.transCourseSelectType(courseApplyingData.getSelectTypeString());
         this.majorsOptional = majorsOptional;
         this.studentsNum = 0;
+        this.courseStatus = CourseStatus.Published;
     }
 
     public Course(CourseApplying courseApplying){
@@ -130,6 +138,7 @@ public class Course {
         this.majorsOptional = courseApplying.majorsOptional;
         this.classTime = courseApplying.getClassTime();
         this.studentsNum = 0;
+        this.courseStatus = CourseStatus.Published;
     }
 
     public String getClassTimeString(){

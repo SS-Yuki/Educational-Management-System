@@ -2,14 +2,14 @@
   <div class="main_part">
     <el-table :data="tableData" style="width: 1200px" border stripe>
       <el-table-column prop="applyId" label="申请ID" v-if="false"/>
-      <el-table-column prop="courseId" label="课程ID" width="100" v-if="false"/>
-      <el-table-column prop="courseNum" label="课程编号" width="100"/>
-      <el-table-column prop="courseName" label="课程名" width="100"/>
-      <el-table-column prop="teacherName" label="教师姓名" width="100" v-if="false"/>
-      <el-table-column prop="year" label="学年" width="100"/>
-      <el-table-column prop="semester" label="学期" width="100"/>
-      <el-table-column prop="description" label="学期" width="100"/>
-      <el-table-column prop="dealStatus" label="学期" width="100"/>
+      <el-table-column prop="courseId" label="课程ID" width="200" v-if="false"/>
+      <el-table-column prop="courseNum" label="课程编号" width="200"/>
+      <el-table-column prop="courseName" label="课程名" width="200"/>
+      <el-table-column prop="teacherName" label="教师姓名" width="200" v-if="false"/>
+      <el-table-column prop="year" label="学年" width="200"/>
+      <el-table-column prop="semester" label="学期" width="200"/>
+      <el-table-column prop="description" label="学期" width="200"/>
+      <el-table-column prop="dealStatus" label="学期" width="200"/>
       <el-table-column fixed="right" label="操作" width="200">
         <template #default="scope">
           <el-button size="small" @click="dealApply(scope.row.applyId)">

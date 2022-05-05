@@ -14,6 +14,7 @@
       <el-table-column prop="creditHours" label="学时"  width="70" />
       <el-table-column prop="credits" label="学分" width="60"  />
       <el-table-column prop="capacity" label="容量" width="70" />
+      <el-table-column prop="selectNumber" fixed="right" label="选课人数" width="70" />
       <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
       <el-table-column fixed="right" label="操作" width="300">
         <template #default="scope">
@@ -77,11 +78,11 @@ export default {
   },
   methods:{
     checkList:function (courseId){
-      this.check=true;
       request.post("common/getStudentListOfOneCourse",courseId).then(res=>{
         if(!res.data) return
         this.studentList=res.data.data.records
-      })
+      }),
+          this.check=true;
     },
 
     load(){

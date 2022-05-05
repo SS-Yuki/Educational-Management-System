@@ -17,31 +17,31 @@
 <!--    </div>-->
 
     <div>
-      <el-table :data="timeTable" style="width: 210px;display: inline-block" border stripe height="500px">
+      <el-table :data="timeTable" style="width: 210px;display: inline-block" border stripe>
         <el-table-column fixed prop="timeName" label="节次" width="70" />
         <el-table-column fixed prop="startTime" label="开始" width="70" />
         <el-table-column fixed prop="endTime" label="结束" width="70" />
       </el-table>
-      <el-table :data="courseData[0]" style="width: 150px;display: inline-block" border stripe  height="500px">
-        <el-table-column fixed prop="courseName" label="星期一" width="150" />
+      <el-table :data="courseData[0]" style="width: 120px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期一" width="120" />
       </el-table>
-      <el-table :data="courseData[1]" style="width: 150px;display: inline-block" border stripe height="500px">
-        <el-table-column fixed prop="courseName" label="星期二" width="150"/>
+      <el-table :data="courseData[1]" style="width: 120px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期二" width="120"/>
       </el-table>
-      <el-table :data="courseData[2]" style="width: 150px;display: inline-block" border stripe height="500px">
-        <el-table-column fixed prop="courseName" label="星期三" width="150"/>
+      <el-table :data="courseData[2]" style="width: 120px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期三" width="120"/>
       </el-table>
-      <el-table :data="courseData[3]" style="width: 150px;display: inline-block" border stripe height="500px">
-        <el-table-column fixed prop="courseName" label="星期四" width="150"/>
+      <el-table :data="courseData[3]" style="width: 120px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期四" width="120"/>
       </el-table>
-      <el-table :data="courseData[4]" style="width: 150px;display: inline-block" border stripe height="500px">
-        <el-table-column fixed prop="courseName" label="星期五" width="150" />
+      <el-table :data="courseData[4]" style="width: 120px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期五" width="120" />
       </el-table>
-      <el-table :data="courseData[5]" style="width: 150px;display: inline-block" border stripe height="500px">
-        <el-table-column fixed prop="courseName" label="星期六" width="150" />
+      <el-table :data="courseData[5]" style="width: 120px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期六" width="120" />
       </el-table>
-      <el-table :data="courseData[6]" style="width: 150px;display: inline-block" border stripe height="500px">
-        <el-table-column fixed prop="courseName" label="星期日" width="150" />
+      <el-table :data="courseData[6]" style="width: 120px;display: inline-block" border stripe >
+        <el-table-column fixed prop="courseName" label="星期日" width="120" />
       </el-table>
     </div>
     <div>

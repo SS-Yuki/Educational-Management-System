@@ -7,7 +7,7 @@
       <el-table-column prop="teacherName" label="任课教师" width="180"/>
       <el-table-column prop="year" label="学年" width="180"/>
       <el-table-column prop="semester" label="学期" width="180"/>
-      <el-table-column prop="description" label="描述" width="180"/>
+      <el-table-column prop="description" label="申请理由" width="180"/>
       <el-table-column  fixed="right" prop="dealStatus" label="审批状态" width="180"/>
       <el-table-column prop="advice" label="审批意见" width="180"/>
     </el-table>
@@ -25,8 +25,8 @@ export default {
   },
   methods:{
     getApplication:function (){
-      request.post("/commom/courseInfo").then(res=>{
-        this.tableData=res.data.data.courseInfo
+      request.post("/commom/findMySelectCourseApply").then(res=>{
+        this.tableData=res.data.data
       })
     }
   },

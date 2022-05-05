@@ -80,13 +80,39 @@ export default {
       this.deal=false
       request.post("/admin/acceptSelectCourseApply",
           this.apply
-      )
+      ).then(res=>{
+        if(res.data.code===200){
+          this.$message({
+            type:"success",
+            message: res.data.msg
+          })
+        }
+        else{
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
+      })
       this.load()
     },
     reject:function() {
       this.deal=false
       request.post("/admin/rejectSelectCourseApply",
-          this.apply)
+          this.apply).then(res=> {
+            if (res.data.code === 200) {
+              this.$message({
+                type: "success",
+                message: res.data.msg
+              })
+            } else {
+              this.$message({
+                type: "error",
+                message: res.data.msg
+              })
+            }
+          }
+          )
       this.load()
     },
     load(){

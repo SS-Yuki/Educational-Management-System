@@ -92,7 +92,7 @@ public class EnumTool {
     public static String transString(SelectCourseApplicationStatus status){
         if(status==null) return null;
         switch (status){
-            case ToDeal:  return "代处理";
+            case ToDeal:  return "待处理";
             case Approved:return "已通过";
             case Rejected:return "未通过";
             default:return "--";

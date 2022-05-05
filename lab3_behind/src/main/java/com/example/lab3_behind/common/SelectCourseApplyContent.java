@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SelectCourseApplyContent {
+    Integer applyId;
     Integer courseId;
     String courseNum;
     String courseName;
@@ -30,6 +31,7 @@ public class SelectCourseApplyContent {
         for(SelectCourseApplication apply:applys){
             Course course = courseService.getCourse(apply.getCourseId());
             SelectCourseApplyContent temp = new SelectCourseApplyContent(
+                    apply.getId(),
                     apply.getCourseId(),
                     course.getTeacherNum(),
                     course.getCourseName(),

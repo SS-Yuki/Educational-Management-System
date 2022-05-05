@@ -95,13 +95,13 @@
 
         </el-form-item>
         <el-form-item label="学时">
-          <el-input v-model="addCourse.creditHours" />
+          <el-input type="number" v-model="addCourse.creditHours" />
         </el-form-item>
         <el-form-item label="学分">
-          <el-input v-model="addCourse.credits" />
+          <el-input type="number" v-model="addCourse.credits" />
         </el-form-item>
         <el-form-item label="容量">
-          <el-input v-model="addCourse.capacity" />
+          <el-input type="number" v-model="addCourse.capacity" />
         </el-form-item>
         <el-form-item label="介绍">
           <el-input v-model="addCourse.introduction" />

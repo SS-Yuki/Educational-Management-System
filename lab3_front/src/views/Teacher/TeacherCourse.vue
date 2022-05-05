@@ -80,9 +80,9 @@ export default {
     checkList:function (courseId){
       request.post("common/getStudentListOfOneCourse",courseId).then(res=>{
         if(!res.data) return
-        this.studentList=res.data.data.records
-      }),
-          this.check=true;
+        this.studentList=res.data.data.records,
+            this.check=true
+      })
     },
 
     load(){

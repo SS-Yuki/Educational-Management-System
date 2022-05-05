@@ -36,7 +36,7 @@
                   </el-menu-item-group>
                   <el-menu-item-group>
                     <el-menu-item index="2-2">
-                      <router-link to="/student/studentdropcourse">退课申请</router-link>
+                      <router-link to="/student/studentdropcourse">退课</router-link>
                     </el-menu-item>
                   <el-menu-item-group>
                     <el-menu-item index="2-3">

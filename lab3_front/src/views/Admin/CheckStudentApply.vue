@@ -8,8 +8,8 @@
       <el-table-column prop="teacherName" label="教师姓名" width="200" v-if="false"/>
       <el-table-column prop="year" label="学年" width="200"/>
       <el-table-column prop="semester" label="学期" width="200"/>
-      <el-table-column prop="description" label="学期" width="200"/>
-      <el-table-column prop="dealStatus" label="学期" width="200"/>
+      <el-table-column prop="description" label="申请理由" width="200"/>
+      <el-table-column prop="dealStatus" label="处理状态" width="200"/>
       <el-table-column fixed="right" label="操作" width="200">
         <template #default="scope">
           <el-button size="small" @click="dealApply(scope.row.applyId)">
@@ -30,10 +30,12 @@
     </div>
   </div>
   <div>
-    <el-dialog v-model="deal" title="添加新院系" width="30%">
+    <el-dialog v-model="deal" title="审批" width="30%">
       <el-form :model="addSchool" label-width="120px">
         <el-form-item label="审批意见">
-          <el-input v-model="advice" />
+          <el-input v-model="apply.advice"
+          type="textarea"
+          :rows="5"/>
         </el-form-item>
         <span class="dialog-footer">
         <el-button type="primary" @click="accept" >通过</el-button>
@@ -60,7 +62,10 @@ export default {
       currentPage:1,
       search:'',
       tableData:[],
-      applyId:0
+      apply:{
+        applyId:0,
+        advice:""
+      }
     }
   },
   mounted() {
@@ -69,19 +74,19 @@ export default {
   methods:{
     dealApply(applyId){
       this.deal=true
-      this.applyId=applyId
+      this.apply.applyId=applyId
     },
     accept:function() {
       this.deal=false
       request.post("/admin/acceptSelectCourseApply",
-          {applyId:this.applyId,advice:this.advice}
+          this.apply
       )
       this.load()
     },
     reject:function() {
       this.deal=false
       request.post("/admin/rejectSelectCourseApply",
-          {applyId:this.applyId,advice:this.advice})
+          this.apply)
       this.load()
     },
     load(){

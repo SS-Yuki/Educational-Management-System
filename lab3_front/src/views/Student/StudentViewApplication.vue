@@ -25,7 +25,7 @@ export default {
   },
   methods:{
     getApplication:function (){
-      request.post("/commom/findMySelectCourseApply").then(res=>{
+      request.post("/student/findMySelectCourseApply").then(res=>{
         this.tableData=res.data.data
       })
     }

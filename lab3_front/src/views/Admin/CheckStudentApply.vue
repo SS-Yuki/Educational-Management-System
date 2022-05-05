@@ -86,7 +86,7 @@ export default {
     },
     load(){
       setTimeout(() => {
-        request.post("/admin/findSelectCoursePage",{
+        request.post("/admin/findSelectCourseApplyPage",{
               pageNum: this.currentPage,
               pageSize: this.pageSize,
             }

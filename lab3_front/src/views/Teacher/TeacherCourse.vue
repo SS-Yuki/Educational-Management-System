@@ -8,30 +8,30 @@
         <el-cascader v-model="select_year_semester" :options="semesterOptions" placeholder="按学年/学期筛选"/>
       </div>
     </div>
-    <div style="margin-top: 50px">
-      <el-table :data="tableData" style="width: 1200px" border stripe>
-        <el-table-column prop="courseId" label="courseId" width="200" v-if="false"  />
-        <el-table-column prop="courseName" label="课程名" width="200" />
-        <el-table-column prop="courseNumber" label="课程编号" width="200" />
-        <el-table-column prop="occupyTime" label="时间" width="150"   />
-        <el-table-column prop="classroom" label="教室" width="150" />
-        <el-table-column prop="creditHours" label="学时"  width="70" />
-        <el-table-column prop="credits" label="学分" width="60"  />
-        <el-table-column prop="capacity" label="容量" width="70" />
-        <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
-        <el-table-column fixed="right" label="操作" width="300">
-          <template #default="scope">
-            <el-button type="text" size="small" @click="checkList(scope.row.courseId)">查看选课名单</el-button>
-            <el-button type="text" size="small" @click="edit(scope.row.courseId)">申请修改信息</el-button>
-            <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
-              <template #reference>
-                <el-button type="text">申请删除</el-button>
-              </template>
-            </el-popconfirm>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+    <el-table :data="tableData" style="width: 1200px" border stripe>
+      <el-table-column prop="courseId" label="courseId" width="200" v-if="false"  />
+      <el-table-column prop="courseName" label="课程名" width="200" />
+      <el-table-column prop="courseNumber" label="课程编号" width="200" />
+      <el-table-column prop="occupyTime" label="时间" width="150"   />
+      <el-table-column prop="classroom" label="教室" width="150" />
+      <el-table-column prop="creditHours" label="学时"  width="70" />
+      <el-table-column prop="credits" label="学分" width="60"  />
+      <el-table-column prop="capacity" label="容量" width="70" />
+      <el-table-column prop="selectNumber" fixed="right" label="选课人数" width="70" />
+      <el-table-column prop="introduction" label="介绍" width="0" v-if="false" />
+      <el-table-column fixed="right" label="操作" width="300">
+        <template #default="scope">
+          <el-button type="text" size="small" @click="checkList(scope.row.courseId)">查看选课名单</el-button>
+          <el-button type="text" size="small" @click="edit(scope.row.courseId)">申请修改信息</el-button>
+          <el-popconfirm title="确认删除?" @confirm="delete(scope.row.courseId)">
+            <template #reference>
+              <el-button type="text">申请删除</el-button>
+            </template>
+          </el-popconfirm>
+        </template>
+      </el-table-column>
+    </el-table>
+
     <div>
       <el-dialog v-model="check" title="选课名单" width="650px">
 
@@ -83,10 +83,10 @@ export default {
   },
   methods:{
     checkList:function (courseId){
-      this.check=true;
       request.post("common/getStudentListOfOneCourse",courseId).then(res=>{
         if(!res.data) return
-        this.studentList=res.data.data.records
+        this.studentList=res.data.data.records,
+            this.check=true
       })
     },
     getOptionSemesters: function (){

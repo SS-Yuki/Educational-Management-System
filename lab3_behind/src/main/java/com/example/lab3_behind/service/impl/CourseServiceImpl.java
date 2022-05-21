@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.lab3_behind.common.CourseInMatching.toCourseList;
+import static com.example.lab3_behind.service.impl.StudentServiceImpl.getCourses;
 import static com.example.lab3_behind.service.impl.TeachingAffairsServiceImpl.getSections;
 
 
@@ -141,6 +142,21 @@ public class CourseServiceImpl implements CourseService {
 //                .withIgnorePaths("id", "classPeriod", "creditHours", "credits", "capacity", "type");
 //        Example<Course> example = Example.of(course, matcher);
 //        return courseRepository.findAll(example,pageable);
+    }
+
+    @Override
+    public List<Course> findALLStudiedCourseOfStudent(String stuNum) throws Exception {
+        Student student = studentRepository.findByStuNumber(stuNum);
+        if(student == null){
+            throw new Exception("学生不存在");
+        }
+        List<Course> result = new ArrayList<>();
+        for(CourseSelectingRecord record : student.getRecords()){
+            if(record.getStudyStatus().equals(StudyStatus.Finish)){
+                result.add(record.getCourse());
+            }
+        }
+        return result;
     }
 
     @Override

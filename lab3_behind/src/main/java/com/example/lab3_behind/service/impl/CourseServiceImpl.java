@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.lab3_behind.common.CourseInMatching.toCourseList;
-import static com.example.lab3_behind.service.impl.StudentServiceImpl.getCourses;
 import static com.example.lab3_behind.service.impl.TeachingAffairsServiceImpl.getSections;
 
 
@@ -346,16 +345,9 @@ public class CourseServiceImpl implements CourseService {
             majorsOptional.add(majorRepository.findByName(str));
         }
         Course course = new Course(courseApplyingData, school, major, classroom, majorsOptional, teacher.getName());
-        //系列课程检查
-        inspectSeriesCourse(course);
 
-        teacher.getCourses().add(course);
-        teacherRepository.save(teacher);
+        Course newCourse = saveAndGetNewCourse(teacher, course);
 
-        //时间表处理：
-        Course newCourse = courseRepository.findByCourseNumberAndTeacherNumAndSchoolYearAndSemester(
-                course.getCourseNumber(), course.getTeacherNum(), course.getSchoolYear(), course.getSemester()
-        );
         List<List<Integer>> classSchedule;
         classSchedule = TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), TimeTool.getSectionNum(classroom.getSchedule()), newCourse.getCourseId());
         newCourse.setClassTime(TimeTool.transSchedule(classSchedule));
@@ -382,14 +374,9 @@ public class CourseServiceImpl implements CourseService {
                 TimeTool.makeTimeMatrix(courseApplying.getClassTime()));
         Teacher teacher = teacherRepository.findByJobNumber(courseApplying.getTeacherNum());
         Course course = new Course(courseApplying);
-        //系列课程检查
-        inspectSeriesCourse(course);
 
-        teacher.getCourses().add(course);
-        teacherRepository.save(teacher);
-        Course newCourse = courseRepository.findByCourseNumberAndTeacherNumAndSchoolYearAndSemester(
-                course.getCourseNumber(), course.getTeacherNum(), course.getSchoolYear(), course.getSemester()
-        );
+        Course newCourse = saveAndGetNewCourse(teacher, course);
+
         newCourse.setClassTime(TimeTool.transSchedule(TimeTool.transMaxInSchedule(newCourse.getClassTime(), newCourse.getCourseId())));
         courseRepository.save(newCourse);
 
@@ -402,6 +389,24 @@ public class CourseServiceImpl implements CourseService {
             ));
             classroomRepository.save(classroom);
         }
+    }
+
+    private Course saveAndGetNewCourse(Teacher teacher, Course course) throws Exception {
+        //系列课程检查
+        inspectSeriesCourseInfo(course);
+
+        teacher.getCourses().add(course);
+        teacherRepository.save(teacher);
+        List<Course> newCourses = courseRepository.findByCourseNumberAndTeacherNumAndSchoolYearAndSemester(
+                course.getCourseNumber(), course.getTeacherNum(), course.getSchoolYear(), course.getSemester()
+        );
+        Course newCourse = newCourses.get(0);
+        for(Course c : newCourses){
+            if(c.getCourseId().compareTo(newCourse.getCourseId()) > 0){
+                newCourse = c;
+            }
+        }
+        return newCourse;
     }
 
     @Override
@@ -590,7 +595,7 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
-    private void inspectSeriesCourse(Course course) throws Exception {
+    private void inspectSeriesCourseInfo(Course course) throws Exception {
         List<Course> courses = courseRepository.findByCourseNumberAndSchoolYearAndSemester
                 (course.getCourseNumber(), course.getSchoolYear(), course.getSemester());
         if(!courses.isEmpty()){

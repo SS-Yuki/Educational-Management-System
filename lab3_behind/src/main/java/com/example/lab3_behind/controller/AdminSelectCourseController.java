@@ -56,7 +56,7 @@ public class AdminSelectCourseController {
             else ans = "无法选课轮次";
             return Result.succ(ans);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(841,e.getMessage());
         }
     }
@@ -75,7 +75,7 @@ public class AdminSelectCourseController {
     public Result randomSelect(){
         try {
             courseSelectingService.RandomSelectFirstRound();
-            return Result.succ(null);
+            return Result.succ(null,"随机筛选完成！");
         }catch (Exception e){
             return Result.fail(841,e.getMessage());
         }

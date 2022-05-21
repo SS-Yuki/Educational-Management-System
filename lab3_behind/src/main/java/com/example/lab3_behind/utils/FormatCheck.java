@@ -131,7 +131,7 @@ public class FormatCheck {
           */
 
         //判断是否有仅有一个@且不能在开头或结尾
-        if(email.indexOf("@") > 0 && email.indexOf('@') == email.lastIndexOf('@') && email.indexOf('@') < email.length()-1) {
+        if(email.indexOf('@') > 0 && email.indexOf('@') == email.lastIndexOf('@') && email.indexOf('@') < email.length()-1) {
             k++;
         }
 

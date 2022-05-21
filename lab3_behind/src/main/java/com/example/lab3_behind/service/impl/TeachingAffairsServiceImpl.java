@@ -375,7 +375,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
     private int isDeleteOneTime(String schedule){
         int index = 0;
         int index1 = 0;
-        int index2 = schedule.indexOf("\n") + 1;
+        int index2 = schedule.indexOf('\n') + 1;
         while (index2 != 0) {
             index = index1;
             String section = schedule.substring(index1, index2 - 1);
@@ -385,7 +385,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
                 if (!Integer.valueOf(str).equals(0)) return -1;
             }
             index1 = index2;
-            index2 = schedule.indexOf("\n", index1) + 1;
+            index2 = schedule.indexOf('\n', index1) + 1;
         }
         return index;
     }

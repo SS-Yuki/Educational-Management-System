@@ -33,7 +33,7 @@ public class AdminTimeController {
             teachingAffairsService.addClassTime(timeData.toClassTimeData());
             return Result.succ(null);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(710,e.getMessage());
         }
     }

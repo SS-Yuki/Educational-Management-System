@@ -57,7 +57,7 @@ public class CommonVisitController {
             CourseContent courseContent = CourseContent.oneContent(course);
             return Result.succ(courseContent);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(900,e.getMessage());
         }
 
@@ -71,7 +71,7 @@ public class CommonVisitController {
             map.put("days",days);
             return Result.succ(map);
         } catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(888,e.getMessage());
         }
     }
@@ -84,7 +84,7 @@ public class CommonVisitController {
             map.put("days",days);
             return Result.succ(map);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(893,e.getMessage());
         }
     }
@@ -96,7 +96,7 @@ public class CommonVisitController {
             map.put("occupys",occupys);
             return Result.succ(map);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(894,e.getMessage());
         }
     }

@@ -4,8 +4,10 @@ import com.example.lab3_behind.common.Global;
 import com.example.lab3_behind.common.MyPage;
 import com.example.lab3_behind.common.forDomain.*;
 import com.example.lab3_behind.domain.*;
+import com.example.lab3_behind.domain.dto.YearSemesterPair;
 import com.example.lab3_behind.repository.*;
 import com.example.lab3_behind.service.CourseSelectingService;
+import com.example.lab3_behind.utils.EnumTool;
 import com.example.lab3_behind.utils.MyPageTool;
 import com.example.lab3_behind.utils.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,8 +150,12 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
             throw new Exception("当前为一轮选课，请先自主选课");
         }
         boolean isMajor = course.getCourseSelectType().equals(CourseSelectType.common) || course.getMajorsOptional().contains(student.getMajor());
-        if((course.getCapacity().compareTo(course.getStudentsNum()) > 0) && isMajor){
-            throw new Exception("该门课程容量未满，不必打申请");
+        YearSemesterPair timePair = TimeTool.getPresentYearAndSemester();
+        if((EnumTool.transString(course.getSchoolYear()).equals(timePair.getYear())
+                && EnumTool.transString(course.getSemester()).equals(timePair.getSemester()))){
+            if((course.getCapacity().compareTo(course.getStudentsNum()) > 0) && isMajor){
+                throw new Exception("该门课程容量未满，不必打申请");
+            }
         }
         SchoolYear schoolYear = course.getSchoolYear();
         Semester semester = course.getSemester();

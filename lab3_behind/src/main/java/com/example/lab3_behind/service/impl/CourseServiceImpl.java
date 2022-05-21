@@ -92,26 +92,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<Course> findAPageCourseOfTeacher(Integer page, Integer size, String search, String jobNumber) throws Exception {
-        Teacher teacher = teacherRepository.findByJobNumber(jobNumber);
+    public MyPage<Course> findAPageCourseOfTeacher(Integer page, Integer size, String jobNum, SchoolYear schoolYear, Semester semester) throws Exception {
+        Teacher teacher = teacherRepository.findByJobNumber(jobNum);
         if(teacher == null) {
             throw new Exception("教师不存在");
         }
-        Pageable pageable =  PageRequest.of(page - 1, size);
-        if(search.isEmpty()){
-            return courseRepository.findAllByTeacherNum(jobNumber, pageable);
-        }
-        Course course = new Course();
-        course.setCourseName(search);
-        course.setTeacherNum(jobNumber);
-        ExampleMatcher matcher = ExampleMatcher.matchingAll()
-                .withIgnoreCase(true)
-                .withMatcher("teacherNum", ExampleMatcher.GenericPropertyMatcher::exact)
-                .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("courseId", "classPeriod", "creditHours", "credits", "capacity", "type"
-                , "courseNumber", "teacherName", "major", "school", "classroom", "introduction", "courseStatus");
-        Example<Course> example = Example.of(course, matcher);
-        return courseRepository.findAll(example, pageable);
+        List<Course> courses = courseRepository.findByTeacherNumAndSchoolYearAndSemester(jobNum, schoolYear, semester);
+        return MyPageTool.getPage(courses, size, page);
     }
 
     @Override

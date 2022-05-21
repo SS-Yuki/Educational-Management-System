@@ -1,9 +1,6 @@
 package com.example.lab3_behind.utils;
 
-import com.example.lab3_behind.common.forDomain.CourseSelectType;
-import com.example.lab3_behind.common.forDomain.Grade;
-import com.example.lab3_behind.common.forDomain.SchoolYear;
-import com.example.lab3_behind.common.forDomain.Semester;
+import com.example.lab3_behind.common.forDomain.*;
 
 import java.util.List;
 
@@ -89,6 +86,16 @@ public class EnumTool {
             case "2021-2022":return SchoolYear._2021_2022;
             case "2022-2023":return SchoolYear._2022_2023;
             default:return null;
+        }
+    }
+
+    public static String transString(SelectCourseApplicationStatus status){
+        if(status==null) return null;
+        switch (status){
+            case ToDeal:  return "待处理";
+            case Approved:return "已通过";
+            case Rejected:return "未通过";
+            default:return "--";
         }
     }
 

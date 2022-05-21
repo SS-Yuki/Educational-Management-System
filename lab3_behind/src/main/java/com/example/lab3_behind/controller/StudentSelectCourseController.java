@@ -2,6 +2,7 @@ package com.example.lab3_behind.controller;
 
 import com.example.lab3_behind.common.*;
 import com.example.lab3_behind.domain.Course;
+import com.example.lab3_behind.domain.SelectCourseApplication;
 import com.example.lab3_behind.domain.dto.YearAndSemestersData;
 import com.example.lab3_behind.domain.dto.YearSemesterPair;
 import com.example.lab3_behind.domain.resp.Result;
@@ -85,26 +86,16 @@ public class StudentSelectCourseController {
         return Result.succ(null);
     }
 
-    @RequestMapping("/applyForSelectCourse")
-    public Result applyForSelectCourse(@RequestBody StudentApplyForSelectCourse apply,HttpServletRequest request){
-        String token = request.getHeader("token");
-        JwtUserData jwtUserData = JwtUtil.getToken(token);
-        String number = jwtUserData.getNumber().replace("\"", "");
-        try{
-            //courseSelectService.selectCourse(number,);
-        }catch (Exception e){
-            e.printStackTrace();
-            return Result.fail(910,e.getMessage());
-        }
-        return Result.succ(null);
-    }
-
     @RequestMapping("/dropCourse")
     public Result dropCourse(@RequestBody Integer courseId,HttpServletRequest request){
         String token = request.getHeader("token");
         JwtUserData jwtUserData = JwtUtil.getToken(token);
         String number = jwtUserData.getNumber().replace("\"", "");
         try{
+            Boolean open = authorityService.checkCourseSelectingAuthority();
+            if(!open){
+                throw new Exception("当前退课未开放");
+            }
             courseSelectService.dropCourse(number,courseId,
                     EnumTool.transSchoolYear(TimeTool.getPresentYearAndSemester().getYear()),
                     EnumTool.transSemester(TimeTool.getPresentYearAndSemester().getSemester()));
@@ -121,6 +112,10 @@ public class StudentSelectCourseController {
         JwtUserData jwtUserData = JwtUtil.getToken(token);
         String number = jwtUserData.getNumber().replace("\"", "");
         try {
+            Boolean open = authorityService.checkCourseSelectingAuthority();
+            if(!open){
+                throw new Exception("当前退课未开放");
+            }
             List<Course> courses = studentService.findCourseInSemester(number,
                     EnumTool.transSchoolYear(TimeTool.getPresentYearAndSemester().getYear()),
                     EnumTool.transSemester(TimeTool.getPresentYearAndSemester().getSemester()));
@@ -132,36 +127,32 @@ public class StudentSelectCourseController {
         }
     }
 
-    @RequestMapping("getMyCourseInSemester")
-    public Result getMyCourseInSemester(@RequestBody YearSemesterPair yearSemesterPair,HttpServletRequest request){
+    @RequestMapping("/applyForSelectCourse")
+    public Result applyForSelectCourse(@RequestBody StudentApplyForSelectCourse apply,HttpServletRequest request){
         String token = request.getHeader("token");
         JwtUserData jwtUserData = JwtUtil.getToken(token);
         String number = jwtUserData.getNumber().replace("\"", "");
-        try {
-            List<Course> courses = studentService.findCourseInSemester(number,
-                    EnumTool.transSchoolYear(yearSemesterPair.getYear()),
-                    EnumTool.transSemester(yearSemesterPair.getSemester()));
-            List<CourseContent> courseContents = CourseContent.getContent(courses);
-            return Result.succ(courseContents);
-        } catch (Exception e){
+        try{
+            courseSelectService.pushCourseSelectingApplication(number,apply.getCourseId(),apply.getDescription());
+            return Result.succ(null);
+        }catch (Exception e){
             e.printStackTrace();
-            return Result.fail(833,e.getMessage());
+            return Result.fail(910,e.getMessage());
         }
     }
 
-    @RequestMapping("getMyCourseTableInSemester")
-    public Result getMyCourseTableInSemester(@RequestBody YearSemesterPair yearSemesterPair,HttpServletRequest request){
+    @RequestMapping("/findMySelectCourseApply")
+    public Result findMySelectCourseApply(HttpServletRequest request){
         String token = request.getHeader("token");
         JwtUserData jwtUserData = JwtUtil.getToken(token);
         String number = jwtUserData.getNumber().replace("\"", "");
-        try {
-            List<List<CourseNameString>> courses = studentService.getClassScheduleInSemester(number,
-                    EnumTool.transSchoolYear(yearSemesterPair.getYear()),
-                    EnumTool.transSemester(yearSemesterPair.getSemester()));
-            return Result.succ(courses);
-        } catch (Exception e){
+        try{
+            List<SelectCourseApplication> myApplys = courseSelectService.findMySelectCourseApplication(number);
+            List<SelectCourseApplyContent> myApplyContents = SelectCourseApplyContent.getContents(myApplys,courseService);
+            return Result.succ(myApplyContents);
+        }catch (Exception e){
             e.printStackTrace();
-            return Result.fail(833,e.getMessage());
+            return Result.fail(910,e.getMessage());
         }
     }
 

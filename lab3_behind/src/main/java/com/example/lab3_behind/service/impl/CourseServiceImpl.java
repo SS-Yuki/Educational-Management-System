@@ -93,13 +93,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public MyPage<Course> findAPageCourseOfTeacher(Integer page, Integer size, String jobNum, SchoolYear schoolYear, Semester semester) throws Exception {
+    public List<Course> findAPageCourseOfTeacher(String jobNum, SchoolYear schoolYear, Semester semester) throws Exception {
         Teacher teacher = teacherRepository.findByJobNumber(jobNum);
         if(teacher == null) {
             throw new Exception("教师不存在");
         }
-        List<Course> courses = courseRepository.findByTeacherNumAndSchoolYearAndSemester(jobNum, schoolYear, semester);
-        return MyPageTool.getPage(courses, size, page);
+        return courseRepository.findByTeacherNumAndSchoolYearAndSemester(jobNum, schoolYear, semester);
     }
 
     @Override

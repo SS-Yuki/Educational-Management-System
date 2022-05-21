@@ -61,6 +61,9 @@
                     <el-menu-item index="3-1">
                       <router-link to="/student/studentviewtable">查看课表</router-link>
                     </el-menu-item>
+                    <el-menu-item index="3-2">
+                      <router-link to="/student/studentfinishedcourse">查看已修课程</router-link>
+                    </el-menu-item>
                   </el-menu-item-group>
                 </el-sub-menu>
               </el-menu>

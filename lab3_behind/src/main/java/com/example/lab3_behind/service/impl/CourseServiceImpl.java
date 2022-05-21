@@ -595,10 +595,10 @@ public class CourseServiceImpl implements CourseService {
                 (course.getCourseNumber(), course.getSchoolYear(), course.getSemester());
         if(!courses.isEmpty()){
             Course oneOfSeries = courses.get(0);
-            if(course.getCredits().equals(oneOfSeries.getCredits())){
+            if(!course.getCredits().equals(oneOfSeries.getCredits())){
                 throw new Exception("学分应与同系列课程相同");
             }
-            if(course.getCourseName().equals(oneOfSeries.getCourseName())){
+            if(!course.getCourseName().equals(oneOfSeries.getCourseName())){
                 throw new Exception("课程名应与同系列课程相同");
             }
         }

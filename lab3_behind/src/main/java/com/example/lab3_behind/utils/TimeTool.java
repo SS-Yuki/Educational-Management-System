@@ -92,7 +92,7 @@ public class TimeTool {
             result.add(new ArrayList<>());
         }
         int index1 = 0;
-        int index2 = schedule.indexOf("\n") + 1;
+        int index2 = schedule.indexOf('\n') + 1;
         while (index2 != 0){
             String section = schedule.substring(index1, index2 - 1);
             String[] sectionArr = section.split("-");
@@ -100,7 +100,7 @@ public class TimeTool {
                 result.get(i).add(Integer.valueOf(sectionArr[i]));
             }
             index1 = index2;
-            index2 = schedule.indexOf("\n", index1) + 1;
+            index2 = schedule.indexOf('\n', index1) + 1;
         }
         return result;
     }
@@ -197,11 +197,11 @@ public class TimeTool {
     public static Integer getSectionNum(String schedule){
         int result = 0;
         int index1;
-        int index2 = schedule.indexOf("\n") + 1;
+        int index2 = schedule.indexOf('\n') + 1;
         while (index2 != 0){
             index1 = index2;
             result ++;
-            index2 = schedule.indexOf("\n", index1) + 1;
+            index2 = schedule.indexOf('\n', index1) + 1;
         }
         return result;
     }

@@ -36,7 +36,7 @@ public class AdminCourseController {
             courseService.insertCourse(courseApplyingData);
             return Result.succ(null);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(730,e.getMessage());
         }
     }
@@ -48,7 +48,7 @@ public class AdminCourseController {
             try {
                 courseService.insertCourse(courseApplyingData);
             }catch (Exception e){
-                e.printStackTrace();
+                //e.printStackTrace();
                 failNum++;
             }
         }
@@ -74,7 +74,7 @@ public class AdminCourseController {
             return Result.succ(null);
         }
         catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(732,e.getMessage());
         }
     }
@@ -96,7 +96,7 @@ public class AdminCourseController {
             map.put("total",coursePage.getTotal());
             return Result.succ(map);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(889,e.getMessage());
         }
     }

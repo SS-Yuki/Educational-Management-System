@@ -56,7 +56,7 @@ public class AdminSelectCourseController {
             else ans = "无法选课轮次";
             return Result.succ(ans);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(841,e.getMessage());
         }
     }

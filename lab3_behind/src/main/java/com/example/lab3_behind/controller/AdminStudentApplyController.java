@@ -31,7 +31,7 @@ public class AdminStudentApplyController {
             courseSelectingService.approveSelectCourseApplication(adminDealApplyData.getApplyId(),adminDealApplyData.getAdvice());
             return Result.succ(null);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(800,e.getMessage());
         }
     }

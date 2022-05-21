@@ -80,7 +80,7 @@ public class StudentSelectCourseController {
                     EnumTool.transSchoolYear(TimeTool.getPresentYearAndSemester().getYear()),
                     EnumTool.transSemester(TimeTool.getPresentYearAndSemester().getSemester()));
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(910,e.getMessage());
         }
         return Result.succ(null);
@@ -100,7 +100,7 @@ public class StudentSelectCourseController {
                     EnumTool.transSchoolYear(TimeTool.getPresentYearAndSemester().getYear()),
                     EnumTool.transSemester(TimeTool.getPresentYearAndSemester().getSemester()));
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(911,e.getMessage());
         }
         return Result.succ(null);
@@ -122,7 +122,7 @@ public class StudentSelectCourseController {
             List<CourseContent> courseContents = CourseContent.getContent(courses);
             return Result.succ(courseContents);
         } catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(832,e.getMessage());
         }
     }
@@ -136,7 +136,7 @@ public class StudentSelectCourseController {
             courseSelectService.pushCourseSelectingApplication(number,apply.getCourseId(),apply.getDescription());
             return Result.succ(null);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(910,e.getMessage());
         }
     }
@@ -151,7 +151,7 @@ public class StudentSelectCourseController {
             List<SelectCourseApplyContent> myApplyContents = SelectCourseApplyContent.getContents(myApplys,courseService);
             return Result.succ(myApplyContents);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(910,e.getMessage());
         }
     }

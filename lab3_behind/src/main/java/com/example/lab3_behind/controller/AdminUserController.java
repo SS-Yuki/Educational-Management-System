@@ -37,7 +37,7 @@ public class AdminUserController {
                 teacherService.insertTeacher(userEnteringData);
             }else throw new Exception("注册身份错误");
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(683,e.getMessage());
         }
         return Result.succ(null);
@@ -54,7 +54,7 @@ public class AdminUserController {
                     teacherService.insertTeacher(userEnteringData);
                 }else throw new Exception("注册身份错误");
             } catch (Exception e){
-                e.printStackTrace();
+                //e.printStackTrace();
                 failNum++;
             }
         }

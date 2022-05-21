@@ -40,7 +40,7 @@ public class StudentCourseController {
             List<CourseContent> courseContents = CourseContent.getContent(courses);
             return Result.succ(courseContents);
         } catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(833,e.getMessage());
         }
     }
@@ -56,7 +56,7 @@ public class StudentCourseController {
                     EnumTool.transSemester(yearSemesterPair.getSemester()));
             return Result.succ(courses);
         } catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(833,e.getMessage());
         }
     }
@@ -71,7 +71,7 @@ public class StudentCourseController {
             List<CourseContent> courseContents = CourseContent.getContent(courses);
             return Result.succ(courseContents);
         } catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return Result.fail(833,e.getMessage());
         }
     }

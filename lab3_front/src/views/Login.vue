@@ -29,6 +29,19 @@ import {student_routes} from "@/router";
 import {teacher_routes} from "@/router";
 import router from "@/router";
 
+function add_routes () {
+  var cache = [];
+  sessionStorage['routes'] = JSON.stringify(router.getRoutes(), function(key, value) {
+      if (typeof value === 'object' && value !== null) {
+          if (cache.indexOf(value) !== -1) {
+              return;
+          }
+          cache.push(value);
+      }
+      return value;
+  });
+  cache = null;
+}
 
 export default {
   name: "Login",
@@ -52,7 +65,6 @@ export default {
     login: function (){
       request.post("/user/login", this.login_data).then(res => {
 
-
         if (res.data.code === 200) {
           this.$message({
             type: "success",
@@ -62,7 +74,7 @@ export default {
 
           if (res.data.data.role === "admin") {
             router.addRoute(admin_routes)
-            sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()))
+            add_routes()
             router.push('/admin')
             setTimeout(() => {
               router.go(0)
@@ -71,7 +83,7 @@ export default {
           }
           else if (res.data.data.role === "student") {
             router.addRoute(student_routes)
-            sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()));
+            add_routes()
             router.push('/student')
             setTimeout(() => {
               router.go(0)
@@ -80,7 +92,7 @@ export default {
           }
           else if (res.data.data.role === "teacher") {
             router.addRoute(teacher_routes)
-            sessionStorage.setItem('routes', JSON.stringify(router.getRoutes()));
+            add_routes()
             router.push('/teacher')
             setTimeout(() => {
               router.go(0)

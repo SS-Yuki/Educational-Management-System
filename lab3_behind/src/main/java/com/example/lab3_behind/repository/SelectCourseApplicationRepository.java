@@ -10,4 +10,5 @@ import java.util.List;
 public interface SelectCourseApplicationRepository extends JpaRepository<SelectCourseApplication, Long> {
     SelectCourseApplication findById(Integer id);
     List<SelectCourseApplication> findByStuNumber(String stuNumber);
+    List<SelectCourseApplication> findByStuNumberAndCourseId(String stuNumber, Integer courseId);
 }

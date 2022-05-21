@@ -19,6 +19,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findByCourseStatus(CourseStatus courseStatus);
     List<Course> findByClassroom(Classroom classroom);
     List<Course> findBySchoolYearAndSemester(SchoolYear schoolYear, Semester semester);
+    List<Course> findByCourseNumberAndSchoolYearAndSemester(String courseNumber, SchoolYear schoolYear, Semester semester);
     Course findByCourseNumberAndTeacherNumAndSchoolYearAndSemester(String courseNumber, String teacherNum, SchoolYear schoolYear, Semester semester);
     List<Course> findByClassroomAndSchoolYearAndSemester(Classroom classroom, SchoolYear schoolYear, Semester semester);
     Page<Course> findAllByMajor(Major major, Pageable pageable);

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class TimeTool {
+
     public static YearSemesterPair getPresentYearAndSemester(){
         YearSemesterPair result = new YearSemesterPair();
         Calendar cal=Calendar.getInstance();

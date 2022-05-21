@@ -72,8 +72,7 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
             if(tempCourse.getCourseId().equals(courseId)){
                 throw new Exception("无法选择已经选过的课程");
             }
-            if(tempCourse.getCourseNumber().equals(course.getCourseNumber())
-            && tempCourse.getCourseName().equals(course.getCourseName())){
+            if(tempCourse.getCourseNumber().equals(course.getCourseNumber())){
                 throw new Exception("同类课程只能修读一门");
             }
         }
@@ -96,13 +95,13 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
     }
 
     @Override
-    public void dropCourse(String sutNum, Integer courseId, SchoolYear openYear, Semester openSemester) throws Exception {
+    public void dropCourse(String stuNum, Integer courseId, SchoolYear openYear, Semester openSemester) throws Exception {
         //检查course是否为open学期；是否选了
         Course course = courseRepository.findByCourseId(courseId);
         if(course == null){
             throw new Exception("课程不存在");
         }
-        Student student = studentRepository.findByStuNumber(sutNum);
+        Student student = studentRepository.findByStuNumber(stuNum);
         if(student == null){
             throw new Exception("学生不存在");
         }
@@ -135,10 +134,36 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
         if(student == null){
             throw new Exception("学生不存在");
         }
+        List<SelectCourseApplication> applications = selectCourseApplicationRepository.findByStuNumberAndCourseId(stuNum, courseId);
+        for(SelectCourseApplication application : applications){
+            if(application.getStatus().equals(SelectCourseApplicationStatus.ToDeal)){
+                throw new Exception("已有正在审核的对这门课程的申请");
+            }
+        }
+        Authority selectRound = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
+        if(selectRound.getAuthorityValue().equals(Global.NOT_IN_COURSE_SELECTING_ROUND)){
+            throw new Exception("当前不可提交选课申请");
+        }
+        if(selectRound.getAuthorityValue().equals(Global.FIRST_COURSE_SELECTING_ROUND)){
+            throw new Exception("当前为一轮选课，请先自主选课");
+        }
         boolean isMajor = course.getCourseSelectType().equals(CourseSelectType.common) || course.getMajorsOptional().contains(student.getMajor());
         if((course.getCapacity().compareTo(course.getStudentsNum()) > 0) && isMajor){
             throw new Exception("该门课程容量未满，不必打申请");
         }
+        SchoolYear schoolYear = course.getSchoolYear();
+        Semester semester = course.getSemester();
+        //时间冲突
+        TimeTool.addTimeMatrix(getSchedule(studentRepository, timeTableRepository, stuNum, schoolYear, semester),
+                TimeTool.makeTimeMatrix(course.getClassTime()));
+
+        for(Course oldCourse : getCourses(student)){
+            if(oldCourse.getSchoolYear().equals(schoolYear) && oldCourse.getSemester().equals(semester)
+                    && oldCourse.getCourseNumber().equals(course.getCourseName())){
+                throw new Exception("同类课程只能修读一门");
+            }
+        }
+
         SelectCourseApplication application = new SelectCourseApplication(null, stuNum, courseId, reason, null, SelectCourseApplicationStatus.ToDeal);
         selectCourseApplicationRepository.save(application);
     }

@@ -75,7 +75,7 @@ public class AdminSelectCourseController {
     public Result randomSelect(){
         try {
             courseSelectingService.RandomSelectFirstRound();
-            return Result.succ(null);
+            return Result.succ(null,"随机筛选完成！");
         }catch (Exception e){
             return Result.fail(841,e.getMessage());
         }

@@ -5,6 +5,7 @@ import com.example.lab3_behind.common.*;
 import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.dto.YearSemesterPair;
 import com.example.lab3_behind.domain.resp.Result;
+import com.example.lab3_behind.service.CourseService;
 import com.example.lab3_behind.service.StudentService;
 import com.example.lab3_behind.utils.EnumTool;
 import com.example.lab3_behind.utils.JwtUtil;
@@ -23,6 +24,8 @@ import java.util.Map;
 public class StudentCourseController {
     @Autowired
     StudentService studentService;
+    @Autowired
+    CourseService courseService;
 
 
     @RequestMapping("getMyCourseInSemester")
@@ -52,6 +55,21 @@ public class StudentCourseController {
                     EnumTool.transSchoolYear(yearSemesterPair.getYear()),
                     EnumTool.transSemester(yearSemesterPair.getSemester()));
             return Result.succ(courses);
+        } catch (Exception e){
+            e.printStackTrace();
+            return Result.fail(833,e.getMessage());
+        }
+    }
+
+    @RequestMapping("allFinishedCourse")
+    public Result allFinishedCourse(HttpServletRequest request){
+        String token = request.getHeader("token");
+        JwtUserData jwtUserData = JwtUtil.getToken(token);
+        String number = jwtUserData.getNumber().replace("\"", "");
+        try {
+            List<Course> courses = courseService.findALLStudiedCourseOfStudent(number);
+            List<CourseContent> courseContents = CourseContent.getContent(courses);
+            return Result.succ(courseContents);
         } catch (Exception e){
             e.printStackTrace();
             return Result.fail(833,e.getMessage());

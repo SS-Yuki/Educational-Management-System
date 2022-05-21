@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.lab3_behind.common.CourseInMatching.toCourseList;
+import static com.example.lab3_behind.service.impl.StudentServiceImpl.getCourses;
 import static com.example.lab3_behind.service.impl.TeachingAffairsServiceImpl.getSections;
 
 
@@ -140,6 +141,21 @@ public class CourseServiceImpl implements CourseService {
 //                .withIgnorePaths("id", "classPeriod", "creditHours", "credits", "capacity", "type");
 //        Example<Course> example = Example.of(course, matcher);
 //        return courseRepository.findAll(example,pageable);
+    }
+
+    @Override
+    public List<Course> findALLStudiedCourseOfStudent(String stuNum) throws Exception {
+        Student student = studentRepository.findByStuNumber(stuNum);
+        if(student == null){
+            throw new Exception("学生不存在");
+        }
+        List<Course> result = new ArrayList<>();
+        for(CourseSelectingRecord record : student.getRecords()){
+            if(record.getStudyStatus().equals(StudyStatus.Finish)){
+                result.add(record.getCourse());
+            }
+        }
+        return result;
     }
 
     @Override
@@ -579,10 +595,10 @@ public class CourseServiceImpl implements CourseService {
                 (course.getCourseNumber(), course.getSchoolYear(), course.getSemester());
         if(!courses.isEmpty()){
             Course oneOfSeries = courses.get(0);
-            if(course.getCredits().equals(oneOfSeries.getCredits())){
+            if(!course.getCredits().equals(oneOfSeries.getCredits())){
                 throw new Exception("学分应与同系列课程相同");
             }
-            if(course.getCourseName().equals(oneOfSeries.getCourseName())){
+            if(!course.getCourseName().equals(oneOfSeries.getCourseName())){
                 throw new Exception("课程名应与同系列课程相同");
             }
         }

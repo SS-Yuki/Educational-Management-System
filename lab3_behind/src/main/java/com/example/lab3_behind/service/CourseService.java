@@ -18,6 +18,7 @@ public interface CourseService {
     Course getCourse(Integer courseId) throws Exception;
     MyPage<Course> findAPageCourse(Integer page, Integer size, String search, SchoolYear schoolYear, Semester semester,
                                    String classroomName, List<List<Integer>> selectTime);
+    List<Course> findALLStudiedCourseOfStudent(String stuNum) throws Exception;
     MyPage<Course> findAPageCourseForSelecting(Integer page, Integer size, String search, String stuNum,
                                                SchoolYear schoolYear, Semester semester,
                                                String classroomName, List<List<Integer>> selectTime) throws Exception;

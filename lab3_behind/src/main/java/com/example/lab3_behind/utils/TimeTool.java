@@ -48,7 +48,7 @@ public class TimeTool {
             result.add(buff);
         }
         int index1 = 0;
-        int index2 = schedule.indexOf("\n") + 1;
+        int index2 = schedule.indexOf('\n') + 1;
         while (index2 != 0){
             String section = schedule.substring(index1, index2 - 1);
             String[] sectionArr = section.split("-");
@@ -56,7 +56,7 @@ public class TimeTool {
                 result.get(i).add(Integer.parseInt(sectionArr[i]) != Global.CLASSROOM_TIME_SPARE);
             }
             index1 = index2;
-            index2 = schedule.indexOf("\n", index1) + 1;
+            index2 = schedule.indexOf('\n', index1) + 1;
         }
         return result;
     }

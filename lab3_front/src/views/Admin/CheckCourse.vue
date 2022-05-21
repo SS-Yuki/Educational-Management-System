@@ -12,6 +12,7 @@
             class="upload-demo"
             action=""
             :on-change="handleChange"
+            :limit="1"
             accept=".csv"
             :auto-upload="false">
           <el-button size="large" type="primary">导入</el-button>
@@ -282,7 +283,7 @@ export default {
         this.select_year_semester = [res.data.data.defaultYear, res.data.data.defaultSemester]
       })
     },
-    handleChange(file, fileList) {
+    handleChange(file) {
       this.fileTemp = file.raw
       if (this.fileTemp) {
         if (this.fileTemp.type==='text/csv') {
@@ -303,12 +304,13 @@ export default {
 
     importcsv (obj) {
       let that = this//如果需要点击事件结束之后对DOM进行操作使用)_this.xx=xx进行操作
+      let r = /^[1-9]*[1-9][0-9]*$/
       Papa.parse(obj, {
         complete (results) {
           
           let data = []
           //遍历csv文件中的数据，存放到data中 方法不唯一，可自己更改
-          for (let i = 0; i < results.data.length-1; i++) {
+          for (let i = 0; i < results.data.length; i++) {
             let obj = {}
             obj.id = results.data[i][0]
             obj.courseName = results.data[i][1]
@@ -316,22 +318,33 @@ export default {
             obj.teacherNum=results.data[i][3]
             obj.major = results.data[i][4]
             obj.school = results.data[i][5]
-            obj.classPeriod = results.data[i][6]
-            obj.classroom = results.data[i][7]
-            obj.creditHours = results.data[i][8]
-            obj.credits = results.data[i][9]
-            obj.capacity = results.data[i][10]
-            obj.introduction = results.data[i][11]
-            obj.applicant = results.data[i][12]
-            data.push(obj)
+            obj.classroom = results.data[i][6]
+            obj.creditHours = results.data[i][7]//
+            obj.credits = results.data[i][8]//
+            obj.capacity = results.data[i][9]//
+            obj.introduction = results.data[i][10]
+            obj.applicant = results.data[i][11]
+            obj.selectTypeString = results.data[i][12]
+            let limitsArr = results.data[i][13].split("-")
+            obj.majorLimits = limitsArr[0] === '' ? [] : limitsArr
+            obj.year = results.data[i][14]
+            obj.semester = results.data[i][15]
+            let timeArr = []
+            results.data[i][16].split("|").forEach(item => {
+              let day = item.split("-").map(Number)
+              timeArr.push(day[0] === 0 ? [] : day)
+            })
+            obj.occupyTime = timeArr
+            console.log(obj.majorLimits, "---", obj.occupyTime)
+            let flag = r.test(obj.credits) && r.test(obj.creditHours) && r.test(obj.capacity)
+            console.log(r, flag)
+            if(flag) data.push(obj)
           }
-          data.splice(0, 1)//将数组第一位的表格名称去除
           let num = 0
-          
-          // _this.tableData = data//将数据放入要展示的表格中
+          console.log(data)
           request.post("/admin/csvAddCourse", data).then(res => {
             if(res.data.code!==200) {
-              this.$message({
+              that.$message({
                 type:"error",
                 message: res.data.msg
               })

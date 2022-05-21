@@ -75,16 +75,39 @@ export default {
       })
       this.getTurn()
     },
-    randomSelect:function (){
-      request.post("/admin/randomSelect").then(res=>{
+    async randomSelect () {
+      try {
+        let res = await request.post("/admin/randomSelect")
         if (res.data.code !== 200) {
           this.$message({
-            type:"error",
+            type: "error",
+            message: res.data.msg
+          })
+        } else {
+          this.$message({
+            type: "success",
             message: res.data.msg
           })
         }
-      })
+      } catch (err) {
+        console.log(err)
+      }
     },
+    //   request.post("/admin/randomSelect").then(res=>{
+    //     if (res.data.code !== 200) {
+    //       this.$message({
+    //         type:"error",
+    //         message: res.data.msg
+    //       })
+    //     }
+    //     else {
+    //       this.$message({
+    //         type:"success",
+    //         message: res.data.msg
+    //       })
+    //     }
+    //   })
+    // },
     startSelect:function (){
       request.post("/admin/startThisSemesterSelectCourse").then(res=>{
         if (res.data.code !== 200) {

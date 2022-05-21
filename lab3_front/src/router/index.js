@@ -212,6 +212,7 @@ export const student_routes =
             component: StudentFinishedCourse
         }
     ]
+
   }
 
 const router = createRouter({

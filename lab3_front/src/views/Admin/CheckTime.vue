@@ -155,7 +155,16 @@ export default {
     },
     save:function (){
       request.post("/admin/addTime", this.addTime).then(res => {
-        
+        if(res.data.code===200){
+          this.tableData=res.data.data.records
+          this.total=res.data.data.total
+        }
+        else{
+          this.$message({
+            type:"error",
+            message: res.data.msg
+          })
+        }
         this.load() // 刷新表格的数据
         this.dialogVisible = false  // 关闭弹窗
       })

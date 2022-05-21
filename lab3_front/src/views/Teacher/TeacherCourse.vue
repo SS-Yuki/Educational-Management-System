@@ -109,8 +109,7 @@ export default {
       setTimeout(() => {
         request.post("/teacher/findCoursePage",{
           year: this.select_year_semester[0],
-          semester: this.select_year_semester[1],
-            search:''
+          semester: this.select_year_semester[1]
             },
         ).then(res=>{
           if(res.data.code===200){

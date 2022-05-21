@@ -9,7 +9,7 @@
       </div>
     </div>
     <el-table :data="tableData" style="width: 1200px" border stripe>
-      <el-table-column prop="courseId" label="courseId" width="200" v-if="false"  />
+      <el-table-column prop="courseId" label="courseId" width="200" />
       <el-table-column prop="courseName" label="课程名" width="200" />
       <el-table-column prop="courseNumber" label="课程编号" width="200" />
       <el-table-column prop="occupyTime" label="时间" width="150"   />
@@ -109,8 +109,7 @@ export default {
       setTimeout(() => {
         request.post("/teacher/findCoursePage",{
           year: this.select_year_semester[0],
-          semester: this.select_year_semester[1],
-            search:''
+          semester: this.select_year_semester[1]
             },
         ).then(res=>{
           if(res.data.code===200){

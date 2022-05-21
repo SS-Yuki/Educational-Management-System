@@ -6,6 +6,7 @@ import com.example.lab3_behind.domain.Course;
 import com.example.lab3_behind.domain.CourseApplying;
 import com.example.lab3_behind.domain.Teacher;
 import com.example.lab3_behind.domain.dto.CourseApplyingData;
+import com.example.lab3_behind.domain.dto.YearSemesterPair;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.CourseService;
 import com.example.lab3_behind.service.TeacherService;
@@ -117,18 +118,15 @@ public class TeacherApplyController {
     }
 
     @PostMapping("/findCoursePage")
-    public Result findCoursePage(@RequestBody PageSearchWithYearAndSemester pageSearchData,HttpServletRequest request){
+    public Result findCoursePage(@RequestBody YearSemesterPair pageSearchData, HttpServletRequest request){
         Map<String,Object> map = new HashMap<>();
         try {
             String token = request.getHeader("token");
             JwtUserData jwtUserData = JwtUtil.getToken(token);
             String number = jwtUserData.getNumber().replace("\"", "");
-            MyPage<Course> coursePage = courseService.findAPageCourseOfTeacher(pageSearchData.getPageNum(),
-                    pageSearchData.getPageSize(),number, EnumTool.transSchoolYear(pageSearchData.getYear()),EnumTool.transSemester(pageSearchData.getSemester()));
-            List<CourseContent> courseContents = CourseContent.getContent(coursePage.getRecords());
-            map.put("records",courseContents);
-            map.put("total",coursePage.getTotal());
-            return Result.succ(map);
+            List<Course> courses = courseService.findAPageCourseOfTeacher(number, EnumTool.transSchoolYear(pageSearchData.getYear()),EnumTool.transSemester(pageSearchData.getSemester()));
+            List<CourseContent> courseContents = CourseContent.getContent(courses);
+            return Result.succ(courseContents);
         }catch (Exception e){
             //logger.trace("----findCoursePage捕获到了异常----");
             //logger.trace(e.getMessage());

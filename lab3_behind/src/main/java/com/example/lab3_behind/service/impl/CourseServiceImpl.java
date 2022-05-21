@@ -36,12 +36,13 @@ public class CourseServiceImpl implements CourseService {
     ClassroomRepository classroomRepository;
     TimeTableRepository timeTableRepository;
     CourseSelectingRecordRepository courseSelectingRecordRepository;
+    AuthorityRepository authorityRepository;
     @Autowired
     public CourseServiceImpl(CourseRepository courseRepository, CourseApplyingRepository courseApplyingRepository,
                              TeacherRepository teacherRepository, StudentRepository studentRepository,
                              SchoolRepository schoolRepository, MajorRepository majorRepository,
                              ClassroomRepository classroomRepository, TimeTableRepository timeTableRepository,
-                             CourseSelectingRecordRepository courseSelectingRecordRepository){
+                             CourseSelectingRecordRepository courseSelectingRecordRepository, AuthorityRepository authorityRepository){
         this.schoolRepository = schoolRepository;
         this.majorRepository = majorRepository;
         this.courseRepository = courseRepository;
@@ -51,6 +52,7 @@ public class CourseServiceImpl implements CourseService {
         this.classroomRepository = classroomRepository;
         this.timeTableRepository = timeTableRepository;
         this.courseSelectingRecordRepository = courseSelectingRecordRepository;
+        this.authorityRepository = authorityRepository;
     }
 
     @Override
@@ -90,26 +92,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<Course> findAPageCourseOfTeacher(Integer page, Integer size, String search, String jobNumber) throws Exception {
-        Teacher teacher = teacherRepository.findByJobNumber(jobNumber);
+    public MyPage<Course> findAPageCourseOfTeacher(Integer page, Integer size, String jobNum, SchoolYear schoolYear, Semester semester) throws Exception {
+        Teacher teacher = teacherRepository.findByJobNumber(jobNum);
         if(teacher == null) {
             throw new Exception("教师不存在");
         }
-        Pageable pageable =  PageRequest.of(page - 1, size);
-        if(search.isEmpty()){
-            return courseRepository.findAllByTeacherNum(jobNumber, pageable);
-        }
-        Course course = new Course();
-        course.setCourseName(search);
-        course.setTeacherNum(jobNumber);
-        ExampleMatcher matcher = ExampleMatcher.matchingAll()
-                .withIgnoreCase(true)
-                .withMatcher("teacherNum", ExampleMatcher.GenericPropertyMatcher::exact)
-                .withMatcher("courseName", ExampleMatcher.GenericPropertyMatcher::contains)
-                .withIgnorePaths("courseId", "classPeriod", "creditHours", "credits", "capacity", "type"
-                , "courseNumber", "teacherName", "major", "school", "classroom", "introduction", "courseStatus");
-        Example<Course> example = Example.of(course, matcher);
-        return courseRepository.findAll(example, pageable);
+        List<Course> courses = courseRepository.findByTeacherNumAndSchoolYearAndSemester(jobNum, schoolYear, semester);
+        return MyPageTool.getPage(courses, size, page);
     }
 
     @Override
@@ -264,8 +253,9 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseApplying pushCourseApplying(CourseApplyingData courseApplyingData, CourseApplyingType applyingType) throws Exception {
         School school = schoolRepository.findByName(courseApplyingData.getSchool());
+        Course course = courseRepository.findByCourseId(courseApplyingData.getId());
         if(!applyingType.equals(CourseApplyingType.Publish)){
-            if(courseRepository.findByCourseId(courseApplyingData.getId()) == null){
+            if(course == null){
                 throw new Exception("所申请课程不存在");
             }
             CourseApplying oldCourseApplying = courseApplyingRepository.findByCourseId(courseApplyingData.getId());
@@ -280,7 +270,6 @@ public class CourseServiceImpl implements CourseService {
             return courseApplying;
         }
 
-
         if(school == null){
             throw new Exception("申请对应课程所属学院不存在");
         }
@@ -288,8 +277,16 @@ public class CourseServiceImpl implements CourseService {
         if(major == null){
             throw new Exception("申请对应课程所属学院下不存在此专业");
         }
-        FormatCheck.courseApplyingDataCheck(courseApplyingData);
+        Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
+        if(teacher == null){
+            throw new Exception("该教师不存在");
+        }
         Classroom classroom = classroomRepository.findByName(courseApplyingData.getClassroom());
+        //检查容量
+        Integer capacity = courseApplyingData.getCapacity();
+        inspectCapacity(capacity, course, classroom);
+
+        FormatCheck.courseApplyingDataCheck(courseApplyingData);
         List<Major> majorsOptional = new ArrayList<>();
         for (String str : courseApplyingData.getMajorLimits()){
             majorsOptional.add(majorRepository.findByName(str));
@@ -299,10 +296,7 @@ public class CourseServiceImpl implements CourseService {
         CourseApplying courseApplying = new CourseApplying((courseApplyingData), school, major, classroom, majorsOptional, classTime);
 
         courseApplying.setType(applyingType);
-        Teacher teacher = teacherRepository.findByJobNumber(courseApplyingData.getTeacherNum());
-        if(teacher == null){
-            throw new Exception("该教师不存在");
-        }
+
         teacher.getCoursesApplying().add(courseApplying);
         teacherRepository.save(teacher);
         return courseApplying;
@@ -324,6 +318,8 @@ public class CourseServiceImpl implements CourseService {
             throw new Exception("课程所属学院下不存在此专业");
         }
         Classroom classroom = classroomRepository.findByName(courseApplyingData.getClassroom());
+        //检查容量
+        inspectCapacity(courseApplyingData.getCapacity(), null, classroom);
         //此处检测时间冲突
         TimeTool.addTimeMatrix(
                 this.getClassroomTime(courseApplyingData.getClassroom(),
@@ -335,6 +331,9 @@ public class CourseServiceImpl implements CourseService {
             majorsOptional.add(majorRepository.findByName(str));
         }
         Course course = new Course(courseApplyingData, school, major, classroom, majorsOptional, teacher.getName());
+        //系列课程检查
+        inspectSeriesCourse(course);
+
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
 
@@ -368,6 +367,9 @@ public class CourseServiceImpl implements CourseService {
                 TimeTool.makeTimeMatrix(courseApplying.getClassTime()));
         Teacher teacher = teacherRepository.findByJobNumber(courseApplying.getTeacherNum());
         Course course = new Course(courseApplying);
+        //系列课程检查
+        inspectSeriesCourse(course);
+
         teacher.getCourses().add(course);
         teacherRepository.save(teacher);
         Course newCourse = courseRepository.findByCourseNumberAndTeacherNumAndSchoolYearAndSemester(
@@ -400,6 +402,9 @@ public class CourseServiceImpl implements CourseService {
         }
         Classroom oldClassroom = course.getClassroom();
         Classroom newClassroom = classroomRepository.findByName(courseApplyingData.getClassroom());
+        //检查容量
+        inspectCapacity(courseApplyingData.getCapacity(), course, newClassroom);
+
         YearSemesterPair yearAndSemester = TimeTool.getPresentYearAndSemester();
         List<List<Integer>> thisCourseSchedule = TimeTool.makeTimeMatrix(courseApplyingData.getOccupyTime(), this.getLastSection(), course.getCourseId());
         if((course.getSchoolYear() == EnumTool.transSchoolYear(yearAndSemester.getYear()))
@@ -433,6 +438,9 @@ public class CourseServiceImpl implements CourseService {
         thisCourse.setCreditHours(courseApplyingData.getCreditHours());
         thisCourse.setClassroom(classroomRepository.findByName(courseApplyingData.getClassroom()));
         teacherRepository.save(teacher);
+
+        syncSeriesCourse(thisCourse);
+
         return thisCourse;
     }
 
@@ -537,7 +545,7 @@ public class CourseServiceImpl implements CourseService {
         return isMatching;
     }
 
-    //根据相关性对搜索结果排序（插入排序）
+    //根据相关性对搜索结果排序（暂用插入排序）
     private void sortCourseByRelevance(List<CourseInMatching> allCourseInMatching, String search){
         for (int i = 1; i < allCourseInMatching.size(); i ++) {
             // 记录要插入的数据
@@ -555,4 +563,41 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+    private void inspectCapacity(Integer capacity, Course course, Classroom classroom) throws Exception {
+        if(capacity.compareTo(classroom.getCapacity()) > 0){
+            throw new Exception("容量应小于等于教室容量");
+        }
+        if(course != null){
+            Authority round = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
+            if((!round.getAuthorityValue().equals(Global.FIRST_COURSE_SELECTING_ROUND)) && (capacity.compareTo(course.getStudentsNum()) < 0)){
+                throw new Exception("容量应大于等于已选学生人数");
+            }
+        }
+    }
+
+    private void inspectSeriesCourse(Course course) throws Exception {
+        List<Course> courses = courseRepository.findByCourseNumberAndSchoolYearAndSemester
+                (course.getCourseNumber(), course.getSchoolYear(), course.getSemester());
+        if(!courses.isEmpty()){
+            Course oneOfSeries = courses.get(0);
+            if(course.getCredits().equals(oneOfSeries.getCredits())){
+                throw new Exception("学分应与同系列课程相同");
+            }
+            if(course.getCourseName().equals(oneOfSeries.getCourseName())){
+                throw new Exception("课程名应与同系列课程相同");
+            }
+        }
+    }
+
+    private void syncSeriesCourse(Course course){
+        List<Course> courses = courseRepository.findByCourseNumberAndSchoolYearAndSemester
+                (course.getCourseNumber(), course.getSchoolYear(), course.getSemester());
+        if(!courses.isEmpty()){
+            for(Course oneOfSeries : courses){
+                oneOfSeries.setCredits(course.getCredits());
+                oneOfSeries.setCourseName(course.getCourseName());
+                courseRepository.save(oneOfSeries);
+            }
+        }
+    }
 }

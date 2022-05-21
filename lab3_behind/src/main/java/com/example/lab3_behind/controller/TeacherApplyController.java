@@ -9,6 +9,7 @@ import com.example.lab3_behind.domain.dto.CourseApplyingData;
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.CourseService;
 import com.example.lab3_behind.service.TeacherService;
+import com.example.lab3_behind.utils.EnumTool;
 import com.example.lab3_behind.utils.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,10 +123,11 @@ public class TeacherApplyController {
             String token = request.getHeader("token");
             JwtUserData jwtUserData = JwtUtil.getToken(token);
             String number = jwtUserData.getNumber().replace("\"", "");
-            Page<Course> coursePage = courseService.findAPageCourseOfTeacher(pageSearchData.getPageNum(),pageSearchData.getPageSize(), pageSearchData.getSearch(),number);
-            List<CourseContent> courseContents = CourseContent.getContent(coursePage.getContent());
+            MyPage<Course> coursePage = courseService.findAPageCourseOfTeacher(pageSearchData.getPageNum(),
+                    pageSearchData.getPageSize(),number, EnumTool.transSchoolYear(pageSearchData.getYear()),EnumTool.transSemester(pageSearchData.getSemester()));
+            List<CourseContent> courseContents = CourseContent.getContent(coursePage.getRecords());
             map.put("records",courseContents);
-            map.put("total",coursePage.getTotalElements());
+            map.put("total",coursePage.getTotal());
             return Result.succ(map);
         }catch (Exception e){
             //logger.trace("----findCoursePage捕获到了异常----");

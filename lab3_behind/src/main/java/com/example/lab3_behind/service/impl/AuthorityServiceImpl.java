@@ -60,6 +60,11 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public void courseSelectingEnd() throws Exception {
+        Authority select = authorityRepository.findByAuthorityName(AuthorityName.CourseSelecting);
+        if(select.getAuthorityValue().equals("true")){
+            throw new Exception("请先关闭学生选课权限");
+        }
+
         Authority round = authorityRepository.findByAuthorityName(AuthorityName.CourseSelectingRound);
         if (round == null){
             Authority courseSelectingAuthority = new Authority(null, AuthorityName.CourseSelectingRound, Global.NOT_IN_COURSE_SELECTING_ROUND);

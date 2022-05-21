@@ -60,8 +60,13 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
 
     @Override
     public TimeTable addClassTime(ClassTimeData classTimeData) throws Exception {
-        Integer last = getLastSection() + 1;
-        TimeTable newTime = new TimeTable(null, last, classTimeData.getStartTime(), classTimeData.getEndTime());
+        Integer last = getLastSection();
+        TimeTable lastTime = timeTableRepository.findBySection(last);
+        TimeTable newTime = new TimeTable(null, last + 1, classTimeData.getStartTime(), classTimeData.getEndTime());
+        if((lastTime.endTime().compareTo(newTime.startTime()) > 0)
+        || (newTime.startTime().compareTo(newTime.endTime()) > 0)){
+            throw new Exception("时间冲突");
+        }
         timeTableRepository.save(newTime);
 
         List<Classroom> allClassrooms = classroomRepository.findAll();

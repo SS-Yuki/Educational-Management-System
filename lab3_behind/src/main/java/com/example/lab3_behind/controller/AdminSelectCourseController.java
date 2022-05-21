@@ -2,6 +2,7 @@ package com.example.lab3_behind.controller;
 
 import com.example.lab3_behind.domain.resp.Result;
 import com.example.lab3_behind.service.AuthorityService;
+import com.example.lab3_behind.service.CourseSelectingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminSelectCourseController {
     @Autowired
     AuthorityService authorityService;
+    @Autowired
+    CourseSelectingService courseSelectingService;
 
     @RequestMapping("/isSelectCourseOpen")
     public Result isSelectCourseOpen(){
@@ -70,14 +73,12 @@ public class AdminSelectCourseController {
 
     @RequestMapping("/randomSelect")
     public Result randomSelect(){
-//        try {
-//            authorityService(false);
-//            return Result.succ(null);
-//        }catch (Exception e){
-//            return Result.fail(841,e.getMessage());
-//        }
-        return Result.succ(null);
-
+        try {
+            courseSelectingService.RandomSelectFirstRound();
+            return Result.succ(null);
+        }catch (Exception e){
+            return Result.fail(841,e.getMessage());
+        }
     }
 
     @RequestMapping("/startThisSemesterSelectCourse")

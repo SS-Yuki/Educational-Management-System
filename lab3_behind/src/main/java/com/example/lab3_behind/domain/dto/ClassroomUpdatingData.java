@@ -12,7 +12,5 @@ public class ClassroomUpdatingData {
 
     String newClassroomName;
 
-    String TeachingBuilding;
-
     Integer capacity;
 }

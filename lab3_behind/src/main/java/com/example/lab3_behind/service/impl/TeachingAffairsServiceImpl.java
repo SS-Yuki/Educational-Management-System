@@ -241,12 +241,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         if(classroomData.getCapacity().compareTo(0) <= 0){
             throw new Exception("教室容量有误，必须为正整数");
         }
-        TeachingBuilding teachingBuilding = teachingBuildingRepository.findByName(classroomData.getTeachingBuilding());
-        if(teachingBuilding == null){
-            throw new Exception("教室信息有误，教学楼不存在");
-        }
-        Classroom classroom = classroomRepository.findByName(classroomData.getOldClassroomName());
-        Classroom thisClassroom = teachingBuilding.getClassrooms().get(teachingBuilding.getClassrooms().indexOf(classroom));
+        Classroom thisClassroom = classroomRepository.findByName(classroomData.getOldClassroomName());
         thisClassroom.setName(classroomData.getNewClassroomName());
         boolean canSetCapacity = true;
         for(Course course : courseRepository.findAll()){
@@ -268,7 +263,7 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         } else {
             throw new Exception("有课程或相关申请容量高于所修改容量");
         }
-        teachingBuildingRepository.save(teachingBuilding);
+        classroomRepository.save(thisClassroom);
         return thisClassroom;
     }
 

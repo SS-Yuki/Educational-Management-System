@@ -114,6 +114,7 @@ public class AdminBuildingController {
             teachingAffairsService.updateClassroom(classroomUpdatingData);
             return Result.succ(null);
         }catch (Exception e){
+            e.printStackTrace();
             return Result.fail(725,e.getMessage());
         }
     }

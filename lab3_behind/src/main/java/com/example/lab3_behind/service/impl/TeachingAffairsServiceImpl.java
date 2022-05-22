@@ -242,25 +242,26 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
             throw new Exception("教室容量有误，必须为正整数");
         }
         Classroom thisClassroom = classroomRepository.findByName(classroomData.getOldClassroomName());
+        List<Course> courses = courseRepository.findByClassroom(thisClassroom);
+        List<CourseApplying> courseApplyings = courseApplyingRepository.findByClassroom(thisClassroom);
+        thisClassroom.setCapacity(classroomData.getCapacity());
         thisClassroom.setName(classroomData.getNewClassroomName());
         boolean canSetCapacity = true;
-        for(Course course : courseRepository.findAll()){
+        for(Course course : courses){
             if(course.getCapacity().compareTo(classroomData.getCapacity()) > 0){
                 canSetCapacity = false;
                 break;
             }
         }
         if(canSetCapacity){
-            for (CourseApplying courseApplying : courseApplyingRepository.findAll()){
+            for (CourseApplying courseApplying : courseApplyings){
                 if(courseApplying.getCapacity().compareTo(classroomData.getCapacity()) > 0){
                     canSetCapacity = false;
                     break;
                 }
             }
         }
-        if(canSetCapacity){
-            thisClassroom.setCapacity(classroomData.getCapacity());
-        } else {
+        if(!canSetCapacity){
             throw new Exception("有课程或相关申请容量高于所修改容量");
         }
         classroomRepository.save(thisClassroom);

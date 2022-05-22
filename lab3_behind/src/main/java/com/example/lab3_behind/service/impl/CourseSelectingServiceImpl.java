@@ -199,6 +199,19 @@ public class CourseSelectingServiceImpl implements CourseSelectingService {
         TimeTool.addTimeMatrix(getSchedule(studentRepository, timeTableRepository, student.getStuNumber(), course.getSchoolYear(), course.getSemester()),
                 TimeTool.makeTimeMatrix(course.getClassTime()));
 
+        if(!course.getCourseSelectType().equals(CourseSelectType.common) && !course.getMajorsOptional().contains(student.getMajor())){
+            throw new Exception("由于专业限制无法选择此门课程");
+        }
+        List<Course> allCourse = getCourses(student);
+        for (Course tempCourse : allCourse){
+            if(tempCourse.getCourseId().equals(course.getCourseId())){
+                throw new Exception("无法选择已经选过的课程");
+            }
+            if(tempCourse.getCourseNumber().equals(course.getCourseNumber())){
+                throw new Exception("同类课程只能修读一门");
+            }
+        }
+
         courseRepository.save(course);
         CourseSelectingRecord courseSelectingRecord = new CourseSelectingRecord(null , course, student, 0,StudyStatus.ToStudy);
         courseSelectingRecordRepository.save(courseSelectingRecord);

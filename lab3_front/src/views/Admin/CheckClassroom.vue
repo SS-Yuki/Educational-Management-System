@@ -171,7 +171,7 @@ export default {
       })
     },
     saveEdit(){
-      request.post("/admin/updateCourseInfo",this.editClassroom).then(res=>{
+      request.post("/admin/updateClassroomInfo",this.editClassroom).then(res=>{
         if(res.data.code!==200) {
           this.$message({
             type:"error",

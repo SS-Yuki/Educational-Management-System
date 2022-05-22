@@ -268,7 +268,6 @@ public class TeachingAffairsServiceImpl implements TeachingAffairsService {
         } else {
             throw new Exception("有课程或相关申请容量高于所修改容量");
         }
-        thisClassroom.setSchedule(classroomData.getSchedule());
         teachingBuildingRepository.save(teachingBuilding);
         return thisClassroom;
     }
